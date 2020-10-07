@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sude.Common\Sude.Common.csproj" />
+    <ProjectReference Include="..\Sude.Domain\Sude.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,146 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Serving
+@model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
+
+<div class="col-12">
+    <fieldset class="form-group">
+        <input type="text" class="form-control" name="serchkey">
+        <button class="btn btn-success">جستجو</button>
+    </fieldset>
+</div>
+
+<div>
+    <section id="grid-option">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+
+                        <div class="card-title-wrap bar-success">
+                            <h4 class="card-title">لیست اقلام و خدمات</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr role="row">
+
+                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 222px;">عنوان<small>Title (&lt;222px)</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="مبلغ: activate to sort column ascending" style="width: 222px;">»مبلغ<small>Price (&lt;222px)</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 801px;">»شرح<small>Desc (&lt;801px)</small></th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Data)
+                                        {
+                                            <tr id="tr_@item.ServingId" role="row" class="odd">
+                                                <td class="sorting_1">@item.Title</td>
+                                                <td>@item.Price</td>
+                                                <td>@item.Desc</td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
+                                                    <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
+                                                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+
+                                    </tbody>
+                                </table>
+                            </div><div class="row"><div class="col-sm-18 col-md-5"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">نمایش 1 تا 10 از 57 سطرها</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">قبلی</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0" class="page-link">بعدی</a></li></ul></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    function DeleteServing(servingId) {
+
+        swal.fire({
+            title: 'حذف سرویس',
+            text: "کاربر گرامی از حذف سرویس مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7cacbe',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله ، سرویس حذف شود',
+            cancelButtonText: 'خیر'
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    url: "/Serving/Delete/" + servingId,
+                    type: "Get",
+                    success: function (result) {
+                        if (result.isSuced == true) {
+                            swal.fire(
+                                'موفق!',
+                                result.message,
+                                'success'
+                            ).then(function (isConfirm) {
+                                $("#tr_" + servingId).addClass("danger");
+                                $("#tr_" + servingId).hide('slow');
+                                //location.reload();
+                            });
+                        }
+                        else {
+
+                            swal.fire(
+                                'هشدار!',
+                                result.message,
+                                'warning'
+                            );
+
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+
+                });
+
+            }
+        })
+    }
+
+
+
+    function ShowEditServingPop(ServingId) {
+        $.get("/Serving/Edit/" + ServingId, function (result) {
+
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("ویرایش خدمات");
+            $("#myModalBody").html(result);
+        });
+    }
+
+
+
+
+    function ShowEditServing(servingId) {
+        $("#servingView").load("/Serving/Edit/" + servingId);
+
+    }
+
+
+    function ShowNewPageModalDetailServing(ServingId) {
+
+
+        $.get("/Serving/Detail/" + ServingId, function (result) {
+
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("جزئیات خدمات");
+            $("#myModalBody").html(result);
+        });
+    }
+
+</script>

@@ -1,0 +1,58 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Serving
+
+@model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
+
+@{
+    Layout = "_Layout";
+}
+<dive class="col-8">
+    <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن آیتم</a>
+</dive>
+<div id="servingView">
+    Please Wait ...
+</div>
+
+
+@section Scripts
+{
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(function () {
+            $("#servingView").load("/Serving/List");
+        });
+
+        $("#btnAdd").click(function () {
+            $("#servingView").load("/Serving/Add");
+        });
+
+
+
+    </script>
+
+}
+
+@section Modals
+{
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModalBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Modal -->
+}
