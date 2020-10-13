@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sude.Application.Interfaces;
@@ -26,6 +27,7 @@ namespace Sude.Api.Controllers
         [HttpGet]
         //[Consumes("application/xml")]
         //[Consumes("application/json")]
+        [Authorize]
         public async Task<ActionResult> GetServings()
         {
             var result = (await _servingService.GetServingsAsync()).Data.Select(s => new ServingDetailDtoModel()

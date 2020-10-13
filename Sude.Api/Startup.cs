@@ -46,6 +46,16 @@ namespace Sude.Api
 
             //Call Inject My Services
             RegisterMyServices(services);
+
+            // Security configuration
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", option =>
+                {
+                    option.Authority = "https://bamdadserver:8080/";
+                    option.RequireHttpsMetadata = true;
+                    option.Audience = "Sude.Api";
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +65,12 @@ namespace Sude.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStatusCodePages();
             app.UseHttpsRedirection();
-
+           
             app.UseRouting();
-
+            
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

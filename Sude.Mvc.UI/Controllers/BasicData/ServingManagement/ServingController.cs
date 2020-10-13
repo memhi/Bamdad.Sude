@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Sude.Dto.DtoModels.Result;
@@ -15,12 +16,17 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
     {
         // GET: ServingController
         [HttpGet]
-        public ActionResult Index()
+        [Authorize]
+        public  ActionResult Index()
         {
+            //ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
+            //             .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.GetServings);
+
             return View();
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> List()
         {
             //System.Threading.Thread.Sleep(1000);
