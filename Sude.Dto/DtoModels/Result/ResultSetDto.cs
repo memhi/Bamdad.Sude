@@ -8,7 +8,7 @@ namespace Sude.Dto.DtoModels.Result
 {
     public class ResultSetDto
     {
-        public bool IsSuced { get; set; } = true;
+        public bool IsSucceed { get; set; } = true;
         public string Message { get; set; } = "";
     }
 
