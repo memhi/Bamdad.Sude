@@ -7,30 +7,30 @@ namespace Sude.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<Guid>(
-                name: "Id",
-                table: "Users",
-                type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(long),
-                oldType: "bigint")
-                .OldAnnotation("SqlServer:Identity", "1, 1");
+            //migrationBuilder.AlterColumn<Guid>(
+            //    name: "Id",
+            //    table: "Users",
+            //    type: "uniqueidentifier",
+            //    nullable: false,
+            //    oldClrType: typeof(long),
+            //    oldType: "bigint")
+            //    .OldAnnotation("SqlServer:Identity", "1, 1");
 
-            migrationBuilder.AlterColumn<Guid>(
-                name: "Id",
-                table: "Roles",
-                type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(long),
-                oldType: "bigint")
-                .OldAnnotation("SqlServer:Identity", "1, 1");
+            //migrationBuilder.AlterColumn<Guid>(
+            //    name: "Id",
+            //    table: "Roles",
+            //    type: "uniqueidentifier",
+            //    nullable: false,
+            //    oldClrType: typeof(long),
+            //    oldType: "bigint")
+            //    .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SumPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SumPrice = table.Column<double>(type: "float", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -65,8 +65,8 @@ namespace Sude.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Count = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Count = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ServingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -146,23 +146,23 @@ namespace Sude.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "WorkType");
 
-            migrationBuilder.AlterColumn<long>(
-                name: "Id",
-                table: "Users",
-                type: "bigint",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier")
-                .Annotation("SqlServer:Identity", "1, 1");
+            //migrationBuilder.AlterColumn<long>(
+            //    name: "Id",
+            //    table: "Users",
+            //    type: "bigint",
+            //    nullable: false,
+            //    oldClrType: typeof(Guid),
+            //    oldType: "uniqueidentifier")
+            //    .Annotation("SqlServer:Identity", "1, 1");
 
-            migrationBuilder.AlterColumn<long>(
-                name: "Id",
-                table: "Roles",
-                type: "bigint",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier")
-                .Annotation("SqlServer:Identity", "1, 1");
+            //migrationBuilder.AlterColumn<long>(
+            //    name: "Id",
+            //    table: "Roles",
+            //    type: "bigint",
+            //    nullable: false,
+            //    oldClrType: typeof(Guid),
+            //    oldType: "uniqueidentifier")
+            //    .Annotation("SqlServer:Identity", "1, 1");
         }
     }
 }

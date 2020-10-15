@@ -12,7 +12,7 @@ namespace Sude.Domain.Models.Order
     public class Order : BaseModel<Guid>
     {
         [Required]
-        public decimal SumPrice { get; set; }     
+        public long SumPrice { get; set; }     
         
         [Required]
         public DateTime OrderDate { get; set; }

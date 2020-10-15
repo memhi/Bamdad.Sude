@@ -13,10 +13,10 @@ namespace Sude.Domain.Models.Order
     public class OrderDetail : BaseModel<Guid>
     {
         [Required]
-        public decimal Count { get; set; }     
+        public double Count { get; set; }     
         
         [Required]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
          
         public Order Order { get; set; }
 
