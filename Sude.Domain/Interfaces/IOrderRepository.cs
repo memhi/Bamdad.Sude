@@ -9,16 +9,16 @@ namespace Sude.Domain.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<IEnumerable<Order>> GetOrdersAsync();
-        IEnumerable<Order> GetOrders();
+        Task<IEnumerable<OrderInfo>> GetOrdersAsync();
+        IEnumerable<OrderInfo> GetOrders();
       //  bool IsExistServing(string Title);
 
-        bool AddOrder(Order order);
-        bool EditOrder(Order order);
+        bool AddOrder(OrderInfo order);
+        bool EditOrder(OrderInfo order);
         bool DeleteOrder(Guid servingId);
 
-        Task<Order> GetOrderByIdAsync(Guid orderId);
-        Order GetOrderById(Guid orderId);
+        Task<OrderInfo> GetOrderByIdAsync(Guid orderId);
+        OrderInfo GetOrderById(Guid orderId);
        
 
         void Save();

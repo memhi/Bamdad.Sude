@@ -18,53 +18,53 @@ namespace Sude.Application.Services
         {
             this._servingRepository = servingRepository;
         }
-        public ResultSet<IEnumerable<Serving>> GetServings()
+        public ResultSet<IEnumerable<ServingInfo>> GetServings()
         {
-            return new ResultSet<IEnumerable<Serving>>()
+            return new ResultSet<IEnumerable<ServingInfo>>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = _servingRepository.GetServings()
             };
         }
 
-        public ResultSet<Serving> GetServingById(Guid servingId)
+        public ResultSet<ServingInfo> GetServingById(Guid servingId)
         {
-            Serving serving = _servingRepository.GetServingById(servingId);
+            ServingInfo serving = _servingRepository.GetServingById(servingId);
 
             if (serving == null)
-                return new ResultSet<Serving>()
+                return new ResultSet<ServingInfo>()
                 {
-                    IsSucced = false,
+                    IsSucceed = false,
                     Message = "Serving Not Found",
                     Data = null
                 };
 
-            return new ResultSet<Serving>()
+            return new ResultSet<ServingInfo>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = serving
             };
         }
 
-        public ResultSet<Serving> AddServing(Serving request)
+        public ResultSet<ServingInfo> AddServing(ServingInfo request)
         {
             _servingRepository.AddServing(request);
             _servingRepository.Save();
 
-            return new ResultSet<Serving>()
+            return new ResultSet<ServingInfo>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = request
             };
         }
 
-        public ResultSet EditServing(Serving request)
+        public ResultSet EditServing(ServingInfo request)
         {
             if(!_servingRepository.EditServing(request))
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Edited" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
 
             try
             {
@@ -72,9 +72,9 @@ namespace Sude.Application.Services
             }
             catch
             {
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Edited" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
             }
-            return new ResultSet() { IsSucced = true, Message = string.Empty };
+            return new ResultSet() { IsSucceed = true, Message = string.Empty };
 
         }
 
@@ -82,7 +82,7 @@ namespace Sude.Application.Services
         {
 
             if (!_servingRepository.DeleteServing(servingId))
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Deleted" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
 
             try
             {
@@ -90,41 +90,41 @@ namespace Sude.Application.Services
             }
             catch
             {
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Deleted" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
             }
-            return new ResultSet() { IsSucced = true, Message = string.Empty };
+            return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<IEnumerable<Serving>>> GetServingsAsync()
+        public async Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsAsync()
         {
-            return new ResultSet<IEnumerable<Serving>>()
+            return new ResultSet<IEnumerable<ServingInfo>>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = await _servingRepository.GetServingsAsync()
             };
         }
 
-        public async Task<ResultSet<Serving>> AddServingAsync(Serving request)
+        public async Task<ResultSet<ServingInfo>> AddServingAsync(ServingInfo request)
         {
             _servingRepository.AddServing(request);
 
             try{await _servingRepository.SaveAsync();}
 
-            catch(Exception e){return new ResultSet<Serving>() { IsSucced = false, Message = e.Message };}
+            catch(Exception e){return new ResultSet<ServingInfo>() { IsSucceed = false, Message = e.Message };}
 
-            return new ResultSet<Serving>()
+            return new ResultSet<ServingInfo>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = request
             };
         }
 
-        public async Task<ResultSet> EditServingAsync(Serving request)
+        public async Task<ResultSet> EditServingAsync(ServingInfo request)
         {
             if (!_servingRepository.EditServing(request))
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Edited" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
 
             try
             {
@@ -132,15 +132,42 @@ namespace Sude.Application.Services
             }
             catch(Exception e)
             {
-                return new ResultSet() { IsSucced = false, Message = e.Message };
+                return new ResultSet() { IsSucceed = false, Message = e.Message };
             }
-            return new ResultSet() { IsSucced = true, Message = string.Empty };
+            return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
         public async Task<ResultSet> DeleteServingAsync(Guid servingId)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (!_servingRepository.DeleteServing(servingId))
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Deleted" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
 
             try
             {
@@ -148,26 +175,26 @@ namespace Sude.Application.Services
             }
             catch
             {
-                return new ResultSet() { IsSucced = false, Message = "Serving Not Deleted" };
+                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
             }
-            return new ResultSet() { IsSucced = true, Message = string.Empty };
+            return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<Serving>> GetServingByIdAsync(Guid servingId)
+        public async Task<ResultSet<ServingInfo>> GetServingByIdAsync(Guid servingId)
         {
-            Serving serving = await _servingRepository.GetServingByIdAsync(servingId);
+            ServingInfo serving = await _servingRepository.GetServingByIdAsync(servingId);
 
             if (serving == null)
-                return new ResultSet<Serving>()
+                return new ResultSet<ServingInfo>()
                 {
-                    IsSucced = false,
+                    IsSucceed = false,
                     Message = "Serving Not Found",
                     Data = null
                 };
 
-            return new ResultSet<Serving>()
+            return new ResultSet<ServingInfo>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = serving
             };
