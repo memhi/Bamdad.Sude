@@ -20,7 +20,7 @@ namespace Sude.Domain.Models.Order
          
         public Order Order { get; set; }
 
-        public Sude.Domain.Models.Serving.Serving Serving { get; set; }
+        public Sude.Domain.Models.Serving.Serving Serving { get;  set; }
         public string  Description { get; set; }
 
 
