@@ -7,6 +7,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Models.Serving;
+using Sude.Domain.Models.Work;
+using Sude.Domain.Models.Order;
 
 namespace Sude.Persistence.Contexts
 {
@@ -19,6 +21,8 @@ namespace Sude.Persistence.Contexts
         }
 
         public DbSet<Serving> Servings { get; set; }
+        public DbSet<Work> Works { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
@@ -29,6 +33,8 @@ namespace Sude.Persistence.Contexts
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Serving>().HasQueryFilter(p=>!p.IsRemoved);
+            modelBuilder.Entity<Work>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<Order>().HasQueryFilter(p => !p.IsRemoved);
 
             //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
         }

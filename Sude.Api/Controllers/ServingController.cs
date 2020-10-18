@@ -39,7 +39,7 @@ namespace Sude.Api.Controllers
             });
             return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
             {
-                IsSuced = true,
+                IsSucceed = true,
                 Message = "",
                 Data = result
             });
@@ -63,7 +63,7 @@ namespace Sude.Api.Controllers
 
             return Ok(new ResultSetDto<ServingDetailDtoModel>()
             {
-                IsSuced = true,
+                IsSucceed = true,
                 Message = "",
                 Data = result
             });
@@ -80,7 +80,7 @@ namespace Sude.Api.Controllers
 
                 return Ok(new ResultSetDto()
                 {
-                    IsSuced = false,
+                    IsSucceed = false,
                     Message = message
                 });
             }
@@ -103,7 +103,7 @@ namespace Sude.Api.Controllers
 
             return Ok(new ResultSetDto<ServingEditDtoModel>()
             {
-                IsSuced = true,
+                IsSucceed = true,
                 Message = "",
                 Data = request
             });
@@ -132,7 +132,7 @@ namespace Sude.Api.Controllers
 
             return Ok(new ResultSetDto<ServingNewDtoModel>()
             {
-                IsSuced = true,
+                IsSucceed = true,
                 Message = "",
                 Data = request
             });
@@ -152,14 +152,14 @@ namespace Sude.Api.Controllers
             if (!result.IsSucced)
                 return Ok(new ResultSetDto()
                 {
-                    IsSuced = false,
+                    IsSucceed = false,
                     Message = result.Message
                 });
 
 
             return Ok(new ResultSetDto()
             {
-                IsSuced = true,
+                IsSucceed = true,
                 Message = ""
             });
         }

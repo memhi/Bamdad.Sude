@@ -54,7 +54,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
 
                 return Json(new ResultSetDto()
                 {
-                    IsSuced = false,
+                    IsSucceed = false,
                     Message = message
                 });
             }
@@ -94,7 +94,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
 
                 return Ok(new ResultSetDto()
                 {
-                    IsSuced = false,
+                    IsSucceed = false,
                     Message = message
                 });
             }
