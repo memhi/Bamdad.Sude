@@ -71,7 +71,7 @@ namespace Sude.Mvc.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+             
             app.UseAuthentication();
             app.UseAuthorization();
 
