@@ -20,5 +20,6 @@ namespace Sude.Dto.DtoModels.Serving
         public int Price { get; set; }
 
         public string Desc { get; set; }
+        public string WorkId { get; set; }
     }
 }

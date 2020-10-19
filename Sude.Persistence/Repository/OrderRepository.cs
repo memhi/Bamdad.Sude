@@ -13,18 +13,18 @@ namespace Sude.Persistence.Repository
     public class OrderRepository : IOrderRepository
     {
 
-        private GenericRepository<Order> _orderRepository;
+        private GenericRepository<OrderInfo> _orderRepository;
 
         public OrderRepository(SudeDBContext ctx)
         {
-            this._orderRepository = new GenericRepository<Order>(ctx);
+            this._orderRepository = new GenericRepository<OrderInfo>(ctx);
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersAsync()
+        public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()
         {
             return await _orderRepository.GetAsync();
         }
-        public bool AddOrder(Order order)
+        public bool AddOrder(OrderInfo order)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditOrder(Order order)
+        public bool EditOrder(OrderInfo order)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<Order> GetOrderByIdAsync(Guid orderId)
+        public async Task<OrderInfo> GetOrderByIdAsync(Guid orderId)
         {
             return await _orderRepository.GetByIdAsync(orderId);
         }
@@ -63,7 +63,7 @@ namespace Sude.Persistence.Repository
         public async Task SaveAsync() =>
             await _orderRepository.SaveAsync();
 
-        public IEnumerable<Order> GetOrders()
+        public IEnumerable<OrderInfo> GetOrders()
         {
             return _orderRepository.Get();
         }
@@ -91,7 +91,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public Order GetOrderById(Guid orderId)
+        public OrderInfo GetOrderById(Guid orderId)
         {
             return _orderRepository.GetById(orderId);
         }

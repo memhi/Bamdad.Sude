@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "https://192.168.0.30:44323/Sude.Mvc.UI",
+      "applicationUrl": "https://localhost:44323/Sude.Mvc.UI",
       "sslPort": 0
     },
     "iisExpress": {

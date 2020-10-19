@@ -20,9 +20,9 @@ namespace Sude.Persistence.Contexts
 
         }
 
-        public DbSet<Serving> Servings { get; set; }
-        public DbSet<Work> Works { get; set; }
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<ServingInfo> Servings { get; set; }
+        public DbSet<WorkInfo> Works { get; set; }
+        public DbSet<OrderInfo> Orders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
@@ -32,9 +32,9 @@ namespace Sude.Persistence.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Serving>().HasQueryFilter(p=>!p.IsRemoved);
-            modelBuilder.Entity<Work>().HasQueryFilter(p => !p.IsRemoved);
-            modelBuilder.Entity<Order>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<ServingInfo>().HasQueryFilter(p=>!p.IsRemoved);
+            modelBuilder.Entity<WorkInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<OrderInfo>().HasQueryFilter(p => !p.IsRemoved);
 
             //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
         }

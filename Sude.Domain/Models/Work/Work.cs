@@ -8,12 +8,12 @@ using Sude.Domain.Models.Common;
 
 namespace Sude.Domain.Models.Work
 {
-    public class Work : BaseModel<Guid>
+    public class WorkInfo : BaseModel<Guid>
     {
         [Required]
         public string Title { get; set; }       
         public string Desc { get; set; }
-        public WorkType WorkType { get; set; }
+        public WorkTypeInfo WorkType { get; set; }
     }
 
 }

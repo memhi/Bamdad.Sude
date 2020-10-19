@@ -9,16 +9,16 @@ namespace Sude.Domain.Interfaces
 {
     public interface IServingRepository
     {
-        Task<IEnumerable<Serving>> GetServingsAsync();
-        IEnumerable<Serving> GetServings();
+        Task<IEnumerable<ServingInfo>> GetServingsAsync();
+        IEnumerable<ServingInfo> GetServings();
         bool IsExistServing(string Title);
 
-        bool AddServing(Serving serving);
-        bool EditServing(Serving serving);
+        bool AddServing(ServingInfo serving);
+        bool EditServing(ServingInfo serving);
         bool DeleteServing(Guid servingId);
 
-        Task<Serving> GetServingByIdAsync(Guid servingId);
-        Serving GetServingById(Guid servingId);
+        Task<ServingInfo> GetServingByIdAsync(Guid servingId);
+        ServingInfo GetServingById(Guid servingId);
        
 
         void Save();

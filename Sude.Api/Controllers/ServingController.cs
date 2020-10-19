@@ -89,16 +89,16 @@ namespace Sude.Api.Controllers
 
             var resultServing  = await _servingService.GetServingByIdAsync(Guid.Parse(request.ServingId));
 
-            if (!resultServing.IsSucced)
+            if (!resultServing.IsSucceed)
                 return BadRequest(resultServing.Message);
 
-            Serving servingEdit = resultServing.Data;
+            ServingInfo servingEdit = resultServing.Data;
             servingEdit.Title = request.Title;
             servingEdit.Price = request.Price;
             servingEdit.Desc = request.Desc;
 
             var result = await _servingService.EditServingAsync(servingEdit);
-            if(!result.IsSucced)
+            if(!result.IsSucceed)
                 return BadRequest(result.Message);
 
             return Ok(new ResultSetDto<ServingEditDtoModel>()
@@ -115,16 +115,17 @@ namespace Sude.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Serving serving = new Serving()
+            ServingInfo serving = new ServingInfo()
             {
                 Title = request.Title,
                 Price = request.Price,
                 Desc = request.Desc
+              
             };
 
             var resultSave = await _servingService.AddServingAsync(serving);
 
-            if (!resultSave.IsSucced)
+            if (!resultSave.IsSucceed)
                 return BadRequest(resultSave.Message);
 
 
@@ -149,7 +150,7 @@ namespace Sude.Api.Controllers
 
             var result = await _servingService.DeleteServingAsync(Guid.Parse(request));
 
-            if (!result.IsSucced)
+            if (!result.IsSucceed)
                 return Ok(new ResultSetDto()
                 {
                     IsSucceed = false,

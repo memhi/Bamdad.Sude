@@ -10,15 +10,15 @@ namespace Sude.Application.Interfaces
 {
     public interface IServingService
     {
-        ResultSet<IEnumerable<Serving>> GetServings();
-        ResultSet<Serving> AddServing(Serving request);
-        ResultSet EditServing(Serving request);
+        ResultSet<IEnumerable<ServingInfo>> GetServings();
+        ResultSet<ServingInfo> AddServing(ServingInfo request);
+        ResultSet EditServing(ServingInfo request);
         ResultSet DeleteServing(Guid servingId);
-        ResultSet<Serving> GetServingById(Guid servingId);
-        Task<ResultSet<IEnumerable<Serving>>> GetServingsAsync();
-        Task<ResultSet<Serving>> AddServingAsync(Serving request);
-        Task<ResultSet> EditServingAsync(Serving request);
+        ResultSet<ServingInfo> GetServingById(Guid servingId);
+        Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsAsync();
+        Task<ResultSet<ServingInfo>> AddServingAsync(ServingInfo request);
+        Task<ResultSet> EditServingAsync(ServingInfo request);
         Task<ResultSet> DeleteServingAsync(Guid servingId);
-        Task<ResultSet<Serving>> GetServingByIdAsync(Guid servingId);
+        Task<ResultSet<ServingInfo>> GetServingByIdAsync(Guid servingId);
     }
 }

@@ -12,18 +12,18 @@ namespace Sude.Persistence.Repository
     public class ServingRepository : IServingRepository
     {
 
-        private GenericRepository<Serving> _servingRepository;
+        private GenericRepository<ServingInfo> _servingRepository;
 
         public ServingRepository(SudeDBContext ctx)
         {
-            this._servingRepository = new GenericRepository<Serving>(ctx);
+            this._servingRepository = new GenericRepository<ServingInfo>(ctx);
         }
 
-        public async Task<IEnumerable<Serving>> GetServingsAsync()
+        public async Task<IEnumerable<ServingInfo>> GetServingsAsync()
         {
             return await _servingRepository.GetAsync();
         }
-        public bool AddServing(Serving serving)
+        public bool AddServing(ServingInfo serving)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditServing(Serving serving)
+        public bool EditServing(ServingInfo serving)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<Serving> GetServingByIdAsync(Guid servingId)
+        public async Task<ServingInfo> GetServingByIdAsync(Guid servingId)
         {
             return await _servingRepository.GetByIdAsync(servingId);
         }
@@ -62,7 +62,7 @@ namespace Sude.Persistence.Repository
         public async Task SaveAsync() =>
             await _servingRepository.SaveAsync();
 
-        public IEnumerable<Serving> GetServings()
+        public IEnumerable<ServingInfo> GetServings()
         {
             return _servingRepository.Get();
         }
@@ -93,7 +93,7 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public Serving GetServingById(Guid servingId)
+        public ServingInfo GetServingById(Guid servingId)
         {
             return _servingRepository.GetById(servingId);
         }

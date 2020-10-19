@@ -17,7 +17,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddEnumerable(new ServiceDescriptor[]
             {
                 ServiceDescriptor.Scoped<IUserService, UserService>(),
-                ServiceDescriptor.Scoped<IServingService,ServingService>()
+                ServiceDescriptor.Scoped<IServingService,ServingService>(),
+                ServiceDescriptor.Scoped<IWorkTypeService,WorkTypeService>()
             });
 
             return services;

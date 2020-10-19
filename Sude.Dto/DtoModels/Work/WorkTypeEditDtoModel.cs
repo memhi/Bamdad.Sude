@@ -5,20 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sude.Dto.DtoModels.Serving
+namespace Sude.Dto.DtoModels.Work
 {
-    public class ServingEditDtoModel
+    public class WorkTypeEditDtoModel
     {
-        public string ServingId { get; set; }
+        public string WorkTypeId { get; set; }
 
         [Required(ErrorMessage ="عنوان را وارد نمایید")]
         public string Title { get; set; }
-
-        [Range(100, 100000,
-            ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public int Price { get; set; }
-
+ 
         public string Desc { get; set; }
-        public string WorkId { get; set; }
+ 
     }
 }

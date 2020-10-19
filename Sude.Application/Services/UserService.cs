@@ -40,7 +40,7 @@ namespace Sude.Application.Services
             });
             return new ResultSet<IEnumerable<User>>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = users
 
@@ -55,7 +55,7 @@ namespace Sude.Application.Services
             //if (request.Users.Count() == 0)
             //    return new ResultDto<UsersDtoModel>()
             //    {
-            //        IsSucced = false,
+            //        IsSucceed = false,
             //        Messege = "",
             //        Data=null
             //    };
@@ -88,7 +88,7 @@ namespace Sude.Application.Services
 
             return new ResultSet<User>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = "",
                 Data = request
             };
@@ -102,7 +102,7 @@ namespace Sude.Application.Services
             _userRepository.Save();
             return new ResultSet()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = "تغییر وضعیت با موفقیت انجام شد"
             };
         }
@@ -116,9 +116,9 @@ namespace Sude.Application.Services
             user.Phone = request.Phone;
 
             if (_userRepository.EditUser(user))
-                return new ResultSet() { IsSucced = true, Message = string.Empty };
+                return new ResultSet() { IsSucceed = true, Message = string.Empty };
 
-            return new ResultSet() { IsSucced = true, Message = string.Empty };
+            return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
         public ResultSet<User> GetUserById(long userId)
@@ -128,14 +128,14 @@ namespace Sude.Application.Services
             if (user == null)
                 return new ResultSet<User>()
                 {
-                    IsSucced = false,
+                    IsSucceed = false,
                     Message = "کاربر با این شناسه پیدا نشد",
                     Data = null
                 };
 
             return new ResultSet<User>()
             {
-                IsSucced = true,
+                IsSucceed = true,
                 Message = string.Empty,
                 Data = new User()
                 {

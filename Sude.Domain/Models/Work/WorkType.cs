@@ -8,7 +8,7 @@ using Sude.Domain.Models.Common;
 
 namespace Sude.Domain.Models.Work
 {
-    public class WorkType : BaseModel<Guid>
+    public class WorkTypeInfo : BaseModel<Guid>
     {
         [Required]
         public string Title { get; set; }    
