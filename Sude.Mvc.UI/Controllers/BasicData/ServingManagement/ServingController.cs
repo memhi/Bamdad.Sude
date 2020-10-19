@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
     {
         // GET: ServingController
         [HttpGet]
-        [Authorize]
+     //   [Authorize]
         public  ActionResult Index()
         {
             //ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
@@ -26,11 +27,11 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
         }
 
         [HttpGet]
-        [Authorize]
+      //  [Authorize]
         public async Task<ActionResult> List()
         {
-            //System.Threading.Thread.Sleep(1000);
-
+          
+           
             ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServings);
 

@@ -16,7 +16,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkTypeManagement
     {
         // GET: WorkTypeController
         [HttpGet]
-        [Authorize]
+     //   [Authorize]
         public  ActionResult Index()
         {
             //ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> WorkTypelist = await Api.GetHandler
@@ -26,7 +26,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkTypeManagement
         }
 
         [HttpGet]
-        [Authorize]
+       // [Authorize]
         public async Task<ActionResult> List()
         {
             //System.Threading.Thread.Sleep(1000);

@@ -29,25 +29,25 @@ namespace Sude.Mvc.UI
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             IdentityModelEventSource.ShowPII = true;
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-                .AddCookie("Cookies")
-               .AddOpenIdConnect("oidc", options =>
-                {
-                    options.Authority = "https://bamdadserver:8080";
-                    options.ClientId = "Sude";
-                    options.ClientSecret = "secret";
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("Sude.Api");
-                    options.ResponseType = "code";
-                    options.UsePkce = true;
-                    options.RequireHttpsMetadata = false;
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = "Cookies";
+            //    options.DefaultChallengeScheme = "oidc";
+            //})
+            //    .AddCookie("Cookies")
+            //   .AddOpenIdConnect("oidc", options =>
+            //    {
+            //        options.Authority = "https://bamdadserver:8080";
+            //        options.ClientId = "Sude";
+            //        options.ClientSecret = "secret";
+            //        options.Scope.Add("openid");
+            //        options.Scope.Add("profile");
+            //        options.Scope.Add("Sude.Api");
+            //        options.ResponseType = "code";
+            //        options.UsePkce = true;
+            //        options.RequireHttpsMetadata = false;
 
-                });
+            //    });
 
 
         }
@@ -67,13 +67,13 @@ namespace Sude.Mvc.UI
             }
 
             app.UseStatusCodePages();
-            app.UseHttpsRedirection();
+         //   app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
              
-            app.UseAuthentication();
-            app.UseAuthorization();
+         //   app.UseAuthentication();
+        //    app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

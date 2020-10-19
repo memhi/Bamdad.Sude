@@ -38,23 +38,20 @@ namespace Sude.Api
                 options.UseSqlServer(SudeDBConection);
             });
 
-            /*routes.MapHttpRoute(
-            name: "ActionApi",
-            routeTemplate: "api/{controller}/{action}/{id}",
-            defaults: new { id = RouteParameter.Optional }
-            );*/
-
+          
             //Call Inject My Services
             RegisterMyServices(services);
 
             // Security configuration
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", option =>
-                {
-                    option.Authority = "https://bamdadserver:8080/";
-                    option.RequireHttpsMetadata = true;
-                    option.Audience = "Sude.Api";
-                });
+
+
+            //services.AddAuthentication("Bearer")
+            //    .AddJwtBearer("Bearer", option =>
+            //    {
+            //        option.Authority = "https://bamdadserver:8080/";
+            //        option.RequireHttpsMetadata = true;
+            //        option.Audience = "Sude.Api";
+            //    });
 
         }
 
@@ -66,12 +63,12 @@ namespace Sude.Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseStatusCodePages();
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
            
             app.UseRouting();
             
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

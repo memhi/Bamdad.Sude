@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
+ 
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -8,6 +8,8 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+ 
+using Microsoft.Web.Administration;
 
 namespace Sude.Mvc.UI.ApiManagement
 {
@@ -72,7 +74,8 @@ namespace Sude.Mvc.UI.ApiManagement
 
     public class ApiAddress
     {
-        protected static readonly string ServerAddress = ConfigurationManager.AppSettings["ApiAddress"].ToString();//; "https://localhost:5001";
+      
+        protected static readonly string ServerAddress =  "https://younas:440";
         public class Serving
         {
             public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";
