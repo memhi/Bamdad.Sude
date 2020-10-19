@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -70,11 +72,23 @@ namespace Sude.Mvc.UI.ApiManagement
 
     public class ApiAddress
     {
-        private const string ServerAddress = "https://localhost:5001";
-        public const string GetServings = ServerAddress + "/api/serving/GetServings/";
-        public const string GetServingById = ServerAddress + "/api/serving/GetServingById/";
-        public const string EditServing = ServerAddress + "/api/serving/EditServing/";
-        public const string AddServing = ServerAddress + "/api/serving/AddServing/";
-        public const string DeleteServing = ServerAddress + "/api/serving/DeleteServing/";
+        protected static readonly string ServerAddress = ConfigurationManager.AppSettings["ApiAddress"].ToString();//; "https://localhost:5001";
+        public class Serving
+        {
+            public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";
+            public static readonly string GetServingById = ServerAddress + "/api/serving/GetServingById/";
+            public static readonly string EditServing = ServerAddress + "/api/serving/EditServing/";
+            public static readonly string AddServing = ServerAddress + "/api/serving/AddServing/";
+            public static readonly string DeleteServing = ServerAddress + "/api/serving/DeleteServing/";
+        }
+        public class WorkType
+        {
+            public static readonly string GetWorkTypes = ServerAddress + "/api/worktype/GetWorkTypes/";
+            public static readonly string GetWorkTypeById = ServerAddress + "/api/worktype/GetWorkTypeById/";
+            public static readonly string EditWorkType = ServerAddress + "/api/worktype/EditWorkType/";
+            public static readonly string AddWorkType = ServerAddress + "/api/worktype/AddWorkType/";
+            public static readonly string DeleteWorkType = ServerAddress + "/api/worktype/DeleteWorkType/";
+        }
+         
     }
 }

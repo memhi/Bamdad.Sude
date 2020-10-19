@@ -15,7 +15,7 @@ namespace Sude.Mvc.UI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string servingId)
         {
             ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.GetServingById+ servingId);
+                .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.Serving.GetServingById+ servingId);
      
             return View(viewName:"Edit",model: result.Data);
         }
