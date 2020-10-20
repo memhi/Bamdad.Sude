@@ -13,7 +13,7 @@ namespace Sude.Domain.Models.Serving
         public string Title { get; set; }
         public int Price { get; set; }
         public string Desc { get; set; }
-        public WorkInfo Work { get; set; }
+
 
     }
 

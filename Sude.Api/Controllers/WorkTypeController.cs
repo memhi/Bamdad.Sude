@@ -27,21 +27,37 @@ namespace Sude.Api.Controllers
         [HttpGet]
         //[Consumes("application/xml")]
         //[Consumes("application/json")]
-        [Authorize]
+       // [Authorize]
         public async Task<ActionResult> GetWorkTypes()
         {
-            var result = (await _WorkTypeService.GetWorkTypesAsync()).Data.Select(wt => new WorkTypeDetailDtoModel()
+            try
             {
-                WorkTypeId = wt.Id.ToString(),
-                Title = wt.Title,             
-                Desc = wt.Desc
-            });
-            return Ok(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
+                ResultSet<IEnumerable<WorkTypeInfo>> resultSet = await _WorkTypeService.GetWorkTypesAsync();
+                if (resultSet == null)
+                    NotFound();
+
+                var result = resultSet.Data.Select(wt => new WorkTypeDetailDtoModel()
+                {
+                    WorkTypeId = wt.Id.ToString(),
+                    Title = wt.Title,
+                    Desc = wt.Desc
+                });
+                return Ok(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = "",
-                Data = result
-            });
+                return Ok(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message+"&&&"+ ex.StackTrace,
+                    Data = null
+                });
+            }
         }
 
         //GET : api/GetWorkType/0

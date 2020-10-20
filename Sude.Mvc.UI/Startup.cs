@@ -18,6 +18,7 @@ namespace Sude.Mvc.UI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Sude.Mvc.UI.ApiManagement.ApiAddress.ServerAddress = configuration.GetSection("AppSettings").GetSection("ApiAddress").Value.ToString(); ;
         }
 
         public IConfiguration Configuration { get; }

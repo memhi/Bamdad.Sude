@@ -7,10 +7,10 @@ using System.Net.Http.Json;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
  
-using Microsoft.Web.Administration;
-
+ 
 namespace Sude.Mvc.UI.ApiManagement
 {
     public class Api
@@ -72,10 +72,12 @@ namespace Sude.Mvc.UI.ApiManagement
         }
     }
 
-    public class ApiAddress
+    public static class ApiAddress
     {
-      
-        protected static readonly string ServerAddress =  "https://younas:440";
+        public static IConfiguration Config { get;  set; }
+
+        public static string ServerAddress { get; set; }
+        //protected static readonly string ServerAddress = "http://localhost:2184";
         public class Serving
         {
             public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";

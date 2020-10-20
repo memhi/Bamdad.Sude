@@ -18,7 +18,7 @@
                 <span asp-validation-for="Desc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a id="btnSaveNewWorkType" onclick="SaveNewWorkTypeg()" class="btn btn-success col-md-8">ثبت</a>
+                <a id="btnSaveNewWorkType" onclick="SaveNewWorkType()" class="btn btn-success col-md-8">ثبت</a>
             </div>
         </div>
     </div>
@@ -38,14 +38,14 @@
         if (!isValid)
             return;
 
-        var serving = {
+        var worktype = {
             Title: $("#txtTitle").val(),           
             Desc: $("#txtDesc").val()
         }
         $.ajax({
             url: "/WorkType/Add",
             type: "Post",
-            data: serving
+            data: worktype
         }).done(function (result) {
             if (result.IsSucceed) {
                 swal.fire({

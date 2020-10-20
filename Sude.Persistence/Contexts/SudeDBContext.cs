@@ -25,7 +25,7 @@ namespace Sude.Persistence.Contexts
         public DbSet<OrderInfo> Orders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-
+        public DbSet<WorkTypeInfo> WorkType { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

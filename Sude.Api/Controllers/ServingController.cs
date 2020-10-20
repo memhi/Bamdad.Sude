@@ -27,7 +27,7 @@ namespace Sude.Api.Controllers
         [HttpGet]
         //[Consumes("application/xml")]
         //[Consumes("application/json")]
-        [Authorize]
+       // [Authorize]
         public async Task<ActionResult> GetServings()
         {
             var result = (await _servingService.GetServingsAsync()).Data.Select(s => new ServingDetailDtoModel()

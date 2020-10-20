@@ -12,11 +12,10 @@ using Sude.Domain.Models.Serving;
 namespace Sude.Domain.Models.Order
 {
     public class OrderDetailInfo : BaseModel<Guid>
-    {
-        [Required]
+    { 
         public double Count { get; set; }     
         
-        [Required]
+       
         public double Price { get; set; }
          
         public OrderInfo Order { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+ 
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,10 +12,10 @@ namespace Sude.Domain.Models.Order
 {
     public class OrderInfo : BaseModel<Guid>
     {
-        [Required]
+ 
         public long SumPrice { get; set; }     
         
-        [Required]
+   
         public DateTime OrderDate { get; set; }
         public string  Description { get; set; }
 
