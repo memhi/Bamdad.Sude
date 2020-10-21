@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>خطا</title>
+</head>
+<body>
+    <hgroup>
+      @*@{ 
+          if (Session["ApplicationError"] != null)
+          {
+              Session["ApplicationError"].ToString();
+          }
+      }*@
+        <h1>خطا.</h1>
+        <h2>در هنگام پردازش درخواست شما، یک خطا رخ داده است.</h2>
+        <h3>لطفا مجددا تلاش نمایید، در صورت خطای مجدد با مدیر سیستم تماس بگیرید.</h3>
+    </hgroup>
+</body>
+</html>

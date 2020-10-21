@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Sude.Domain\Sude.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

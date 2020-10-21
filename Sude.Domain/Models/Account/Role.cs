@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sude.Domain.Models.Account
 {
-    public class Role : BaseModel
+    public class RoleInfo : BaseModel
     {
         public bool IsActive { get;set; }
         public string Title { get; set; }

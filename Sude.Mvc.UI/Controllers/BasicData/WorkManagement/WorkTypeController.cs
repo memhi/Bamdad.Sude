@@ -10,7 +10,7 @@ using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Work;
 using Sude.Mvc.UI.ApiManagement;
 
-namespace Sude.Mvc.UI.Controllers.BasicData.WorkTypeManagement
+namespace Sude.Mvc.UI.Controllers.BasicData.WorkManagement
 {
     public class WorkTypeController : Controller
     {

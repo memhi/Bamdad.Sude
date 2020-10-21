@@ -94,6 +94,14 @@ namespace Sude.Mvc.UI.ApiManagement
             public static readonly string AddWorkType = ServerAddress + "/api/worktype/AddWorkType/";
             public static readonly string DeleteWorkType = ServerAddress + "/api/worktype/DeleteWorkType/";
         }
-         
+        public class Work
+        {
+            public static readonly string GetWorks= ServerAddress + "/api/work/GetWorks/";
+            public static readonly string GetWorkById = ServerAddress + "/api/work/GetWorkById/";
+            public static readonly string EditWork = ServerAddress + "/api/work/EditWork/";
+            public static readonly string AddWork = ServerAddress + "/api/work/AddWork/";
+            public static readonly string DeleteWork = ServerAddress + "/api/work/DeleteWork/";
+        }
+
     }
 }

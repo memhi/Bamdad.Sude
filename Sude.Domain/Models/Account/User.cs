@@ -7,7 +7,7 @@ using Sude.Domain.Models.Common;
 
 namespace Sude.Domain.Models.Account
 {
-    public class User : BaseModel
+    public class UserInfo : BaseModel
     {
 
         public bool IsActive { get; set; }

@@ -14,15 +14,17 @@ namespace Sude.Persistence.Repository
     {
 
         private GenericRepository<WorkInfo> _WorkRepository;
+ 
 
         public WorkRepository(SudeDBContext ctx)
         {
             this._WorkRepository = new GenericRepository<WorkInfo>(ctx);
+         
         }
 
         public async Task<IEnumerable<WorkInfo>> GetWorksAsync()
         {
-            return await _WorkRepository.GetAsync();
+            return await _WorkRepository.GetAsync(null,null, "WorkType");
         }
         public async Task<IEnumerable<WorkInfo>> GetWorksByTypeAsync(WorkTypeInfo WorkType)
         {
@@ -56,7 +58,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<WorkInfo> GetWorkByIdAsync(Guid WorkId)
         {
-            return await _WorkRepository.GetByIdAsync(WorkId);
+            return await _WorkRepository.GetByIdAsync(w=>w.Id==WorkId,"WorkType");// (w => w.Id == WorkId, null, "WorkType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
         }
 
         public void Save()
@@ -99,5 +101,6 @@ namespace Sude.Persistence.Repository
         {
             return _WorkRepository.GetById(WorkId);
         }
+      
     }
 }

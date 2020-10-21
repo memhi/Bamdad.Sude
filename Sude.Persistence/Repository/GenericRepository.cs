@@ -59,6 +59,20 @@ namespace Sude.Persistence.Repository
             return _dbSet.Find(id);
         }
 
+
+        public virtual async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> where = null, string includes="")
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+                query = query.Where(where);
+
+            if (includes != string.Empty)
+                foreach (var include in includes.Split(","))
+                    query = query.Include(include);
+
+
+            return await query.FirstOrDefaultAsync();
+        }
         public virtual async Task<TEntity> GetByIdAsync(object id)
         {
             return await _dbSet.FindAsync(id);

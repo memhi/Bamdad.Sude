@@ -1,0 +1,82 @@
+﻿@model Sude.Dto.DtoModels.Work.WorkEditDtoModel
+
+<h4>ویرایش خدمات</h4>
+<hr />
+<form id="frmEdit">
+    <div class="row">
+        <div class="col-md-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input id="txtTitle" asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="Desc" class="control-label"></label>
+                <input id="txtDesc" asp-for="Desc" class="form-control" />
+                <span asp-validation-for="Desc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a id="btnEditWork" onclick="EditWork()" class="btn btn-warning">تغییر</a>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+    </div>
+</form>
+
+
+
+    <script>
+
+        $(function () {
+           $.validator.unobtrusive.parse($('#frmEdit'));
+        });
+
+        function EditWork() {
+            $.validator.unobtrusive.parse($('#frmEdit'));
+
+            var isValid = $('#frmEdit').valid();
+            if (!isValid)
+                return;
+            var Work = {
+                WorkId: $("#txtWorkId").val(),
+                Title: $("#txtTitle").val(),
+         
+                Desc: $("#txtDesc").val()
+            }
+
+            $.ajax({
+                url: "/Work/Edit",
+                type: "Post",
+                data: Work
+            }).done(function (result) {
+                if (result.IsSucceed) {
+                    swal.fire({
+                        icon: "success",
+                    });
+                    $("#WorkView").load("/Work/List");
+                    
+                }
+                else {
+                    swal.fire({
+                        title: 'هشدار',
+                        text: result.message,
+                        icon: 'warning',
+                    });
+                }
+            });
+        }
+
+        function ToList() {
+            $("#WorkView").load("/Work/List");
+        }
+
+
+    </script>

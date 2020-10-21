@@ -11,11 +11,11 @@ namespace Sude.Application.Interfaces
     public interface IUserService
     {
         bool IsValidtUser(string userName, string password);
-        ResultSet<IEnumerable<User>> GetUsers();
-        ResultSet<User> SaveUser(User request);
+        ResultSet<IEnumerable<UserInfo>> GetUsers();
+        ResultSet<UserInfo> SaveUser(UserInfo request);
         ResultSet UserSatusChange(long userId);
-        ResultSet UpdateUser(long userId,User request);
-        ResultSet<User> GetUserById(long userId);
+        ResultSet UpdateUser(long userId, UserInfo request);
+        ResultSet<UserInfo> GetUserById(long userId);
 
     }
 }

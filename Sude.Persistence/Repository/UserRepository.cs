@@ -13,12 +13,12 @@ namespace Sude.Persistence.Repository
     public class UserRepository : IUserRepository
     {
 
-        private GenericRepository<User> _userRepository;
+        private GenericRepository<UserInfo> _userRepository;
 
         public UserRepository(SudeDBContext ctx)
         {
             //this._ctx = ctx;
-            this._userRepository = new GenericRepository<User>(ctx);
+            this._userRepository = new GenericRepository<UserInfo>(ctx);
         }
 
         public bool IsValidUser(string userName, string password)
@@ -39,24 +39,24 @@ namespace Sude.Persistence.Repository
             //return _ctx.Users.Any(u => u.UserName == userName);
             return (_userRepository.Get(p => p.UserName == userName).Count() > 0 ? true : false);
         }
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserInfo> GetUsers()
         {
             //return _ctx.Users;
             return _userRepository.Get();
         }
-        public void AddUser(User user)
+        public void AddUser(UserInfo user)
         {
             //_ctx.Users.Add(user);
             _userRepository.Insert(user);
         }
 
        
-        public User GetUserById(long userId)
+        public UserInfo GetUserById(long userId)
         {
             //return _ctx.Users.Find(userId);
             return _userRepository.GetById(userId);
         }
-        public bool EditUser(User user)
+        public bool EditUser(UserInfo user)
         {
             //_ctx.Entry(user).State = EntityState.Modified;
             ////_ctx.Users.Update(user);

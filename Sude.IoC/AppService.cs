@@ -18,7 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 ServiceDescriptor.Scoped<IUserService, UserService>(),
                 ServiceDescriptor.Scoped<IServingService,ServingService>(),
-                ServiceDescriptor.Scoped<IWorkTypeService,WorkTypeService>()
+                ServiceDescriptor.Scoped<IWorkTypeService,WorkTypeService>(),
+                  ServiceDescriptor.Scoped<IWorkService,WorkService>()
             });
 
             return services;

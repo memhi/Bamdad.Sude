@@ -13,6 +13,8 @@ namespace Sude.Domain.Models.Work
         
         public string Title { get; set; }    
         public string Desc { get; set; }
+    
+        public virtual ICollection<WorkInfo> Works { get; set; }
     }
 
 }

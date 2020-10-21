@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Models.Common;
- 
+using Sude.Domain.Models.Work;
 
 namespace Sude.Domain.Models.Order
 {
@@ -19,7 +19,10 @@ namespace Sude.Domain.Models.Order
         public DateTime OrderDate { get; set; }
         public string  Description { get; set; }
 
-        public List<OrderDetailInfo> Details { get; set; }
+        public Guid WorkId { get; set; }
+        public virtual WorkInfo Work { get; set; }
+
+        public virtual ICollection<OrderDetailInfo> Details { get; set; }
 
     }
 

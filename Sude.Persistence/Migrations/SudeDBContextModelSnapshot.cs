@@ -19,7 +19,7 @@ namespace Sude.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
 
-            modelBuilder.Entity("Sude.Domain.Models.Account.Role", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Account.RoleInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace Sude.Persistence.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Account.User", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Account.UserInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +95,49 @@ namespace Sude.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Order.Order", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetailInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Count")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ServingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ServingId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,37 +158,42 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("SumPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<long>("SumPrice")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("WorkId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetail", b =>
+            modelBuilder.Entity("Sude.Domain.Models.PushNotification.UserDeviceInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Count")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("PushAuth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PushEndpoint")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PushP256DH")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
@@ -154,22 +201,18 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ServingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ServingId");
-
-                    b.ToTable("OrderDetail");
+                    b.ToTable("UserDevices");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Serving.Serving", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Serving.ServingInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,12 +239,17 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("WorkId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkId");
 
                     b.ToTable("Servings");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Work.Work", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Work.WorkInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -220,13 +268,12 @@ namespace Sude.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("WorkTypeId")
+                    b.Property<Guid>("WorkTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -236,7 +283,7 @@ namespace Sude.Persistence.Migrations
                     b.ToTable("Works");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Work.WorkType", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Work.WorkTypeInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -255,7 +302,6 @@ namespace Sude.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -263,16 +309,18 @@ namespace Sude.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkType");
+                    b.ToTable("WorkTypes");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetail", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetailInfo", b =>
                 {
-                    b.HasOne("Sude.Domain.Models.Order.Order", "Order")
+                    b.HasOne("Sude.Domain.Models.Order.OrderInfo", "Order")
                         .WithMany("Details")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Sude.Domain.Models.Serving.Serving", "Serving")
+                    b.HasOne("Sude.Domain.Models.Serving.ServingInfo", "Serving")
                         .WithMany()
                         .HasForeignKey("ServingId");
 
@@ -281,18 +329,52 @@ namespace Sude.Persistence.Migrations
                     b.Navigation("Serving");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Work.Work", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderInfo", b =>
                 {
-                    b.HasOne("Sude.Domain.Models.Work.WorkType", "WorkType")
+                    b.HasOne("Sude.Domain.Models.Work.WorkInfo", "Work")
                         .WithMany()
-                        .HasForeignKey("WorkTypeId");
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Serving.ServingInfo", b =>
+                {
+                    b.HasOne("Sude.Domain.Models.Work.WorkInfo", "Work")
+                        .WithMany("Servings")
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Work.WorkInfo", b =>
+                {
+                    b.HasOne("Sude.Domain.Models.Work.WorkTypeInfo", "WorkType")
+                        .WithMany("Works")
+                        .HasForeignKey("WorkTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("WorkType");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Order.Order", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderInfo", b =>
                 {
                     b.Navigation("Details");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Work.WorkInfo", b =>
+                {
+                    b.Navigation("Servings");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Work.WorkTypeInfo", b =>
+                {
+                    b.Navigation("Works");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,17 +10,17 @@ namespace Sude.Domain.Interfaces
     public interface IUserRepository
     {
         bool IsValidUser(string userName, string password);
-        IEnumerable<User> GetUsers();
+        IEnumerable<UserInfo> GetUsers();
 
         bool IsExistUserName(string userName);
 
         bool IsExistEmail(string email);
 
-        void AddUser(User user);
+        void AddUser(UserInfo user);
 
-        User GetUserById(long userId);
+        UserInfo GetUserById(long userId);
 
-        bool EditUser(User user);
+        bool EditUser(UserInfo user);
 
         void Save();
     }

@@ -24,9 +24,9 @@ namespace Sude.Application.Services
             return _userRepository.IsValidUser(userName, password);
         }
 
-        public ResultSet<IEnumerable<User>> GetUsers()
+        public ResultSet<IEnumerable<UserInfo>> GetUsers()
         {
-            var users = _userRepository.GetUsers().Select(u => new User()
+            var users = _userRepository.GetUsers().Select(u => new UserInfo()
             {
                 Id = u.Id,
                 UserName = u.UserName,
@@ -38,7 +38,7 @@ namespace Sude.Application.Services
                 Password = string.Empty
 
             });
-            return new ResultSet<IEnumerable<User>>()
+            return new ResultSet<IEnumerable<UserInfo>>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
@@ -50,7 +50,7 @@ namespace Sude.Application.Services
 
 
 
-        public ResultSet<User> SaveUser(User request)
+        public ResultSet<UserInfo> SaveUser(UserInfo request)
         {
             //if (request.Users.Count() == 0)
             //    return new ResultDto<UsersDtoModel>()
@@ -60,7 +60,7 @@ namespace Sude.Application.Services
             //        Data=null
             //    };
 
-            User user = new User()
+            UserInfo user = new UserInfo()
             {
                 Email = request.Email,
                 UserName = request.UserName,
@@ -86,7 +86,7 @@ namespace Sude.Application.Services
 
             _userRepository.Save();
 
-            return new ResultSet<User>()
+            return new ResultSet<UserInfo>()
             {
                 IsSucceed = true,
                 Message = "",
@@ -96,7 +96,7 @@ namespace Sude.Application.Services
 
         public ResultSet UserSatusChange(long userId)
         {
-            User user = _userRepository.GetUserById(userId);
+            UserInfo user = _userRepository.GetUserById(userId);
             user.IsActive = !user.IsActive;
             _userRepository.EditUser(user);
             _userRepository.Save();
@@ -107,9 +107,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet UpdateUser(long UserId, User request)
+        public ResultSet UpdateUser(long UserId, UserInfo request)
         {
-            User user = _userRepository.GetUserById(UserId);
+            UserInfo user = _userRepository.GetUserById(UserId);
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.Email = request.Email;
@@ -121,23 +121,23 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public ResultSet<User> GetUserById(long userId)
+        public ResultSet<UserInfo> GetUserById(long userId)
         {
-            User user = _userRepository.GetUserById(userId);
-
+            UserInfo user = _userRepository.GetUserById(userId);
+            
             if (user == null)
-                return new ResultSet<User>()
+                return new ResultSet<UserInfo>()
                 {
                     IsSucceed = false,
                     Message = "کاربر با این شناسه پیدا نشد",
                     Data = null
                 };
 
-            return new ResultSet<User>()
+            return new ResultSet<UserInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = new User()
+                Data = new UserInfo()
                 {
                     Id = user.Id,
                     UserName = user.UserName,
