@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Work;
@@ -44,11 +45,17 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkManagement
             ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> Worktypelist = await Api.GetHandler
              .GetApiAsync<ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>>(ApiAddress.WorkType.GetWorkTypes);
             WorkNewDtoModel workNewDtoModel = new WorkNewDtoModel();
+            
             workNewDtoModel.Desc = "";
             workNewDtoModel.Title = "";
             workNewDtoModel.WorkId = "";
             workNewDtoModel.WorkTypeId = "";
-            ViewBag.WorkTypes = Worktypelist.Data.ToList();
+            SelectList selectLists = new SelectList(Worktypelist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel>, "WorkTypeId", "Title");
+
+            ViewData  ["WorkTypes"] = selectLists;
+
+         
+
             return PartialView("Add",workNewDtoModel);
         }
 

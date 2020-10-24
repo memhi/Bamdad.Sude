@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Models.Common;
@@ -17,6 +18,13 @@ namespace Sude.Domain.Models.Serving
         public string Desc { get; set; }
         public Guid WorkId { get; set; }
         public virtual WorkInfo Work { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public bool HasInventoryTracking { get; set; }
+      
+        public virtual ServingInventoryInfo ServingInventory { get; set; }
+       
  
 
   

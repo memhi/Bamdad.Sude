@@ -1,5 +1,7 @@
-﻿@model Sude.Dto.DtoModels.Work.WorkNewDtoModel
-<h4>افزودن خدمات</h4>
+﻿
+
+@model Sude.Dto.DtoModels.Work.WorkNewDtoModel 
+<h4>افزودن کسب و کار</h4>
 <hr />
 <form id="frmAdd">
     <div class="row">
@@ -13,7 +15,7 @@
             </div>
 
             <div class="form-group">
-                <label  class="control-label">توضیحات</label>
+                <label class="control-label">توضیحات</label>
                 <div class="col-md-10">
                     <input id="txtDesc" asp-for="Desc" class="form-control" />
                     <span asp-validation-for="Desc" class="text-danger"></span>
@@ -23,13 +25,13 @@
                 <label class="control-label">WorkTypes</label>
                 <div class="col-md-10">
 
-                    <select  id="drpTypes" asp-for="WorkTypeId"
+                    <select id="drpTypes" asp-for="WorkTypeId"
                             class="form-control"
-                            asp-items="@(new SelectList(@ViewData["WorkTypes"] as ICollection<Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel>,"WorkTypeId", "Title"))">
+                            asp-items="(SelectList)@ViewData["WorkTypes"]">
                     </select>
 
                     @*<select id="drpTypes" asp-items="new SelectList( ,nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.WorkTypeId), nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.Title));" class="form-control  l-dropdown js-example-basic-single">
-                    </select>*@
+                        </select>*@
                 </div>
             </div>
             <div class="form-group">
@@ -63,7 +65,7 @@
             type: "Post",
             data: work
         }).done(function (result) {
-            if (result.IsSucceed) {
+            if (result.isSucceed) {
                 swal.fire({
                     icon: "success",
                 });

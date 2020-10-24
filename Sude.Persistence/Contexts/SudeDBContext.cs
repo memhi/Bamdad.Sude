@@ -30,6 +30,10 @@ namespace Sude.Persistence.Contexts
         public DbSet<UserInfo> Users { get; set; }
         public DbSet<RoleInfo> Roles { get; set; }       
         public DbSet<UserDeviceInfo> UserDevices { get; set; }
+        public DbSet<ServingInventoryInfo> ServingInventories { get; set; }
+        public DbSet<InventoryTypeInfo> InventoryTypes { get; set; }
+        public DbSet<ServingInventoryTrackingInfo> ServingInventoryTrackings { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +42,9 @@ namespace Sude.Persistence.Contexts
             modelBuilder.Entity<ServingInfo>().HasQueryFilter(p=>!p.IsRemoved);
             modelBuilder.Entity<WorkInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<OrderInfo>().HasQueryFilter(p => !p.IsRemoved);
-       
+            modelBuilder.Entity<ServingInventoryInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<ServingInventoryTrackingInfo>().HasQueryFilter(p => !p.IsRemoved);
+
             //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
         }
 

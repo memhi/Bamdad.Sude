@@ -1,14 +1,15 @@
 ﻿
-@model Sude.Dto.DtoModels.Work.WorkEditDtoModel
-
-<h4>ویرایش خدمات</h4>
+@using Sude.Dto.DtoModels.Serving
+@model  InventoryTypeEditDtoModel
+    <hr />
+<h4>ویرایش واحد اندازه گیری</h4>
 <hr />
 <form id="frmEdit">
     <div class="row">
         <div class="col-md-8">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+                <input id="txtInventoryTypeId" type="hidden" asp-for="InventoryTypeId" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -17,12 +18,12 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Desc" class="control-label"></label>
-                <input id="txtDesc" asp-for="Desc" class="form-control" />
-                <span asp-validation-for="Desc" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <input id="txtDesc" asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a id="btnEditWork" onclick="EditWork()" class="btn btn-warning">تغییر</a>
+                <a id="btnEditInventoryType" onclick="EditInventoryType()" class="btn btn-warning">تغییر</a>
             </div>
         </div>
     </div>
@@ -40,30 +41,30 @@
            $.validator.unobtrusive.parse($('#frmEdit'));
         });
 
-        function EditWork() {
+        function EditInventoryType() {
             $.validator.unobtrusive.parse($('#frmEdit'));
 
             var isValid = $('#frmEdit').valid();
             if (!isValid)
                 return;
-            var Work = {
-                WorkId: $("#txtWorkId").val(),
+            var InventoryType = {
+                InventoryTypeId: $("#txtInventoryTypeId").val(),
                 Title: $("#txtTitle").val(),
-
-                Desc: $("#txtDesc").val()
+                Description: $("#txtDesc").val()
             }
 
             $.ajax({
-                url: "/Work/Edit",
+                url: "/InventoryType/Edit",
                 type: "Post",
-                data: Work
+                data: InventoryType
             }).done(function (result) {
                 if (result.isSucceed) {
                     swal.fire({
                         icon: "success",
                     });
-                    $("#WorkView").load("/Work/List");
-
+                    $("#InventoryTypeView").load("/InventoryType/List");
+                    //$("#tr_" + InventoryType.InventoryTypeId).addClass("danger");
+                    //$("#tr_" + InventoryTypeId).hide('slow');
                 }
                 else {
                     swal.fire({
@@ -76,7 +77,7 @@
         }
 
         function ToList() {
-            $("#WorkView").load("/Work/List");
+            $("#InventoryTypeView").load("/InventoryType/List");
         }
 
 

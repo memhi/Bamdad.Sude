@@ -19,7 +19,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IUserService, UserService>(),
                 ServiceDescriptor.Scoped<IServingService,ServingService>(),
                 ServiceDescriptor.Scoped<IWorkTypeService,WorkTypeService>(),
-                  ServiceDescriptor.Scoped<IWorkService,WorkService>()
+                  ServiceDescriptor.Scoped<IWorkService,WorkService>(),
+                      ServiceDescriptor.Scoped<IInventoryTypeService,InventoryTypeService>()
             });
 
             return services;

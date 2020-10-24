@@ -13,7 +13,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IUserRepository, UserRepository>(),
                 ServiceDescriptor.Scoped<IServingRepository, ServingRepository>(),
                  ServiceDescriptor.Scoped<IWorkTypeRepository, WorkTypeRepository>(),
-                    ServiceDescriptor.Scoped<IWorkRepository, WorkRepository>()
+                    ServiceDescriptor.Scoped<IWorkRepository, WorkRepository>(),
+                       ServiceDescriptor.Scoped<IInventoryTypeRepository, InventoryTypeRepository>()
             });
 
             return services;

@@ -78,6 +78,14 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public static string ServerAddress { get; set; }
         //protected static readonly string ServerAddress = "http://localhost:2184";
+        public class InventoryType
+        {
+            public static readonly string GetInventoryTypes = ServerAddress + "/api/InventoryType/GetInventoryTypes/";
+            public static readonly string GetInventoryTypeById = ServerAddress + "/api/InventoryType/GetInventoryTypeById/";
+            public static readonly string EditInventoryType = ServerAddress + "/api/InventoryType/EditInventoryType/";
+            public static readonly string AddInventoryType = ServerAddress + "/api/InventoryType/AddInventoryType/";
+            public static readonly string DeleteInventoryType = ServerAddress + "/api/InventoryType/DeleteInventoryType/";
+        }
         public class Serving
         {
             public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";

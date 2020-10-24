@@ -1,7 +1,7 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Serving
-@model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
-<hr />
+@model ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>
+    <hr />
 <div class="col-12">
     <fieldset class="form-group">
         <input type="text" class="form-control" name="serchkey">
@@ -17,8 +17,13 @@
                     <div class="card-header">
 
                         <div class="card-title-wrap bar-success">
-                            <h4 class="card-title">لیست اقلام و خدمات</h4>
+                            <h4 class="card-title">فهرست نوع واحد اندازه گیری موجودی</h4>
+
                         </div>
+                        <div class="col-8">
+                            <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن واحد اندازه گیری موجودی</a>
+                        </div>
+                        
                     </div>
                     <div class="card-body">
                         <div class="card-block">
@@ -28,7 +33,7 @@
                                         <tr role="row">
 
                                             <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 20%;"><small>Title</small></th>
-                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="مبلغ: activate to sort column ascending" style="        width: 20%;"><small>Price</small></th>
+                                            
                                             <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 40%;"><small>Desc</small></th>
                                             <th></th>
 
@@ -37,14 +42,14 @@
                                     <tbody>
                                         @foreach (var item in Model.Data)
                                         {
-                                            <tr id="tr_@item.ServingId" role="row" class="odd">
+                                            <tr id="tr_@item.InventoryTypeId" role="row" class="odd">
                                                 <td class="sorting_1">@item.Title</td>
-                                                <td>@item.Price</td>
-                                                <td>@item.Desc</td>
+                                          
+                                                <td>@item.Description</td>
                                                 <td>
-                                                    <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
-                                                    <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
-                                                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
+                                                    <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')">ویرایش</button>
+                                                    <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')">حذف</button>
+                                                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')">جزئیات</button>
                                                 </td>
                                             </tr>
                                         }
@@ -63,22 +68,22 @@
 </div>
 
 <script>
-    function DeleteServing(servingId) {
+    function DeleteInventoryType(InventoryTypeId) {
 
         swal.fire({
-            title: 'حذف سرویس',
-            text: "کاربر گرامی از حذف سرویس مطمئن هستید؟",
+            title: 'حذف نوع',
+            text: "کاربر گرامی از حذف واحد اندازه گیری مطمئن هستید؟",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، سرویس حذف شود',
+            confirmButtonText: 'بله ، واحد اندازه گیری حذف شود',
             cancelButtonText: 'خیر'
         }).then((result) => {
             if (result.value) {
 
                 $.ajax({
-                    url: "/Serving/Delete/" + servingId,
+                    url: "/InventoryType/Delete/" + InventoryTypeId,
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
@@ -87,8 +92,8 @@
                                 result.message,
                                 'success'
                             ).then(function (isConfirm) {
-                                $("#tr_" + servingId).addClass("danger");
-                                $("#tr_" + servingId).hide('slow');
+                                $("#tr_" + InventoryTypeId).addClass("danger");
+                                $("#tr_" + InventoryTypeId).hide('slow');
                                 //location.reload();
                             });
                         }
@@ -113,12 +118,16 @@
     }
 
 
+    $("#btnAdd").click(function () {
+        $("#InventoryTypeView").load("/InventoryType/Add");
+    });
 
-    function ShowEditServingPop(ServingId) {
-        $.get("/Serving/Edit/" + ServingId, function (result) {
+
+    function ShowEditInventoryTypePop(InventoryTypeId) {
+        $.get("/InventoryType/Edit/" + InventoryTypeId, function (result) {
 
             $("#myModal").modal('show');
-            $("#myModalLabel").html("ویرایش خدمات");
+            $("#myModalLabel").html("ویرایش واحد اندازه گیری");
             $("#myModalBody").html(result);
         });
     }
@@ -126,19 +135,19 @@
 
 
 
-    function ShowEditServing(servingId) {
-        $("#servingView").load("/Serving/Edit/" + servingId);
+    function ShowEditInventoryType(InventoryTypeId) {
+        $("#InventoryTypeView").load("/InventoryType/Edit/" + InventoryTypeId);
 
     }
 
 
-    function ShowNewPageModalDetailServing(ServingId) {
+    function ShowNewPageModalDetailInventoryType(InventoryTypeId) {
 
 
-        $.get("/Serving/Detail/" + ServingId, function (result) {
+        $.get("/InventoryType/Detail/" + InventoryTypeId, function (result) {
 
             $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات خدمات");
+            $("#myModalLabel").html("جزئیات واحد اندازه گیری");
             $("#myModalBody").html(result);
         });
     }
