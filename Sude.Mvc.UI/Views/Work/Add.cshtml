@@ -1,89 +1,88 @@
 ﻿
 
-@model Sude.Dto.DtoModels.Work.WorkNewDtoModel 
-<h4>افزودن کسب و کار</h4>
-<hr />
-<form id="frmAdd">
-    <div class="row">
-        <div class="col-8">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@model Sude.Dto.DtoModels.Work.WorkNewDtoModel
+    <hr />
+    <h4>افزودن کسب و کار</h4>
+    <hr />
+    <form id="frmAdd">
+        <div class="row">
+            <div class="col-8">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input id="txtTitle" asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">توضیحات</label>
-                <div class="col-md-10">
-                    <input id="txtDesc" asp-for="Desc" class="form-control" />
-                    <span asp-validation-for="Desc" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input id="txtTitle" asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">WorkTypes</label>
-                <div class="col-md-10">
 
-                    <select id="drpTypes" asp-for="WorkTypeId"
-                            class="form-control"
-                            asp-items="(SelectList)@ViewData["WorkTypes"]">
-                    </select>
-
-                    @*<select id="drpTypes" asp-items="new SelectList( ,nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.WorkTypeId), nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.Title));" class="form-control  l-dropdown js-example-basic-single">
-                        </select>*@
+                <div class="form-group">
+                    <label class="control-label">توضیحات</label>
+                    <div class="col-md-10">
+                        <input id="txtDesc" asp-for="Desc" class="form-control" />
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <a id="btnSaveNewWork" onclick="SaveNewWork()" class="btn btn-success col-md-8">ثبت</a>
+                <div class="form-group">
+                    <label class="control-label">WorkTypes</label>
+                    <div class="col-md-10">
+
+                        <select id="drpTypes" asp-for="WorkTypeId"
+                                class="form-control"
+                                asp-items="(SelectList)@ViewData["WorkTypes"]">
+                        </select>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a id="btnSaveNewWork" onclick="SaveNewWork()" class="btn btn-success col-md-8">ثبت</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div>
-        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
-    </div>
-</form>
-<script>
-
+        <div>
+            <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+        </div>
+    </form>
+    <script>
 
 
-    function SaveNewWork() {
-        $.validator.unobtrusive.parse($('#frmAdd'));
 
-        var isValid = $('#frmAdd').valid();
-        if (!isValid)
-            return;
+        function SaveNewWork() {
+            $.validator.unobtrusive.parse($('#frmAdd'));
 
-        var work = {
-            Title: $("#txtTitle").val(),
-            Desc: $("#txtDesc").val(),
-            WorkTypeID: $("#drpTypes").val()
+            var isValid = $('#frmAdd').valid();
+            if (!isValid)
+                return;
+
+            var work = {
+                Title: $("#txtTitle").val(),
+                Desc: $("#txtDesc").val(),
+                WorkTypeId: $("#drpTypes").val()
+            }
+            $.ajax({
+                url: "/Work/Add",
+                type: "Post",
+                data: work
+            }).done(function (result) {
+                if (result.isSucceed) {
+                    swal.fire({
+                        icon: "success",
+                    });
+                    $("#WorkView").load("/Work/List");
+                }
+                else {
+                    swal.fire({
+                        title: 'هشدار',
+                        text: result.message,
+                        icon: 'warning',
+                    });
+                }
+            });
         }
-        $.ajax({
-            url: "/Work/Add",
-            type: "Post",
-            data: work
-        }).done(function (result) {
-            if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
-                $("#WorkView").load("/Work/List");
-            }
-            else {
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
-            }
-        });
-    }
 
-    function ToList() {
-        $("#WorkView").load("/Work/List");
-    }
+        function ToList() {
+            $("#WorkView").load("/Work/List");
+        }
 
 
-</script>
+    </script>

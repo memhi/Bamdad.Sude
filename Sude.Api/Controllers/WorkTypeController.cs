@@ -105,7 +105,12 @@ namespace Sude.Api.Controllers
             var resultWorkType  = await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(request.WorkTypeId));
 
             if (!resultWorkType.IsSucceed)
-                return BadRequest(resultWorkType.Message);
+                return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultWorkType.Message,
+                    Data = null
+                });
 
             WorkTypeInfo WorkTypeEdit = resultWorkType.Data;
             WorkTypeEdit.Title = request.Title;         
@@ -113,8 +118,12 @@ namespace Sude.Api.Controllers
 
             var result = await _WorkTypeService.EditWorkTypeAsync(WorkTypeEdit);
             if(!result.IsSucceed)
-                return BadRequest(result.Message);
-
+                return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = result.Message,
+                    Data = null
+                });
             return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
             {
                 IsSucceed = true,
@@ -139,7 +148,15 @@ namespace Sude.Api.Controllers
             var resultSave = await _WorkTypeService.AddWorkTypeAsync(WorkType);
 
             if (!resultSave.IsSucceed)
-                return BadRequest(resultSave.Message);
+            {
+                return Ok(new ResultSetDto<WorkTypeNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultSave.Message,
+                    Data = null
+                });
+
+            }
 
 
             request.WorkTypeId = resultSave.Data.Id.ToString();

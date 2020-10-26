@@ -20,7 +20,7 @@ namespace Sude.Api.Controllers
     {
         private readonly IWorkService _WorkService;
         private readonly IWorkTypeService _WorkTypeService;
-        public WorkController(IWorkService WorkService,IWorkTypeService WorkTypeService)
+        public WorkController(IWorkService WorkService, IWorkTypeService WorkTypeService)
         {
             _WorkService = WorkService;
             _WorkTypeService = WorkTypeService;
@@ -30,7 +30,7 @@ namespace Sude.Api.Controllers
         [HttpGet]
         //[Consumes("application/xml")]
         //[Consumes("application/json")]
-       // [Authorize]
+        // [Authorize]
         public async Task<ActionResult> GetWorks()
         {
             try
@@ -46,7 +46,7 @@ namespace Sude.Api.Controllers
                     WorkTypeId = wt.WorkType.Id.ToString(),
                     WorkTypeName = wt.WorkType.Title,
                     Desc = wt.Desc
-                }) ;
+                });
                 return Ok(new ResultSetDto<IEnumerable<WorkDetailDtoModel>>()
                 {
                     IsSucceed = true,
@@ -59,7 +59,7 @@ namespace Sude.Api.Controllers
                 return Ok(new ResultSetDto<IEnumerable<WorkDetailDtoModel>>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message+"&&&"+ ex.StackTrace,
+                    Message = ex.Message + "&&&" + ex.StackTrace,
                     Data = null
                 });
             }
@@ -77,8 +77,8 @@ namespace Sude.Api.Controllers
             {
                 WorkId = Work.Id.ToString(),
                 Title = Work.Title,
-                WorkTypeId=Work.WorkType.Id.ToString(),
-                WorkTypeName=Work.WorkType.Title,
+                WorkTypeId = Work.WorkType.Id.ToString(),
+                WorkTypeName = Work.WorkType.Title,
 
                 Desc = Work.Desc
             };
@@ -92,13 +92,13 @@ namespace Sude.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResultSetDto<WorkEditDtoModel>>> EditWork([FromBody]WorkEditDtoModel request)
+        public async Task<ActionResult<ResultSetDto<WorkEditDtoModel>>> EditWork([FromBody] WorkEditDtoModel request)
         {
             if (!ModelState.IsValid)
             {
                 string message = "";
-                foreach (var er in ModelState.Values.SelectMany(modelstate=> modelstate.Errors))
-                        message += er.ErrorMessage + " \n";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
 
                 return Ok(new ResultSetDto()
                 {
@@ -107,29 +107,50 @@ namespace Sude.Api.Controllers
                 });
             }
 
-           
 
 
-            var resultWork  = await _WorkService.GetWorkByIdAsync(Guid.Parse(request.WorkId));
-           
+
+            var resultWork = await _WorkService.GetWorkByIdAsync(Guid.Parse(request.WorkId));
+
             if (!resultWork.IsSucceed)
-                return BadRequest(resultWork.Message);
+                return Ok(new ResultSetDto<WorkEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultWork.Message,
+                    Data = null
+                });
 
             var resultTypeWork = await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(request.WorkTypeId));
 
             if (!resultTypeWork.IsSucceed)
-                return BadRequest(resultTypeWork.Message);
+                return Ok(new ResultSetDto<WorkEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultTypeWork.Message,
+                    Data = null
+                });
+
 
             WorkInfo WorkEdit = resultWork.Data;
-            WorkEdit.Title = request.Title;         
+            WorkEdit.Title = request.Title;
             WorkEdit.Desc = request.Desc;
             WorkEdit.WorkType = resultTypeWork.Data;
-        
-             
+
+
 
             var result = await _WorkService.EditWorkAsync(WorkEdit);
-            if(!result.IsSucceed)
-                return BadRequest(result.Message);
+            if (!result.IsSucceed)
+          
+                {
+                    return Ok(new ResultSetDto<WorkEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message,
+                        Data = null
+                    });
+
+                }
+
 
             return Ok(new ResultSetDto<WorkEditDtoModel>()
             {
@@ -146,16 +167,20 @@ namespace Sude.Api.Controllers
                 return BadRequest(ModelState);
 
             var resultTypeWork = await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(request.WorkTypeId));
-
             if (!resultTypeWork.IsSucceed)
-                return BadRequest(resultTypeWork.Message);
+                return Ok(new ResultSetDto<WorkNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultTypeWork.Message,
+                    Data = null
+                });
 
             WorkInfo Work = new WorkInfo()
             {
                 Title = request.Title,
                 Desc = request.Desc,
                 WorkType = resultTypeWork.Data
-              
+
             };
 
 
@@ -163,9 +188,18 @@ namespace Sude.Api.Controllers
             var resultSave = await _WorkService.AddWorkAsync(Work);
 
             if (!resultSave.IsSucceed)
-                return BadRequest(resultSave.Message);
+            {
+                return Ok(new ResultSetDto<WorkNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultSave.Message,
+                    Data = null
+                });
 
-           
+            }
+
+
+
 
             request.WorkId = resultSave.Data.Id.ToString();
 
@@ -184,7 +218,7 @@ namespace Sude.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-           
+
 
             var result = await _WorkService.DeleteWorkAsync(Guid.Parse(request));
 

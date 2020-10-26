@@ -1,4 +1,5 @@
 ﻿using Sude.Domain.Models.Serving;
+using Sude.Domain.Models.Work;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<ServingInfo>> GetServingsAsync();
         IEnumerable<ServingInfo> GetServings();
-        bool IsExistServing(string Title);
+        bool IsExistServing(string title, Guid? id, Guid workId);
 
         bool AddServing(ServingInfo serving);
         bool EditServing(ServingInfo serving);
@@ -19,7 +20,9 @@ namespace Sude.Domain.Interfaces
 
         Task<ServingInfo> GetServingByIdAsync(Guid servingId);
         ServingInfo GetServingById(Guid servingId);
-       
+
+    
+
 
         void Save();
         Task SaveAsync();

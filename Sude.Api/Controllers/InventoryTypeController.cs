@@ -87,17 +87,7 @@ namespace Sude.Api.Controllers
 
             var resultInventoryType = await _InventoryTypeService.GetInventoryTypeByIdAsync(Guid.Parse(request.InventoryTypeId));
 
-            if (!resultInventoryType.IsSucceed)
-            { 
-                    return Ok(new ResultSetDto<InventoryTypeNewDtoModel>()
-                    {
-                        IsSucceed = false,
-                        Message = resultInventoryType.Message,
-                        Data = null
-                    });
-
-                }
-
+      
       
 
             InventoryTypeInfo InventoryTypeEdit = resultInventoryType.Data;
@@ -106,8 +96,17 @@ namespace Sude.Api.Controllers
             InventoryTypeEdit.Description = request.Description;
 
             var result = await _InventoryTypeService.EditInventoryTypeAsync(InventoryTypeEdit);
-            if(!result.IsSucceed)
-                return BadRequest(result.Message);
+            if (!result.IsSucceed)
+            {
+                return Ok(new ResultSetDto<InventoryTypeEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = result.Message,
+                    Data = null
+                });
+
+            }
+
 
             return Ok(new ResultSetDto<InventoryTypeEditDtoModel>()
             {

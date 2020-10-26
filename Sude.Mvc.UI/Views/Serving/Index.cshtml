@@ -3,9 +3,6 @@
 
 @model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
 
-<dive class="col-8">
-    <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن آیتم</a>
-</dive>
 <div id="servingView">
     Please Wait ...
 </div>
@@ -25,10 +22,7 @@
             $("#servingView").load("/Serving/List");
         });
 
-        $("#btnAdd").click(function () {
-            $("#servingView").load("/Serving/Add");
-        });
-
+     
 
 
     </script>

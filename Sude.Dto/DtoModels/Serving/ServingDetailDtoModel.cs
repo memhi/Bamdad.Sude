@@ -12,6 +12,13 @@ namespace Sude.Dto.DtoModels.Serving
         public string Title { get; set; }
         public int Price { get; set; }
         public string Desc { get; set; }
-   
+
+        public bool IsActive { get; set; }
+        public string WorkId { get; set; }
+        public string WorkName { get; set; }
+        public bool HasInventoryTracking { get; set; }
+        public double InventoryCount { get; set; }
+
+
     }
 }

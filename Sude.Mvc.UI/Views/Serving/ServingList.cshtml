@@ -19,6 +19,10 @@
                         <div class="card-title-wrap bar-success">
                             <h4 class="card-title">لیست اقلام و خدمات</h4>
                         </div>
+
+                        <dive class="col-8">
+                            <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن آیتم</a>
+                        </dive>
                     </div>
                     <div class="card-body">
                         <div class="card-block">
@@ -28,8 +32,11 @@
                                         <tr role="row">
 
                                             <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 20%;"><small>Title</small></th>
-                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="مبلغ: activate to sort column ascending" style="        width: 20%;"><small>Price</small></th>
-                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 40%;"><small>Desc</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="مبلغ: activate to sort column ascending" style="        width: 10%;"><small>Price</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="فعال: activate to sort column ascending" style="        width: 5%;"><small>Is Active</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="دارای موجودی: activate to sort column ascending" style="        width: 5%;"><small>Has Inventory</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="دارای موجودی: activate to sort column ascending" style="        width: 10%;"><small>work</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 30%;"><small>Desc</small></th>
                                             <th></th>
 
                                         </tr>
@@ -37,16 +44,20 @@
                                     <tbody>
                                         @foreach (var item in Model.Data)
                                         {
-                                            <tr id="tr_@item.ServingId" role="row" class="odd">
-                                                <td class="sorting_1">@item.Title</td>
-                                                <td>@item.Price</td>
-                                                <td>@item.Desc</td>
-                                                <td>
-                                                    <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
-                                                    <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
-                                                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
-                                                </td>
-                                            </tr>
+                                        <tr id="tr_@item.ServingId" role="row" class="odd">
+                                            <td class="sorting_1">@item.Title</td>
+                                            <td>@item.Price</td>
+
+                                            <td>@item.IsActive</td>
+                                            <td>@item.HasInventoryTracking</td>
+                                            <td>@item.WorkName</td>
+                                            <td>@item.Desc</td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
+                                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
+                                            </td>
+                                        </tr>
                                         }
                                         <tr>
 
@@ -63,6 +74,10 @@
 </div>
 
 <script>
+    $("#btnAdd").click(function () {
+        $("#servingView").load("/Serving/Add");
+    });
+
     function DeleteServing(servingId) {
 
         swal.fire({

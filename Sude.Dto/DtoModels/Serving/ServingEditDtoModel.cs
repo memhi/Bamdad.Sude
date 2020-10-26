@@ -20,5 +20,10 @@ namespace Sude.Dto.DtoModels.Serving
 
         public string Desc { get; set; }
 
+        public bool IsActive { get; set; }
+        public string WorkId { get; set; }
+        public bool HasInventoryTracking { get; set; }
+
+
     }
 }

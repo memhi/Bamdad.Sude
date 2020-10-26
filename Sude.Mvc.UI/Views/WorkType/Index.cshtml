@@ -3,9 +3,6 @@
 
 @model ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>
 
-<dive class="col-8">
-    <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن آیتم</a>
-</dive>
 <div id="WorkTypeView">
     Please Wait ...
 </div>
@@ -24,10 +21,7 @@
         $(function () {
             $("#WorkTypeView").load("/WorkType/List");
         });
-
-        $("#btnAdd").click(function () {
-            $("#WorkTypeView").load("/WorkType/Add");
-        });
+ 
 
 
 

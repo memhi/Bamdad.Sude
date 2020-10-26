@@ -22,6 +22,19 @@
                 <span asp-validation-for="Desc" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">WorkTypes</label>
+                <div class="col-md-10">
+
+                    <select id="drpTypes" asp-for="WorkTypeId"
+                            class="form-control"
+                            asp-items="(SelectList)@ViewData["WorkTypes"]">
+                    </select>
+
+                    @*<select id="drpTypes" asp-items="new SelectList( ,nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.WorkTypeId), nameof(Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel.Title));" class="form-control  l-dropdown js-example-basic-single">
+                </select>*@
+                </div>
+            </div>
+            <div class="form-group">
                 <a id="btnEditWork" onclick="EditWork()" class="btn btn-warning">تغییر</a>
             </div>
         </div>
@@ -49,8 +62,8 @@
             var Work = {
                 WorkId: $("#txtWorkId").val(),
                 Title: $("#txtTitle").val(),
-
-                Desc: $("#txtDesc").val()
+                Desc: $("#txtDesc").val(),              
+                WorkTypeId: $("#drpTypes").val()
             }
 
             $.ajax({

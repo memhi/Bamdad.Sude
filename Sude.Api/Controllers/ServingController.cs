@@ -18,9 +18,13 @@ namespace Sude.Api.Controllers
     public class ServingController : ControllerBase
     {
         private readonly IServingService _servingService;
-        public ServingController(IServingService servingService)
+        private readonly IServingInventoryService _servingInventoryService;
+        private readonly IWorkService _WorkService;
+        public ServingController(IServingService servingService, IWorkService workService, IServingInventoryService servingInventoryService)
         {
             _servingService = servingService;
+            _servingInventoryService = servingInventoryService;
+            _WorkService = workService;
         }
 
         //GET : api/GetServings
@@ -35,7 +39,11 @@ namespace Sude.Api.Controllers
                 ServingId = s.Id.ToString(),
                 Title = s.Title,
                 Price = s.Price,
-                Desc = s.Desc
+                Desc = s.Desc,
+                IsActive=s.IsActive,
+                HasInventoryTracking=s.HasInventoryTracking,
+                WorkId=s.Work.Id.ToString(),
+                WorkName=s.Work.Title
             });
             return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
             {
@@ -58,7 +66,11 @@ namespace Sude.Api.Controllers
                 ServingId = serving.Id.ToString(),
                 Title = serving.Title,
                 Price = serving.Price,
-                Desc = serving.Desc
+                Desc = serving.Desc,
+                IsActive = serving.IsActive,
+                HasInventoryTracking = serving.HasInventoryTracking,
+                WorkId = serving.Work.Id.ToString(),
+                WorkName = serving.Work.Title
             };
 
             return Ok(new ResultSetDto<ServingDetailDtoModel>()
@@ -85,21 +97,43 @@ namespace Sude.Api.Controllers
                 });
             }
 
-            
+            var resultWork = await _WorkService.GetWorkByIdAsync(Guid.Parse(request.WorkId));
+            if (!resultWork.IsSucceed)
+                return Ok(new ResultSetDto<ServingEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultWork.Message,
+                    Data = null
+                });
+
+
 
             var resultServing  = await _servingService.GetServingByIdAsync(Guid.Parse(request.ServingId));
 
             if (!resultServing.IsSucceed)
-                return BadRequest(resultServing.Message);
+                return Ok(new ResultSetDto<ServingEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultServing.Message,
+                    Data = null
+                });
 
             ServingInfo servingEdit = resultServing.Data;
             servingEdit.Title = request.Title;
             servingEdit.Price = request.Price;
             servingEdit.Desc = request.Desc;
+            servingEdit.Work = resultWork.Data;
+            servingEdit.IsActive = request.IsActive;
+            servingEdit.HasInventoryTracking = request.HasInventoryTracking;
 
             var result = await _servingService.EditServingAsync(servingEdit);
-            if(!result.IsSucceed)
-                return BadRequest(result.Message);
+            if (!result.IsSucceed)
+                return Ok(new ResultSetDto<ServingEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = result.Message,
+                    Data = null
+                });
 
             return Ok(new ResultSetDto<ServingEditDtoModel>()
             {
@@ -115,21 +149,63 @@ namespace Sude.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var resultWork = await _WorkService.GetWorkByIdAsync(Guid.Parse(request.WorkId));
+            if (!resultWork.IsSucceed)
+                return Ok(new ResultSetDto<ServingNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultWork.Message,
+                    Data = null
+                });
+
+
             ServingInfo serving = new ServingInfo()
             {
                 Title = request.Title,
                 Price = request.Price,
-                Desc = request.Desc
+                Desc = request.Desc,
+                Work= resultWork.Data,
+                IsActive=request.IsActive,
+                HasInventoryTracking=request.HasInventoryTracking
               
             };
 
             var resultSave = await _servingService.AddServingAsync(serving);
 
             if (!resultSave.IsSucceed)
-                return BadRequest(resultSave.Message);
+                return Ok(new ResultSetDto<ServingNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultSave.Message,
+                    Data = null
+                });
 
 
+           
             request.ServingId = resultSave.Data.Id.ToString();
+
+            if (request.HasInventoryTracking)
+            {
+
+                ServingInventoryInfo servingInventory = new ServingInventoryInfo()
+                {
+                    CurrentInventory = 0,
+                    ServingId = resultSave.Data.Id,
+                    Description = ""
+                };
+                var resultsaveservinginventory = await _servingInventoryService.AddServingInventoryAsync(servingInventory);
+                if(!resultsaveservinginventory.IsSucceed)
+                {
+                    return Ok(new ResultSetDto<ServingNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultsaveservinginventory.Message,
+                        Data = null
+                    });
+
+                }
+            }
+
 
             return Ok(new ResultSetDto<ServingNewDtoModel>()
             {

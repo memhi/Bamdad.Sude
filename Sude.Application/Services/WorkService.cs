@@ -52,6 +52,15 @@ namespace Sude.Application.Services
 
         public ResultSet<WorkInfo> AddWork(WorkInfo request)
         {
+            WorkInfo workInfo = _WorkRepository.GetWork(request.Title, request.WorkType);
+            if (workInfo != null && workInfo.Title == request.Title)
+            {
+
+                return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+
+            }
+
             _WorkRepository.AddWork(request);
             _WorkRepository.Save();
 
@@ -65,6 +74,15 @@ namespace Sude.Application.Services
 
         public ResultSet EditWork(WorkInfo request)
         {
+            WorkInfo workInfo = _WorkRepository.GetWork(request.Title, request.WorkType);
+            if (workInfo != null && workInfo.Id != request.Id)
+            {
+
+                return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+
+            }
+
             if (!_WorkRepository.EditWork(request))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Edited" };
 
@@ -109,6 +127,15 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo request)
         {
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(request.Title, request.WorkType);
+            if(workInfo!=null && workInfo.Title==request.Title)
+            {
+               
+                    return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+                  
+
+          }
+
             _WorkRepository.AddWork(request);
 
             try { await _WorkRepository.SaveAsync(); }
@@ -125,6 +152,18 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet> EditWorkAsync(WorkInfo request)
         {
+
+
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(request.Title, request.WorkType);
+            if (workInfo != null && workInfo.Id != request.Id)
+            {
+
+                return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+
+            }
+
+
             if (!_WorkRepository.EditWork(request))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Edited" };
 

@@ -50,6 +50,17 @@ namespace Sude.Application.Services
 
         public ResultSet<ServingInfo> AddServing(ServingInfo request)
         {
+
+            if (_servingRepository.IsExistServing(request.Title, null, request.Work.Id))
+            {
+                return new ResultSet<ServingInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Duplicate Date",
+                    Data = null
+                };
+            }
+
             _servingRepository.AddServing(request);
             _servingRepository.Save();
 
@@ -63,7 +74,15 @@ namespace Sude.Application.Services
 
         public ResultSet EditServing(ServingInfo request)
         {
-            if(!_servingRepository.EditServing(request))
+            if (_servingRepository.IsExistServing(request.Title, request.Id, request.Work.Id))
+                return new ResultSet<ServingInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Duplicate Date",
+                    Data = null
+                };
+
+            if (!_servingRepository.EditServing(request))
                 return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
 
             try
@@ -107,6 +126,14 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet<ServingInfo>> AddServingAsync(ServingInfo request)
         {
+            if (_servingRepository.IsExistServing(request.Title, null, request.Work.Id))
+                return new ResultSet<ServingInfo>()
+            {
+                IsSucceed = false,
+                Message = "Duplicate Date",
+                Data = null
+            };
+
             _servingRepository.AddServing(request);
 
             try{await _servingRepository.SaveAsync();}
@@ -123,6 +150,14 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet> EditServingAsync(ServingInfo request)
         {
+            if (_servingRepository.IsExistServing(request.Title, request.Id, request.Work.Id))
+                return new ResultSet<ServingInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Duplicate Date",
+                    Data = null
+                };
+
             if (!_servingRepository.EditServing(request))
                 return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
 

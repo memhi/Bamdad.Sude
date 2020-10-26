@@ -88,13 +88,19 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkManagement
         {
             ResultSetDto<WorkDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<WorkDetailDtoModel>>(ApiAddress.Work.GetWorkById + id);
+            ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> Worktypelist = await Api.GetHandler
+         .GetApiAsync<ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>>(ApiAddress.WorkType.GetWorkTypes);
+
+            SelectList selectLists = new SelectList(Worktypelist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel>, "WorkTypeId", "Title",result.Data.WorkTypeId);
+
+            ViewData["WorkTypes"] = selectLists;
 
             return PartialView(viewName: "Edit", model: new WorkEditDtoModel()
             {
                 WorkId = result.Data.WorkId,
-                Title = result.Data.Title,
-         
-                Desc = result.Data.Desc
+                Title = result.Data.Title,         
+                Desc = result.Data.Desc,
+                WorkTypeId=result.Data.WorkTypeId
             });
         }
         //[Route("Edit/{request}")]

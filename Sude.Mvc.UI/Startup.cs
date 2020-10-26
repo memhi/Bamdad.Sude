@@ -68,7 +68,7 @@ namespace Sude.Mvc.UI
             }
 
             app.UseStatusCodePages();
-         //   app.UseHttpsRedirection();
+          app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

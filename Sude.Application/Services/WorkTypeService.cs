@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Sude.Application.Interfaces;
 using Sude.Application.Result;
 using Sude.Domain.Interfaces;
+using Sude.Domain.Models.Common;
 using Sude.Domain.Models.Work;
 
 namespace Sude.Application.Services
@@ -50,6 +51,12 @@ namespace Sude.Application.Services
 
         public ResultSet<WorkTypeInfo> AddWorkType(WorkTypeInfo request)
         {
+            WorkTypeInfo workType = _WorkTypeRepository.GetWorkTypeByTitle(request.Title);
+            if (workType != null && workType.Title == request.Title)
+            {
+                return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+            }
             _WorkTypeRepository.AddWorkType(request);
             _WorkTypeRepository.Save();
 
@@ -63,6 +70,13 @@ namespace Sude.Application.Services
 
         public ResultSet EditWorkType(WorkTypeInfo request)
         {
+            WorkTypeInfo  workType = _WorkTypeRepository.GetWorkTypeByTitle(request.Title);
+            if (workType != null && workType.Id != request.Id)
+            {
+                return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+            }
+
             if (!_WorkTypeRepository.EditWorkType(request))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Edited" };
 
@@ -105,8 +119,20 @@ namespace Sude.Application.Services
             };
         }
 
+
+   
+
+
         public async Task<ResultSet<WorkTypeInfo>> AddWorkTypeAsync(WorkTypeInfo request)
         {
+            WorkTypeInfo workType = await _WorkTypeRepository.GetWorkTypeByTitleAsync(request.Title);
+            if (workType != null && workType.Title == request.Title)
+            {
+                return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+            }
+
+
             _WorkTypeRepository.AddWorkType(request);
 
             try { await _WorkTypeRepository.SaveAsync(); }
@@ -123,6 +149,12 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet> EditWorkTypeAsync(WorkTypeInfo request)
         {
+            WorkTypeInfo workType = await _WorkTypeRepository.GetWorkTypeByTitleAsync(request.Title);
+            if (workType != null && workType.Id != request.Id)
+            {
+                return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+            }
             if (!_WorkTypeRepository.EditWorkType(request))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Edited" };
 

@@ -1,4 +1,5 @@
-﻿using Sude.Domain.Models.Work;
+﻿using Sude.Domain.Models.Common;
+using Sude.Domain.Models.Work;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,9 @@ namespace Sude.Domain.Interfaces
 
         Task<WorkTypeInfo> GetWorkTypeByIdAsync(Guid WorkTypeId);
         WorkTypeInfo GetWorkTypeById(Guid WorkTypeId);
-       
+        Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string Title);
+            WorkTypeInfo GetWorkTypeByTitle(string Title);
+   
 
         void Save();
         Task SaveAsync();

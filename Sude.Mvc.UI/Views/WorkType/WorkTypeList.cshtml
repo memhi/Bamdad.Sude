@@ -19,6 +19,10 @@
                         <div class="card-title-wrap bar-success">
                             <h4 class="card-title">فهرست  انواع کسب و کارها</h4>
                         </div>
+                        <div class="col-8">
+                            <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن انواع کسب و کار</a>
+                        </div>
+
                     </div>
                     <div class="card-body">
                         <div class="card-block">
@@ -27,9 +31,9 @@
                                     <thead>
                                         <tr role="row">
 
-                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 222px;">عنوان<small>Title (&lt;222px)</small></th>
+                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 20%;"><small>Title </small></th>
                                  
-                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 801px;">»شرح<small>Desc (&lt;801px)</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 80%;"><small>Desc</small></th>
                                             <th></th>
 
                                         </tr>
@@ -62,6 +66,10 @@
 </div>
 
 <script>
+    $("#btnAdd").click(function () {
+        $("#WorkTypeView").load("/WorkType/Add");
+    });
+
     function DeleteWorkType(worktypeId) {
 
         swal.fire({

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+
 namespace Sude.Persistence.Repository
 {
     public class GenericRepository<TEntity> where TEntity :class
@@ -54,9 +55,24 @@ namespace Sude.Persistence.Repository
             return await query.ToListAsync();
         }
 
+    
         public virtual TEntity GetById(object id)
         {
             return _dbSet.Find(id);
+        }
+
+        public virtual TEntity GetById(Expression<Func<TEntity, bool>> where = null, string includes = "")
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+                query = query.Where(where);
+
+            if (includes != string.Empty)
+                foreach (var include in includes.Split(","))
+                    query = query.Include(include);
+
+
+            return  query.FirstOrDefault();
         }
 
 
@@ -115,5 +131,6 @@ namespace Sude.Persistence.Repository
         }
     }
 
-    
+  
+
 }

@@ -20,7 +20,10 @@ namespace Sude.Domain.Interfaces
 
         Task<WorkInfo> GetWorkByIdAsync(Guid WorkId);
         WorkInfo GetWorkById(Guid WorkId);
-       
+        Task<WorkInfo> GetWorkAsync(string Title, WorkTypeInfo WorkType);
+        WorkInfo GetWork(string Title, WorkTypeInfo WorkType);
+
+
 
         void Save();
         Task SaveAsync();

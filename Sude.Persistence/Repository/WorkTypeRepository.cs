@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Interfaces;
+ 
 using Sude.Domain.Models.Work;
  
 using Sude.Persistence.Contexts;
@@ -69,9 +70,24 @@ namespace Sude.Persistence.Repository
             return _WorkTypeRepository.Get();
         }
 
-      
 
-        
+       
+
+        public WorkTypeInfo GetWorkTypeByTitle(string Title)
+        {
+            IEnumerable<WorkTypeInfo> wts = _WorkTypeRepository.Get(it => it.Title == Title);
+            if (wts != null && wts.Count() > 0)
+                return wts.First();
+            return null;
+        }
+        public async Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string Title)
+        {
+            IEnumerable<WorkTypeInfo> wts = await _WorkTypeRepository.GetAsync(it => it.Title == Title);
+            if (wts != null && wts.Count() > 0)
+                return wts.First();
+            return null;
+        }
+
 
         public bool DeleteWorkType(Guid WorkTypeId)
         {

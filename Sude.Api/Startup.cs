@@ -63,7 +63,7 @@ namespace Sude.Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseStatusCodePages();
-           // app.UseHttpsRedirection();
+         app.UseHttpsRedirection();
            
             app.UseRouting();
             

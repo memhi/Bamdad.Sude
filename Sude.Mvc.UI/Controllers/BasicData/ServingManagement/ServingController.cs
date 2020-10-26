@@ -6,9 +6,11 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Serving;
+using Sude.Dto.DtoModels.Work;
 using Sude.Mvc.UI.ApiManagement;
 
 namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
@@ -39,9 +41,24 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
         }
 
         [HttpGet]
-        public ActionResult Add()
-        {
-            return PartialView();
+        public async Task<ActionResult> Add()
+        { 
+            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
+           .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
+            ServingNewDtoModel  servingNewDtoModel  = new ServingNewDtoModel();
+
+            servingNewDtoModel.Desc = "";
+            servingNewDtoModel.Title = "";
+            servingNewDtoModel.WorkId = "";
+            servingNewDtoModel.HasInventoryTracking = false;
+            servingNewDtoModel.IsActive = true;
+            SelectList selectLists = new SelectList(Worklist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title");
+
+            ViewData["Works"] = selectLists;
+
+            return PartialView("Add", servingNewDtoModel);
+
+           
         }
 
         [HttpPost]
@@ -74,12 +91,25 @@ namespace Sude.Mvc.UI.Controllers.BasicData.ServingManagement
             ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.Serving.GetServingById + id);
 
+            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
+          .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
+         
+            SelectList selectLists = new SelectList(Worklist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",result.Data.WorkId);
+
+            ViewData["Works"] = selectLists;
+
+
+
+
             return PartialView(viewName: "Edit", model: new ServingEditDtoModel()
             {
                 ServingId = result.Data.ServingId,
                 Title = result.Data.Title,
                 Price = result.Data.Price,
-                Desc = result.Data.Desc
+                Desc = result.Data.Desc,
+                 WorkId=result.Data.WorkId,
+                  IsActive=result.Data.IsActive,
+                   HasInventoryTracking=result.Data.HasInventoryTracking
             });
         }
         //[Route("Edit/{request}")]
