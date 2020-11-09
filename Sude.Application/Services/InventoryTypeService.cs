@@ -14,9 +14,9 @@ namespace Sude.Application.Services
     {
         private IInventoryTypeRepository _InventoryTypeRepository;
 
-        public InventoryTypeService(IInventoryTypeRepository InventoryTypeRepository)
+        public InventoryTypeService(IInventoryTypeRepository inventoryTypeRepository)
         {
-            this._InventoryTypeRepository = InventoryTypeRepository;
+            this._InventoryTypeRepository = inventoryTypeRepository;
         }
         public ResultSet<IEnumerable<InventoryTypeInfo>> GetInventoryTypes()
         {
@@ -28,9 +28,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<InventoryTypeInfo> GetInventoryTypeById(Guid InventoryTypeId)
+        public ResultSet<InventoryTypeInfo> GetInventoryTypeById(Guid inventoryTypeId)
         {
-            InventoryTypeInfo InventoryType = _InventoryTypeRepository.GetInventoryTypeById(InventoryTypeId);
+            InventoryTypeInfo InventoryType = _InventoryTypeRepository.GetInventoryTypeById(inventoryTypeId);
 
             if (InventoryType == null)
                 return new ResultSet<InventoryTypeInfo>()
@@ -48,35 +48,35 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<InventoryTypeInfo> AddInventoryType(InventoryTypeInfo request)
+        public ResultSet<InventoryTypeInfo> AddInventoryType(InventoryTypeInfo  inventoryType)
         {
-            InventoryTypeInfo inventoryType = _InventoryTypeRepository.GetInventoryTypeByTitle(request.Title);
-            if (inventoryType != null && inventoryType.Title == request.Title)
+            InventoryTypeInfo it = _InventoryTypeRepository.GetInventoryTypeByTitle(inventoryType.Title);
+            if (it != null && it.Title == inventoryType.Title)
             {
                 return new ResultSet<InventoryTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
-            _InventoryTypeRepository.AddInventoryType(request);
+            _InventoryTypeRepository.AddInventoryType(inventoryType);
             _InventoryTypeRepository.Save();
 
             return new ResultSet<InventoryTypeInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = inventoryType
             };
         }
 
-        public ResultSet EditInventoryType(InventoryTypeInfo request)
+        public ResultSet EditInventoryType(InventoryTypeInfo inventoryType)
         {
-            InventoryTypeInfo inventoryType =  _InventoryTypeRepository.GetInventoryTypeByTitle(request.Title);
-            if (inventoryType != null && inventoryType.Id != request.Id)
+            InventoryTypeInfo it =  _InventoryTypeRepository.GetInventoryTypeByTitle(inventoryType.Title);
+            if (it != null && it.Id != inventoryType.Id)
             {
                 return new ResultSet<InventoryTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
 
-            if (!_InventoryTypeRepository.EditInventoryType(request))
+            if (!_InventoryTypeRepository.EditInventoryType(inventoryType))
                 return new ResultSet() { IsSucceed = false, Message = "InventoryType Not Edited" };
 
             try
@@ -91,10 +91,10 @@ namespace Sude.Application.Services
 
         }
 
-        public ResultSet DeleteInventoryType(Guid InventoryTypeId)
+        public ResultSet DeleteInventoryType(Guid inventoryTypeId)
         {
 
-            if (!_InventoryTypeRepository.DeleteInventoryType(InventoryTypeId))
+            if (!_InventoryTypeRepository.DeleteInventoryType(inventoryTypeId))
                 return new ResultSet() { IsSucceed = false, Message = "InventoryType Not Deleted" };
 
             try
@@ -118,16 +118,16 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet<InventoryTypeInfo>> AddInventoryTypeAsync(InventoryTypeInfo request)
+        public async Task<ResultSet<InventoryTypeInfo>> AddInventoryTypeAsync(InventoryTypeInfo inventoryType)
         {
-            InventoryTypeInfo inventoryType = await _InventoryTypeRepository.GetInventoryTypeByTitleAsync(request.Title);
-            if (inventoryType != null && inventoryType.Title == request.Title)
+            InventoryTypeInfo  it = await _InventoryTypeRepository.GetInventoryTypeByTitleAsync(inventoryType.Title);
+            if (it != null && it.Title == inventoryType.Title)
             {
                 return new ResultSet<InventoryTypeInfo>() { IsSucceed = false, Message ="Duplicate Data" };
 
             }
 
-           _InventoryTypeRepository.AddInventoryType(request);
+           _InventoryTypeRepository.AddInventoryType(inventoryType);
 
             try{await _InventoryTypeRepository.SaveAsync();}
 
@@ -137,20 +137,20 @@ namespace Sude.Application.Services
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = inventoryType
             };
         }
 
-        public async Task<ResultSet> EditInventoryTypeAsync(InventoryTypeInfo request)
+        public async Task<ResultSet> EditInventoryTypeAsync(InventoryTypeInfo inventoryType)
         {
-            InventoryTypeInfo inventoryType = await _InventoryTypeRepository.GetInventoryTypeByTitleAsync(request.Title);
-            if (inventoryType != null && inventoryType.Id != request.Id)
+            InventoryTypeInfo it = await _InventoryTypeRepository.GetInventoryTypeByTitleAsync(inventoryType.Title);
+            if (it != null && it.Id != inventoryType.Id)
             {
                 return new ResultSet<InventoryTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
 
-            if (!_InventoryTypeRepository.EditInventoryType(request))
+            if (!_InventoryTypeRepository.EditInventoryType(inventoryType))
                 return new ResultSet() { IsSucceed = false, Message = "InventoryType Not Edited" };
 
             try
@@ -164,7 +164,7 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet> DeleteInventoryTypeAsync(Guid InventoryTypeId)
+        public async Task<ResultSet> DeleteInventoryTypeAsync(Guid inventoryTypeId)
         {
 
 
@@ -173,27 +173,7 @@ namespace Sude.Application.Services
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (!_InventoryTypeRepository.DeleteInventoryType(InventoryTypeId))
+            if (!_InventoryTypeRepository.DeleteInventoryType(inventoryTypeId))
                 return new ResultSet() { IsSucceed = false, Message = "InventoryType Not Deleted" };
 
             try

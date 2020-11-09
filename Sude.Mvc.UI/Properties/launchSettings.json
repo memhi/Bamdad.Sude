@@ -3,26 +3,26 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,  
     "iisExpress": {
-      "applicationUrl": "http://younas:4033",
+      "applicationUrl": "http://localhost:4033",
       "sslPort": 4032
     }
   },
   "profiles": {
     "IIS Express": {
-        "commandName": "IIS",
+        "commandName": "IIS Express",
         "launchBrowser": true,
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development"
         }
     },
     "Sude.Mvc.UI": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "http://younas:5001;https://younas:5002"
+        "commandName": "Project",
+        "launchBrowser": true,
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "dotnetRunMessages": "true",
+        "applicationUrl": "http://localhost:5001;https://localhost:5002"
     }
   }
 }

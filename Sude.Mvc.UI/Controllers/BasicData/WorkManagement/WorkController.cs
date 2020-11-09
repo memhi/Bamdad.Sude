@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -26,6 +27,20 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkManagement
             return View();
         }
 
+
+        [HttpGet]
+        // [Authorize]
+        public async Task<ActionResult> SetDefaultWork(string workId)
+        {
+
+
+            HttpContext.Session.SetString("CurrentWorkId", workId);
+
+
+            return Json(workId);
+        }
+
+
         [HttpGet]
        // [Authorize]
         public async Task<ActionResult> List()
@@ -34,7 +49,7 @@ namespace Sude.Mvc.UI.Controllers.BasicData.WorkManagement
 
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
-        
+          
 
             return PartialView("WorkList", Worklist);
         }

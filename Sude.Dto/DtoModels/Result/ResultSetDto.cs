@@ -14,6 +14,9 @@ namespace Sude.Dto.DtoModels.Result
 
     public class ResultSetDto<T> : ResultSetDto
     {
+        public int RowCount { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
         public T Data { get; set; }
     }
 }

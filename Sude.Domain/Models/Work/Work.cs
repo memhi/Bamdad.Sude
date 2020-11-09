@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Models.Common;
 using Sude.Domain.Models.Serving;
+using Sude.Domain.Models.Account;
 
 namespace Sude.Domain.Models.Work
 {
@@ -19,7 +20,8 @@ namespace Sude.Domain.Models.Work
         public virtual WorkTypeInfo WorkType { get; set; }
 
         public virtual ICollection<ServingInfo> Servings { get; set; }
-
+        public Guid? AddressId { get; set; }
+        public AddressInfo Address { get; set; }
     }
 
 }

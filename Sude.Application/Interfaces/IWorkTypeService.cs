@@ -11,14 +11,14 @@ namespace Sude.Application.Interfaces
     public interface IWorkTypeService
     {
         ResultSet<IEnumerable<WorkTypeInfo>> GetWorkTypes();
-        ResultSet<WorkTypeInfo> AddWorkType(WorkTypeInfo request);
-        ResultSet EditWorkType(WorkTypeInfo request);
-        ResultSet DeleteWorkType(Guid WorkTypeId);
-        ResultSet<WorkTypeInfo> GetWorkTypeById(Guid WorkTypeId);
+        ResultSet<WorkTypeInfo> AddWorkType(WorkTypeInfo  workType);
+        ResultSet EditWorkType(WorkTypeInfo workType);
+        ResultSet DeleteWorkType(Guid workTypeId);
+        ResultSet<WorkTypeInfo> GetWorkTypeById(Guid workTypeId);
         Task<ResultSet<IEnumerable<WorkTypeInfo>>> GetWorkTypesAsync();
-        Task<ResultSet<WorkTypeInfo>> AddWorkTypeAsync(WorkTypeInfo request);
-        Task<ResultSet> EditWorkTypeAsync(WorkTypeInfo request);
-        Task<ResultSet> DeleteWorkTypeAsync(Guid WorkTypeId);
-        Task<ResultSet<WorkTypeInfo>> GetWorkTypeByIdAsync(Guid WorkTypeId);
+        Task<ResultSet<WorkTypeInfo>> AddWorkTypeAsync(WorkTypeInfo workType);
+        Task<ResultSet> EditWorkTypeAsync(WorkTypeInfo workType);
+        Task<ResultSet> DeleteWorkTypeAsync(Guid workTypeId);
+        Task<ResultSet<WorkTypeInfo>> GetWorkTypeByIdAsync(Guid workTypeId);
     }
 }

@@ -26,11 +26,11 @@ namespace Sude.Persistence.Repository
             return await _WorkTypeRepository.GetAsync();
         }
         
-        public bool AddWorkType(WorkTypeInfo WorkType)
+        public bool AddWorkType(WorkTypeInfo workType)
         {
             try
             {
-                _WorkTypeRepository.Insert(WorkType);
+                _WorkTypeRepository.Insert(workType);
             }
             catch
             {
@@ -39,11 +39,11 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditWorkType(WorkTypeInfo WorkType)
+        public bool EditWorkType(WorkTypeInfo workType)
         {
             try
             {
-                _WorkTypeRepository.Update(WorkType);
+                _WorkTypeRepository.Update(workType);
             }
             catch
             { 
@@ -52,9 +52,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<WorkTypeInfo> GetWorkTypeByIdAsync(Guid WorkTypeId)
+        public async Task<WorkTypeInfo> GetWorkTypeByIdAsync(Guid workTypeId)
         {
-            return await _WorkTypeRepository.GetByIdAsync(WorkTypeId);
+            return await _WorkTypeRepository.GetByIdAsync(workTypeId);
         }
 
         public void Save()
@@ -73,33 +73,33 @@ namespace Sude.Persistence.Repository
 
        
 
-        public WorkTypeInfo GetWorkTypeByTitle(string Title)
+        public WorkTypeInfo GetWorkTypeByTitle(string title)
         {
-            IEnumerable<WorkTypeInfo> wts = _WorkTypeRepository.Get(it => it.Title == Title);
+            IEnumerable<WorkTypeInfo> wts = _WorkTypeRepository.Get(it => it.Title == title);
             if (wts != null && wts.Count() > 0)
                 return wts.First();
             return null;
         }
-        public async Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string Title)
+        public async Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string title)
         {
-            IEnumerable<WorkTypeInfo> wts = await _WorkTypeRepository.GetAsync(it => it.Title == Title);
+            IEnumerable<WorkTypeInfo> wts = await _WorkTypeRepository.GetAsync(it => it.Title == title);
             if (wts != null && wts.Count() > 0)
                 return wts.First();
             return null;
         }
 
 
-        public bool DeleteWorkType(Guid WorkTypeId)
+        public bool DeleteWorkType(Guid workTypeId)
         {
-            var WorkType = GetWorkTypeById(WorkTypeId);
-            if (WorkType == null)
+            var workType = GetWorkTypeById(workTypeId);
+            if (workType == null)
                 return false;
             try
             {
 
-                WorkType.IsRemoved = true;
-                WorkType.RemoveDate = DateTime.Now;
-                _WorkTypeRepository.Update(WorkType);
+                workType.IsRemoved = true;
+                workType.RemoveDate = DateTime.Now;
+                _WorkTypeRepository.Update(workType);
             }
             catch
             {
@@ -108,9 +108,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public WorkTypeInfo GetWorkTypeById(Guid WorkTypeId)
+        public WorkTypeInfo GetWorkTypeById(Guid workTypeId)
         {
-            return _WorkTypeRepository.GetById(WorkTypeId);
+            return _WorkTypeRepository.GetById(workTypeId);
         }
     }
 }

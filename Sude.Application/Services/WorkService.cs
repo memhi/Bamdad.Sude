@@ -15,9 +15,9 @@ namespace Sude.Application.Services
         private IWorkRepository _WorkRepository;
        
 
-        public WorkService(IWorkRepository WorkRepository)
+        public WorkService(IWorkRepository workRepository)
         {
-            this._WorkRepository = WorkRepository;
+            this._WorkRepository = workRepository;
         
         }
         public ResultSet<IEnumerable<WorkInfo>> GetWorks()
@@ -30,9 +30,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<WorkInfo> GetWorkById(Guid WorkId)
+        public ResultSet<WorkInfo> GetWorkById(Guid workId)
         {
-            WorkInfo Work = _WorkRepository.GetWorkById(WorkId);
+            WorkInfo Work = _WorkRepository.GetWorkById(workId);
 
             if (Work == null)
                 return new ResultSet<WorkInfo>()
@@ -50,10 +50,10 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<WorkInfo> AddWork(WorkInfo request)
+        public ResultSet<WorkInfo> AddWork(WorkInfo  work)
         {
-            WorkInfo workInfo = _WorkRepository.GetWork(request.Title, request.WorkType);
-            if (workInfo != null && workInfo.Title == request.Title)
+            WorkInfo workInfo = _WorkRepository.GetWork(work.Title, work.WorkType);
+            if (workInfo != null && workInfo.Title == work.Title)
             {
 
                 return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
@@ -61,21 +61,21 @@ namespace Sude.Application.Services
 
             }
 
-            _WorkRepository.AddWork(request);
+            _WorkRepository.AddWork(work);
             _WorkRepository.Save();
 
             return new ResultSet<WorkInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = work
             };
         }
 
-        public ResultSet EditWork(WorkInfo request)
+        public ResultSet EditWork(WorkInfo work)
         {
-            WorkInfo workInfo = _WorkRepository.GetWork(request.Title, request.WorkType);
-            if (workInfo != null && workInfo.Id != request.Id)
+            WorkInfo workInfo = _WorkRepository.GetWork(work.Title, work.WorkType);
+            if (workInfo != null && workInfo.Id != work.Id)
             {
 
                 return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
@@ -83,7 +83,7 @@ namespace Sude.Application.Services
 
             }
 
-            if (!_WorkRepository.EditWork(request))
+            if (!_WorkRepository.EditWork(work))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Edited" };
 
             try
@@ -98,10 +98,10 @@ namespace Sude.Application.Services
 
         }
 
-        public ResultSet DeleteWork(Guid WorkId)
+        public ResultSet DeleteWork(Guid workId)
         {
 
-            if (!_WorkRepository.DeleteWork(WorkId))
+            if (!_WorkRepository.DeleteWork(workId))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Deleted" };
 
             try
@@ -125,10 +125,10 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo request)
+        public async Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work)
         {
-            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(request.Title, request.WorkType);
-            if(workInfo!=null && workInfo.Title==request.Title)
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title, work.WorkType);
+            if(workInfo!=null && workInfo.Title== work.Title)
             {
                
                     return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
@@ -136,7 +136,7 @@ namespace Sude.Application.Services
 
           }
 
-            _WorkRepository.AddWork(request);
+            _WorkRepository.AddWork(work);
 
             try { await _WorkRepository.SaveAsync(); }
 
@@ -146,16 +146,16 @@ namespace Sude.Application.Services
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = work
             };
         }
 
-        public async Task<ResultSet> EditWorkAsync(WorkInfo request)
+        public async Task<ResultSet> EditWorkAsync(WorkInfo work)
         {
 
 
-            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(request.Title, request.WorkType);
-            if (workInfo != null && workInfo.Id != request.Id)
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title, work.WorkType);
+            if (workInfo != null && workInfo.Id != work.Id)
             {
 
                 return new ResultSet<WorkInfo>() { IsSucceed = false, Message = "Duplicate Data" };
@@ -164,7 +164,7 @@ namespace Sude.Application.Services
             }
 
 
-            if (!_WorkRepository.EditWork(request))
+            if (!_WorkRepository.EditWork(work))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Edited" };
 
             try
@@ -178,36 +178,11 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet> DeleteWorkAsync(Guid WorkId)
+        public async Task<ResultSet> DeleteWorkAsync(Guid workId)
         {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (!_WorkRepository.DeleteWork(WorkId))
+            
+            if (!_WorkRepository.DeleteWork(workId))
                 return new ResultSet() { IsSucceed = false, Message = "Work Not Deleted" };
 
             try
@@ -221,9 +196,9 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<WorkInfo>> GetWorkByIdAsync(Guid WorkId)
+        public async Task<ResultSet<WorkInfo>> GetWorkByIdAsync(Guid workId)
         {
-            WorkInfo Work = await _WorkRepository.GetWorkByIdAsync(WorkId);
+            WorkInfo Work = await _WorkRepository.GetWorkByIdAsync(workId);
 
             if (Work == null)
                 return new ResultSet<WorkInfo>()

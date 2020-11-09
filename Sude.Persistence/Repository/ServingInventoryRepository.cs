@@ -26,15 +26,15 @@ namespace Sude.Persistence.Repository
         {
             return await _ServingInventoryRepository.GetAsync(null,null, "ServingInventoryType");
         }
-        public async Task<IEnumerable<ServingInventoryInfo>> GetServingInventorysByTypeAsync(Guid InventoryTypeId)
+        public async Task<IEnumerable<ServingInventoryInfo>> GetServingInventorysByTypeAsync(Guid inventoryTypeId)
         {
-            return await _ServingInventoryRepository.GetAsync(w=>w.InventoryTypeId== InventoryTypeId);
+            return await _ServingInventoryRepository.GetAsync(w=>w.InventoryTypeId== inventoryTypeId);
         }
-        public bool AddServingInventory(ServingInventoryInfo ServingInventory)
+        public bool AddServingInventory(ServingInventoryInfo servingInventory)
         {
             try
             {
-                _ServingInventoryRepository.Insert(ServingInventory);
+                _ServingInventoryRepository.Insert(servingInventory);
             }
             catch
             {
@@ -43,11 +43,11 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditServingInventory(ServingInventoryInfo ServingInventory)
+        public bool EditServingInventory(ServingInventoryInfo servingInventory)
         {
             try
             {
-                _ServingInventoryRepository.Update(ServingInventory);
+                _ServingInventoryRepository.Update(servingInventory);
             }
             catch
             { 
@@ -56,9 +56,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid ServingInventoryId)
+        public async Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid servingInventoryId)
         {
-            return await _ServingInventoryRepository.GetByIdAsync(w=>w.Id==ServingInventoryId,"ServingInventoryType");// (w => w.Id == ServingInventoryId, null, "ServingInventoryType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
+            return await _ServingInventoryRepository.GetByIdAsync(w=>w.Id==servingInventoryId,"ServingInventoryType");// (w => w.Id == ServingInventoryId, null, "ServingInventoryType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
         }
 
         public void Save()
@@ -78,17 +78,17 @@ namespace Sude.Persistence.Repository
 
         
 
-        public bool DeleteServingInventory(Guid ServingInventoryId)
+        public bool DeleteServingInventory(Guid servingInventoryId)
         {
-            var ServingInventory = GetServingInventoryById(ServingInventoryId);
-            if (ServingInventory == null)
+            var servingInventory = GetServingInventoryById(servingInventoryId);
+            if (servingInventory == null)
                 return false;
             try
             {
 
-                ServingInventory.IsRemoved = true;
-                ServingInventory.RemoveDate = DateTime.Now;
-                _ServingInventoryRepository.Update(ServingInventory);
+                servingInventory.IsRemoved = true;
+               servingInventory.RemoveDate = DateTime.Now;
+                _ServingInventoryRepository.Update(servingInventory);
             }
             catch
             {
@@ -97,9 +97,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public ServingInventoryInfo GetServingInventoryById(Guid ServingInventoryId)
+        public ServingInventoryInfo GetServingInventoryById(Guid servingInventoryId)
         {
-            return _ServingInventoryRepository.GetById(ServingInventoryId);
+            return _ServingInventoryRepository.GetById(servingInventoryId);
         }
       
     }

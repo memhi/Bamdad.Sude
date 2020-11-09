@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<li class="dropdown">  
+  
+    <select id="drpWorks"
+            class="form-control"
+            asp-items="(SelectList)@ViewData["Works"]">
+        <option>یک کسب و کار انتخاب کنید</option>
+
+    </select>
+
+</li>
+
+<script>
+
+         $(function() {
+            $("#drpWorks").change(function() {
+                var selectedItem = $(this).val();
+      
+
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("SetDefaultWork", "Work"))",
+                    data: { "workId": selectedItem},
+                    success: function (data) {
+                        
+                        location.reload();
+                    },
+                    error:function (xhr, ajaxOptions, thrownError){
+                        alert('Failed to retrieve states.');
+
+                    }
+                });
+            });
+        });
+
+
+</script>

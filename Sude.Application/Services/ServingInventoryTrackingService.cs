@@ -14,9 +14,9 @@ namespace Sude.Application.Services
     {
         private IServingInventoryTrackingRepository _ServingInventoryTrackingRepository;
 
-        public ServingInventoryTrackingService(IServingInventoryTrackingRepository ServingInventoryTrackingRepository)
+        public ServingInventoryTrackingService(IServingInventoryTrackingRepository servingInventoryTrackingRepository)
         {
-            this._ServingInventoryTrackingRepository = ServingInventoryTrackingRepository;
+            this._ServingInventoryTrackingRepository = servingInventoryTrackingRepository;
         }
         public ResultSet<IEnumerable<ServingInventoryTrackingInfo>> GetServingInventoryTrackings()
         {
@@ -28,9 +28,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<ServingInventoryTrackingInfo> GetServingInventoryTrackingById(Guid ServingInventoryTrackingId)
+        public ResultSet<ServingInventoryTrackingInfo> GetServingInventoryTrackingById(Guid servingInventoryTrackingId)
         {
-            ServingInventoryTrackingInfo ServingInventoryTracking = _ServingInventoryTrackingRepository.GetServingInventoryTrackingById(ServingInventoryTrackingId);
+            ServingInventoryTrackingInfo ServingInventoryTracking = _ServingInventoryTrackingRepository.GetServingInventoryTrackingById(servingInventoryTrackingId);
 
             if (ServingInventoryTracking == null)
                 return new ResultSet<ServingInventoryTrackingInfo>()
@@ -48,22 +48,22 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<ServingInventoryTrackingInfo> AddServingInventoryTracking(ServingInventoryTrackingInfo request)
+        public ResultSet<ServingInventoryTrackingInfo> AddServingInventoryTracking(ServingInventoryTrackingInfo  servingInventoryTracking)
         {
-            _ServingInventoryTrackingRepository.AddServingInventoryTracking(request);
+            _ServingInventoryTrackingRepository.AddServingInventoryTracking(servingInventoryTracking);
             _ServingInventoryTrackingRepository.Save();
 
             return new ResultSet<ServingInventoryTrackingInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = servingInventoryTracking
             };
         }
 
-        public ResultSet EditServingInventoryTracking(ServingInventoryTrackingInfo request)
+        public ResultSet EditServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking)
         {
-            if(!_ServingInventoryTrackingRepository.EditServingInventoryTracking(request))
+            if(!_ServingInventoryTrackingRepository.EditServingInventoryTracking(servingInventoryTracking))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventoryTracking Not Edited" };
 
             try
@@ -78,10 +78,10 @@ namespace Sude.Application.Services
 
         }
 
-        public ResultSet DeleteServingInventoryTracking(Guid ServingInventoryTrackingId)
+        public ResultSet DeleteServingInventoryTracking(Guid servingInventoryTrackingId)
         {
 
-            if (!_ServingInventoryTrackingRepository.DeleteServingInventoryTracking(ServingInventoryTrackingId))
+            if (!_ServingInventoryTrackingRepository.DeleteServingInventoryTracking(servingInventoryTrackingId))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventoryTracking Not Deleted" };
 
             try
@@ -105,9 +105,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet<ServingInventoryTrackingInfo>> AddServingInventoryTrackingAsync(ServingInventoryTrackingInfo request)
+        public async Task<ResultSet<ServingInventoryTrackingInfo>> AddServingInventoryTrackingAsync(ServingInventoryTrackingInfo servingInventoryTracking)
         {
-            _ServingInventoryTrackingRepository.AddServingInventoryTracking(request);
+            _ServingInventoryTrackingRepository.AddServingInventoryTracking(servingInventoryTracking);
 
             try{await _ServingInventoryTrackingRepository.SaveAsync();}
 
@@ -117,13 +117,13 @@ namespace Sude.Application.Services
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = servingInventoryTracking
             };
         }
 
-        public async Task<ResultSet> EditServingInventoryTrackingAsync(ServingInventoryTrackingInfo request)
+        public async Task<ResultSet> EditServingInventoryTrackingAsync(ServingInventoryTrackingInfo servingInventoryTracking)
         {
-            if (!_ServingInventoryTrackingRepository.EditServingInventoryTracking(request))
+            if (!_ServingInventoryTrackingRepository.EditServingInventoryTracking(servingInventoryTracking))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventoryTracking Not Edited" };
 
             try
@@ -137,7 +137,7 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet> DeleteServingInventoryTrackingAsync(Guid ServingInventoryTrackingId)
+        public async Task<ResultSet> DeleteServingInventoryTrackingAsync(Guid servingInventoryTrackingId)
         {
 
 
@@ -145,28 +145,7 @@ namespace Sude.Application.Services
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (!_ServingInventoryTrackingRepository.DeleteServingInventoryTracking(ServingInventoryTrackingId))
+            if (!_ServingInventoryTrackingRepository.DeleteServingInventoryTracking(servingInventoryTrackingId))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventoryTracking Not Deleted" };
 
             try
@@ -180,9 +159,9 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<ServingInventoryTrackingInfo>> GetServingInventoryTrackingByIdAsync(Guid ServingInventoryTrackingId)
+        public async Task<ResultSet<ServingInventoryTrackingInfo>> GetServingInventoryTrackingByIdAsync(Guid servingInventoryTrackingId)
         {
-            ServingInventoryTrackingInfo ServingInventoryTracking = await _ServingInventoryTrackingRepository.GetServingInventoryTrackingByIdAsync(ServingInventoryTrackingId);
+            ServingInventoryTrackingInfo ServingInventoryTracking = await _ServingInventoryTrackingRepository.GetServingInventoryTrackingByIdAsync(servingInventoryTrackingId);
 
             if (ServingInventoryTracking == null)
                 return new ResultSet<ServingInventoryTrackingInfo>()

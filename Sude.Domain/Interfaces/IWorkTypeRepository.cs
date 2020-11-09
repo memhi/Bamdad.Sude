@@ -12,16 +12,16 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<WorkTypeInfo>> GetWorkTypesAsync();
         IEnumerable<WorkTypeInfo> GetWorkTypes();
-      //  bool IsExistServing(string Title);
+ 
 
-        bool AddWorkType(WorkTypeInfo WorkType);
-        bool EditWorkType(WorkTypeInfo WorkType);
-        bool DeleteWorkType(Guid servingId);
+        bool AddWorkType(WorkTypeInfo workType);
+        bool EditWorkType(WorkTypeInfo workType);
+        bool DeleteWorkType(Guid workTypeId);
 
-        Task<WorkTypeInfo> GetWorkTypeByIdAsync(Guid WorkTypeId);
-        WorkTypeInfo GetWorkTypeById(Guid WorkTypeId);
-        Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string Title);
-            WorkTypeInfo GetWorkTypeByTitle(string Title);
+        Task<WorkTypeInfo> GetWorkTypeByIdAsync(Guid workTypeId);
+        WorkTypeInfo GetWorkTypeById(Guid workTypeId);
+        Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string title);
+            WorkTypeInfo GetWorkTypeByTitle(string title);
    
 
         void Save();

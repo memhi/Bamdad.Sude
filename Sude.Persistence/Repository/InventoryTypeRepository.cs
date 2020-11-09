@@ -23,11 +23,11 @@ namespace Sude.Persistence.Repository
         {
             return await _InventoryTypeRepository.GetAsync();
         }
-        public bool AddInventoryType(InventoryTypeInfo InventoryType)
+        public bool AddInventoryType(InventoryTypeInfo inventoryType)
         {
             try
             {
-                _InventoryTypeRepository.Insert(InventoryType);
+                _InventoryTypeRepository.Insert(inventoryType);
             }
             catch
             {
@@ -36,11 +36,11 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditInventoryType(InventoryTypeInfo InventoryType)
+        public bool EditInventoryType(InventoryTypeInfo inventoryType)
         {
             try
             {
-                _InventoryTypeRepository.Update(InventoryType);
+                _InventoryTypeRepository.Update(inventoryType);
             }
             catch
             { 
@@ -49,21 +49,21 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<InventoryTypeInfo> GetInventoryTypeByIdAsync(Guid InventoryTypeId)
+        public async Task<InventoryTypeInfo> GetInventoryTypeByIdAsync(Guid inventoryTypeId)
         {
-            return await _InventoryTypeRepository.GetByIdAsync(InventoryTypeId);
+            return await _InventoryTypeRepository.GetByIdAsync(inventoryTypeId);
         }
-        public  InventoryTypeInfo GetInventoryTypeByTitle(string Title)
+        public  InventoryTypeInfo GetInventoryTypeByTitle(string title)
         {
-            IEnumerable<InventoryTypeInfo> its =  _InventoryTypeRepository.Get(it => it.Title == Title);
+            IEnumerable<InventoryTypeInfo> its =  _InventoryTypeRepository.Get(it => it.Title == title);
             if (its != null && its.Count() > 0)
                 return its.First();
             return null;
         }
 
-        public async Task<InventoryTypeInfo> GetInventoryTypeByTitleAsync(string Title)
+        public async Task<InventoryTypeInfo> GetInventoryTypeByTitleAsync(string title)
         {
-            IEnumerable<InventoryTypeInfo> its   = await _InventoryTypeRepository.GetAsync(it => it.Title == Title);
+            IEnumerable<InventoryTypeInfo> its   = await _InventoryTypeRepository.GetAsync(it => it.Title == title);
             if (its != null && its.Count() > 0)
                 return its.First();
             return null;
@@ -90,14 +90,14 @@ namespace Sude.Persistence.Repository
 
         
 
-        public bool DeleteInventoryType(Guid InventoryTypeId)
+        public bool DeleteInventoryType(Guid inventoryTypeId)
         {
-            var InventoryType = GetInventoryTypeById(InventoryTypeId);
-            if (InventoryType == null)
+            var inventoryType = GetInventoryTypeById(inventoryTypeId);
+            if (inventoryType == null)
                 return false;
             try
             {                             
-                _InventoryTypeRepository.Delete(InventoryType);
+                _InventoryTypeRepository.Delete(inventoryType);
             }
             catch
             {
@@ -106,9 +106,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public InventoryTypeInfo GetInventoryTypeById(Guid InventoryTypeId)
+        public InventoryTypeInfo GetInventoryTypeById(Guid inventoryTypeId)
         {
-            return _InventoryTypeRepository.GetById(InventoryTypeId);
+            return _InventoryTypeRepository.GetById(inventoryTypeId);
         }
        
     }

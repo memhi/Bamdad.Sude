@@ -10,6 +10,7 @@ using Sude.Domain.Models.Serving;
 using Sude.Domain.Models.Work;
 using Sude.Domain.Models.Order;
 using Sude.Domain.Models.PushNotification;
+using Sude.Domain.Models.Content;
 
 namespace Sude.Persistence.Contexts
 {
@@ -28,12 +29,17 @@ namespace Sude.Persistence.Contexts
         public DbSet<OrderInfo> Orders { get; set; }
         public DbSet<OrderDetailInfo>  OrderDetails { get; set; }        
         public DbSet<UserInfo> Users { get; set; }
-        public DbSet<RoleInfo> Roles { get; set; }       
+        public DbSet<RoleInfo> Roles { get; set; }
+      
         public DbSet<UserDeviceInfo> UserDevices { get; set; }
         public DbSet<ServingInventoryInfo> ServingInventories { get; set; }
         public DbSet<InventoryTypeInfo> InventoryTypes { get; set; }
         public DbSet<ServingInventoryTrackingInfo> ServingInventoryTrackings { get; set; }
+        public DbSet<ContentInfo> Contents { get; set; }
+        public DbSet<ContentCommentInfo> ContentComments { get; set; }
 
+        public DbSet<CustomerInfo> Customers { get; set; }
+        public DbSet<AddressInfo>  Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +50,9 @@ namespace Sude.Persistence.Contexts
             modelBuilder.Entity<OrderInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<ServingInventoryInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<ServingInventoryTrackingInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<CustomerInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<ContentInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<ContentCommentInfo>().HasQueryFilter(p => !p.IsRemoved);
 
             //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
         }

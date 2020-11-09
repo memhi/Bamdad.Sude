@@ -11,14 +11,14 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<ServingInventoryInfo>> GetServingInventorysAsync();
         IEnumerable<ServingInventoryInfo> GetServingInventorys();
-      //  bool IsExistServing(string Title);
+ 
 
-        bool AddServingInventory(ServingInventoryInfo ServingInventory);
-        bool EditServingInventory(ServingInventoryInfo ServingInventory);
-        bool DeleteServingInventory(Guid servingId);
+        bool AddServingInventory(ServingInventoryInfo servingInventory);
+        bool EditServingInventory(ServingInventoryInfo servingInventory);
+        bool DeleteServingInventory(Guid servingInventoryId);
 
-        Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid ServingInventoryId);
-        ServingInventoryInfo GetServingInventoryById(Guid ServingInventoryId);
+        Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid servingInventoryId);
+        ServingInventoryInfo GetServingInventoryById(Guid servingInventoryId);
        
 
         void Save();

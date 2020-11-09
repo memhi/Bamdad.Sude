@@ -9,16 +9,15 @@ namespace Sude.Domain.Interfaces
 {
     public interface IInventoryTypeRepository
     {
-
-        #region Sync Methods
         IEnumerable<InventoryTypeInfo> GetInventoryTypes();
-        //  bool IsExistServing(string Title);
-        InventoryTypeInfo GetInventoryTypeByTitle(string Title);
-        bool AddInventoryType(InventoryTypeInfo InventoryType);
-        bool EditInventoryType(InventoryTypeInfo InventoryType);
-        bool DeleteInventoryType(Guid servingId);
+        #region Sync Methods
 
-        InventoryTypeInfo GetInventoryTypeById(Guid InventoryTypeId);
+        InventoryTypeInfo GetInventoryTypeByTitle(string title);
+        bool AddInventoryType(InventoryTypeInfo inventoryType);
+        bool EditInventoryType(InventoryTypeInfo inventoryType);
+        bool DeleteInventoryType(Guid inventoryTypeId);
+
+        InventoryTypeInfo GetInventoryTypeById(Guid inventoryTypeId);
 
 
 
@@ -29,7 +28,7 @@ namespace Sude.Domain.Interfaces
 
 
         #region Async Methods
-        Task<InventoryTypeInfo> GetInventoryTypeByIdAsync(Guid InventoryTypeId);
+        Task<InventoryTypeInfo> GetInventoryTypeByIdAsync(Guid inventoryTypeId);
         Task<IEnumerable<InventoryTypeInfo>> GetInventoryTypesAsync();
         Task<InventoryTypeInfo> GetInventoryTypeByTitleAsync(string Title);
         Task SaveAsync();

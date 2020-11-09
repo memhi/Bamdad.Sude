@@ -11,11 +11,11 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<OrderInfo>> GetOrdersAsync();
         IEnumerable<OrderInfo> GetOrders();
-      //  bool IsExistServing(string Title);
+
 
         bool AddOrder(OrderInfo order);
         bool EditOrder(OrderInfo order);
-        bool DeleteOrder(Guid servingId);
+        bool DeleteOrder(Guid orderId);
 
         Task<OrderInfo> GetOrderByIdAsync(Guid orderId);
         OrderInfo GetOrderById(Guid orderId);

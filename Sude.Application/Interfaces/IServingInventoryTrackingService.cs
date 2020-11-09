@@ -11,14 +11,14 @@ namespace Sude.Application.Interfaces
     public interface IServingInventoryTrackingService
     {
         ResultSet<IEnumerable<ServingInventoryTrackingInfo>> GetServingInventoryTrackings();
-        ResultSet<ServingInventoryTrackingInfo> AddServingInventoryTracking(ServingInventoryTrackingInfo request);
-        ResultSet EditServingInventoryTracking(ServingInventoryTrackingInfo request);
-        ResultSet DeleteServingInventoryTracking(Guid ServingInventoryTrackingId);
-        ResultSet<ServingInventoryTrackingInfo> GetServingInventoryTrackingById(Guid ServingInventoryTrackingId);
+        ResultSet<ServingInventoryTrackingInfo> AddServingInventoryTracking(ServingInventoryTrackingInfo  servingInventoryTracking);
+        ResultSet EditServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking);
+        ResultSet DeleteServingInventoryTracking(Guid servingInventoryTrackingId);
+        ResultSet<ServingInventoryTrackingInfo> GetServingInventoryTrackingById(Guid servingInventoryTrackingId);
         Task<ResultSet<IEnumerable<ServingInventoryTrackingInfo>>> GetServingInventoryTrackingsAsync();
-        Task<ResultSet<ServingInventoryTrackingInfo>> AddServingInventoryTrackingAsync(ServingInventoryTrackingInfo request);
-        Task<ResultSet> EditServingInventoryTrackingAsync(ServingInventoryTrackingInfo request);
-        Task<ResultSet> DeleteServingInventoryTrackingAsync(Guid ServingInventoryTrackingId);
-        Task<ResultSet<ServingInventoryTrackingInfo>> GetServingInventoryTrackingByIdAsync(Guid ServingInventoryTrackingId);
+        Task<ResultSet<ServingInventoryTrackingInfo>> AddServingInventoryTrackingAsync(ServingInventoryTrackingInfo servingInventoryTracking);
+        Task<ResultSet> EditServingInventoryTrackingAsync(ServingInventoryTrackingInfo servingInventoryTracking);
+        Task<ResultSet> DeleteServingInventoryTrackingAsync(Guid servingInventoryTrackingId);
+        Task<ResultSet<ServingInventoryTrackingInfo>> GetServingInventoryTrackingByIdAsync(Guid servingInventoryTrackingId);
     }
 }

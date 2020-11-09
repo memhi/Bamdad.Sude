@@ -14,9 +14,9 @@ namespace Sude.Application.Services
     {
         private IServingInventoryRepository _ServingInventoryRepository;
 
-        public ServingInventoryService(IServingInventoryRepository ServingInventoryRepository)
+        public ServingInventoryService(IServingInventoryRepository servingInventoryRepository)
         {
-            this._ServingInventoryRepository = ServingInventoryRepository;
+            this._ServingInventoryRepository = servingInventoryRepository;
         }
         public ResultSet<IEnumerable<ServingInventoryInfo>> GetServingInventorys()
         {
@@ -28,9 +28,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<ServingInventoryInfo> GetServingInventoryById(Guid ServingInventoryId)
+        public ResultSet<ServingInventoryInfo> GetServingInventoryById(Guid servingInventoryId)
         {
-            ServingInventoryInfo ServingInventory = _ServingInventoryRepository.GetServingInventoryById(ServingInventoryId);
+            ServingInventoryInfo ServingInventory = _ServingInventoryRepository.GetServingInventoryById(servingInventoryId);
 
             if (ServingInventory == null)
                 return new ResultSet<ServingInventoryInfo>()
@@ -48,22 +48,22 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<ServingInventoryInfo> AddServingInventory(ServingInventoryInfo request)
+        public ResultSet<ServingInventoryInfo> AddServingInventory(ServingInventoryInfo  servingInventory)
         {
-            _ServingInventoryRepository.AddServingInventory(request);
+            _ServingInventoryRepository.AddServingInventory(servingInventory);
             _ServingInventoryRepository.Save();
 
             return new ResultSet<ServingInventoryInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = servingInventory
             };
         }
 
-        public ResultSet EditServingInventory(ServingInventoryInfo request)
+        public ResultSet EditServingInventory(ServingInventoryInfo servingInventory)
         {
-            if(!_ServingInventoryRepository.EditServingInventory(request))
+            if(!_ServingInventoryRepository.EditServingInventory(servingInventory))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventory Not Edited" };
 
             try
@@ -78,10 +78,10 @@ namespace Sude.Application.Services
 
         }
 
-        public ResultSet DeleteServingInventory(Guid ServingInventoryId)
+        public ResultSet DeleteServingInventory(Guid servingInventoryId)
         {
 
-            if (!_ServingInventoryRepository.DeleteServingInventory(ServingInventoryId))
+            if (!_ServingInventoryRepository.DeleteServingInventory(servingInventoryId))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventory Not Deleted" };
 
             try
@@ -105,9 +105,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet<ServingInventoryInfo>> AddServingInventoryAsync(ServingInventoryInfo request)
+        public async Task<ResultSet<ServingInventoryInfo>> AddServingInventoryAsync(ServingInventoryInfo servingInventory)
         {
-            _ServingInventoryRepository.AddServingInventory(request);
+            _ServingInventoryRepository.AddServingInventory(servingInventory);
 
             try{await _ServingInventoryRepository.SaveAsync();}
 
@@ -117,13 +117,13 @@ namespace Sude.Application.Services
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = servingInventory
             };
         }
 
-        public async Task<ResultSet> EditServingInventoryAsync(ServingInventoryInfo request)
+        public async Task<ResultSet> EditServingInventoryAsync(ServingInventoryInfo servingInventory)
         {
-            if (!_ServingInventoryRepository.EditServingInventory(request))
+            if (!_ServingInventoryRepository.EditServingInventory(servingInventory))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventory Not Edited" };
 
             try
@@ -137,36 +137,13 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet> DeleteServingInventoryAsync(Guid ServingInventoryId)
+        public async Task<ResultSet> DeleteServingInventoryAsync(Guid servingInventoryId)
         {
 
+             
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (!_ServingInventoryRepository.DeleteServingInventory(ServingInventoryId))
+            if (!_ServingInventoryRepository.DeleteServingInventory(servingInventoryId))
                 return new ResultSet() { IsSucceed = false, Message = "ServingInventory Not Deleted" };
 
             try
@@ -180,9 +157,9 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<ServingInventoryInfo>> GetServingInventoryByIdAsync(Guid ServingInventoryId)
+        public async Task<ResultSet<ServingInventoryInfo>> GetServingInventoryByIdAsync(Guid servingInventoryId)
         {
-            ServingInventoryInfo ServingInventory = await _ServingInventoryRepository.GetServingInventoryByIdAsync(ServingInventoryId);
+            ServingInventoryInfo ServingInventory = await _ServingInventoryRepository.GetServingInventoryByIdAsync(servingInventoryId);
 
             if (ServingInventory == null)
                 return new ResultSet<ServingInventoryInfo>()

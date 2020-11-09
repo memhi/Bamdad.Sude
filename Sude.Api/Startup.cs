@@ -66,16 +66,19 @@ namespace Sude.Api
          app.UseHttpsRedirection();
            
             app.UseRouting();
-            
+
             //app.UseAuthentication();
             //app.UseAuthorization();
+            app.UseTransactionMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
+            
             app.UseLogMiddleware();
+    
+   ;
         }
 
         public static void RegisterMyServices(IServiceCollection services)

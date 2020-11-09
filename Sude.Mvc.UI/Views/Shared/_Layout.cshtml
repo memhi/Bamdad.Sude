@@ -30,6 +30,8 @@
     <link rel="stylesheet" type="text/css" href="~/AdminTemplate/app-assets/vendors/css/perfect-scrollbar.min.css">
     <link rel="stylesheet" type="text/css" href="~/AdminTemplate/app-assets/vendors/css/prism.min.css">
     <link rel="stylesheet" type="text/css" href="~/AdminTemplate/app-assets/css/app.css">
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
 </head>
 <body data-col="2-columns" class=" 2-columns ">
     <!-- ////////////////////////////////////////////////////////////////////////////-->
@@ -441,7 +443,7 @@
     <!-- BEGIN PAGE LEVEL JS-->
     <!-- END PAGE LEVEL JS-->
 
-
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 
 
     @await RenderSectionAsync("Scripts", required: false)

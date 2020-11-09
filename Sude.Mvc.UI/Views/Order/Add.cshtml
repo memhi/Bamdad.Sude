@@ -1,0 +1,111 @@
+﻿
+@model Sude.Dto.DtoModels.Order.OrderNewDtoModel
+<hr />
+<h4>افزودن سفارش</h4>
+<hr />
+<form id="frmAdd">
+    <link href="~/css/select2.css"  rel="stylesheet"/>
+    <div class="row">
+        <div class="col-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="form-group">
+                <label class="control-label">Customer</label>
+                <div class="col-md-10">
+
+                    <select id="drpCustomers" asp-for="CustomerId"
+                            class="form-control"
+                            asp-items="(SelectList)@ViewData["Customers"]">
+                        <option>Please select customer</option>
+
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OrderNumber" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtTitle" asp-for="OrderNumber" class="form-control" />
+                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtTitle" asp-for="OrderDate" class="form-control" />
+                    <span asp-validation-for="OrderDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtDesc" asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                @await Component.InvokeAsync("AddDetail");
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-8">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+    </div>
+</form>
+<script src="~/js/select2.js">
+</script>
+
+<script>
+
+    $(document).ready(function () {
+ 
+        $('#drpCustomers').select2();
+
+    });
+     
+
+    function SaveNewOrder() {
+        $.validator.unobtrusive.parse($('#frmAdd'));
+        var isValid = $('#frmAdd').valid();
+        if (!isValid)
+            return;
+        var worktype = {
+            Title: $("#txtTitle").val(),
+            Desc: $("#txtDesc").val()
+        }
+        $.ajax({
+            url: "/WorkType/Add",
+            type: "Post",
+            data: worktype
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#WorkTypeView").load("/WorkType/List");
+            }
+            else {
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+    function ToList() {
+        $("#WorkTypeView").load("/WorkType/List");
+    }
+</script>

@@ -335,6 +335,9 @@
                                 <!-- user login dropdown end -->
                             </ul>
                         </li>
+                        <li>
+                            @await Component.InvokeAsync("HeaderWorks")
+                        </li>
                     </ul>
                     <!--search & user info end-->
                 </div>
@@ -387,6 +390,10 @@
                             <li>
 
                                 <a href="~/InventoryType/Index" class="menu-item">  مدیریت نوع موجودی   </a>
+                            </li>
+                            <li>
+
+                                <a href="~/Order/Index" class="menu-item">  سفارشات  </a>
                             </li>
                         </ul>
                     </li>

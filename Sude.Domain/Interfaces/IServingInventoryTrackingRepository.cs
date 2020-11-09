@@ -11,14 +11,14 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<ServingInventoryTrackingInfo>> GetServingInventoryTrackingsAsync();
         IEnumerable<ServingInventoryTrackingInfo> GetServingInventoryTrackings();
-      //  bool IsExistServing(string Title);
 
-        bool AddServingInventoryTracking(ServingInventoryTrackingInfo ServingInventoryTracking);
-        bool EditServingInventoryTracking(ServingInventoryTrackingInfo ServingInventoryTracking);
-        bool DeleteServingInventoryTracking(Guid servingId);
 
-        Task<ServingInventoryTrackingInfo> GetServingInventoryTrackingByIdAsync(Guid ServingInventoryTrackingId);
-        ServingInventoryTrackingInfo GetServingInventoryTrackingById(Guid ServingInventoryTrackingId);
+        bool AddServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking);
+        bool EditServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking);
+        bool DeleteServingInventoryTracking(Guid servingInventoryTrackingId);
+
+        Task<ServingInventoryTrackingInfo> GetServingInventoryTrackingByIdAsync(Guid servingInventoryTrackingId);
+        ServingInventoryTrackingInfo GetServingInventoryTrackingById(Guid servingInventoryTrackingId);
        
 
         void Save();

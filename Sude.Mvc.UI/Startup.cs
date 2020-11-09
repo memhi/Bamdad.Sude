@@ -27,9 +27,11 @@ namespace Sude.Mvc.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+           // services.AddProgressiveWebApp();
+            services.AddServerSideBlazor();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             IdentityModelEventSource.ShowPII = true;
-
+            services.AddSession();
             //services.AddAuthentication(options =>
             //{
             //    options.DefaultScheme = "Cookies";
@@ -72,7 +74,7 @@ namespace Sude.Mvc.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-             
+            app.UseSession();
          //   app.UseAuthentication();
         //    app.UseAuthorization();
 

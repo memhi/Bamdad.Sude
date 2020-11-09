@@ -12,6 +12,7 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<ServingInfo>> GetServingsAsync();
         IEnumerable<ServingInfo> GetServings();
+        Task<IEnumerable<ServingInfo>> GetServingsByWorkIdAsync(Guid workId);
         bool IsExistServing(string title, Guid? id, Guid workId);
 
         bool AddServing(ServingInfo serving);

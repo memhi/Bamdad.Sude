@@ -15,9 +15,9 @@ namespace Sude.Application.Services
     {
         private IWorkTypeRepository _WorkTypeRepository;
 
-        public WorkTypeService(IWorkTypeRepository WorkTypeRepository)
+        public WorkTypeService(IWorkTypeRepository workTypeRepository)
         {
-            this._WorkTypeRepository = WorkTypeRepository;
+            this._WorkTypeRepository = workTypeRepository;
         }
         public ResultSet<IEnumerable<WorkTypeInfo>> GetWorkTypes()
         {
@@ -29,9 +29,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<WorkTypeInfo> GetWorkTypeById(Guid WorkTypeId)
+        public ResultSet<WorkTypeInfo> GetWorkTypeById(Guid workTypeId)
         {
-            WorkTypeInfo WorkType = _WorkTypeRepository.GetWorkTypeById(WorkTypeId);
+            WorkTypeInfo WorkType = _WorkTypeRepository.GetWorkTypeById(workTypeId);
 
             if (WorkType == null)
                 return new ResultSet<WorkTypeInfo>()
@@ -49,35 +49,35 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<WorkTypeInfo> AddWorkType(WorkTypeInfo request)
+        public ResultSet<WorkTypeInfo> AddWorkType(WorkTypeInfo  workType)
         {
-            WorkTypeInfo workType = _WorkTypeRepository.GetWorkTypeByTitle(request.Title);
-            if (workType != null && workType.Title == request.Title)
+            WorkTypeInfo workTypeInfo = _WorkTypeRepository.GetWorkTypeByTitle(workType.Title);
+            if (workTypeInfo != null && workTypeInfo.Title == workType.Title)
             {
                 return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
-            _WorkTypeRepository.AddWorkType(request);
+            _WorkTypeRepository.AddWorkType(workType);
             _WorkTypeRepository.Save();
 
             return new ResultSet<WorkTypeInfo>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = workType
             };
         }
 
-        public ResultSet EditWorkType(WorkTypeInfo request)
+        public ResultSet EditWorkType(WorkTypeInfo workType)
         {
-            WorkTypeInfo  workType = _WorkTypeRepository.GetWorkTypeByTitle(request.Title);
-            if (workType != null && workType.Id != request.Id)
+            WorkTypeInfo  workTypeInfo = _WorkTypeRepository.GetWorkTypeByTitle(workType.Title);
+            if (workTypeInfo != null && workTypeInfo.Id != workType.Id)
             {
                 return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
 
-            if (!_WorkTypeRepository.EditWorkType(request))
+            if (!_WorkTypeRepository.EditWorkType(workType))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Edited" };
 
             try
@@ -92,10 +92,10 @@ namespace Sude.Application.Services
 
         }
 
-        public ResultSet DeleteWorkType(Guid WorkTypeId)
+        public ResultSet DeleteWorkType(Guid workTypeId)
         {
 
-            if (!_WorkTypeRepository.DeleteWorkType(WorkTypeId))
+            if (!_WorkTypeRepository.DeleteWorkType(workTypeId))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Deleted" };
 
             try
@@ -123,17 +123,17 @@ namespace Sude.Application.Services
    
 
 
-        public async Task<ResultSet<WorkTypeInfo>> AddWorkTypeAsync(WorkTypeInfo request)
+        public async Task<ResultSet<WorkTypeInfo>> AddWorkTypeAsync(WorkTypeInfo workType)
         {
-            WorkTypeInfo workType = await _WorkTypeRepository.GetWorkTypeByTitleAsync(request.Title);
-            if (workType != null && workType.Title == request.Title)
+            WorkTypeInfo workTypeInfo = await _WorkTypeRepository.GetWorkTypeByTitleAsync(workType.Title);
+            if (workTypeInfo != null && workTypeInfo.Title == workType.Title)
             {
                 return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
 
 
-            _WorkTypeRepository.AddWorkType(request);
+            _WorkTypeRepository.AddWorkType(workType);
 
             try { await _WorkTypeRepository.SaveAsync(); }
 
@@ -143,19 +143,19 @@ namespace Sude.Application.Services
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = request
+                Data = workType
             };
         }
 
-        public async Task<ResultSet> EditWorkTypeAsync(WorkTypeInfo request)
+        public async Task<ResultSet> EditWorkTypeAsync(WorkTypeInfo workType)
         {
-            WorkTypeInfo workType = await _WorkTypeRepository.GetWorkTypeByTitleAsync(request.Title);
-            if (workType != null && workType.Id != request.Id)
+            WorkTypeInfo workTypeInfo = await _WorkTypeRepository.GetWorkTypeByTitleAsync(workType.Title);
+            if (workTypeInfo != null && workTypeInfo.Id != workType.Id)
             {
                 return new ResultSet<WorkTypeInfo>() { IsSucceed = false, Message = "Duplicate Data" };
 
             }
-            if (!_WorkTypeRepository.EditWorkType(request))
+            if (!_WorkTypeRepository.EditWorkType(workType))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Edited" };
 
             try
@@ -169,36 +169,12 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet> DeleteWorkTypeAsync(Guid WorkTypeId)
+        public async Task<ResultSet> DeleteWorkTypeAsync(Guid workTypeId)
         {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (!_WorkTypeRepository.DeleteWorkType(WorkTypeId))
+             
+  
+            if (!_WorkTypeRepository.DeleteWorkType(workTypeId))
                 return new ResultSet() { IsSucceed = false, Message = "WorkType Not Deleted" };
 
             try
@@ -212,9 +188,9 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
-        public async Task<ResultSet<WorkTypeInfo>> GetWorkTypeByIdAsync(Guid WorkTypeId)
+        public async Task<ResultSet<WorkTypeInfo>> GetWorkTypeByIdAsync(Guid workTypeId)
         {
-            WorkTypeInfo WorkType = await _WorkTypeRepository.GetWorkTypeByIdAsync(WorkTypeId);
+            WorkTypeInfo WorkType = await _WorkTypeRepository.GetWorkTypeByIdAsync(workTypeId);
 
             if (WorkType == null)
                 return new ResultSet<WorkTypeInfo>()

@@ -11,14 +11,14 @@ namespace Sude.Application.Interfaces
     public interface IInventoryTypeService
     {
         ResultSet<IEnumerable<InventoryTypeInfo>> GetInventoryTypes();
-        ResultSet<InventoryTypeInfo> AddInventoryType(InventoryTypeInfo request);
-        ResultSet EditInventoryType(InventoryTypeInfo request);
-        ResultSet DeleteInventoryType(Guid InventoryTypeId);
-        ResultSet<InventoryTypeInfo> GetInventoryTypeById(Guid InventoryTypeId);
+        ResultSet<InventoryTypeInfo> AddInventoryType(InventoryTypeInfo  inventoryType);
+        ResultSet EditInventoryType(InventoryTypeInfo inventoryType);
+        ResultSet DeleteInventoryType(Guid inventoryTypeId);
+        ResultSet<InventoryTypeInfo> GetInventoryTypeById(Guid inventoryTypeId);
         Task<ResultSet<IEnumerable<InventoryTypeInfo>>> GetInventoryTypesAsync();
-        Task<ResultSet<InventoryTypeInfo>> AddInventoryTypeAsync(InventoryTypeInfo request);
-        Task<ResultSet> EditInventoryTypeAsync(InventoryTypeInfo request);
-        Task<ResultSet> DeleteInventoryTypeAsync(Guid InventoryTypeId);
-        Task<ResultSet<InventoryTypeInfo>> GetInventoryTypeByIdAsync(Guid InventoryTypeId);
+        Task<ResultSet<InventoryTypeInfo>> AddInventoryTypeAsync(InventoryTypeInfo inventoryType);
+        Task<ResultSet> EditInventoryTypeAsync(InventoryTypeInfo inventoryType);
+        Task<ResultSet> DeleteInventoryTypeAsync(Guid inventoryTypeId);
+        Task<ResultSet<InventoryTypeInfo>> GetInventoryTypeByIdAsync(Guid inventoryTypeId);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sude.Application.Interfaces;
 using Sude.Application.Services;
+using Sude.Persistence.Repository;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -19,9 +20,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IUserService, UserService>(),
                 ServiceDescriptor.Scoped<IServingService,ServingService>(),
                 ServiceDescriptor.Scoped<IWorkTypeService,WorkTypeService>(),
-                  ServiceDescriptor.Scoped<IWorkService,WorkService>(),
-                      ServiceDescriptor.Scoped<IInventoryTypeService,InventoryTypeService>(),
-                           ServiceDescriptor.Scoped<IServingInventoryService,ServingInventoryService>()
+                ServiceDescriptor.Scoped<IWorkService,WorkService>(),
+                ServiceDescriptor.Scoped<IInventoryTypeService,InventoryTypeService>(),
+                ServiceDescriptor.Scoped<IServingInventoryService,ServingInventoryService>(),
+                ServiceDescriptor.Scoped<IOrderService,OrderService>(),
+                ServiceDescriptor.Scoped<IOrderDetailService,OrderDetailService>(),
+                  ServiceDescriptor.Scoped<ICustomerService,CustomerService>(),
+                             ServiceDescriptor.Scoped<IAddressService,AddressService>()
             });
 
             return services;

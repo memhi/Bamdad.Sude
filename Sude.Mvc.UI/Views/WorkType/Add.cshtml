@@ -1,74 +1,65 @@
 ﻿
-
 @model Sude.Dto.DtoModels.Work.WorkTypeNewDtoModel
-    <hr />
-    <h4>افزودن نوع کسب و کار</h4>
-    <hr />
-    <form id="frmAdd">
-        <div class="row">
-            <div class="col-8">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<hr />
+<h4>افزودن نوع کسب و کار</h4>
+<hr />
+<form id="frmAdd">
+    <div class="row">
+        <div class="col-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
-                    <input id="txtTitle" asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input id="txtTitle" asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="Desc" class="control-label"></label>
-                    <input id="txtDesc" asp-for="Desc" class="form-control" />
-                    <span asp-validation-for="Desc" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <a id="btnSaveNewWorkType" onclick="SaveNewWorkType()" class="btn btn-success col-md-8">ثبت</a>
-                </div>
+            <div class="form-group">
+                <label asp-for="Desc" class="control-label"></label>
+                <input id="txtDesc" asp-for="Desc" class="form-control" />
+                <span asp-validation-for="Desc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a id="btnSaveNewWorkType" onclick="SaveNewWorkType()" class="btn btn-success col-md-8">ثبت</a>
             </div>
         </div>
+    </div>
 
-        <div>
-            <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
-        </div>
-    </form>
-    <script>
-
-
-
-        function SaveNewWorkType() {
-            $.validator.unobtrusive.parse($('#frmAdd'));
-
-            var isValid = $('#frmAdd').valid();
-            if (!isValid)
-                return;
-
-            var worktype = {
-                Title: $("#txtTitle").val(),
-                Desc: $("#txtDesc").val()
+    <div>
+        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+    </div>
+</form>
+<script>
+    function SaveNewWorkType() {
+        $.validator.unobtrusive.parse($('#frmAdd'));
+        var isValid = $('#frmAdd').valid();
+        if (!isValid)
+            return;
+        var worktype = {
+            Title: $("#txtTitle").val(),
+            Desc: $("#txtDesc").val()
+        }
+        $.ajax({
+            url: "/WorkType/Add",
+            type: "Post",
+            data: worktype
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#WorkTypeView").load("/WorkType/List");
             }
-            $.ajax({
-                url: "/WorkType/Add",
-                type: "Post",
-                data: worktype
-            }).done(function (result) {
-                if (result.isSucceed) {
-                    swal.fire({
-                        icon: "success",
-                    });
-                    $("#WorkTypeView").load("/WorkType/List");
-                }
-                else {
-                    swal.fire({
-                        title: 'هشدار',
-                        text: result.message,
-                        icon: 'warning',
-                    });
-                }
-            });
-        }
-
-        function ToList() {
-            $("#WorkTypeView").load("/WorkType/List");
-        }
-
-
-    </script>
+            else {
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+    function ToList() {
+        $("#WorkTypeView").load("/WorkType/List");
+    }
+</script>

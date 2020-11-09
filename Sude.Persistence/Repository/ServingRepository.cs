@@ -19,6 +19,11 @@ namespace Sude.Persistence.Repository
             this._servingRepository = new GenericRepository<ServingInfo>(ctx);
         }
 
+        public async Task<IEnumerable<ServingInfo>> GetServingsByWorkIdAsync(Guid workId)
+        {
+            return await _servingRepository.GetAsync(s=>s.WorkId==workId, null, "Work");
+        }
+
         public async Task<IEnumerable<ServingInfo>> GetServingsAsync()
         {
             return await _servingRepository.GetAsync(null,null,"Work");
@@ -40,6 +45,7 @@ namespace Sude.Persistence.Repository
         {
             try
             {
+                
                 _servingRepository.Update(serving);
             }
             catch

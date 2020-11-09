@@ -78,6 +78,27 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public static string ServerAddress { get; set; }
         //protected static readonly string ServerAddress = "http://localhost:2184";
+        public class Customer
+        {
+            public static readonly string GetCustomersByWorkId = ServerAddress + "/api/Customer/GetCustomersByWorkId/";
+           
+        }
+        public class Order
+        {
+            public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
+            public static readonly string GetOrderById = ServerAddress + "/api/Order/GetOrderById/";
+            public static readonly string EditOrder = ServerAddress + "/api/Order/EditOrder/";
+            public static readonly string AddOrder = ServerAddress + "/api/Order/AddOrder/";
+            public static readonly string DeleteOrder = ServerAddress + "/api/Order/DeleteOrder/";
+        }
+        public class OrderDetail
+        {
+            public static readonly string GetOrderDetails = ServerAddress + "/api/OrderDetail/GetOrderDetails/";
+            public static readonly string GetOrderDetailById = ServerAddress + "/api/OrderDetail/GetOrderDetailById/";
+            public static readonly string EditOrderDetail = ServerAddress + "/api/OrderDetail/EditOrderDetail/";
+            public static readonly string AddOrderDetail = ServerAddress + "/api/OrderDetail/AddOrderDetail/";
+            public static readonly string DeleteOrderDetail = ServerAddress + "/api/OrderDetail/DeleteOrderDetail/";
+        }
         public class InventoryType
         {
             public static readonly string GetInventoryTypes = ServerAddress + "/api/InventoryType/GetInventoryTypes/";
@@ -89,6 +110,7 @@ namespace Sude.Mvc.UI.ApiManagement
         public class Serving
         {
             public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";
+            public static readonly string GetServingsByWorkId = ServerAddress + "/api/serving/GetServingsByWorkId/";
             public static readonly string GetServingById = ServerAddress + "/api/serving/GetServingById/";
             public static readonly string EditServing = ServerAddress + "/api/serving/EditServing/";
             public static readonly string AddServing = ServerAddress + "/api/serving/AddServing/";

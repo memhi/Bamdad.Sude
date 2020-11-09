@@ -10,18 +10,18 @@ namespace Sude.Domain.Interfaces
     public interface IWorkRepository
     {
         Task<IEnumerable<WorkInfo>> GetWorksAsync();
-        Task<IEnumerable<WorkInfo>> GetWorksByTypeAsync(WorkTypeInfo WorkType);
+        Task<IEnumerable<WorkInfo>> GetWorksByTypeAsync(WorkTypeInfo workType);
         IEnumerable<WorkInfo> GetWorks();
-      //  bool IsExistServing(string Title);
+ 
 
-        bool AddWork(WorkInfo Work);
-        bool EditWork(WorkInfo Work);
-        bool DeleteWork(Guid servingId);
+        bool AddWork(WorkInfo work);
+        bool EditWork(WorkInfo work);
+        bool DeleteWork(Guid workId);
 
-        Task<WorkInfo> GetWorkByIdAsync(Guid WorkId);
-        WorkInfo GetWorkById(Guid WorkId);
-        Task<WorkInfo> GetWorkAsync(string Title, WorkTypeInfo WorkType);
-        WorkInfo GetWork(string Title, WorkTypeInfo WorkType);
+        Task<WorkInfo> GetWorkByIdAsync(Guid workId);
+        WorkInfo GetWorkById(Guid workId);
+        Task<WorkInfo> GetWorkAsync(string title, WorkTypeInfo workType);
+        WorkInfo GetWork(string title, WorkTypeInfo workType);
 
 
 

@@ -1,0 +1,134 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order
+@model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
+
+<div class="col-12">
+    <fieldset class="form-group">
+        <input type="text" class="form-control" name="serchkey">
+        <button class="btn btn-success">جستجو</button>
+    </fieldset>
+</div>
+
+<div>
+    <section id="grid-option">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+
+                        <div class="card-title-wrap bar-success">
+                            <h4 class="card-title">فهرست سفارش ها</h4>
+                        </div>
+                        <div class="col-8">
+                            <a id="btnAdd" class="btn btn-success col-md-8">اضافه کردن سفارش جدید</a>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr role="row">
+
+                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="عنوان: activate to sort column descending" style="width: 10;"><small>Number </small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 10%;"><small>Date</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 20%;"><small>WorkName</small></th>
+                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="شرح: activate to sort column ascending" style="width: 40%;"><small>Desc</small></th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Data)
+                                        {
+                                        <tr id="tr_@item.OrderId" role="row" class="odd">
+                                            <td class="sorting_1">@item.OrderNumber</td>
+                                            <td class="sorting_1">@item.OrderDate</td>
+                                            <td class="sorting_1">@item.WorkName</td>
+                                            <td>@item.Description</td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId')">ویرایش</button>
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
+                                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
+                                            </td>
+                                        </tr>
+                                        }
+                                        <tr>
+
+                                    </tbody>
+                                </table>
+                            </div><div class="row"><div class="col-sm-18 col-md-5"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">نمایش 1 تا 10 از 57 سطرها</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">قبلی</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0" class="page-link">بعدی</a></li></ul></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $("#btnAdd").click(function () {
+        $("#orderView").load("/Order/Add");
+    });
+    function DeleteOrder(orderId) {
+        swal.fire({
+            title: 'حذف سفارش',
+            text: "کاربر گرامی از حذف سفارش مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7cacbe',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله ، سفارش حذف شود',
+            cancelButtonText: 'خیر'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: "/Order/Delete/" + orderId,
+                    type: "Get",
+                    success: function (result) {
+                        if (result.isSucceed == true) {
+                            swal.fire(
+                                'موفق!',
+                                result.message,
+                                'success'
+                            ).then(function (isConfirm) {
+                                $("#tr_" + orderId).addClass("danger");
+                                $("#tr_" + orderId).hide('slow');
+                                //location.reload();
+                            });
+                        }
+                        else {
+                            swal.fire(
+                                'هشدار!',
+                                result.message,
+                                'warning'
+                            );
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+        })
+    }
+    function ShowEditOrderPop(orderId) {
+        $.get("/Order/Edit/" + orderId, function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("ویرایش سفارش");
+            $("#myModalBody").html(result);
+        });
+    }
+    function ShowEditOrder(orderId) {
+        $("#orderView").load("/Order/Edit/" + orderId);
+    }
+    function ShowNewPageModalDetailorder(orderId) {
+        $.get("/Order/Detail/" + orderId, function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("جزئیات  سفارش");
+            $("#myModalBody").html(result);
+        });
+    }
+</script>

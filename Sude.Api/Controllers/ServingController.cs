@@ -53,6 +53,33 @@ namespace Sude.Api.Controllers
             });
         }
 
+
+        [HttpGet("{workId}")]
+        //[Consumes("application/xml")]
+        //[Consumes("application/json")]
+        // [Authorize]
+        public async Task<ActionResult> GetServingsByWorkId(string workId)
+        {
+            var result = (await _servingService.GetServingsAsync()).Data.Select(s => new ServingDetailDtoModel()
+            {
+                ServingId = s.Id.ToString(),
+                Title = s.Title,
+                Price = s.Price,
+                Desc = s.Desc,
+                IsActive = s.IsActive,
+                HasInventoryTracking = s.HasInventoryTracking,
+                WorkId = s.Work.Id.ToString(),
+                WorkName = s.Work.Title
+            });
+            return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+            {
+                IsSucceed = true,
+                Message = "",
+                Data = result
+            });
+        }
+
+
         //GET : api/GetServing/0
         [HttpGet("{servingId}")]
         public async Task<ActionResult> GetServingById(string servingId)
@@ -101,7 +128,7 @@ namespace Sude.Api.Controllers
             if (!resultWork.IsSucceed)
                 return Ok(new ResultSetDto<ServingEditDtoModel>()
                 {
-                    IsSucceed = false,
+                    IsSucceed = false,                    
                     Message = resultWork.Message,
                     Data = null
                 });

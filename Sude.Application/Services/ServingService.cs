@@ -18,6 +18,9 @@ namespace Sude.Application.Services
         {
             this._servingRepository = servingRepository;
         }
+
+       
+
         public ResultSet<IEnumerable<ServingInfo>> GetServings()
         {
             return new ResultSet<IEnumerable<ServingInfo>>()
@@ -113,6 +116,17 @@ namespace Sude.Application.Services
             }
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
+
+        public async Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsByWorkIdAsync(Guid workId)
+        {
+            return new ResultSet<IEnumerable<ServingInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _servingRepository.GetServingsByWorkIdAsync(workId)
+            };
+        }
+
 
         public async Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsAsync()
         {

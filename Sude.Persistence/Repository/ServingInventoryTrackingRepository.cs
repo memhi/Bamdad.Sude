@@ -27,11 +27,11 @@ namespace Sude.Persistence.Repository
             return await _ServingInventoryTrackingRepository.GetAsync(null,null, "ServingInventoryTrackingType");
         }
         
-        public bool AddServingInventoryTracking(ServingInventoryTrackingInfo ServingInventoryTracking)
+        public bool AddServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking)
         {
             try
             {
-                _ServingInventoryTrackingRepository.Insert(ServingInventoryTracking);
+                _ServingInventoryTrackingRepository.Insert(servingInventoryTracking);
             }
             catch
             {
@@ -40,11 +40,11 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public bool EditServingInventoryTracking(ServingInventoryTrackingInfo ServingInventoryTracking)
+        public bool EditServingInventoryTracking(ServingInventoryTrackingInfo servingInventoryTracking)
         {
             try
             {
-                _ServingInventoryTrackingRepository.Update(ServingInventoryTracking);
+                _ServingInventoryTrackingRepository.Update(servingInventoryTracking);
             }
             catch
             { 
@@ -53,9 +53,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public async Task<ServingInventoryTrackingInfo> GetServingInventoryTrackingByIdAsync(Guid ServingInventoryTrackingId)
+        public async Task<ServingInventoryTrackingInfo> GetServingInventoryTrackingByIdAsync(Guid servingInventoryTrackingId)
         {
-            return await _ServingInventoryTrackingRepository.GetByIdAsync(w=>w.Id==ServingInventoryTrackingId,"ServingInventoryTrackingType");// (w => w.Id == ServingInventoryTrackingId, null, "ServingInventoryTrackingType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
+            return await _ServingInventoryTrackingRepository.GetByIdAsync(w=>w.Id==servingInventoryTrackingId,"ServingInventoryTrackingType");// (w => w.Id == ServingInventoryTrackingId, null, "ServingInventoryTrackingType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
         }
 
         public void Save()
@@ -75,17 +75,17 @@ namespace Sude.Persistence.Repository
 
         
 
-        public bool DeleteServingInventoryTracking(Guid ServingInventoryTrackingId)
+        public bool DeleteServingInventoryTracking(Guid servingInventoryTrackingId)
         {
-            var ServingInventoryTracking = GetServingInventoryTrackingById(ServingInventoryTrackingId);
-            if (ServingInventoryTracking == null)
+            var servingInventoryTracking = GetServingInventoryTrackingById(servingInventoryTrackingId);
+            if (servingInventoryTracking == null)
                 return false;
             try
             {
 
-                ServingInventoryTracking.IsRemoved = true;
-                ServingInventoryTracking.RemoveDate = DateTime.Now;
-                _ServingInventoryTrackingRepository.Update(ServingInventoryTracking);
+                servingInventoryTracking.IsRemoved = true;
+                servingInventoryTracking.RemoveDate = DateTime.Now;
+                _ServingInventoryTrackingRepository.Update(servingInventoryTracking);
             }
             catch
             {
@@ -94,9 +94,9 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
-        public ServingInventoryTrackingInfo GetServingInventoryTrackingById(Guid ServingInventoryTrackingId)
+        public ServingInventoryTrackingInfo GetServingInventoryTrackingById(Guid servingInventoryTrackingId)
         {
-            return _ServingInventoryTrackingRepository.GetById(ServingInventoryTrackingId);
+            return _ServingInventoryTrackingRepository.GetById(servingInventoryTrackingId);
         }
       
     }

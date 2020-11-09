@@ -12,10 +12,15 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 ServiceDescriptor.Scoped<IUserRepository, UserRepository>(),
                 ServiceDescriptor.Scoped<IServingRepository, ServingRepository>(),
-                 ServiceDescriptor.Scoped<IWorkTypeRepository, WorkTypeRepository>(),
-                    ServiceDescriptor.Scoped<IWorkRepository, WorkRepository>(),
-                       ServiceDescriptor.Scoped<IInventoryTypeRepository, InventoryTypeRepository>(),
-                            ServiceDescriptor.Scoped<IServingInventoryRepository, ServingInventoryRepository>()
+                ServiceDescriptor.Scoped<IWorkTypeRepository, WorkTypeRepository>(),
+                ServiceDescriptor.Scoped<IWorkRepository, WorkRepository>(),
+                ServiceDescriptor.Scoped<IInventoryTypeRepository, InventoryTypeRepository>(),
+                ServiceDescriptor.Scoped<IServingInventoryRepository, ServingInventoryRepository>(),
+                ServiceDescriptor.Scoped<IOrderRepository, OrderRepository>(),
+                ServiceDescriptor.Scoped<IOrderDetailRepository, OrderDetailRepository>(),
+                  ServiceDescriptor.Scoped<ICustomerRepository, CustomerRepository>(),
+                    ServiceDescriptor.Scoped<IAddressRepository, AddressRepository>()
+
 
             });
 

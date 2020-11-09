@@ -22,6 +22,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()
         {
+           
             return await _orderRepository.GetAsync();
         }
         public bool AddOrder(OrderInfo order)
@@ -52,7 +53,8 @@ namespace Sude.Persistence.Repository
 
         public async Task<OrderInfo> GetOrderByIdAsync(Guid orderId)
         {
-            return await _orderRepository.GetByIdAsync(orderId);
+            return await _orderRepository.GetByIdAsync(o=>o.Id== orderId,"OrderDetail,Customer,Work");
+                
         }
 
         public void Save()
@@ -93,7 +95,7 @@ namespace Sude.Persistence.Repository
 
         public OrderInfo GetOrderById(Guid orderId)
         {
-            return _orderRepository.GetById(orderId);
+            return _orderRepository.GetById(o => o.Id == orderId, "OrderDetail,Customer,Work");
         }
     }
 }
