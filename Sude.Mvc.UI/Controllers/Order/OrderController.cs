@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using Sude.Dto.DtoModels.Account;
 using Sude.Dto.DtoModels.Serving;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Sude.Mvc.UI.Controllers.Order
 {
@@ -84,7 +86,7 @@ namespace Sude.Mvc.UI.Controllers.Order
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
       .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + CurrentWorkId);
 
-            SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title", CurrentWorkId);
+            SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
             ViewData["Customers"] = selectLists;
 
             return PartialView();
@@ -107,27 +109,39 @@ namespace Sude.Mvc.UI.Controllers.Order
                 });
             }
 
-            OrderNewDtoModel orderSession = HttpContext.Session.GetObject<OrderNewDtoModel>("Order");
-            if(orderSession == null)
-            HttpContext.Session.SetObject("Order", request);
-            else
+
+            IEnumerable<OrderDetailNewDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailNewDtoModel>>("OrderDetails");
+            if(orderDetailNewDtoSession==null)
             {
-                orderSession.Customer = request.Customer;
-                orderSession.Description = request.Description;
-                orderSession.OrderDate = request.OrderDate;
-                orderSession.OrderDetails = request.OrderDetails;
-                orderSession.OrderId = request.OrderId;
-                orderSession.OrderNumber = request.OrderNumber;
-                orderSession.WorkId = request.WorkId;
-                orderSession.CustomerId = request.CustomerId;
-                HttpContext.Session.SetObject("Order", orderSession);
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = "لطفا اطلاعات جزئیات سفارش را وارد کنید."
+                });
+
             }
 
-            //ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
-            //    .GetApiAsync<ResultSetDto<OrderNewDtoModel>>(ApiAddress.Order.AddOrder, request);
+            List<OrderDetailNewDtoModel> orderDetails = orderDetailNewDtoSession.ToList();
+            if (orderDetails != null)
+            {
+                request.OrderDetails = orderDetails;
+            }
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            request.WorkId = CurrentWorkId;
+
+            ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<OrderNewDtoModel>>(ApiAddress.Order.AddOrder, request);
+            if(!result.IsSucceed)
+            {
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = result.Message
+                });
 
 
-            return Json(orderSession);
+            }
+            return Json(result);
 
         }
 

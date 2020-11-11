@@ -23,7 +23,7 @@ namespace Sude.Persistence.Repository
         public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()
         {
            
-            return await _orderRepository.GetAsync();
+            return await _orderRepository.GetAsync(null,null,"Work,Customer");
         }
         public bool AddOrder(OrderInfo order)
         {

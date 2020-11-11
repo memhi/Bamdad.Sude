@@ -56,7 +56,7 @@ namespace Sude.Api.Controllers
                     OrderDate = o.OrderDate,
                     SumPrice = o.SumPrice,
                     Description = o.Description,
-                   
+
 
                 });
                 return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
@@ -89,11 +89,11 @@ namespace Sude.Api.Controllers
                 var result = resultSet.Data.Select(o => new OrderDetailDetailDtoModel()
                 {
                     OrderId = o.OrderId.ToString(),
-                 Count=o.Count,
-                  OrderDetailId=o.Id.ToString(),
-                   Price=o.Price,
-                   ServingId=o.ServingId.ToString(),
-                    ServingTitle=o.Serving.Title,                 
+                    Count = o.Count,
+                    OrderDetailId = o.Id.ToString(),
+                    Price = o.Price,
+                    ServingId = o.ServingId.ToString(),
+                    ServingTitle = o.Serving.Title,
                     Description = o.Description,
 
 
@@ -199,10 +199,10 @@ namespace Sude.Api.Controllers
                 }
 
                 Guid CID, OID;
-                if (orderdto.Customer != null && string.IsNullOrEmpty(orderdto.Customer.CustomerId))
+                if (orderdto.Customer != null && !string.IsNullOrEmpty(orderdto.Customer.CustomerId))
                 {
                     CustomerInfo customer = new CustomerInfo();
-                   
+
                     customer.IsActive = true;
                     customer.NationalCode = orderdto.Customer.NationalCode;
                     customer.Phone = orderdto.Customer.Phone;
@@ -219,7 +219,7 @@ namespace Sude.Api.Controllers
                 }
                 else
                 {
-                    CID = Guid.Parse(orderdto.Customer.CustomerId);
+                    CID = Guid.Parse(orderdto.CustomerId);
 
                 }
 
@@ -245,7 +245,8 @@ namespace Sude.Api.Controllers
 
                 OID = resultorder.Data.Id;
                 orderdto.OrderId = OID.ToString();
-                orderdto.Customer.CustomerId = CID.ToString();
+                if (orderdto.Customer != null)
+                    orderdto.Customer.CustomerId = CID.ToString();
                 if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
                 {
 
@@ -324,7 +325,7 @@ namespace Sude.Api.Controllers
             }
 
 
-          
+
 
 
             var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
@@ -360,9 +361,9 @@ namespace Sude.Api.Controllers
                 Data = orderDTO
             });
 
-         
 
- 
+
+
 
 
         }
