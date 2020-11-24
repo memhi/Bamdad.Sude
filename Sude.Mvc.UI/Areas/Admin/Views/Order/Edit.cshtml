@@ -1,0 +1,219 @@
+﻿
+@model Sude.Dto.DtoModels.Order.OrderEditDtoModel
+
+
+<form id="frmEdit">
+    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+    <link href="~/css/select2.css" rel="stylesheet" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h2 class="box-title">تغییر اطلاعات سفارش</h2>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="box box-primary   bg-gray-light">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">اطلاعات سفارش</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>خدمات گیرنده</label>
+                                            </div>
+                                            <div class="input-group  col-md-9">
+
+                                                <select id="drpCustomers" asp-for="CustomerId"
+                                                        class="form-control"
+                                                        asp-items="(SelectList)@ViewData["Customers"]">
+                                                    <option>Please select customer</option>
+
+                                                </select>
+
+                                                <div class="input-group-btn">
+                                                    <a id="btnSaveNewOrderCustomer" onclick="SaveNewOrderCustomer()" class="btn btn-success">جدید</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>تاریخ سفارش</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>شماره سفارش</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
+                                                <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>توضیحات</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input id="txtDesc" asp-for="Description" class="form-control" />
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="divOrderDetails" class="box box-primary   bg-gray-light">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">اطلاعات جزئیات سفارش</h3>
+
+
+                            </div>
+                            <div class="box-body">
+                                <div id="adddetail" class="row">
+                                    @*@await Component.InvokeAsync("AddDetail");*@
+
+                                </div>
+                                <div class="row" id="odetails"></div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="box box-primary   bg-gray-light">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
+
+
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6">ثبت نهایی سفارش</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <a class="btn btn-default" onclick="ToList()">بازگشت</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="col-sm-6">
+        <script>
+            $('#txtOrderDate').MdPersianDateTimePicker({
+                targetTextSelector: '#txtOrderDate',
+                targetDateSelector: '#OrderDateVal',
+                dateFormat: 'yyyy-MM-dd HH:mm:ss',
+                isGregorian: false,
+                enableTimePicker: true
+            });
+        </script>
+
+    </div>
+
+
+</form>
+<script src="~/js/select2.js">
+</script>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#odetails").load("OrderDetail/List");
+        $("#adddetail").load("OrderDetail/Add");
+        $('#drpCustomers').select2();
+
+    });
+
+    //$(function () {
+    //    $.validator.unobtrusive.parse($('#frmEdit'));
+    //});
+    function EditOrder() {
+        $.validator.unobtrusive.parse($('#frmEdit'));
+        var isValid = $('#frmEdit').valid();
+        if (!isValid)
+            return;
+        var order = {
+            OrderNumber: $("#txtOrderNumber").val(),
+            OrderDate: $("#OrderDateVal").val(),
+            Description: $("#txtDesc").val(),
+            CustomerId: $("#drpCustomers").val(),
+            CustomerName: $("#drpCustomers option:selected").text()
+
+        }
+        $.ajax({
+            url: "Order/Edit",
+            type: "Post",
+            data: order
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#myModal").modal("hide");
+                $("#orderView").load("Order/List");
+            }
+            else {
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+    function ToList() {
+        $("#orderView").load("Order/List");
+    }
+</script>

@@ -1,0 +1,138 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order
+@model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
+
+
+<div class="input-group">
+    <input type="text" name="message" placeholder="Type words ..." class="form-control">
+    <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+    </span>
+</div>
+<div class="row">
+    <div class="col-m-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">فهرست  سفارشات</h3>
+
+                <div class="box-tools">
+                  
+
+                      
+                            <a id="btnAdd" class="btn btn-block btn-success">سفارش جدید</a>
+                     
+                    </div>
+         
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tr>
+                        <td>#</td>
+                        <th>شماره سفارش</th>
+                        <th>تاریخ</th>
+                        <th>عنوان کسب و کار</th>
+
+                        <th>عملیات</th>
+
+                    </tr>
+                    @{ 
+                        int i = 1;
+                        @foreach (var item in Model.Data)
+                    {
+
+                <tr id="tr_@item.OrderId" role="row" class="odd">
+                    <td>@(i++)</td>
+                    <td>@item.OrderNumber</td>
+                    <td>@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                    <td>@item.WorkName</td>
+
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId')">ویرایش</button>
+                        <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
+                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
+                    </td>
+                </tr>
+                    }
+                        }
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+
+
+
+
+
+
+
+
+ 
+
+<script>
+    $("#btnAdd").click(function () {
+        $("#orderView").load("Order/Add");
+    });
+    function DeleteOrder(orderId) {
+        swal.fire({
+            title: 'حذف سفارش',
+            text: "کاربر گرامی از حذف سفارش مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7cacbe',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله ، سفارش حذف شود',
+            cancelButtonText: 'خیر'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: "Order/Delete/" + orderId,
+                    type: "Get",
+                    success: function (result) {
+                        if (result.isSucceed == true) {
+                            swal.fire(
+                                'موفق!',
+                                result.message,
+                                'success'
+                            ).then(function (isConfirm) {
+                                $("#tr_" + orderId).addClass("danger");
+                                $("#tr_" + orderId).hide('slow');
+                                $("#orderView").load("Order/List");
+                            });
+                        }
+                        else {
+                            swal.fire(
+                                'هشدار!',
+                                result.message,
+                                'warning'
+                            );
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+        })
+    }
+    function ShowEditOrderPop(orderId) {
+        $("#orderView").load("Order/Edit/" + orderId);
+        //$.get("/Order/Edit/" + orderId, function (result) {
+        //    $("#myModal").modal('show');
+0        //    $("#myModalBody").html(result);
+        //});
+    }
+    function ShowEditOrder(orderId) {
+        $("#orderView").load("Order/Edit/" + orderId);
+    }
+    function ShowNewPageModalDetailOrder(orderId) {
+        $.get("Order/Detail/" + orderId, function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("جزئیات  سفارش");
+            $("#myModalBody").html(result);
+            
+        });
+    }
+</script>

@@ -1,0 +1,157 @@
+﻿@model Sude.Dto.DtoModels.Serving.ServingNewDtoModel
+  
+<form id="frmAdd">
+
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">ایجاد خدمت</h3>
+
+
+            </div>
+            <div class="box-body">
+
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label">عنوان</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtTitle" asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label">قیمت</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtPrice" asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label">توضیحات</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtDesc" asp-for="Desc" class="form-control" />
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label">کسب و کار</label>
+                        </div>
+                        <div class="col-md-10">
+
+                            <select id="drpServingWorks" asp-for="WorkId"
+                                    class="form-control"
+                                    asp-items="(SelectList)@ViewData["Works"]">
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">رهگیری موجودی</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="cbHasInventoryTracking" type="checkbox" asp-for="HasInventoryTracking" />
+                         
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">فعال</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="cbIsActive" type="checkbox" asp-for="IsActive" />
+                         
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            <div class="box-footer with-border">
+
+                <div class="form-group" style="text-align:center">
+                    <div class="col-md-2">
+                        <a id="btnSaveNewServing" onclick="SaveNewServing()" class="btn btn-success">ثبت</a>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-default" onclick="ToList()">بازگشت</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+    
+    
+    
+    
+</form>
+    <script>
+
+
+
+    function SaveNewServing() {
+        $.validator.unobtrusive.parse($('#frmAdd'));
+
+        var isValid = $('#frmAdd').valid();
+        if (!isValid)
+            return;
+      
+        var serving = {
+            Title: $("#txtTitle").val(),
+            Price: $("#txtPrice").val(),
+            Desc: $("#txtDesc").val(),
+            IsActive: $("#cbIsActive").is(":checked"),
+            HasInventoryTracking: $("#cbHasInventoryTracking").is(":checked"),
+            WorkId: $("#drpServingWorks").val()
+        }
+        $.ajax({
+            url: "Serving/Add",
+            type: "Post",
+            data: serving
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#servingView").load("Serving/List");
+            }
+            else {
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+
+    function ToList() {
+        $("#servingView").load("Serving/List");
+    }
+
+
+    </script>

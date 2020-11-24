@@ -19,7 +19,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IOrderRepository, OrderRepository>(),
                 ServiceDescriptor.Scoped<IOrderDetailRepository, OrderDetailRepository>(),
                   ServiceDescriptor.Scoped<ICustomerRepository, CustomerRepository>(),
-                    ServiceDescriptor.Scoped<IAddressRepository, AddressRepository>()
+                    ServiceDescriptor.Scoped<IAddressRepository, AddressRepository>(),
+                      ServiceDescriptor.Scoped<IBlogRepository, BlogRepository>(),
+                        ServiceDescriptor.Scoped<IBlogCommentRepository, BlogCommentRepository>(),
+                          ServiceDescriptor.Scoped<INewsRepository, NewsRepository>(),
+                            ServiceDescriptor.Scoped<INewsCommentRepository, NewsCommentRepository>()
+
 
 
             });

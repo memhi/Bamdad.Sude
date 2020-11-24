@@ -28,6 +28,12 @@ namespace Sude.Persistence.Repository
            
             return await _CustomerRepository.GetAsync();
         }
+        public async Task<IEnumerable<CustomerInfo>> GetCustomersByNameAsync(string title,Guid workId)
+        {
+
+            return await _CustomerRepository.GetAsync(c=>c.Title==title && c.WorkId==workId);
+        }
+
         public bool AddCustomer(CustomerInfo customer)
         {
             try

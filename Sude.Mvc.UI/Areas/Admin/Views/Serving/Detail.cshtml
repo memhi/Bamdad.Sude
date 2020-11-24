@@ -1,0 +1,62 @@
+﻿@model Sude.Dto.DtoModels.Serving.ServingDetailDtoModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detail</title>
+</head>
+<body>
+
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-3">
+            عنوان
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-3">
+            قیمت
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-3">
+            کسب و کار
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.WorkName)
+        </dd>
+        <dt class="col-sm-3">
+            توضیحات
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Desc)
+        </dd>
+        <dt class="col-sm-3">
+            رهگیری موجودی
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.HasInventoryTracking)
+        </dd>
+        <dt class="col-sm-3">
+            فعال
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+    </dl>
+</div>
+ 
+</body>
+</html>

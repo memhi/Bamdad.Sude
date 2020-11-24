@@ -1,0 +1,107 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order
+@model IEnumerable<OrderDetailDetailDtoModel>
+ 
+
+
+    <div class="box box-info">
+   
+        <div class="box-body">
+            @if (Model != null)
+            {
+                int i = 1;
+                double sum = 0;
+
+               
+
+                 
+
+                    @foreach (var item in Model)
+                    {
+                        sum += (item.Price * item.Count);
+                        <div id="tr_@item.OrderDetailId" class="row">
+                            <div class="col-md-1"><label></label>@(i++)</div>
+                            <div class="col-md-4"><label> @item.ServingName</label></div>
+                            <div class="col-md-2"><label> @item.Price.ToString("0,0")</label></div>
+                            <div class="col-md-2"><label> @item.Count.ToString("0,0")</label></div>
+                            <div class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></div>
+                            <div class="col-md-1">
+
+                                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')">حذف</a>
+
+                            </div>
+                        </div>
+                                            }
+                
+                <div class="row">
+                    <div class="col-md-4"><label>مجموع</label></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <label>
+                            @sum.ToString("0,0")
+                        </label>
+
+
+
+                    </div>
+                </div>
+            }
+        </div></div> 
+
+            <script>
+
+                function DeleteOrderDetail(detailid, serving) {
+
+                    swal.fire({
+                        title: 'حذف جزئیات',
+                        text: 'کاربر گرامی از حذف جزئیات مطمئن هستید؟',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#7cacbe',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'بله ، جزئیات حذف شود',
+                        cancelButtonText: 'خیر'
+                    }).then((result) => {
+                        if (result.value) {
+
+                            $.ajax({
+                                url: "OrderDetail/Delete",
+                                type: "Post",
+                                data: { id: detailid, servingId: serving },
+                                success: function (result) {
+                                    if (result.isSucceed == true) {
+                                        swal.fire(
+                                            'موفق!',
+                                            result.message,
+                                            'success'
+                                        ).then(function (isConfirm) {
+                                            $("#tr_" + detailid).addClass("danger");
+                                            $("#tr_" + detailid).hide('slow');
+                                            //location.reload();
+                                        });
+                                        $("#odetails").load("OrderDetail/List");
+                                    }
+                                    else {
+
+                                        swal.fire(
+                                            'هشدار!',
+                                            result.message,
+                                            'warning'
+                                        );
+
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                    alert(request.responseText);
+                                }
+
+                            });
+
+                        }
+                    })
+                }
+
+
+
+            </script>

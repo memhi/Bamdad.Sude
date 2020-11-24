@@ -17,5 +17,11 @@ namespace Sude.Persistence.Repository
              rowCount = entities.Count();          
             return entities.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
+
+        public static IEnumerable<TEntity> ToTake<TEntity>(this IEnumerable<TEntity> entities, int rowCount)
+        {
+            return   entities.Take(rowCount);
+
+        }
     }
 }

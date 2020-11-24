@@ -1,0 +1,123 @@
+﻿@model Sude.Dto.DtoModels.Order.OrderDetailDtoModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <title>Detail</title>
+</head>
+<body>
+
+    <section class="content">
+        <div class="box box-info">
+
+            <div class="box-body">
+                <div class="row">
+
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label>خدمت گیرنده</label>
+                            </div>
+                            <div class="col-md-6">
+                                @Model.Customer.Title
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label>شماره سفارش</label>
+                            </div>
+                            <div class="col-md-6">
+                                @Model.OrderNumber
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label asp-for="OrderDate">تاریخ سفارش</label>
+                            </div>
+                            <div class="col-md-6">
+                                @Model.OrderDate.ToLocalizationDateTime("g")
+
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label asp-for="Description">توضیحات</label>
+                                </div>
+                                <div class="col-md-6">
+                                    @Model.Description
+
+                                </div>
+
+                            </div>
+                        </div>
+                 
+                </div>
+                <div class="row">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <td>#</td>
+                                <th>عنوان</th>
+                                <th>قیمت</th>
+                                <th>تعداد</th>
+
+                                <th>
+                                مجموع</th>
+
+                            </tr>
+
+                            @{
+                                int i = 1;
+                                double sum = 0;
+
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    sum +=(item.Price * item.Count);
+                                    <tr id="tr_@item.OrderDetailId">
+                                        <td class="col-md-1">@(i++)</td>
+                                        <td class="col-md-5"><label> @item.ServingName</label></td>
+                                        <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
+                                        <td class="col-md-2"><label> @item.Count.ToString("0,0")</label></td>
+                                        <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
+
+
+                                    </tr>
+                                }
+                        <tr class="text-bold">
+                            <td class="col-md-1"></td>
+                            <td class="col-md-5"><label> مجموع</label></td>
+                            <td class="col-md-2"> </td>
+                           
+                            <td class="col-md-4"><label> @sum.ToString("0,0")</label></td>
+                          
+                        </tr>
+
+                            }
+                            </table></div>
+                    </div>
+                </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -184,17 +184,20 @@ namespace Sude.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Content.ContentCommentInfo", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Content.BlogCommentInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BlogCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlogId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ContentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
@@ -214,17 +217,19 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentId");
+                    b.HasIndex("BlogCommentId");
 
-                    b.ToTable("ContentComments");
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("BlogComments");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Content.ContentInfo", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Content.BlogInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -233,19 +238,16 @@ namespace Sude.Persistence.Migrations
                     b.Property<bool>("AllowComment")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<string>("FullBody")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsNews")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublish")
@@ -269,7 +271,7 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ShortContent")
+                    b.Property<string>("ShortBody")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -286,7 +288,117 @@ namespace Sude.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contents");
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Content.NewsCommentInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BlogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("NewsCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NewsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("NewsCommentId");
+
+                    b.ToTable("NewsComments");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Content.NewsInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AllowComment")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublish")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaKeywords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ShortBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetailInfo", b =>
@@ -656,15 +768,36 @@ namespace Sude.Persistence.Migrations
                     b.Navigation("Work");
                 });
 
-            modelBuilder.Entity("Sude.Domain.Models.Content.ContentCommentInfo", b =>
+            modelBuilder.Entity("Sude.Domain.Models.Content.BlogCommentInfo", b =>
                 {
-                    b.HasOne("Sude.Domain.Models.Content.ContentInfo", "Content")
+                    b.HasOne("Sude.Domain.Models.Content.BlogCommentInfo", "BlogComment")
                         .WithMany()
-                        .HasForeignKey("ContentId")
+                        .HasForeignKey("BlogCommentId");
+
+                    b.HasOne("Sude.Domain.Models.Content.BlogInfo", "Blog")
+                        .WithMany()
+                        .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Content");
+                    b.Navigation("Blog");
+
+                    b.Navigation("BlogComment");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Content.NewsCommentInfo", b =>
+                {
+                    b.HasOne("Sude.Domain.Models.Content.NewsInfo", "Blog")
+                        .WithMany()
+                        .HasForeignKey("BlogId");
+
+                    b.HasOne("Sude.Domain.Models.Content.NewsCommentInfo", "NEwsComment")
+                        .WithMany()
+                        .HasForeignKey("NewsCommentId");
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("NEwsComment");
                 });
 
             modelBuilder.Entity("Sude.Domain.Models.Order.OrderDetailInfo", b =>

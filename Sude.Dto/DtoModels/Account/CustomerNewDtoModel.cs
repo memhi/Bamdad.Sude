@@ -15,6 +15,8 @@ namespace Sude.Dto.DtoModels.Account
         public string NationalCode { get; set; }
         public string Phone { get; set; }
 
+        public string WorkId { get; set; }
+
 
     }
 }

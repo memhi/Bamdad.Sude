@@ -1,0 +1,188 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Serving
+@model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
+
+
+
+
+<div class="input-group">
+    <input type="text" name="message" placeholder="Type words ..." class="form-control">
+    <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+    </span>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">فهرست  اقلام و خدمات</h3>
+
+                <div class="box-tools">
+                  
+                            <a id="btnAdd" class="btn btn-block btn-success">خدمت جدید</a>
+                   
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tr>
+                        <td>#</td>
+                        <th>عنوان</th>
+                        <th>عنوان کسب و کار</th>
+                        <th>قیمت</th>
+                        <th>وضعیت</th>
+                        <th>کنترل موجودی</th>
+                        <th>توضیحات</th>
+                        <th>عملیات</th>
+
+
+                    </tr>
+                    @{ 
+                        int i = 1;
+                        @foreach (var item in Model.Data)
+                    {
+                <tr id="tr_@item.ServingId" role="row" class="odd">
+                    <td>@(i++)</td>
+                    <td>@item.Title</td>
+                    <td>@item.WorkName</td>
+                    <td>@item.Price</td>
+
+                    @if (item.IsActive)
+                    {
+                        <td><span class="label label-success">فعال</span></td>
+                    }
+                    else
+                    {
+                        <td><span class="label label-danger">غیرفعال</span></td>
+
+                    }
+
+                    @if (item.HasInventoryTracking)
+                    {
+                        <td><span class="label label-success">دارد</span></td>
+                    }
+                    else
+                    {
+                        <td><span class="label label-danger">ندارد</span></td>
+
+                    }
+
+
+
+                    <td>@item.Desc</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
+                        <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
+                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
+                    </td>
+                </tr>
+
+                    }}
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<script>
+    $("#btnAdd").click(function () {
+        $("#servingView").load("Serving/Add");
+    });
+
+    function DeleteServing(servingId) {
+
+        swal.fire({
+            title: 'حذف سرویس',
+            text: "کاربر گرامی از حذف سرویس مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7cacbe',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله ، سرویس حذف شود',
+            cancelButtonText: 'خیر'
+        }).then((result) => {
+            if (result.value) {
+
+                $.ajax({
+                    url: "Serving/Delete/" + servingId,
+                    type: "Get",
+                    success: function (result) {
+                        if (result.isSucceed == true) {
+                            swal.fire(
+                                'موفق!',
+                                result.message,
+                                'success'
+                            ).then(function (isConfirm) {
+                                $("#tr_" + servingId).addClass("danger");
+                                $("#tr_" + servingId).hide('slow');
+                            
+                            });
+                            $("#servingView").load("Serving/List");
+                        }
+                        else {
+
+                            swal.fire(
+                                'هشدار!',
+                                result.message,
+                                'warning'
+                            );
+
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+
+                });
+
+            }
+        })
+    }
+
+
+
+    function ShowEditServingPop(ServingId) {
+        $.get("Serving/Edit/" + ServingId, function (result) {
+
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("ویرایش خدمات");
+            $("#myModalBody").html(result);
+        });
+    }
+
+
+
+
+    function ShowEditServing(servingId) {
+        $("#servingView").load("Serving/Edit/" + servingId);
+
+    }
+
+
+    function ShowNewPageModalDetailServing(ServingId) {
+
+
+        $.get("Serving/Detail/" + ServingId, function (result) {
+
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("جزئیات خدمات");
+            $("#myModalBody").html(result);
+        });
+    }
+
+</script>

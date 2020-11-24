@@ -52,8 +52,8 @@ namespace Sude.Application.Services
         {
 
 
-          
- 
+        
+            
             _CustomerRepository.AddCustomer(customer);
             _CustomerRepository.Save();
            
@@ -123,7 +123,18 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet<CustomerInfo>> AddCustomerAsync(CustomerInfo customer)
         {
-            
+            IEnumerable<CustomerInfo> customers = await _CustomerRepository.GetCustomersByNameAsync(customer.Title, customer.WorkId);
+
+            if(customers!=null && customers.Count()>0)
+            {
+                return new ResultSet<CustomerInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "عنوان سفارش گیرنده تکراری است",
+                    Data = null
+                };
+
+            }
 
             _CustomerRepository.AddCustomer(customer);
 
@@ -141,7 +152,21 @@ namespace Sude.Application.Services
 
         public async Task<ResultSet> EditCustomerAsync(CustomerInfo customer)
         {
-            
+
+            IEnumerable<CustomerInfo> customers = await _CustomerRepository.GetCustomersByNameAsync(customer.Title, customer.WorkId);
+
+            if (customers != null && customers.Count() > 0 && customers.Where(c=>c.Id!=customer.Id).Count()>0)
+            {
+                
+                return new ResultSet<CustomerInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "عنوان سفارش گیرنده تکراری است",
+                    Data = null
+                };
+
+            }
+
             if (!_CustomerRepository.EditCustomer(customer))
                 return new ResultSet() { IsSucceed = false, Message = "Customer Not Edited" };
 

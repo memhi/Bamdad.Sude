@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
- 
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
  
- 
+
+
 namespace Sude.Mvc.UI.ApiManagement
 {
     public class Api
@@ -81,7 +76,26 @@ namespace Sude.Mvc.UI.ApiManagement
         public class Customer
         {
             public static readonly string GetCustomersByWorkId = ServerAddress + "/api/Customer/GetCustomersByWorkId/";
-           
+            public static readonly string AddCustomer = ServerAddress + "/api/Customer/AddCustomer/";
+        }
+
+        public class News
+        {
+            public static readonly string GetNews = ServerAddress + "/api/News/GetNews/";
+            public static readonly string GetHomePageNews = ServerAddress + "/api/News/GetHomePageNews/";
+            public static readonly string GetNewsById = ServerAddress + "/api/News/GetNewsById/";
+            public static readonly string EditNews = ServerAddress + "/api/News/EditNews/";
+            public static readonly string AddNews = ServerAddress + "/api/News/AddNews/";
+            public static readonly string DeleteNews = ServerAddress + "/api/News/DeleteNews/";
+        }
+        public class Blog
+        {
+            public static readonly string GetBlogs = ServerAddress + "/api/Blog/GetBlogs/";
+            public static readonly string GetHomePageBlogs = ServerAddress + "/api/Blog/GetHomePageBlogs/";
+            public static readonly string GetBlogById = ServerAddress + "/api/Blog/GetBlogById/";
+            public static readonly string EditBlog = ServerAddress + "/api/Blog/EditBlog/";
+            public static readonly string AddBlog = ServerAddress + "/api/Blog/AddBlog/";
+            public static readonly string DeleteBlog = ServerAddress + "/api/Blog/DeleteBlog/";
         }
         public class Order
         {

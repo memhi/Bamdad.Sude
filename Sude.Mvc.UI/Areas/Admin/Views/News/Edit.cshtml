@@ -1,0 +1,239 @@
+﻿
+@model Sude.Dto.DtoModels.Content.NewsEditDtoModel
+
+<h4>ویرایش مقاله</h4>
+<hr />
+<script src="~/lib/tinymce/tinymce.min.js"></script>
+<form id="frmEdit">
+    <div class="row">
+        <div class="col-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtTitle" asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group" style="height:350px">
+                <label asp-for="ShortBody" class="control-label"></label>
+                <div class="col-md-10">
+                    <textarea id="txtShortBody" asp-for="ShortBody" class="form-control"></textarea>
+                    <span asp-validation-for="ShortBody" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group" style="height:350px">
+                <label asp-for="FullBody" class="control-label"></label>
+                <div class="col-md-10">
+                    <textarea id="txtFullBody" asp-for="FullBody" type="text" class="form-control"></textarea>
+                    <span asp-validation-for="FullBody" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtDescription" asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="chkIsActive" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="chkIsPublish" asp-for="IsPublish" /> @Html.DisplayNameFor(model => model.IsPublish)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="chkAllowComment" asp-for="AllowComment" /> @Html.DisplayNameFor(model => model.AllowComment)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaTitle" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtMetaTitle" asp-for="MetaTitle" class="form-control" />
+                    <span asp-validation-for="MetaTitle" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaKeywords" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtMetaKeywords" asp-for="MetaKeywords" class="form-control" />
+                    <span asp-validation-for="MetaKeywords" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="MetaDescription" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtMetaDescription" asp-for="MetaDescription" class="form-control" />
+                    <span asp-validation-for="MetaDescription" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtTags" asp-for="Tags" class="form-control" />
+                    <span asp-validation-for="Tags" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtStartDate" asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="EndDate" class="control-label"></label>
+                <div class="col-md-10">
+                    <input id="txtEndDate" asp-for="EndDate" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <a id="btnSaveNewBlog" onclick="EditNews()" class="btn btn-success col-md-8">ثبت خبر جدید</a>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+    </div>
+</form>
+
+
+
+<script>
+
+    $(function () {
+        $.validator.unobtrusive.parse($('#frmEdit'));
+
+
+    });
+    //(function ($) {
+    //    "use strict";
+    //    $(document).ready(function () {
+    //        tinymce.init({
+    //            selector: 'textarea'
+    //        });
+
+    //    });
+    //})(this.jQuery);
+       $(document).ready(function () {
+             var defaultShortBodyEditorSettings =
+             {
+                 selector: "#txtShortBody",
+            fontsize_formats: "8pt 9pt 10pt 11pt 12pt 26pt 36pt",
+            height: 200,
+            width: '100%',
+            autoresize_min_height: 200,
+            autoresize_max_height: 200,
+            plugins: [
+                "advlist autolink autoresize directionality lists link image charmap preview anchor",
+                "searchreplace visualblocks code fullscreen textcolor",
+                "insertdatetime media table contextmenu paste@(true ? " fullpage" : null)"
+            ],
+            toolbar: "ltr rtl | insertfile undo redo | styleselect | fontselect | fontsizeselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            relative_urls: false,
+
+            entity_encoding: "raw"
+
+
+        };
+
+
+
+
+
+                 var defaultFullBodyEditorSettings =
+             {
+                     selector: "#txtFullBody",
+            fontsize_formats: "8pt 9pt 10pt 11pt 12pt 26pt 36pt",
+            height: 200,
+            width: '100%',
+            autoresize_min_height: 200,
+            autoresize_max_height: 200,
+            plugins: [
+                "advlist autolink autoresize directionality lists link image charmap preview anchor",
+                "searchreplace visualblocks code fullscreen textcolor",
+                "insertdatetime media table contextmenu paste@(true ? " fullpage" : null)"
+            ],
+            toolbar: "ltr rtl | insertfile undo redo | styleselect | fontselect | fontsizeselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            relative_urls: false,
+
+            entity_encoding: "raw"
+
+
+    };
+
+
+
+    tinyMCE.init(defaultShortBodyEditorSettings);
+
+    tinyMCE.init(defaultFullBodyEditorSettings);
+       });
+
+    function EditNews() {
+        $.validator.unobtrusive.parse($('#frmEdit'));
+
+        var isValid = $('#frmEdit').valid();
+        if (!isValid)
+            return;
+        var News = {
+            NewsId: $("#txtNewsId").val(),
+            Title: $("#txtTitle").val(),
+            Description: $("#txtDescription").val(),
+            ShortBody: tinyMCE.get('txtShortBody').getContent(),
+            FullBody: tinyMCE.get('txtFullBody').getContent(),
+            MetaTitle: $("#txtMetaTitle").val(),
+            MetaKeywords: $("#txtMetaKeywords").val(),
+            MetaDescription: $("#txtMetaDescription").val(),
+            Tags: $("#txtTags").val(),
+            StartDate: $("#txtStartDate").val(),
+            EndDate: $("#txtEndDate").val(),
+            IsActive: $("#chkIsActive").is(":checked"),
+            AllowComment: $("#chkAllowComment").is(":checked"),
+            IsPublish: $("#chkIsPublish").is(":checked")
+        }
+
+        $.ajax({
+            url: "News/Edit",
+            type: "Post",
+            data: News
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#myModal").modal("hide");
+                $("#newsView").load("News/List");
+
+            }
+            else {
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+
+    function ToList() {
+        $("#myModal").modal("hide");
+    }
+
+
+</script>

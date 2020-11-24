@@ -14,6 +14,7 @@ using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Order;
 using Sude.Dto.DtoModels.Account;
 using Sude.Persistence.Contexts;
+using Sude.Domain.Models.Serving;
 
 namespace Sude.Api.Controllers
 {
@@ -25,12 +26,16 @@ namespace Sude.Api.Controllers
         private readonly IOrderDetailService _OrderDetailService;
         private readonly ICustomerService _CustomerService;
 
-        public OrderController(IOrderService orderService, IOrderDetailService orderdetailService, ICustomerService customerService)
+        private readonly IServingService _ServingService;
+
+        public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
+            ICustomerService customerService,IServingService servingService)
         {
 
             _OrderService = orderService;
             _OrderDetailService = orderdetailService;
             _CustomerService = customerService;
+            _ServingService = servingService;
 
         }
 
@@ -93,8 +98,8 @@ namespace Sude.Api.Controllers
                     OrderDetailId = o.Id.ToString(),
                     Price = o.Price,
                     ServingId = o.ServingId.ToString(),
-                    ServingTitle = o.Serving.Title,
-                    Description = o.Description,
+                    ServingName = o.Serving.Title
+                   
 
 
                 });
@@ -134,16 +139,21 @@ namespace Sude.Api.Controllers
                 OrderDate = o.OrderDate,
                 SumPrice = o.SumPrice,
                 Description = o.Description
+             
             };
 
             result.Customer = new CustomerDetailDtoModel();
             result.Customer.CustomerId = o.Customer.Id.ToString();
             result.Customer.Phone = o.Customer.Phone;
             result.Customer.Title = o.Customer.Title;
-
+            List<OrderDetailDetailDtoModel> orderDetailDetailDtoModels = new List<OrderDetailDetailDtoModel>();
+            
             if (o.Details != null && o.Details.Count > 0)
+            {
+                
                 foreach (OrderDetailInfo orderDetail in o.Details)
                 {
+                    ResultSet<ServingInfo> servingInfo = _ServingService.GetServingById(orderDetail.ServingId.Value);
                     OrderDetailDetailDtoModel orderDetailDetail = new OrderDetailDetailDtoModel()
                     {
                         Count = orderDetail.Count,
@@ -151,13 +161,17 @@ namespace Sude.Api.Controllers
                         ServingId = orderDetail.ServingId.ToString(),
                         OrderId = result.OrderId.ToString(),
                         OrderDetailId = orderDetail.Id.ToString(),
-                        Description = orderDetail.Description
-                    };
+                       
+                        ServingName=servingInfo.Data.Title
 
-                    result.OrderDetails.Add(orderDetailDetail);
+                    };
+                    orderDetailDetailDtoModels.Add(orderDetailDetail);
+                  
 
                 }
-
+        
+            }
+            result.OrderDetails = orderDetailDetailDtoModels;
 
             return Ok(new ResultSetDto<OrderDetailDtoModel>()
             {
@@ -192,7 +206,7 @@ namespace Sude.Api.Controllers
                 if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
                 {
 
-                    foreach (OrderDetailNewDtoModel detailNewDtoModel in orderdto.OrderDetails)
+                    foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
                     {
                         sumprice += detailNewDtoModel.Price * detailNewDtoModel.Count;
                     }
@@ -250,7 +264,7 @@ namespace Sude.Api.Controllers
                 if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
                 {
 
-                    foreach (OrderDetailNewDtoModel detailNewDtoModel in orderdto.OrderDetails)
+                    foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
                     {
                         OrderDetailInfo orderDetail = new OrderDetailInfo()
                         {

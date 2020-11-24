@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sude.Dto.DtoModels.Order
 {
-    public class OrderDetailEditDtoModel
+    public class OrderDetailEditDtoModel1
     {
       
         public string OrderDetailId { get; set; }

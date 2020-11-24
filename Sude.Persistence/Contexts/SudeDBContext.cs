@@ -35,8 +35,12 @@ namespace Sude.Persistence.Contexts
         public DbSet<ServingInventoryInfo> ServingInventories { get; set; }
         public DbSet<InventoryTypeInfo> InventoryTypes { get; set; }
         public DbSet<ServingInventoryTrackingInfo> ServingInventoryTrackings { get; set; }
-        public DbSet<ContentInfo> Contents { get; set; }
-        public DbSet<ContentCommentInfo> ContentComments { get; set; }
+        public DbSet<BlogInfo> Blogs { get; set; }
+        public DbSet<BlogCommentInfo> BlogComments { get; set; }
+
+
+        public DbSet<NewsInfo>   News { get; set; }
+        public DbSet<NewsCommentInfo>  NewsComments { get; set; }
 
         public DbSet<CustomerInfo> Customers { get; set; }
         public DbSet<AddressInfo>  Addresses { get; set; }
@@ -51,8 +55,10 @@ namespace Sude.Persistence.Contexts
             modelBuilder.Entity<ServingInventoryInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<ServingInventoryTrackingInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<CustomerInfo>().HasQueryFilter(p => !p.IsRemoved);
-            modelBuilder.Entity<ContentInfo>().HasQueryFilter(p => !p.IsRemoved);
-            modelBuilder.Entity<ContentCommentInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<NewsInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<NewsCommentInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<BlogInfo>().HasQueryFilter(p => !p.IsRemoved);
+            modelBuilder.Entity<BlogCommentInfo>().HasQueryFilter(p => !p.IsRemoved);
 
             //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
         }

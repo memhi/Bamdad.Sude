@@ -1,0 +1,93 @@
+﻿
+@model Sude.Dto.DtoModels.Work.WorkTypeEditDtoModel
+ 
+<form id="frmEdit">
+    <div class="form-group">
+        <input id="txtWorkTypeId" type="hidden" asp-for="WorkTypeId" class="form-control" />
+    </div>
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-body">
+
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label">عنوان</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtTitle" asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label class="control-label">توضیحات</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtDesc" asp-for="Desc" class="form-control" />
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="box-footer with-border">
+
+                <div class="form-group" style="text-align:center">
+                    <div class="col-md-2">
+                        <a id="btnEditWorkType" onclick="EditWorkType()" class="btn btn-success">ثبت</a>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-default" onclick="ToList()">بازگشت</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</form>
+
+
+
+<script>
+        $(function () {
+            $.validator.unobtrusive.parse($('#frmEdit'));
+        });
+        function EditWorkType() {
+            $.validator.unobtrusive.parse($('#frmEdit'));
+            var isValid = $('#frmEdit').valid();
+            if (!isValid)
+                return;
+            var WorkType = {
+                WorkTypeId: $("#txtWorkTypeId").val(),
+                Title: $("#txtTitle").val(),
+                Desc: $("#txtDesc").val()
+            }
+            $.ajax({
+                url: "WorkType/Edit",
+                type: "Post",
+                data: WorkType
+            }).done(function (result) {
+                if (result.isSucceed) {
+                    swal.fire({
+                        icon: "success",
+                    });
+                    $("#myModal").modal("hide");
+                    $("#WorkTypeView").load("WorkType/List");
+                }
+                else {
+                    swal.fire({
+                        title: 'هشدار',
+                        text: result.message,
+                        icon: 'warning',
+                    });
+                }
+            });
+        }
+        function ToList() {
+              $("#myModal").modal("hide");
+        }
+</script>

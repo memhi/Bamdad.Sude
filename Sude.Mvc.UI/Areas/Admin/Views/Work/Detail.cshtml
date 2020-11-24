@@ -1,0 +1,47 @@
+﻿
+@model  Sude.Dto.DtoModels.Work.WorkDetailDtoModel
+
+  @{
+                                        Layout=null;
+                                        }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>جزئیات کسب و کار @Model.Title</title>
+</head>
+<body>
+
+<div>
+
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            عنوان
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt class="col-sm-2">
+            نوع
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WorkTypeName)
+        </dd>
+
+
+        <dt class="col-sm-2">
+            توضیحات
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Desc)
+        </dd>
+    </dl>
+</div>
+<div>
+</div>
+</body>
+</html>

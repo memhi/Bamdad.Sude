@@ -1,0 +1,99 @@
+﻿
+@using Sude.Dto.DtoModels.Serving
+@model  InventoryTypeNewDtoModel
+
+<form id="frmAdd">
+    
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <section class="content">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">ایجاد واحد اندازه گیری</h3>
+
+
+                    </div>
+                    <div class="box-body">
+                     
+                            <div class="form-group row">
+                                <div class="col-md-1">
+                                    <label class="control-label">عنوان</label>
+                                </div>
+                                <div class="col-md-11">
+                                    <input id="txtTitle" asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-1">
+                                    <label class="control-label">توضیحات</label>
+                                </div>
+                                <div class="col-md-11">
+                                    <input id="txtDesc" asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                          
+                     
+                    </div>
+                    <div class="box-footer with-border">
+
+                        <div class="form-group" style="text-align:center">
+                            <div class="col-md-2">
+                                <a id="btnSaveNewInventoryType" onclick="SaveNewInventoryType()" class="btn btn-success">ثبت</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-default" onclick="ToList()">بازگشت</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                </section>
+                
+                   
+</form>
+<script>
+
+
+
+    function SaveNewInventoryType() {
+        $.validator.unobtrusive.parse($('#frmAdd'));
+
+        var isValid = $('#frmAdd').valid();
+        if (!isValid)
+            return;
+
+        var InventoryType = {
+            Title: $("#txtTitle").val(),
+            Description: $("#txtDesc").val()
+        }
+        $.ajax({
+            url: "InventoryType/Add",
+            type: "Post",
+            data: InventoryType
+        }).done(function (result) {
+            if (result.isSucceed) {
+                swal.fire({
+                    icon: "success",
+                });
+                $("#InventoryTypeView").load("InventoryType/List");
+            }
+            else {
+     
+                swal.fire({
+                    title: 'هشدار',
+                    text: result.message,
+                    icon: 'warning',
+                });
+            }
+        });
+    }
+
+    function ToList() {
+        $("#InventoryTypeView").load("InventoryType/List");
+    }
+
+
+</script>

@@ -32,6 +32,57 @@ namespace Sude.Api.Controllers
 
         }
 
+
+
+        [HttpPost]
+        public async Task<ActionResult<ResultSetDto<CustomerNewDtoModel>>> AddCustomer([FromBody] CustomerNewDtoModel requestCustomer)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+
+
+            CustomerInfo customer = new CustomerInfo()
+            {
+                Title = requestCustomer.Title,
+                NationalCode=requestCustomer.NationalCode,
+                 IsActive=true,
+                  Phone=requestCustomer.Phone,
+                   WorkId=Guid.Parse(requestCustomer.WorkId)
+
+
+
+            };
+
+            var resultSave = await _CustomerService.AddCustomerAsync(customer);
+
+            if (!resultSave.IsSucceed)
+                return Ok(new ResultSetDto<CustomerNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = resultSave.Message,
+                    Data = null
+                });
+
+
+
+            requestCustomer.CustomerId = resultSave.Data.Id.ToString();
+
+
+
+
+            return Ok(new ResultSetDto<CustomerNewDtoModel>()
+            {
+                IsSucceed = true,
+                Message = "",
+                Data = requestCustomer
+            });
+        }
+
+
+
+
         //GET : api/GetWorks
         [HttpGet("{workId}")]
         //[Consumes("application/xml")]

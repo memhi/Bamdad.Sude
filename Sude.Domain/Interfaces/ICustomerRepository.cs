@@ -13,7 +13,7 @@ namespace Sude.Domain.Interfaces
         IEnumerable<CustomerInfo> GetCustomers();
         Task<IEnumerable<CustomerInfo>> GetCustomersByWorkIdAsync(Guid workId);
 
-
+        Task<IEnumerable<CustomerInfo>> GetCustomersByNameAsync(string title, Guid workId);
         bool AddCustomer(CustomerInfo customer);
         bool EditCustomer(CustomerInfo customer);
         bool DeleteCustomer(Guid customerId);

@@ -15,23 +15,35 @@ namespace Sude.Mvc.UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment Env { get; set; }
+        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration,IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
             Sude.Mvc.UI.ApiManagement.ApiAddress.ServerAddress = configuration.GetSection("AppSettings").GetSection("ApiAddress").Value.ToString(); ;
         }
 
-        public IConfiguration Configuration { get; }
+   
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-           // services.AddProgressiveWebApp();
+            // services.AddProgressiveWebApp();
             services.AddServerSideBlazor();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             IdentityModelEventSource.ShowPII = true;
             services.AddSession();
+
+            IMvcBuilder builder = services.AddRazorPages();
+
+ 
+            if (Env.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+
             //services.AddAuthentication(options =>
             //{
             //    options.DefaultScheme = "Cookies";
@@ -61,6 +73,7 @@ namespace Sude.Mvc.UI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
@@ -70,19 +83,22 @@ namespace Sude.Mvc.UI
             }
 
             app.UseStatusCodePages();
-          app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseSession();
-         //   app.UseAuthentication();
-        //    app.UseAuthorization();
+            app.UseCheckSessionMiddleware();
+            //   app.UseAuthentication();
+            //    app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Serving}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(name: "areaRoute",
+               pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

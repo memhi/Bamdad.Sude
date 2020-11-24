@@ -1,0 +1,68 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<h1>مدیریت کسب و کار</h1>
+
+
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <a href="~/Admin/Work">
+                <span class="info-box-icon bg-aqua"><i class="ion  ion-ios-cloud-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">کسب و کار</span>
+                    <span class="info-box-number">@ViewData["WorkCount"]</span>
+                </div>
+                </a>
+                <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <a href="~/Admin/Serving">
+                <span class="info-box-icon bg-red"><i class="fa fa-gears"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">خدمات و منابع</span>
+                    <span class="info-box-number">@ViewData["ServingCount"]</span>
+                </div>
+                </a>
+                <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <!-- fix for small devices only -->
+    <div class="clearfix visible-sm-block"></div>
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <a href="~/Admin/Order">
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">سفارشات</span>
+                    <span class="info-box-number">@ViewData["OrderCount"]</span>
+                </div>
+                <!-- /.info-box-content -->
+                </a>
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+ 
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+
+
+
+
+

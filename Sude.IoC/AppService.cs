@@ -26,7 +26,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IOrderService,OrderService>(),
                 ServiceDescriptor.Scoped<IOrderDetailService,OrderDetailService>(),
                   ServiceDescriptor.Scoped<ICustomerService,CustomerService>(),
-                             ServiceDescriptor.Scoped<IAddressService,AddressService>()
+                             ServiceDescriptor.Scoped<IAddressService,AddressService>(),
+                                    ServiceDescriptor.Scoped<IBlogService,BlogService>(),
+                             ServiceDescriptor.Scoped<INewsService,NewsService>(),
+                                  ServiceDescriptor.Scoped<IBlogCommentService,BlogCommentService>(),
+                             ServiceDescriptor.Scoped<INewsCommentService,NewsCommentService>()
             });
 
             return services;
