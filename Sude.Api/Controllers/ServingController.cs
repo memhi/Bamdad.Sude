@@ -60,23 +60,39 @@ namespace Sude.Api.Controllers
         // [Authorize]
         public async Task<ActionResult> GetServingsByWorkId(string workId)
         {
-            var result = (await _servingService.GetServingsAsync()).Data.Select(s => new ServingDetailDtoModel()
+
+            Guid wid;
+            if (Guid.TryParse(workId, out wid))
             {
-                ServingId = s.Id.ToString(),
-                Title = s.Title,
-                Price = s.Price,
-                Desc = s.Desc,
-                IsActive = s.IsActive,
-                HasInventoryTracking = s.HasInventoryTracking,
-                WorkId = s.Work.Id.ToString(),
-                WorkName = s.Work.Title
-            });
-            return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                var result = (await _servingService.GetServingsByWorkIdAsync(wid)).Data.Select(s => new ServingDetailDtoModel()
+                {
+                    ServingId = s.Id.ToString(),
+                    Title = s.Title,
+                    Price = s.Price,
+                    Desc = s.Desc,
+                    IsActive = s.IsActive,
+                    HasInventoryTracking = s.HasInventoryTracking,
+                    WorkId = s.Work.Id.ToString(),
+                    WorkName = s.Work.Title
+                });
+                return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+
+            }
+           else
             {
-                IsSucceed = true,
-                Message = "",
-                Data = result
-            });
+                return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = "اطلاعات خدمات کسب و کار موجود نیست",
+                    Data = null
+                });
+
+            }
         }
 
 

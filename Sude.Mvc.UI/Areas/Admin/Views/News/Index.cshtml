@@ -1,8 +1,12 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Content
-
+@using Microsoft.AspNetCore.Http;
 @model ResultSetDto<IEnumerable<NewsDetailDtoModel>>
+@inject IHttpContextAccessor HttpContextAccessor
+@{
 
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("News");
+}
 
 <div id="newsView">
     Please Wait ...
@@ -23,7 +27,7 @@
             $("#newsView").load("News/List");
         });
 
-       
+
 
 
     </script>

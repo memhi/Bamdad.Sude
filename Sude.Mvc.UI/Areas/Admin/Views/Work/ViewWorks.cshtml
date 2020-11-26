@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detail</title>
+</head>
+<body>
+
+    <section class="content">
+        <div class="box box-info">
+
+            <div class="box-body">
+                @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
+                {
+                    <div class="col-md-4 margin-bottom">
+                        <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12">@w.Title </a>
+                    </div>
+
+                }
+
+            </div>
+            </div>
+        </section>
+            <script>
+                function SelectDefaultWork(workId) {
+
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: "Work/SetDefaultWork",
+                        data: { "workId": workId },
+                        success: function (data) {
+
+                            location.reload();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve states.');
+
+                        }
+                    });
+                }
+
+            </script>
+</body>
+</html>
+

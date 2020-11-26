@@ -1,0 +1,23 @@
+﻿@using Sude.Mvc.UI.Menu
+ @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment _HostingEnvitonment 
+
+<ul class="sidebar-menu" data-widget="tree">
+    @{
+        //load sitemap
+        var siteMap = new XmlMenu();
+        siteMap.LoadFrom("\\Areas\\Admin\\menu.config", _HostingEnvitonment);
+
+        //standard (default) items
+        var rootNode = siteMap.RootNode;
+
+
+
+        //"Plugins" menu item should be visible when it has some child nodes
+
+        //display menu items
+        foreach (var item in rootNode.ChildNodes.Where(x => x.Visible))
+        {
+            @await Html.PartialAsync("_MenuItem", item)
+        }
+    }
+</ul>

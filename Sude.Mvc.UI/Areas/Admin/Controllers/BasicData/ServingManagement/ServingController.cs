@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -32,17 +33,22 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
       //  [Authorize]
         public async Task<ActionResult> List()
         {
-          
-           
-            ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServings);
+
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = new ResultSetDto<IEnumerable<ServingDetailDtoModel>>();
+            if (!string.IsNullOrEmpty(CurrentWorkId ))
+                servinglist = await Api.GetHandler
+                .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId+CurrentWorkId);
 
             return PartialView("ServingList", servinglist);
         }
 
         [HttpGet]
         public async Task<ActionResult> Add()
-        { 
+        {
+
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+         
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
            .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
             ServingNewDtoModel  servingNewDtoModel  = new ServingNewDtoModel();
@@ -52,7 +58,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
             servingNewDtoModel.WorkId = "";
             servingNewDtoModel.HasInventoryTracking = false;
             servingNewDtoModel.IsActive = true;
-            SelectList selectLists = new SelectList(Worklist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title");
+            SelectList selectLists = new SelectList(Worklist.Data.Where(w => w.WorkId == CurrentWorkId).ToList() as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",CurrentWorkId);
 
             ViewData["Works"] = selectLists;
 
@@ -88,13 +94,15 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         [HttpGet]//("{servingId}")]
         public async Task<ActionResult> Edit(string id)
         {
-            ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
+
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+              ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.Serving.GetServingById + id);
 
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
           .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
          
-            SelectList selectLists = new SelectList(Worklist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",result.Data.WorkId);
+            SelectList selectLists = new SelectList(Worklist.Data.Where(w=>w.WorkId==CurrentWorkId).ToList() as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",result.Data.WorkId);
 
             ViewData["Works"] = selectLists;
 

@@ -4,40 +4,46 @@
 @{
 }
 
-<li class="dropdown">  
-  
-    <select id="drpWorks"
-            class="form-control"
-            asp-items="(SelectList)@ViewData["Works"]">
-        <option>یک کسب و کار انتخاب کنید</option>
+<div class="input-group col-md-12">
+    <input id="txtDefaultWorkName" onclick="ShowSetDefaultWork()" class="form-control fa-mouse-pointer" readonly="readonly" value="@ViewData["CurrentWorkName"]" />
 
-    </select>
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle"    onclick="ShowSetDefaultWork()" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+    </div>
 
-</li>
+</div>
+
+@*
+    <li class="dropdown">
+
+        <select id="drpWorks"
+                class="form-control"
+                asp-items="(SelectList)@ViewData["Works"]">
+            <option>یک کسب و کار انتخاب کنید</option>
+
+        </select>
+
+    </li>
+*@
+
+
 
 <script>
 
-         $(function() {
-            $("#drpWorks").change(function() {
-                var selectedItem = $(this).val();
-      
+ 
 
-                $.ajax({
-                    cache: false,
-                    type: "GET",
-                    url: "Work/SetDefaultWork",
-                    data: { "workId": selectedItem},
-                    success: function (data) {
-                        
-                        location.reload();
-                    },
-                    error:function (xhr, ajaxOptions, thrownError){
-                        alert('Failed to retrieve states.');
+    function ShowSetDefaultWork()
+    {
+  
+        $.get("Work/ViewWorks/" , function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("انتخاب کسب و کار");
+            $("#myModalBody").html(result);
 
-                    }
-                });
-            });
         });
 
+    }
 
 </script>

@@ -1,10 +1,15 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Serving
-
+@using Microsoft.AspNetCore.Http;
 @model ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>
-    <hr />
+@inject IHttpContextAccessor HttpContextAccessor
+@{
 
- 
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("InventoryType");
+}
+<hr />
+
+
 <div id="InventoryTypeView">
     Please Wait ...
 </div>

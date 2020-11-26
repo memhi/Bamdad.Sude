@@ -9,9 +9,18 @@ namespace Sude.Mvc.UI
 {
     public static class SessionExtensions
     {
+
+       
         public static void SetObject(this ISession session, string key, object value)
         {
             session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        public static void SetActiveMenuItemSystemName(this ISession session, string systemName)
+        {
+            session.SetString("ActiveMenuItemSystemName", systemName);
+
+
         }
 
         public static T GetObject<T>(this ISession session, string key)
@@ -20,5 +29,15 @@ namespace Sude.Mvc.UI
 
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
+
+        public static string GetActiveMenuItemSystemName(this ISession session)
+        {
+            return session.GetString("ActiveMenuItemSystemName");
+
+        }
+
+
+
+
     }
 }

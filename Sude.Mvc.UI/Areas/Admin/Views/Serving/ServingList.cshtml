@@ -30,6 +30,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+                @if (Model != null && Model.Data != null)
+                {
                 <table class="table table-hover">
                     <tr>
                         <td>#</td>
@@ -46,7 +48,7 @@
                     @{ 
                         int i = 1;
                         @foreach (var item in Model.Data)
-                    {
+                        {
                 <tr id="tr_@item.ServingId" role="row" class="odd">
                     <td>@(i++)</td>
                     <td>@item.Title</td>
@@ -83,9 +85,10 @@
                     </td>
                 </tr>
 
-                    }}
+                        }}
                 </table>
-            </div>
+
+                        }</div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->

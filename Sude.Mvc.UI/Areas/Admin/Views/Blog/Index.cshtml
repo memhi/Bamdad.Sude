@@ -1,8 +1,13 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Content
+@using Microsoft.AspNetCore.Http;
 
+@inject IHttpContextAccessor HttpContextAccessor
 @model ResultSetDto<IEnumerable<BlogDetailDtoModel>>
+@{
 
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Blog");
+}
 
 <div id="blogView">
     Please Wait ...
@@ -23,7 +28,7 @@
             $("#blogView").load("Blog/List");
         });
 
-       
+
 
 
     </script>

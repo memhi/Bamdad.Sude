@@ -31,12 +31,30 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
 
 
         [HttpGet]
+ 
+        public async Task<ActionResult> ViewWorks()
+        {
+
+            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
+                        .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
+
+
+
+
+
+            return View(Worklist.Data);
+        }
+
+        [HttpGet]
         // [Authorize]
         public async Task<ActionResult> SetDefaultWork(string workId)
         {
+            ResultSetDto<WorkDetailDtoModel> result = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<WorkDetailDtoModel>>(ApiAddress.Work.GetWorkById + workId);
 
 
-            HttpContext.Session.SetString("CurrentWorkId", workId);
+            HttpContext.Session.SetString("CurrentWorkId", result.Data.WorkId);
+            HttpContext.Session.SetString("CurrentWorkName", result.Data.Title);
 
 
             return Json(workId);

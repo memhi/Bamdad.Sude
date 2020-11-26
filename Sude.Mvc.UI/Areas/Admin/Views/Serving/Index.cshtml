@@ -2,7 +2,12 @@
 @using Sude.Dto.DtoModels.Serving
 
 @model ResultSetDto<IEnumerable<ServingDetailDtoModel>>
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
 
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Serving");
+}
 <div id="servingView">
     Please Wait ...
 </div>
@@ -22,7 +27,7 @@
             $("#servingView").load("Serving/List");
         });
 
-     
+
 
 
     </script>

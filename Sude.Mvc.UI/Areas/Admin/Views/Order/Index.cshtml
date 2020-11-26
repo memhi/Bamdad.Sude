@@ -2,6 +2,12 @@
 @using Sude.Dto.DtoModels.Order
 
 @model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Order");
+}
 
 <div id="orderView">
     Please Wait ...
@@ -39,7 +45,7 @@
                     <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                 </div>
-                <input hidden="hidden" id="selectedItem"  />
+                <input hidden="hidden" id="selectedItem" />
                 <div class="modal-body" id="myModalBody">
 
                 </div>
