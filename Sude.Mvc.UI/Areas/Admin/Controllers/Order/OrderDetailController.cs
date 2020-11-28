@@ -140,21 +140,24 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             else
             {
                 List<OrderDetailDetailDtoModel> orderDetailNewDtos = orderDetailNewDtoSession.ToList();
-                OrderDetailDetailDtoModel orderDetailSession = orderDetailNewDtos.Where(o => o.OrderDetailId == request.ServingId).FirstOrDefault();
-                bool isNew = false;
-                if(orderDetailSession==null)
+                OrderDetailDetailDtoModel orderDetailSession = orderDetailNewDtos.Where(o => o.ServingId == request.ServingId).FirstOrDefault();
+             
+                if (orderDetailSession == null)
                 {
                     orderDetailSession = new OrderDetailDetailDtoModel();
-                     isNew = true; 
+               
 
                 }
+                else
+                    orderDetailNewDtos.Remove(orderDetailSession);
+                orderDetailSession = new OrderDetailDetailDtoModel();
                 orderDetailSession.OrderDetailId = string.IsNullOrEmpty(request.ServingId) == true ? "" : request.ServingId;
                 orderDetailSession.OrderId = string.IsNullOrEmpty(request.OrderId) == true ? "" : request.OrderId;
                 orderDetailSession.Price = request.Price;
                 orderDetailSession.ServingId = string.IsNullOrEmpty(request.ServingId) == true ? "" : request.ServingId;
                 orderDetailSession.Count = request.Count;
                 orderDetailSession.ServingName = string.IsNullOrEmpty(request.ServingName) == true ? "" : request.ServingName;
-                if (isNew)
+   
                 orderDetailNewDtos.Add(orderDetailSession);
                 HttpContext.Session.SetObject("OrderDetails", orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
             }
@@ -230,8 +233,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Delete(string id,string servingId)
         {
 
-            if(servingId==id)
-            {
+         
                 List<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails").ToList();
                 OrderDetailDetailDtoModel orderDetailNewDto = orderDetailNewDtoSession.Where(o => o.OrderDetailId == id && o.ServingId == servingId).FirstOrDefault();
                 if (orderDetailNewDto != null)
@@ -257,18 +259,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 }
 
 
-            }
-            else
-            {
-                ResultSetDto result = await Api.GetHandler
-              .GetApiAsync<ResultSetDto>(ApiAddress.OrderDetail.DeleteOrderDetail, id);
-
-                return Json(result);
-           
             
-            }
-
-
            
         }
     }

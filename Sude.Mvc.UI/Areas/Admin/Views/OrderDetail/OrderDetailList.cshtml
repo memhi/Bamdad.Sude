@@ -4,51 +4,57 @@
  
 
 
-    <div class="box box-info">
-   
-        <div class="box-body">
+  
             @if (Model != null)
             {
                 int i = 1;
                 double sum = 0;
 
-               
-
-                 
-
-                    @foreach (var item in Model)
-                    {
-                        sum += (item.Price * item.Count);
-                        <div id="tr_@item.OrderDetailId" class="row">
-                            <div class="col-md-1"><label></label>@(i++)</div>
-                            <div class="col-md-4"><label> @item.ServingName</label></div>
-                            <div class="col-md-2"><label> @item.Price.ToString("0,0")</label></div>
-                            <div class="col-md-2"><label> @item.Count.ToString("0,0")</label></div>
-                            <div class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></div>
-                            <div class="col-md-1">
-
-                                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')">حذف</a>
-
-                            </div>
-                        </div>
-                                            }
-                
-                <div class="row">
-                    <div class="col-md-4"><label>مجموع</label></div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4">
-                        <label>
-                            @sum.ToString("0,0")
-                        </label>
 
 
+          
+<table class="table table-hover">
+   
 
-                    </div>
-                </div>
-            }
-        </div></div> 
 
+    @foreach (var item in Model)
+    {
+        sum += (item.Price * item.Count);
+        <tr id="tr_@item.OrderDetailId" class="row">
+            <td class="col-md-1"><label></label>@(i++)</td>
+            <td class="col-md-4"><label> @item.ServingName</label></td>
+            <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
+            <td class="col-md-2"><label> @item.Count.ToString("0,0")</label></td>
+            <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
+            <td class="col-md-1">
+
+                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')">حذف</a>
+
+            </td>
+        </tr>
+    }
+
+    <tr class="row">
+        <td class="col-md-1"></td>
+        <td class="col-md-4"><label>مجموع</label></td>
+        <td class="col-md-2"></td>
+        <td class="col-md-2"></td>
+        <td class="col-md-2">
+            <label>
+                @sum.ToString("0,0")
+            </label>
+
+
+
+        </td>
+        <td class="col-md-1"></td>
+    </tr>
+
+</table>
+            
+                    }
+
+        
             <script>
 
                 function DeleteOrderDetail(detailid, serving) {

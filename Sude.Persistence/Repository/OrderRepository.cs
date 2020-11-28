@@ -20,6 +20,12 @@ namespace Sude.Persistence.Repository
             this._orderRepository = new GenericRepository<OrderInfo>(ctx);
         }
 
+        public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
+        {
+
+            return await _orderRepository.GetAsync(o=>o.WorkId==workId,o=>o.OrderByDescending(or=>or.RegDate), "Work,Customer");
+        }
+
         public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()
         {
            

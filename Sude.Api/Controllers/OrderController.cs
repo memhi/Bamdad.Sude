@@ -29,7 +29,7 @@ namespace Sude.Api.Controllers
         private readonly IServingService _ServingService;
 
         public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
-            ICustomerService customerService,IServingService servingService)
+            ICustomerService customerService, IServingService servingService)
         {
 
             _OrderService = orderService;
@@ -99,7 +99,7 @@ namespace Sude.Api.Controllers
                     Price = o.Price,
                     ServingId = o.ServingId.ToString(),
                     ServingName = o.Serving.Title
-                   
+
 
 
                 });
@@ -139,7 +139,7 @@ namespace Sude.Api.Controllers
                 OrderDate = o.OrderDate,
                 SumPrice = o.SumPrice,
                 Description = o.Description
-             
+
             };
 
             result.Customer = new CustomerDetailDtoModel();
@@ -147,10 +147,10 @@ namespace Sude.Api.Controllers
             result.Customer.Phone = o.Customer.Phone;
             result.Customer.Title = o.Customer.Title;
             List<OrderDetailDetailDtoModel> orderDetailDetailDtoModels = new List<OrderDetailDetailDtoModel>();
-            
+
             if (o.Details != null && o.Details.Count > 0)
             {
-                
+
                 foreach (OrderDetailInfo orderDetail in o.Details)
                 {
                     ResultSet<ServingInfo> servingInfo = _ServingService.GetServingById(orderDetail.ServingId.Value);
@@ -161,15 +161,15 @@ namespace Sude.Api.Controllers
                         ServingId = orderDetail.ServingId.ToString(),
                         OrderId = result.OrderId.ToString(),
                         OrderDetailId = orderDetail.Id.ToString(),
-                       
-                        ServingName=servingInfo.Data.Title
+
+                        ServingName = servingInfo.Data.Title
 
                     };
                     orderDetailDetailDtoModels.Add(orderDetailDetail);
-                  
+
 
                 }
-        
+
             }
             result.OrderDetails = orderDetailDetailDtoModels;
 
@@ -179,6 +179,59 @@ namespace Sude.Api.Controllers
                 Message = "",
                 Data = result
             });
+        }
+
+        [HttpGet("{workId}")]
+        public async Task<ActionResult> GetOrdersByWorkIdAsync(string workId)
+        {
+            try
+            {
+                Guid wid;
+                if (Guid.TryParse(workId, out wid))
+                {
+                    ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersByWorkIdAsync(wid);
+                    if (resultSet == null)
+                        NotFound();
+
+                    var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
+                    {
+                        OrderId = o.Id.ToString(),
+                        OrderNumber = o.Number,
+                        WorkId = o.WorkId.ToString(),
+                        WorkName = o.Work.Title,
+                        OrderDate = o.OrderDate,
+                        SumPrice = o.SumPrice,
+                        Description = o.Description,
+
+
+                    });
+                    return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = true,
+                        Message = "",
+                        Data = result
+                    });
+                }
+                else
+                {
+                    return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+                    });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Data = null
+                });
+            }
         }
 
 
@@ -192,7 +245,7 @@ namespace Sude.Api.Controllers
                 foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
                     message += er.ErrorMessage + " \n";
 
-                return Ok(new ResultSetDto<OrderDetailDtoModel>()
+                return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
                 {
                     IsSucceed = false,
                     Message = message,
@@ -223,7 +276,7 @@ namespace Sude.Api.Controllers
                     customer.Title = orderdto.Customer.Title;
                     var resultcustomer = await _CustomerService.AddCustomerAsync(customer);
                     if (!resultcustomer.IsSucceed)
-                        return Ok(new ResultSetDto<OrderNewDtoModel>()
+                        return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                         {
                             IsSucceed = false,
                             Message = resultcustomer.Message,
@@ -250,7 +303,7 @@ namespace Sude.Api.Controllers
                 };
                 var resultorder = await _OrderService.AddOrderAsync(order);
                 if (!resultorder.IsSucceed)
-                    return Ok(new ResultSetDto<OrderNewDtoModel>()
+                    return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                     {
                         IsSucceed = false,
                         Message = resultorder.Message,
@@ -277,7 +330,7 @@ namespace Sude.Api.Controllers
 
                         var resultorderdetail = await _OrderDetailService.AddOrderDetailAsync(orderDetail);
                         if (!resultorderdetail.IsSucceed)
-                            return Ok(new ResultSetDto<OrderNewDtoModel>()
+                            return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                             {
                                 IsSucceed = false,
                                 Message = resultorderdetail.Message,
@@ -298,7 +351,7 @@ namespace Sude.Api.Controllers
 
             else
             {
-                return Ok(new ResultSetDto<OrderNewDtoModel>()
+                return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                 {
                     IsSucceed = false,
                     Message = "Id is incorrect",
@@ -330,7 +383,7 @@ namespace Sude.Api.Controllers
                 foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
                     message += er.ErrorMessage + " \n";
 
-                return Ok(new ResultSetDto<OrderEditDtoModel>()
+                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                 {
                     IsSucceed = false,
                     Message = message,
@@ -339,13 +392,13 @@ namespace Sude.Api.Controllers
             }
 
 
-
+            ICollection<OrderDetailDetailDtoModel> orderDetailsRequest = orderDTO.OrderDetails;
 
 
             var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
 
             if (!resultOrder.IsSucceed)
-                return Ok(new ResultSetDto<OrderEditDtoModel>()
+                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                 {
                     IsSucceed = false,
                     Message = resultOrder.Message,
@@ -358,10 +411,108 @@ namespace Sude.Api.Controllers
             orderInfo.Description = orderDTO.Description;
             orderInfo.Number = orderDTO.OrderNumber;
             orderInfo.OrderDate = orderDTO.OrderDate;
+            //  double sumpriceoriginal = resultOrder.Data.SumPrice;
+
+            var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(resultOrder.Data.Id);
+            foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
+            {
+                if (orderDetailsRequest.Where(od => od.OrderDetailId.ToString() == orderDetailDetail.Id.ToString()).Count() <= 0)
+                {
+
+                    var resultdetaildelete = await _OrderDetailService.DeleteOrderDetailAsync(orderDetailDetail.Id);
+                    if (!resultdetaildelete.IsSucceed)
+                    {
+                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = resultdetaildelete.Message,
+                            Data = null
+                        });
+
+                    }
+                }
+
+            }
+
+            double sumpricerequestorder = 0;
+            foreach (OrderDetailDetailDtoModel detailDetailDtoModel in orderDTO.OrderDetails)
+            {
+
+                sumpricerequestorder += (detailDetailDtoModel.Price * detailDetailDtoModel.Count);
+                if (detailDetailDtoModel.OrderDetailId!=detailDetailDtoModel.ServingId)
+                {
+                    var orderdetailoriginalresult = await _OrderDetailService.GetOrderDetailByIdAsync(Guid.Parse(detailDetailDtoModel.OrderDetailId));
+                    if (!orderdetailoriginalresult.IsSucceed)
+                    {
+                        return NotFound(new ResultSetDto<OrderEditDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = orderdetailoriginalresult.Message,
+                            Data = null
+                        });
+
+                    }
+
+                    else
+                    {
+                        orderdetailoriginalresult.Data.Count = detailDetailDtoModel.Count;
+                        orderdetailoriginalresult.Data.Price = detailDetailDtoModel.Price;
+                        orderdetailoriginalresult.Data.ServingId = Guid.Parse(detailDetailDtoModel.ServingId);
+                    }
+
+                    var orderdetailoriginalsave = await _OrderDetailService.EditOrderDetailAsync(orderdetailoriginalresult.Data);
+                    if (!orderdetailoriginalsave.IsSucceed)
+                    {
+
+                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = orderdetailoriginalsave.Message,
+                            Data = null
+                        });
+
+                    }
+
+                }
+
+                else
+                {
+
+                    OrderDetailInfo orderDetailInfo = new OrderDetailInfo()
+                    {
+                        Count = detailDetailDtoModel.Count,
+                        OrderId =Guid.Parse(orderDTO.OrderId),
+                        Price = detailDetailDtoModel.Price,
+                        ServingId = Guid.Parse(detailDetailDtoModel.ServingId)
+
+
+                    };
+                    var orderdetailoriginalsave = await _OrderDetailService.AddOrderDetailAsync(orderDetailInfo);
+                    if (!orderdetailoriginalsave.IsSucceed)
+                    {
+
+                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = orderdetailoriginalsave.Message,
+                            Data = null
+                        });
+
+                    }
+
+
+                }
+
+
+            }
+
+            orderInfo.SumPrice = sumpricerequestorder;
+
+
 
             var resultSaveOrder = await _OrderService.EditOrderAsync(orderInfo);
             if (!resultSaveOrder.IsSucceed)
-                return Ok(new ResultSetDto<OrderEditDtoModel>()
+                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                 {
                     IsSucceed = false,
                     Message = resultSaveOrder.Message,

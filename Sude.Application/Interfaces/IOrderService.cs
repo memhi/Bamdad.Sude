@@ -11,6 +11,7 @@ namespace Sude.Application.Interfaces
     public interface IOrderService
     {
         ResultSet<IEnumerable<OrderInfo>> GetOrders();
+        Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersByWorkIdAsync(Guid workId);
         ResultSet<OrderInfo> AddOrder(OrderInfo order);
         ResultSet EditOrder(OrderInfo order);
         ResultSet DeleteOrder(Guid orderId);

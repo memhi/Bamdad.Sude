@@ -16,7 +16,7 @@ namespace Sude.Api.MiddleWares
 
         public TransactionMiddleware(RequestDelegate next)
         {
- 
+
             _next = next;
         }
 
@@ -35,9 +35,11 @@ namespace Sude.Api.MiddleWares
                     // invoke next middleware 
                     await _next(httpContext);
 
-                    // commit the transaction
-                    await transaction.CommitAsync();
+                    if (httpContext.Response.StatusCode == 200)
 
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
                     return null!;
                 }, null);
             }
@@ -45,9 +47,9 @@ namespace Sude.Api.MiddleWares
             {
                 await _next(httpContext);
             }
-        
+
+        }
     }
-}
 
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class TransactionMiddlewareExtensions

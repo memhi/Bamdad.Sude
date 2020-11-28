@@ -11,7 +11,7 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<OrderInfo>> GetOrdersAsync();
         IEnumerable<OrderInfo> GetOrders();
-
+        Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId);
 
         bool AddOrder(OrderInfo order);
         bool EditOrder(OrderInfo order);

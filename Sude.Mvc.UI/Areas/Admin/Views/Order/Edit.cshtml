@@ -7,6 +7,11 @@
     <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
     <link href="~/css/select2.css" rel="stylesheet" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input id="txtOrderId" type="hidden" asp-for="OrderId" class="form-control" />
+        <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+    </div>
+
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
@@ -113,7 +118,7 @@
 
                         <div class="box box-primary   bg-gray-light">
                             <div class="box-header with-border">
-                                <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
+                                <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش</h3>
 
 
                             </div>
@@ -123,7 +128,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6">ثبت نهایی سفارش</a>
+                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6">ثبت تغییرات نهایی سفارش</a>
 
                                         </div>
                                     </div>
@@ -185,6 +190,8 @@
         if (!isValid)
             return;
         var order = {
+            OrderId: $("#txtOrderId").val(),
+           WorkId: $("#txtWorkd").val(),
             OrderNumber: $("#txtOrderNumber").val(),
             OrderDate: $("#OrderDateVal").val(),
             Description: $("#txtDesc").val(),

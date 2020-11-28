@@ -1,50 +1,65 @@
 ﻿
 
 @model Sude.Dto.DtoModels.Account.CustomerNewDtoModel
-    <hr />
-    <h4>افزودن خدمت گیرنده</h4>
-    <hr />
-    <form id="frmAddNewCustomer">
-        <div class="row">
-            <div class="col-8">
+ 
+<form id="frmAddNewCustomer">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+
+
+
+            </div>
+            <div class="box-body">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="form-group">
-          
-                        <label asp-for="Title" class="control-label"></label>
-                        <div class="col-md-10">
-                            <input id="txtTitle" asp-for="Title" class="form-control" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-                    </div>
+                <div class="row margin-bottom">
 
-                    <div class="form-group">
-                        <label class="control-label">شناسه ملی</label>
-                        <div class="col-md-10">
-                            <input id="txtNationalCode" asp-for="NationalCode" class="form-control" />
-                            <span asp-validation-for="NationalCode" class="text-danger"></span>
-                        </div>
+                    <div class="col-md-3">
+                        <label class="control-label">عنوان</label>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">تلفن</label>
-                        <div class="col-md-10">
-                            <input id="txtPhone" asp-for="Phone" class="form-control" />
-                            <span asp-validation-for="Phone" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        <a id="btnSaveNewCustomer" onclick="SaveNewOrderCustomer()" class="btn btn-success col-md-8">ثبت</a>
+                    <div class="col-md-9">
+                        <input id="txtTitle" asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                 </div>
+
+                <div class="row margin-bottom">
+                    <div class="col-md-3">
+                        <label class="control-label">شناسه ملی</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input id="txtNationalCode" asp-for="NationalCode" class="form-control" />
+                        <span asp-validation-for="NationalCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row margin-bottom">
+                    <div class="col-md-3">
+                        <label class="control-label">تلفن</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input id="txtPhone" asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row margin-bottom">
+                    <div class="col-md-6">
+                        <a id="btnSaveNewCustomer" onclick="SaveNewOrderCustomer()" class="btn btn-success col-md-8">ثبت</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-default" onclick="Back()">بازگشت</a>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
-        <div>
-
-            <a class="btn btn-accent-2" onclick="Back()">بازگشت</a>
-        </div>
-    </form>
+     
+    </section>
+</form>
     <script>
 
 

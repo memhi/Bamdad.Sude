@@ -16,12 +16,13 @@
                 <h3 class="box-title">فهرست  سفارشات</h3>
 
                 <div class="box-tools">
-                  
 
-                      
-                        
-                     
-                    </div>
+
+
+                    <a id="btnAdd" class="btn btn-block btn-success">سفارش جدید</a>
+
+
+                </div>
          
             </div>
             <!-- /.box-header -->
@@ -32,14 +33,18 @@
                         <th>شماره سفارش</th>
                         <th>تاریخ</th>
                         <th>عنوان کسب و کار</th>
+                        <th>مجموع مبلغ سفارش</th>
+          
 
                         <th>عملیات</th>
 
                     </tr>
-                    @{ 
-                        int i = 1;
-                        @foreach (var item in Model.Data)
-                    {
+                    @{
+                        if (Model != null && Model.Data != null)
+                        {
+                            int i = 1;
+                            @foreach (var item in Model.Data)
+                            {
 
                 <tr id="tr_@item.OrderId" role="row" class="odd">
                     <td>@(i++)</td>
@@ -47,15 +52,19 @@
                     <td>@item.OrderDate.ToLocalizationDateTime("D1")</td>
                     <td>@item.WorkName</td>
 
+                    <td>@item.SumPrice.ToString("0,0")
+                    </td>
+
                     <td>
                         <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId')">ویرایش</button>
                         <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
                         <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
                     </td>
                 </tr>
-                    }
+                            }
+                            }
                         }
-                </table>
+                    </table>
             </div>
             <!-- /.box-body -->
         </div>

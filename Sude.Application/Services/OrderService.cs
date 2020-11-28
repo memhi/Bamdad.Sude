@@ -112,6 +112,18 @@ namespace Sude.Application.Services
             };
         }
 
+
+        public async Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersByWorkIdAsync(Guid workId)
+        {
+            return new ResultSet<IEnumerable<OrderInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _OrderRepository.GetOrdersByWorkIdAsync(workId)
+            };
+        }
+
+
         public async Task<ResultSet<OrderInfo>> AddOrderAsync(OrderInfo order)
         {
             
