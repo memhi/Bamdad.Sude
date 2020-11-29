@@ -126,24 +126,14 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + servingId).addClass("danger");
-                                $("#tr_" + servingId).hide('slow');
-                            
-                            });
+                            Command: toastr["success"]("خدمات/اقلام حذف شد");
+                            $("#tr_" + servingId).addClass("danger");
+                            $("#tr_" + servingId).hide('slow');
                             $("#servingView").load("Serving/List");
                         }
                         else {
 
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                            Command: toastr["warning"](result.message, "هشدار");
 
                         }
                     },

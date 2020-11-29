@@ -95,19 +95,13 @@
                 data: Work
             }).done(function (result) {
                 if (result.isSucceed) {
-                    swal.fire({
-                        icon: "success",
-                    });
+                    Command: toastr["success"]("اطلاعات کسب و کار اصلاح شد");
                     $("#myModal").modal("hide");
                     $("#WorkView").load("Work/List");
 
                 }
                 else {
-                    swal.fire({
-                        title: 'هشدار',
-                        text: result.message,
-                        icon: 'warning',
-                    });
+                    Command: toastr["warning"](result.message, "هشدار");
                 }
             });
         }

@@ -72,18 +72,12 @@
                 data: WorkType
             }).done(function (result) {
                 if (result.isSucceed) {
-                    swal.fire({
-                        icon: "success",
-                    });
+                    Command: toastr["success"]("اطلاعات نوع کسب و کار اصلاح شد");
                     $("#myModal").modal("hide");
                     $("#WorkTypeView").load("WorkType/List");
                 }
                 else {
-                    swal.fire({
-                        title: 'هشدار',
-                        text: result.message,
-                        icon: 'warning',
-                    });
+                    Command: toastr["warning"](result.message, "هشدار");
                 }
             });
         }

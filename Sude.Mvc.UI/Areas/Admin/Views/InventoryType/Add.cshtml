@@ -75,18 +75,14 @@
             data: InventoryType
         }).done(function (result) {
             if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
+                Command: toastr["success"]("نوع ایجاد شد");
+
+             
                 $("#InventoryTypeView").load("InventoryType/List");
             }
             else {
      
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
+                Command: toastr["warning"](result.message, "هشدار");
             }
         });
     }

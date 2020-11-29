@@ -60,13 +60,13 @@
                 function DeleteOrderDetail(detailid, serving) {
 
                     swal.fire({
-                        title: 'حذف جزئیات',
-                        text: 'کاربر گرامی از حذف جزئیات مطمئن هستید؟',
+                        title: 'حذف اقلام',
+                        text: 'کاربر گرامی از حذف اقلام مطمئن هستید؟',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#7cacbe',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'بله ، جزئیات حذف شود',
+                        confirmButtonText: 'بله ، اقلام حذف شود',
                         cancelButtonText: 'خیر'
                     }).then((result) => {
                         if (result.value) {
@@ -76,26 +76,17 @@
                                 type: "Post",
                                 data: { id: detailid, servingId: serving },
                                 success: function (result) {
-                                    if (result.isSucceed == true) {
-                                        swal.fire(
-                                            'موفق!',
-                                            result.message,
-                                            'success'
-                                        ).then(function (isConfirm) {
-                                            $("#tr_" + detailid).addClass("danger");
-                                            $("#tr_" + detailid).hide('slow');
-                                            //location.reload();
-                                        });
+                                    if (result.isSucceed == true) {                                    
+
+                                        Command: toastr["success"]("اقلام سفارش حذف شد");
+                                        $("#tr_" + detailid).addClass("danger");
+                                        $("#tr_" + detailid).hide('slow');
+
                                         $("#odetails").load("OrderDetail/List");
                                     }
                                     else {
 
-                                        swal.fire(
-                                            'هشدار!',
-                                            result.message,
-                                            'warning'
-                                        );
-
+                                        Command: toastr["warning"](result.message, "هشدار");
                                     }
                                 },
                                 error: function (request, status, error) {

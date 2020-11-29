@@ -30,41 +30,90 @@ namespace Sude.Api.Controllers
        // [Authorize]
         public async Task<ActionResult> GetInventoryTypes()
         {
-            var result = (await _InventoryTypeService.GetInventoryTypesAsync()).Data.Select(s => new InventoryTypeDetailDtoModel()
+            try
             {
-                 InventoryTypeId = s.Id.ToString(),
-                Title = s.Title,               
-                Description = s.Description
-            });
-            return Ok(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+
+                ResultSet<IEnumerable<InventoryTypeInfo>> resultSet =  await _InventoryTypeService.GetInventoryTypesAsync();
+
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+
+                    });
+
+
+                var result = resultSet.Data.Select(s => new InventoryTypeDetailDtoModel()
+                {
+                    InventoryTypeId = s.Id.ToString(),
+                    Title = s.Title,
+                    Description = s.Description
+                });
+                return Ok(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = "",
-                Data = result
-            });
+                return BadRequest(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         //GET : api/GetInventoryType/0
         [HttpGet("{InventoryTypeId}")]
         public async Task<ActionResult> GetInventoryTypeById(string InventoryTypeId)
         {
-            var InventoryType = (await _InventoryTypeService.GetInventoryTypeByIdAsync(Guid.Parse(InventoryTypeId))).Data;
-            if (InventoryType == null)
-                NotFound();
 
-            var result = new InventoryTypeDetailDtoModel()
+            try
             {
-                InventoryTypeId = InventoryType.Id.ToString(),
-                Title = InventoryType.Title,               
-                Description = InventoryType.Description
-            };
+                var InventoryType = (await _InventoryTypeService.GetInventoryTypeByIdAsync(Guid.Parse(InventoryTypeId))).Data;
+                if (InventoryType == null)
+                    return NotFound(new ResultSetDto<InventoryTypeDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
 
-            return Ok(new ResultSetDto<InventoryTypeDetailDtoModel>()
+
+
+                    });
+
+                var result = new InventoryTypeDetailDtoModel()
+                {
+                    InventoryTypeId = InventoryType.Id.ToString(),
+                    Title = InventoryType.Title,
+                    Description = InventoryType.Description
+                };
+
+                return Ok(new ResultSetDto<InventoryTypeDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = "",
-                Data = result
-            });
+                return BadRequest(new ResultSetDto<InventoryTypeDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         [HttpPost]
@@ -76,7 +125,141 @@ namespace Sude.Api.Controllers
                 foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
                     message += er.ErrorMessage + " \n";
 
-                return Ok(new ResultSetDto()
+                return BadRequest(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = message
+                });
+            }
+
+
+            try
+            {
+
+
+                var resultInventoryType = await _InventoryTypeService.GetInventoryTypeByIdAsync(Guid.Parse(request.InventoryTypeId));
+
+                if (resultInventoryType == null || resultInventoryType.Data== null)
+                    return NotFound(new ResultSetDto<InventoryTypeDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+
+                    });
+
+
+                InventoryTypeInfo InventoryTypeEdit = resultInventoryType.Data;
+                InventoryTypeEdit.Title = request.Title;
+
+                InventoryTypeEdit.Description = request.Description;
+
+                var result = await _InventoryTypeService.EditInventoryTypeAsync(InventoryTypeEdit);
+                if (!result.IsSucceed)
+                {
+                    return BadRequest(new ResultSetDto<InventoryTypeEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message,
+                        Data = null
+                    });
+
+                }
+
+
+                return Ok(new ResultSetDto<InventoryTypeEditDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = request
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<InventoryTypeEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResultSetDto<InventoryTypeNewDtoModel>>> AddInventoryType([FromBody] InventoryTypeNewDtoModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
+
+                return BadRequest(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = message
+                });
+            }
+
+
+            try
+            {
+
+                InventoryTypeInfo InventoryType = new InventoryTypeInfo()
+                {
+                    Title = request.Title,
+                    Description = request.Description
+
+                };
+
+                var resultSave = await _InventoryTypeService.AddInventoryTypeAsync(InventoryType);
+
+                if (!resultSave.IsSucceed)
+                {
+                    return BadRequest(new ResultSetDto<InventoryTypeNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSave.Message,
+                        Data = null
+                    });
+
+                }
+                //   return BadRequest(resultSave.Message);
+
+
+                request.InventoryTypeId = resultSave.Data.Id.ToString();
+
+                return Ok(new ResultSetDto<InventoryTypeNewDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = request
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<InventoryTypeNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ResultSetDto<InventoryTypeNewDtoModel>>> DeleteInventoryType([FromBody] string request)
+        {
+            if (!ModelState.IsValid)
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
+
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
                     Message = message
@@ -85,99 +268,35 @@ namespace Sude.Api.Controllers
 
 
 
-            var resultInventoryType = await _InventoryTypeService.GetInventoryTypeByIdAsync(Guid.Parse(request.InventoryTypeId));
-
-      
-      
-
-            InventoryTypeInfo InventoryTypeEdit = resultInventoryType.Data;
-            InventoryTypeEdit.Title = request.Title;
- 
-            InventoryTypeEdit.Description = request.Description;
-
-            var result = await _InventoryTypeService.EditInventoryTypeAsync(InventoryTypeEdit);
-            if (!result.IsSucceed)
+            try
             {
-                return Ok(new ResultSetDto<InventoryTypeEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = result.Message,
-                    Data = null
-                });
-
-            }
 
 
-            return Ok(new ResultSetDto<InventoryTypeEditDtoModel>()
-            {
-                IsSucceed = true,
-                Message = "",
-                Data = request
-            });
-        }
+                var result = await _InventoryTypeService.DeleteInventoryTypeAsync(Guid.Parse(request));
 
-        [HttpPost]
-        public async Task<ActionResult<ResultSetDto<InventoryTypeNewDtoModel>>> AddInventoryType([FromBody] InventoryTypeNewDtoModel request)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            InventoryTypeInfo InventoryType = new InventoryTypeInfo()
-            {
-                Title = request.Title,        
-                Description = request.Description
-              
-            };
-
-            var resultSave = await _InventoryTypeService.AddInventoryTypeAsync(InventoryType);
-
-            if (!resultSave.IsSucceed)
-            {
-                return Ok(new ResultSetDto<InventoryTypeNewDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = resultSave.Message,
-                    Data = null
-                });
-
-            }
-             //   return BadRequest(resultSave.Message);
+                if (!result.IsSucceed)
+                    return BadRequest(new ResultSetDto()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message
+                    });
 
 
-            request.InventoryTypeId = resultSave.Data.Id.ToString();
-
-            return Ok(new ResultSetDto<InventoryTypeNewDtoModel>()
-            {
-                IsSucceed = true,
-                Message = "",
-                Data = request
-            });
-        }
-
-
-        [HttpPost]
-        public async Task<ActionResult<ResultSetDto<InventoryTypeNewDtoModel>>> DeleteInventoryType([FromBody] string request)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-           
-
-            var result = await _InventoryTypeService.DeleteInventoryTypeAsync(Guid.Parse(request));
-
-            if (!result.IsSucceed)
                 return Ok(new ResultSetDto()
                 {
-                    IsSucceed = false,
-                    Message = result.Message
+                    IsSucceed = true,
+                    Message = ""
                 });
-
-
-            return Ok(new ResultSetDto()
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = ""
-            });
+                return BadRequest(new ResultSetDto<InventoryTypeNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
 

@@ -38,46 +38,67 @@ namespace Sude.Api.Controllers
         public async Task<ActionResult<ResultSetDto<CustomerNewDtoModel>>> AddCustomer([FromBody] CustomerNewDtoModel requestCustomer)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
-
-
-            CustomerInfo customer = new CustomerInfo()
             {
-                Title = requestCustomer.Title,
-                NationalCode=requestCustomer.NationalCode,
-                 IsActive=true,
-                  Phone=requestCustomer.Phone,
-                   WorkId=Guid.Parse(requestCustomer.WorkId)
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
 
-
-
-            };
-
-            var resultSave = await _CustomerService.AddCustomerAsync(customer);
-
-            if (!resultSave.IsSucceed)
-                return Ok(new ResultSetDto<CustomerNewDtoModel>()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = resultSave.Message,
+                    Message = message
+                });
+            }
+
+
+            try
+            {
+
+                CustomerInfo customer = new CustomerInfo()
+                {
+                    Title = requestCustomer.Title,
+                    NationalCode = requestCustomer.NationalCode,
+                    IsActive = true,
+                    Phone = requestCustomer.Phone,
+                    WorkId = Guid.Parse(requestCustomer.WorkId)
+
+
+
+                };
+
+                var resultSave = await _CustomerService.AddCustomerAsync(customer);
+
+                if (!resultSave.IsSucceed)
+                    return BadRequest(new ResultSetDto<CustomerNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSave.Message,
+                        Data = null
+                    });
+
+
+
+                requestCustomer.CustomerId = resultSave.Data.Id.ToString();
+
+
+
+
+                return Ok(new ResultSetDto<CustomerNewDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = requestCustomer
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<CustomerNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
                     Data = null
                 });
-
-
-
-            requestCustomer.CustomerId = resultSave.Data.Id.ToString();
-
-
-
-
-            return Ok(new ResultSetDto<CustomerNewDtoModel>()
-            {
-                IsSucceed = true,
-                Message = "",
-                Data = requestCustomer
-            });
+            }
         }
 
 
@@ -93,8 +114,16 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<CustomerInfo>> resultSet = await _CustomerService.GetCustomersByWorkIdAsync(Guid.Parse(workId));
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data==null || resultSet.Data.Count()<=0)
+                    return NotFound(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message ="Not found",
+                         Data=null
+                        
+                        
+                        
+                    });
 
                 var result = resultSet.Data.Select(c => new CustomerDetailDtoModel()
                 {
@@ -115,10 +144,10 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Message = ex.Message ,
                     Data = null
                 });
             }
@@ -133,8 +162,16 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<CustomerInfo>> resultSet = await _CustomerService.GetCustomersAsync();
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+
+                    });
 
                 var result = resultSet.Data.Select(c => new CustomerDetailDtoModel()
                 {
@@ -155,10 +192,10 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<CustomerDetailDtoModel>>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Message = ex.Message,
                     Data = null
                 });
             }

@@ -92,24 +92,17 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + blogId).addClass("danger");
+                            Command: toastr["success"]("مقاله حذف شد");
+
+     $("#tr_" + blogId).addClass("danger");
                                 $("#tr_" + blogId).hide('slow');
                          
-                            });
+
                             $("#blogView").load("Blog/List");
                         }
                         else {
 
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                            Command: toastr["warning"](result.message, "هشدار");
 
                         }
                     },

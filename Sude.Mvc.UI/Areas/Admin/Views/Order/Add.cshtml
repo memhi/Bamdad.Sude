@@ -4,9 +4,7 @@
 
 @section Scripts
 {
-
-    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+ 
 
   
 }
@@ -213,17 +211,16 @@
             data: order
         }).done(function (result) {
             if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
+
+                Command: toastr["success"]("سفارش ایجاد شد");
+
+
                 $("#orderView").load("Order/List");
             }
             else {
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
+                Command: toastr["warning"](result.message, "هشدار");
+
+             
             }
         });
     }

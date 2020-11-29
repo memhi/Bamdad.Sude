@@ -84,24 +84,16 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + InventoryTypeId).addClass("danger");
-                                $("#tr_" + InventoryTypeId).hide('slow');
+                            Command: toastr["success"]("نوع حذف شد");
                          
-                            });
+                       
+                            $("#tr_" + InventoryTypeId).addClass("danger");
+                            $("#tr_" + InventoryTypeId).hide('slow');
                             $("#InventoryTypeView").load("InventoryType/List");
                         }
                         else {
 
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                            Command: toastr["warning"](result.message, "هشدار");
 
                         }
                     },

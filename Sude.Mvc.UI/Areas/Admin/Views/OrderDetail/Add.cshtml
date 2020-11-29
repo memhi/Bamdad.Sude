@@ -86,17 +86,11 @@
                     data: orderDetail
                 }).done(function (result) {
                     if (result.isSucceed) {
-                        swal.fire({
-                            icon: "success",
-                        });
+                        Command: toastr["success"]("جزئیات سفارش اضافه شد")
                         $("#odetails").load("OrderDetail/List");
                     }
                     else {
-                        swal.fire({
-                            title: 'هشدار',
-                            text: result.message,
-                            icon: 'warning',
-                        });
+                        Command: toastr["warning"](result.message, "هشدار")
                     }
                 });
             }

@@ -33,8 +33,16 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<WorkTypeInfo>> resultSet = await _WorkTypeService.GetWorkTypesAsync();
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
 
                 var result = resultSet.Data.Select(wt => new WorkTypeDetailDtoModel()
                 {
@@ -51,7 +59,7 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>()
                 {
                     IsSucceed = false,
                     Message = ex.Message+"&&&"+ ex.StackTrace,
@@ -64,24 +72,45 @@ namespace Sude.Api.Controllers
         [HttpGet("{WorkTypeId}")]
         public async Task<ActionResult> GetWorkTypeById(string WorkTypeId)
         {
-            var WorkType = (await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(WorkTypeId))).Data;
-            if (WorkType == null)
-                NotFound();
 
-            var result = new WorkTypeDetailDtoModel()
+            try
             {
-                WorkTypeId = WorkType.Id.ToString(),
-                Title = WorkType.Title,
-                
-                Desc = WorkType.Desc
-            };
+                var WorkType = (await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(WorkTypeId))).Data;
+                if (WorkType == null)
+                    return NotFound(new ResultSetDto<WorkTypeDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
 
-            return Ok(new ResultSetDto<WorkTypeDetailDtoModel>()
+
+                    });
+
+
+                var result = new WorkTypeDetailDtoModel()
+                {
+                    WorkTypeId = WorkType.Id.ToString(),
+                    Title = WorkType.Title,
+
+                    Desc = WorkType.Desc
+                };
+
+                return Ok(new ResultSetDto<WorkTypeDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = "",
-                Data = result
-            });
+                return BadRequest(new ResultSetDto<WorkTypeDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         [HttpPost]
@@ -93,80 +122,118 @@ namespace Sude.Api.Controllers
                 foreach (var er in ModelState.Values.SelectMany(modelstate=> modelstate.Errors))
                         message += er.ErrorMessage + " \n";
 
-                return Ok(new ResultSetDto()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
                     Message = message
                 });
             }
 
-            
 
-            var resultWorkType  = await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(request.WorkTypeId));
-
-            if (!resultWorkType.IsSucceed)
-                return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = resultWorkType.Message,
-                    Data = null
-                });
-
-            WorkTypeInfo WorkTypeEdit = resultWorkType.Data;
-            WorkTypeEdit.Title = request.Title;         
-            WorkTypeEdit.Desc = request.Desc;
-
-            var result = await _WorkTypeService.EditWorkTypeAsync(WorkTypeEdit);
-            if(!result.IsSucceed)
-                return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = result.Message,
-                    Data = null
-                });
-            return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
+            try
             {
-                IsSucceed = true,
-                Message = "",
-                Data = request
-            });
+
+                var resultWorkType = await _WorkTypeService.GetWorkTypeByIdAsync(Guid.Parse(request.WorkTypeId));
+
+                if ( resultWorkType.Data==null || !resultWorkType.IsSucceed)
+                    return BadRequest(new ResultSetDto<WorkTypeEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultWorkType.Message,
+                        Data = null
+                    });
+
+                WorkTypeInfo WorkTypeEdit = resultWorkType.Data;
+                WorkTypeEdit.Title = request.Title;
+                WorkTypeEdit.Desc = request.Desc;
+
+                var result = await _WorkTypeService.EditWorkTypeAsync(WorkTypeEdit);
+                if (!result.IsSucceed)
+                    return BadRequest(new ResultSetDto<WorkTypeEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message,
+                        Data = null
+                    });
+                return Ok(new ResultSetDto<WorkTypeEditDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = request
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<WorkTypeEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<ResultSetDto<WorkTypeNewDtoModel>>> AddWorkType([FromBody] WorkTypeNewDtoModel request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            WorkTypeInfo WorkType = new WorkTypeInfo()
             {
-                Title = request.Title, 
-                Desc = request.Desc
-              
-            };
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate=> modelstate.Errors))
+                        message += er.ErrorMessage + " \n";
 
-            var resultSave = await _WorkTypeService.AddWorkTypeAsync(WorkType);
-
-            if (!resultSave.IsSucceed)
-            {
-                return Ok(new ResultSetDto<WorkTypeNewDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = resultSave.Message,
-                    Data = null
+                return BadRequest(new ResultSetDto()
+        {
+            IsSucceed = false,
+                    Message = message
                 });
-
             }
 
 
-            request.WorkTypeId = resultSave.Data.Id.ToString();
-
-            return Ok(new ResultSetDto<WorkTypeNewDtoModel>()
+            try
             {
-                IsSucceed = true,
-                Message = "",
-                Data = request
-            });
+
+                WorkTypeInfo WorkType = new WorkTypeInfo()
+                {
+                    Title = request.Title,
+                    Desc = request.Desc
+
+                };
+
+                var resultSave = await _WorkTypeService.AddWorkTypeAsync(WorkType);
+
+                if (!resultSave.IsSucceed)
+                {
+                    return BadRequest(new ResultSetDto<WorkTypeNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSave.Message,
+                        Data = null
+                    });
+
+                }
+
+
+                request.WorkTypeId = resultSave.Data.Id.ToString();
+
+                return Ok(new ResultSetDto<WorkTypeNewDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = request
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<WorkTypeNewDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+
         }
 
 
@@ -174,25 +241,46 @@ namespace Sude.Api.Controllers
         public async Task<ActionResult<ResultSetDto<WorkTypeNewDtoModel>>> DeleteWorkType([FromBody] string request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
 
-           
-
-            var result = await _WorkTypeService.DeleteWorkTypeAsync(Guid.Parse(request));
-
-            if (!result.IsSucceed)
-                return Ok(new ResultSetDto()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = result.Message
+                    Message = message
                 });
+            }
 
 
-            return Ok(new ResultSetDto()
+            try
             {
-                IsSucceed = true,
-                Message = ""
-            });
+
+                var result = await _WorkTypeService.DeleteWorkTypeAsync(Guid.Parse(request));
+
+                if (!result.IsSucceed)
+                    return BadRequest(new ResultSetDto()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message
+                    });
+
+
+                return Ok(new ResultSetDto()
+                {
+                    IsSucceed = true,
+                    Message = ""
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message 
+                });
+            }
         }
 
 

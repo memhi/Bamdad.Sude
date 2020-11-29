@@ -82,23 +82,13 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + worktypeId).addClass("danger");
-                                $("#tr_" + worktypeId).hide('slow');
-                           
-                            });
+                            Command: toastr["success"]("نوع کسب و کار حذف شد");
+                            $("#tr_" + worktypeId).addClass("danger");
+                            $("#tr_" + worktypeId).hide('slow');
                             $("#workTypeView").load("WorkType/List");
                         }
                         else {
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                            Command: toastr["warning"](result.message, "هشدار");
                         }
                     },
                     error: function (request, status, error) {

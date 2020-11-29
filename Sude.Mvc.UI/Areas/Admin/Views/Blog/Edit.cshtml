@@ -215,19 +215,13 @@
             data: blog
         }).done(function (result) {
             if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
+                Command: toastr["success"]("اطلاعات مقاله اصلاح شد");
                 $("#myModal").modal("hide");
                 $("#blogView").load("Blog/List");
 
             }
             else {
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
+                Command: toastr["warning"](result.message, "هشدار");
             }
         });
     }

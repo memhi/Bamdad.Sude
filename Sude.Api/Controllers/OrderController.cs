@@ -49,8 +49,16 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data != null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
 
                 var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
                 {
@@ -73,10 +81,10 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Message = ex.Message ,
                     Data = null
                 });
             }
@@ -88,8 +96,16 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<OrderDetailInfo>> resultSet = await _OrderDetailService.GetOrderDetailsAsync(Guid.Parse(orderId));
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data==null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<OrderDetailDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
 
                 var result = resultSet.Data.Select(o => new OrderDetailDetailDtoModel()
                 {
@@ -112,10 +128,10 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDetailDtoModel>>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Message = ex.Message ,
                     Data = null
                 });
             }
@@ -126,9 +142,19 @@ namespace Sude.Api.Controllers
         [HttpGet("{orderId}")]
         public async Task<ActionResult> GetOrderById(string orderId)
         {
+
+            try
+            { 
             var o = (await _OrderService.GetOrderByIdAsync(Guid.Parse(orderId))).Data;
             if (o == null)
-                NotFound();
+                return NotFound(new ResultSetDto<OrderInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Not found",
+                    Data = null
+
+
+                });
 
             var result = new OrderDetailDtoModel()
             {
@@ -171,6 +197,16 @@ namespace Sude.Api.Controllers
                 }
 
             }
+            else
+                {
+                    return NotFound(new ResultSetDto<OrderDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "اطلاعات جزئیات سفارش یافت نشد",
+                        Data = null
+                    });
+
+                }
             result.OrderDetails = orderDetailDetailDtoModels;
 
             return Ok(new ResultSetDto<OrderDetailDtoModel>()
@@ -179,6 +215,16 @@ namespace Sude.Api.Controllers
                 Message = "",
                 Data = result
             });
+        }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         [HttpGet("{workId}")]
@@ -190,8 +236,16 @@ namespace Sude.Api.Controllers
                 if (Guid.TryParse(workId, out wid))
                 {
                     ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersByWorkIdAsync(wid);
-                    if (resultSet == null)
-                        NotFound();
+                    if (resultSet == null || resultSet.Data==null || !resultSet.Data.Any())
+                        return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                        {
+                            IsSucceed = false,
+                            Message = "Not found",
+                            Data = null
+
+
+                        });
+
 
                     var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
                     {
@@ -214,7 +268,7 @@ namespace Sude.Api.Controllers
                 }
                 else
                 {
-                    return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                     {
                         IsSucceed = false,
                         Message = "Not found",
@@ -225,7 +279,7 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                 {
                     IsSucceed = false,
                     Message = ex.Message + "&&&" + ex.StackTrace,
@@ -253,120 +307,133 @@ namespace Sude.Api.Controllers
                 });
             }
 
-            if (string.IsNullOrEmpty(orderdto.OrderId))
+            try
             {
-                double sumprice = 0;
-                if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
+                if (string.IsNullOrEmpty(orderdto.OrderId))
                 {
-
-                    foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
+                    double sumprice = 0;
+                    if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
                     {
-                        sumprice += detailNewDtoModel.Price * detailNewDtoModel.Count;
+
+                        foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
+                        {
+                            sumprice += detailNewDtoModel.Price * detailNewDtoModel.Count;
+                        }
                     }
-                }
 
-                Guid CID, OID;
-                if (orderdto.Customer != null && !string.IsNullOrEmpty(orderdto.Customer.CustomerId))
-                {
-                    CustomerInfo customer = new CustomerInfo();
-
-                    customer.IsActive = true;
-                    customer.NationalCode = orderdto.Customer.NationalCode;
-                    customer.Phone = orderdto.Customer.Phone;
-                    customer.Title = orderdto.Customer.Title;
-                    var resultcustomer = await _CustomerService.AddCustomerAsync(customer);
-                    if (!resultcustomer.IsSucceed)
-                        return BadRequest(new ResultSetDto<OrderNewDtoModel>()
-                        {
-                            IsSucceed = false,
-                            Message = resultcustomer.Message,
-                            Data = null
-                        });
-                    CID = resultcustomer.Data.Id;
-                }
-                else
-                {
-                    CID = Guid.Parse(orderdto.CustomerId);
-
-                }
-
-                OrderInfo order = new OrderInfo()
-                {
-                    CustomerId = CID,
-                    Description = orderdto.Description,
-                    Number = orderdto.OrderNumber,
-                    OrderDate = orderdto.OrderDate,
-                    WorkId = Guid.Parse(orderdto.WorkId),
-                    Status = true,
-                    SumPrice = sumprice
-
-                };
-                var resultorder = await _OrderService.AddOrderAsync(order);
-                if (!resultorder.IsSucceed)
-                    return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                    Guid CID, OID;
+                    if (orderdto.Customer != null && !string.IsNullOrEmpty(orderdto.Customer.CustomerId))
                     {
-                        IsSucceed = false,
-                        Message = resultorder.Message,
-                        Data = null
-                    });
+                        CustomerInfo customer = new CustomerInfo();
 
-                OID = resultorder.Data.Id;
-                orderdto.OrderId = OID.ToString();
-                if (orderdto.Customer != null)
-                    orderdto.Customer.CustomerId = CID.ToString();
-                if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
-                {
-
-                    foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
-                    {
-                        OrderDetailInfo orderDetail = new OrderDetailInfo()
-                        {
-                            Count = detailNewDtoModel.Count,
-                            OrderId = OID,
-                            Price = detailNewDtoModel.Price,
-                            ServingId = Guid.Parse(detailNewDtoModel.ServingId)
-
-                        };
-
-                        var resultorderdetail = await _OrderDetailService.AddOrderDetailAsync(orderDetail);
-                        if (!resultorderdetail.IsSucceed)
+                        customer.IsActive = true;
+                        customer.NationalCode = orderdto.Customer.NationalCode;
+                        customer.Phone = orderdto.Customer.Phone;
+                        customer.Title = orderdto.Customer.Title;
+                        var resultcustomer = await _CustomerService.AddCustomerAsync(customer);
+                        if (!resultcustomer.IsSucceed)
                             return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                             {
                                 IsSucceed = false,
-                                Message = resultorderdetail.Message,
+                                Message = resultcustomer.Message,
                                 Data = null
                             });
+                        CID = resultcustomer.Data.Id;
+                    }
+                    else
+                    {
+                        CID = Guid.Parse(orderdto.CustomerId);
 
-                        detailNewDtoModel.OrderId = OID.ToString();
-                        detailNewDtoModel.OrderDetailId = resultorderdetail.Data.Id.ToString();
+                    }
+
+                    OrderInfo order = new OrderInfo()
+                    {
+                        CustomerId = CID,
+                        Description = orderdto.Description,
+                        Number = orderdto.OrderNumber,
+                        OrderDate = orderdto.OrderDate,
+                        WorkId = Guid.Parse(orderdto.WorkId),
+                        Status = true,
+                        SumPrice = sumprice
+
+                    };
+                    var resultorder = await _OrderService.AddOrderAsync(order);
+                    if (!resultorder.IsSucceed)
+                        return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = resultorder.Message,
+                            Data = null
+                        });
+
+                    OID = resultorder.Data.Id;
+                    orderdto.OrderId = OID.ToString();
+                    if (orderdto.Customer != null)
+                        orderdto.Customer.CustomerId = CID.ToString();
+                    if (orderdto.OrderDetails != null && orderdto.OrderDetails.Count > 0)
+                    {
+
+                        foreach (OrderDetailDetailDtoModel detailNewDtoModel in orderdto.OrderDetails)
+                        {
+                            OrderDetailInfo orderDetail = new OrderDetailInfo()
+                            {
+                                Count = detailNewDtoModel.Count,
+                                OrderId = OID,
+                                Price = detailNewDtoModel.Price,
+                                ServingId = Guid.Parse(detailNewDtoModel.ServingId)
+
+                            };
+
+                            var resultorderdetail = await _OrderDetailService.AddOrderDetailAsync(orderDetail);
+                            if (!resultorderdetail.IsSucceed)
+                                return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                                {
+                                    IsSucceed = false,
+                                    Message = resultorderdetail.Message,
+                                    Data = null
+                                });
+
+                            detailNewDtoModel.OrderId = OID.ToString();
+                            detailNewDtoModel.OrderDetailId = resultorderdetail.Data.Id.ToString();
+
+                        }
+
+
 
                     }
 
 
+                }
+
+                else
+                {
+                    return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Id is incorrect",
+                        Data = null
+                    });
 
                 }
 
 
-            }
+                return Ok(new ResultSetDto<OrderNewDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = orderdto
+                });
 
-            else
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                 {
                     IsSucceed = false,
-                    Message = "Id is incorrect",
+                    Message = ex.Message ,
                     Data = null
                 });
-
             }
-
-
-            return Ok(new ResultSetDto<OrderNewDtoModel>()
-            {
-                IsSucceed = true,
-                Message = "",
-                Data = orderdto
-            });
 
 
         }
@@ -391,142 +458,153 @@ namespace Sude.Api.Controllers
                 });
             }
 
-
-            ICollection<OrderDetailDetailDtoModel> orderDetailsRequest = orderDTO.OrderDetails;
-
-
-            var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
-
-            if (!resultOrder.IsSucceed)
-                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = resultOrder.Message,
-                    Data = null
-                });
-
-
-            OrderInfo orderInfo = resultOrder.Data;
-            orderInfo.CustomerId = Guid.Parse(orderDTO.CustomerId);
-            orderInfo.Description = orderDTO.Description;
-            orderInfo.Number = orderDTO.OrderNumber;
-            orderInfo.OrderDate = orderDTO.OrderDate;
-            //  double sumpriceoriginal = resultOrder.Data.SumPrice;
-
-            var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(resultOrder.Data.Id);
-            foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
+            try
             {
-                if (orderDetailsRequest.Where(od => od.OrderDetailId.ToString() == orderDetailDetail.Id.ToString()).Count() <= 0)
-                {
 
-                    var resultdetaildelete = await _OrderDetailService.DeleteOrderDetailAsync(orderDetailDetail.Id);
-                    if (!resultdetaildelete.IsSucceed)
+                ICollection<OrderDetailDetailDtoModel> orderDetailsRequest = orderDTO.OrderDetails;
+
+
+                var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
+
+                if (!resultOrder.IsSucceed)
+                    return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                     {
-                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
-                        {
-                            IsSucceed = false,
-                            Message = resultdetaildelete.Message,
-                            Data = null
-                        });
+                        IsSucceed = false,
+                        Message = resultOrder.Message,
+                        Data = null
+                    });
 
+
+                OrderInfo orderInfo = resultOrder.Data;
+                orderInfo.CustomerId = Guid.Parse(orderDTO.CustomerId);
+                orderInfo.Description = orderDTO.Description;
+                orderInfo.Number = orderDTO.OrderNumber;
+                orderInfo.OrderDate = orderDTO.OrderDate;
+                //  double sumpriceoriginal = resultOrder.Data.SumPrice;
+
+                var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(resultOrder.Data.Id);
+                foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
+                {
+                    if (orderDetailsRequest.Where(od => od.OrderDetailId.ToString() == orderDetailDetail.Id.ToString()).Count() <= 0)
+                    {
+
+                        var resultdetaildelete = await _OrderDetailService.DeleteOrderDetailAsync(orderDetailDetail.Id);
+                        if (!resultdetaildelete.IsSucceed)
+                        {
+                            return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = resultdetaildelete.Message,
+                                Data = null
+                            });
+
+                        }
                     }
+
                 }
 
-            }
-
-            double sumpricerequestorder = 0;
-            foreach (OrderDetailDetailDtoModel detailDetailDtoModel in orderDTO.OrderDetails)
-            {
-
-                sumpricerequestorder += (detailDetailDtoModel.Price * detailDetailDtoModel.Count);
-                if (detailDetailDtoModel.OrderDetailId!=detailDetailDtoModel.ServingId)
+                double sumpricerequestorder = 0;
+                foreach (OrderDetailDetailDtoModel detailDetailDtoModel in orderDTO.OrderDetails)
                 {
-                    var orderdetailoriginalresult = await _OrderDetailService.GetOrderDetailByIdAsync(Guid.Parse(detailDetailDtoModel.OrderDetailId));
-                    if (!orderdetailoriginalresult.IsSucceed)
+
+                    sumpricerequestorder += (detailDetailDtoModel.Price * detailDetailDtoModel.Count);
+                    if (detailDetailDtoModel.OrderDetailId != detailDetailDtoModel.ServingId)
                     {
-                        return NotFound(new ResultSetDto<OrderEditDtoModel>()
+                        var orderdetailoriginalresult = await _OrderDetailService.GetOrderDetailByIdAsync(Guid.Parse(detailDetailDtoModel.OrderDetailId));
+                        if (!orderdetailoriginalresult.IsSucceed)
                         {
-                            IsSucceed = false,
-                            Message = orderdetailoriginalresult.Message,
-                            Data = null
-                        });
+                            return NotFound(new ResultSetDto<OrderEditDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = orderdetailoriginalresult.Message,
+                                Data = null
+                            });
+
+                        }
+
+                        else
+                        {
+                            orderdetailoriginalresult.Data.Count = detailDetailDtoModel.Count;
+                            orderdetailoriginalresult.Data.Price = detailDetailDtoModel.Price;
+                            orderdetailoriginalresult.Data.ServingId = Guid.Parse(detailDetailDtoModel.ServingId);
+                        }
+
+                        var orderdetailoriginalsave = await _OrderDetailService.EditOrderDetailAsync(orderdetailoriginalresult.Data);
+                        if (!orderdetailoriginalsave.IsSucceed)
+                        {
+
+                            return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = orderdetailoriginalsave.Message,
+                                Data = null
+                            });
+
+                        }
 
                     }
 
                     else
                     {
-                        orderdetailoriginalresult.Data.Count = detailDetailDtoModel.Count;
-                        orderdetailoriginalresult.Data.Price = detailDetailDtoModel.Price;
-                        orderdetailoriginalresult.Data.ServingId = Guid.Parse(detailDetailDtoModel.ServingId);
-                    }
 
-                    var orderdetailoriginalsave = await _OrderDetailService.EditOrderDetailAsync(orderdetailoriginalresult.Data);
-                    if (!orderdetailoriginalsave.IsSucceed)
-                    {
-
-                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                        OrderDetailInfo orderDetailInfo = new OrderDetailInfo()
                         {
-                            IsSucceed = false,
-                            Message = orderdetailoriginalsave.Message,
-                            Data = null
-                        });
+                            Count = detailDetailDtoModel.Count,
+                            OrderId = Guid.Parse(orderDTO.OrderId),
+                            Price = detailDetailDtoModel.Price,
+                            ServingId = Guid.Parse(detailDetailDtoModel.ServingId)
+
+
+                        };
+                        var orderdetailoriginalsave = await _OrderDetailService.AddOrderDetailAsync(orderDetailInfo);
+                        if (!orderdetailoriginalsave.IsSucceed)
+                        {
+
+                            return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = orderdetailoriginalsave.Message,
+                                Data = null
+                            });
+
+                        }
+
 
                     }
+
 
                 }
 
-                else
+                orderInfo.SumPrice = sumpricerequestorder;
+
+
+
+                var resultSaveOrder = await _OrderService.EditOrderAsync(orderInfo);
+                if (!resultSaveOrder.IsSucceed)
+                    return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSaveOrder.Message,
+                        Data = null
+                    });
+
+                return Ok(new ResultSetDto<OrderEditDtoModel>()
                 {
-
-                    OrderDetailInfo orderDetailInfo = new OrderDetailInfo()
-                    {
-                        Count = detailDetailDtoModel.Count,
-                        OrderId =Guid.Parse(orderDTO.OrderId),
-                        Price = detailDetailDtoModel.Price,
-                        ServingId = Guid.Parse(detailDetailDtoModel.ServingId)
-
-
-                    };
-                    var orderdetailoriginalsave = await _OrderDetailService.AddOrderDetailAsync(orderDetailInfo);
-                    if (!orderdetailoriginalsave.IsSucceed)
-                    {
-
-                        return BadRequest(new ResultSetDto<OrderEditDtoModel>()
-                        {
-                            IsSucceed = false,
-                            Message = orderdetailoriginalsave.Message,
-                            Data = null
-                        });
-
-                    }
-
-
-                }
-
+                    IsSucceed = true,
+                    Message = "",
+                    Data = orderDTO
+                });
 
             }
-
-            orderInfo.SumPrice = sumpricerequestorder;
-
-
-
-            var resultSaveOrder = await _OrderService.EditOrderAsync(orderInfo);
-            if (!resultSaveOrder.IsSucceed)
+            catch (Exception ex)
+            {
                 return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                 {
                     IsSucceed = false,
-                    Message = resultSaveOrder.Message,
+                    Message = ex.Message,
                     Data = null
                 });
-
-            return Ok(new ResultSetDto<OrderEditDtoModel>()
-            {
-                IsSucceed = true,
-                Message = "",
-                Data = orderDTO
-            });
-
-
+            }
 
 
 

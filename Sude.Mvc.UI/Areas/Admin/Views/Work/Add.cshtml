@@ -96,17 +96,11 @@
                 data: work
             }).done(function (result) {
                 if (result.isSucceed) {
-                    swal.fire({
-                        icon: "success",
-                    });
+                    Command: toastr["success"]("اطلاعات کسب و کار اضافه شد");
                     $("#WorkView").load("Work/List");
                 }
                 else {
-                    swal.fire({
-                        title: 'هشدار',
-                        text: result.message,
-                        icon: 'warning',
-                    });
+                    Command: toastr["warning"](result.message, "هشدار");
                 }
             });
         }

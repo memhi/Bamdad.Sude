@@ -14,6 +14,7 @@ using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Content;
 
 using Sude.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Sude.Api.Controllers
 {
@@ -48,8 +49,13 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<BlogInfo>> resultSet = await _BlogService.GetBlogsAsync();
-                if (resultSet == null)
-                    NotFound();
+                if (resultSet == null || resultSet.Data==null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+                    });
 
                 var result = resultSet.Data.Select(b => new BlogDetailDtoModel()
                 {
@@ -81,7 +87,7 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
                 {
                     IsSucceed = false,
                     Message = ex.Message + "&&&" + ex.StackTrace,
@@ -90,13 +96,19 @@ namespace Sude.Api.Controllers
             }
         }
 
-        public async Task<ActionResult> GetHomePageBlogsAsync()
+        public ActionResult GetHomePageBlogs()
         {
             try
             {
-                ResultSet<IEnumerable<BlogInfo>> resultSet =  _BlogService.GetHomePageBlogs();
-                if (resultSet == null)
-                    NotFound();
+                ResultSet<IEnumerable<BlogInfo>> resultSet = _BlogService.GetHomePageBlogs();
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+                    });
+
 
                 var result = resultSet.Data.Select(b => new BlogDetailDtoModel()
                 {
@@ -127,7 +139,7 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
                 {
                     IsSucceed = false,
                     Message = ex.Message + "&&&" + ex.StackTrace,
@@ -143,8 +155,8 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<BlogInfo> resultSet = await _BlogService.GetBlogByIdAsync(Guid.Parse(blogId));
-                if (resultSet == null)
-                    return Ok(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
+                if (resultSet == null || resultSet.Data == null )
+                    return NotFound(new ResultSetDto<BlogDetailDtoModel>()
                     {
                         IsSucceed = false,
                         Message = "Not Found",
@@ -182,10 +194,10 @@ namespace Sude.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new ResultSetDto<BlogDetailDtoModel>()
+                return BadRequest(new ResultSetDto<BlogDetailDtoModel>()
                 {
                     IsSucceed = false,
-                    Message = ex.Message + "&&&" + ex.StackTrace,
+                    Message = ex.Message,
                     Data = null
                 });
             }
@@ -200,114 +212,147 @@ namespace Sude.Api.Controllers
                 foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
                     message += er.ErrorMessage + " \n";
 
-                return Ok(new ResultSetDto()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
                     Message = message
                 });
             }
 
-          
-
-
-            var resultBlog = await _BlogService.GetBlogByIdAsync(Guid.Parse(requestBlog.BlogId));
-
-            if (!resultBlog.IsSucceed)
-                return Ok(new ResultSetDto<BlogEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = resultBlog.Message,
-                    Data = null
-                });
-
-            BlogInfo BlogEdit = resultBlog.Data;
-
-            BlogEdit.Title = requestBlog.Title;
-            BlogEdit.AllowComment = requestBlog.AllowComment;
-            BlogEdit.Description = requestBlog.Description;
-            BlogEdit.MetaTitle = requestBlog.MetaTitle;
-            BlogEdit.EndDate = requestBlog.EndDate;
-            BlogEdit.ShortBody = requestBlog.ShortBody;
-            BlogEdit.FullBody = requestBlog.FullBody;
-            BlogEdit.IsActive = requestBlog.IsActive;
-            BlogEdit.IsPublish = requestBlog.IsPublish;
-            BlogEdit.MetaKeywords = requestBlog.MetaKeywords;
-            BlogEdit.MetaDescription = requestBlog.MetaDescription;
-            BlogEdit.StartDate = requestBlog.StartDate;
-            BlogEdit.Tags = requestBlog.Tags;
-            BlogEdit.Title = requestBlog.Title;
-            BlogEdit.UpdateDate = DateTime.Now;
-
-            var result = await _BlogService.EditBlogAsync(BlogEdit);
-            if (!result.IsSucceed)
-                return Ok(new ResultSetDto<BlogEditDtoModel>()
-                {
-                    IsSucceed = false,
-                    Message = result.Message,
-                    Data = null
-                });
-
-            return Ok(new ResultSetDto<BlogEditDtoModel>()
+            try
             {
-                IsSucceed = true,
-                Message = "",
-                Data = requestBlog
-            });
+
+
+                var resultBlog = await _BlogService.GetBlogByIdAsync(Guid.Parse(requestBlog.BlogId));
+
+                if (resultBlog == null || resultBlog.Data == null || !resultBlog.IsSucceed)
+                    return NotFound(new ResultSetDto<BlogEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultBlog.Message,
+                        Data = null
+                    });
+
+                BlogInfo BlogEdit = resultBlog.Data;
+
+                BlogEdit.Title = requestBlog.Title;
+                BlogEdit.AllowComment = requestBlog.AllowComment;
+                BlogEdit.Description = requestBlog.Description;
+                BlogEdit.MetaTitle = requestBlog.MetaTitle;
+                BlogEdit.EndDate = requestBlog.EndDate;
+                BlogEdit.ShortBody = requestBlog.ShortBody;
+                BlogEdit.FullBody = requestBlog.FullBody;
+                BlogEdit.IsActive = requestBlog.IsActive;
+                BlogEdit.IsPublish = requestBlog.IsPublish;
+                BlogEdit.MetaKeywords = requestBlog.MetaKeywords;
+                BlogEdit.MetaDescription = requestBlog.MetaDescription;
+                BlogEdit.StartDate = requestBlog.StartDate;
+                BlogEdit.Tags = requestBlog.Tags;
+                BlogEdit.Title = requestBlog.Title;
+                BlogEdit.UpdateDate = DateTime.Now;
+
+                var result = await _BlogService.EditBlogAsync(BlogEdit);
+                if (!result.IsSucceed)
+                    return BadRequest(new ResultSetDto<BlogEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message,
+                        Data = null
+                    });
+
+                return Ok(new ResultSetDto<BlogEditDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = requestBlog
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<BlogDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<ResultSetDto<BlogNewDtoModel>>> AddBlog([FromBody] BlogNewDtoModel requestBlog)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-     
-
-
-            BlogInfo Blog = new BlogInfo()
             {
-                Title = requestBlog.Title,
-            AllowComment = requestBlog.AllowComment,
-            Description = requestBlog.Description,
-            MetaTitle = requestBlog.MetaTitle,
-            EndDate = requestBlog.EndDate,
-            ShortBody = requestBlog.ShortBody,
-            FullBody = requestBlog.FullBody,
-            IsActive = requestBlog.IsActive,
-            IsPublish = requestBlog.IsPublish,
-            MetaKeywords = requestBlog.MetaKeywords,
-            MetaDescription = requestBlog.MetaDescription,
-            StartDate = requestBlog.StartDate,
-            Tags = requestBlog.Tags, 
-             RegDate= DateTime.Now
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
 
-     
-
-        };
-
-            var resultSave = await _BlogService.AddBlogAsync(Blog);
-
-            if (!resultSave.IsSucceed)
-                return Ok(new ResultSetDto<BlogNewDtoModel>()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = resultSave.Message,
-                    Data = null
+                    Message = message
+                });
+            }
+
+
+            try
+            {
+
+                BlogInfo Blog = new BlogInfo()
+                {
+                    Title = requestBlog.Title,
+                    AllowComment = requestBlog.AllowComment,
+                    Description = requestBlog.Description,
+                    MetaTitle = requestBlog.MetaTitle,
+                    EndDate = requestBlog.EndDate,
+                    ShortBody = requestBlog.ShortBody,
+                    FullBody = requestBlog.FullBody,
+                    IsActive = requestBlog.IsActive,
+                    IsPublish = requestBlog.IsPublish,
+                    MetaKeywords = requestBlog.MetaKeywords,
+                    MetaDescription = requestBlog.MetaDescription,
+                    StartDate = requestBlog.StartDate,
+                    Tags = requestBlog.Tags,
+                    RegDate = DateTime.Now
+
+
+
+                };
+
+                var resultSave = await _BlogService.AddBlogAsync(Blog);
+
+                if (!resultSave.IsSucceed)
+                    return BadRequest(new ResultSetDto<BlogNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSave.Message,
+                        Data = null
+                    });
+
+
+
+                requestBlog.BlogId = resultSave.Data.Id.ToString();
+
+
+
+
+                return Ok(new ResultSetDto<BlogNewDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = requestBlog
                 });
 
-
-
-            requestBlog.BlogId = resultSave.Data.Id.ToString();
-
-           
-
-
-            return Ok(new ResultSetDto<BlogNewDtoModel>()
+            }
+            catch (Exception ex)
             {
-                IsSucceed = true,
-                Message = "",
-                Data = requestBlog
-            });
+                return BadRequest(new ResultSetDto<BlogDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
 
@@ -315,25 +360,47 @@ namespace Sude.Api.Controllers
         public async Task<ActionResult<ResultSetDto<BlogNewDtoModel>>> DeleteBlog([FromBody] string blogId)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
 
-
-
-            var result = await _BlogService.DeleteBlogAsync(Guid.Parse(blogId));
-
-            if (!result.IsSucceed)
-                return Ok(new ResultSetDto()
+                return BadRequest(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = result.Message
+                    Message = message
                 });
+            }
 
 
-            return Ok(new ResultSetDto()
+            try
             {
-                IsSucceed = true,
-                Message = ""
-            });
+
+                var result = await _BlogService.DeleteBlogAsync(Guid.Parse(blogId));
+
+                if (!result.IsSucceed)
+                    return BadRequest(new ResultSetDto()
+                    {
+                        IsSucceed = false,
+                        Message = result.Message
+                    });
+
+
+                return Ok(new ResultSetDto()
+                {
+                    IsSucceed = true,
+                    Message = ""
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<BlogDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
         }
 
     }

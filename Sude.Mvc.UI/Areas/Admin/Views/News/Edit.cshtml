@@ -214,19 +214,13 @@
             data: News
         }).done(function (result) {
             if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
+                Command: toastr["success"]("خبر اصلاح شد")
                 $("#myModal").modal("hide");
                 $("#newsView").load("News/List");
 
             }
             else {
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
+                Command: toastr["warning"](result.message, "هشدار")
             }
         });
     }

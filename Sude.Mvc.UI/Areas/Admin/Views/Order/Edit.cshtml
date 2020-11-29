@@ -205,18 +205,12 @@
             data: order
         }).done(function (result) {
             if (result.isSucceed) {
-                swal.fire({
-                    icon: "success",
-                });
+                Command: toastr["success"]("سفارش اصلاح شد");
                 $("#myModal").modal("hide");
                 $("#orderView").load("Order/List");
             }
             else {
-                swal.fire({
-                    title: 'هشدار',
-                    text: result.message,
-                    icon: 'warning',
-                });
+                Command: toastr["warning"](result.message, "هشدار");
             }
         });
     }

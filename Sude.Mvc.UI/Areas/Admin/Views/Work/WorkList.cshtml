@@ -89,24 +89,15 @@
                         type: "Get",
                         success: function (result) {
                             if (result.isSucceed == true) {
-                                swal.fire(
-                                    'موفق!',
-                                    result.message,
-                                    'success'
-                                ).then(function (isConfirm) {
-                                    $("#tr_" + workId).addClass("danger");
-                                    $("#tr_" + workId).hide('slow');
+                                Command: toastr["success"]("کسب و کار حذف شد")
+                                $("#tr_" + workId).addClass("danger");
+                                $("#tr_" + workId).hide('slow');
                                     //location.reload();
-                                });
                                 $("#workView").load("Work/List");
                             }
                             else {
 
-                                swal.fire(
-                                    'هشدار!',
-                                    result.message,
-                                    'warning'
-                                );
+                                Command: toastr["warning"](result.message, "هشدار")
 
                             }
                         },

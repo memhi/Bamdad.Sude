@@ -23,7 +23,7 @@ namespace Sude.Persistence.Repository
         public IEnumerable<BlogInfo> GetHomePageBlogs()
         {
 
-            return  _BlogRepository.GetAsync(null, b => b.OrderByDescending(bl => bl.RegDate), "").Result.ToTake(6);
+            return   _BlogRepository.GetAsync(null, b => b.OrderByDescending(bl => bl.RegDate), "").Result.ToTake(6);
         }
         public async Task<IEnumerable<BlogInfo>> GetBlogsAsync()
         {

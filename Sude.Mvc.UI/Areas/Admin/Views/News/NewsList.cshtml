@@ -89,24 +89,15 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + NewsId).addClass("danger");
-                                $("#tr_" + NewsId).hide('slow');
-                          
-                            });
+                            Command: toastr["success"]("خبر حذف شد");
+                    
+                            $("#tr_" + NewsId).addClass("danger");
+                            $("#tr_" + NewsId).hide('slow');
                             $("#newsView").load("News/List");
                         }
                         else {
 
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                Command: toastr["warning"](result.message, "هشدار");
 
                         }
                     },

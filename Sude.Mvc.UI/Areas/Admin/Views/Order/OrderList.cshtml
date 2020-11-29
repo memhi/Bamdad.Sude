@@ -101,22 +101,13 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            swal.fire(
-                                'موفق!',
-                                result.message,
-                                'success'
-                            ).then(function (isConfirm) {
-                                $("#tr_" + orderId).addClass("danger");
-                                $("#tr_" + orderId).hide('slow');
-                                $("#orderView").load("Order/List");
-                            });
+                            Command: toastr["success"]("سفارش حذف شد");
+                            $("#tr_" + orderId).addClass("danger");
+                            $("#tr_" + orderId).hide('slow');
+                            $("#orderView").load("Order/List");
                         }
                         else {
-                            swal.fire(
-                                'هشدار!',
-                                result.message,
-                                'warning'
-                            );
+                            Command: toastr["warning"](result.message, "هشدار");
                         }
                     },
                     error: function (request, status, error) {
