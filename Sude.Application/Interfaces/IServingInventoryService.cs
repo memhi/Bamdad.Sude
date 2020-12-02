@@ -20,5 +20,6 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> EditServingInventoryAsync(ServingInventoryInfo servingInventory);
         Task<ResultSet> DeleteServingInventoryAsync(Guid servingInventoryId);
         Task<ResultSet<ServingInventoryInfo>> GetServingInventoryByIdAsync(Guid servingInventoryId);
+        Task<ResultSet<ServingInventoryInfo>> GetServingInventoryByServingIdAsync(Guid servingId);
     }
 }

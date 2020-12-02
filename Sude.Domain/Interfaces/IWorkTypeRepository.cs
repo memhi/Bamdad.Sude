@@ -22,7 +22,7 @@ namespace Sude.Domain.Interfaces
         WorkTypeInfo GetWorkTypeById(Guid workTypeId);
         Task<WorkTypeInfo> GetWorkTypeByTitleAsync(string title);
             WorkTypeInfo GetWorkTypeByTitle(string title);
-   
+        WorkTypeInfo GetWorkTypeWithWorksById(Guid workTypeId);
 
         void Save();
         Task SaveAsync();

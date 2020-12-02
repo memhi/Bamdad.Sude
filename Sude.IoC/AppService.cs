@@ -23,6 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IWorkService,WorkService>(),
                 ServiceDescriptor.Scoped<IInventoryTypeService,InventoryTypeService>(),
                 ServiceDescriptor.Scoped<IServingInventoryService,ServingInventoryService>(),
+                 ServiceDescriptor.Scoped<IServingInventoryTrackingService,ServingInventoryTrackingService>(),
                 ServiceDescriptor.Scoped<IOrderService,OrderService>(),
                 ServiceDescriptor.Scoped<IOrderDetailService,OrderDetailService>(),
                   ServiceDescriptor.Scoped<ICustomerService,CustomerService>(),

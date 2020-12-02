@@ -19,7 +19,7 @@
 
 
 
-                        <a id="btnAdd" class="btn btn-block btn-success">خبر جدید</a>
+                        <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
 
                     </div>
                 </div>
@@ -37,7 +37,8 @@
 
                     </tr>
                     @{
-                    int i=1; 
+                        int i=1;
+                        if (Model != null && Model.Data!=null)
                     @foreach (var item in Model.Data)
                     {
                 <tr id="tr_@item.NewsId" role="row" class="odd">
@@ -80,7 +81,14 @@
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
             confirmButtonText: 'بله ، خبر حذف شود',
-            cancelButtonText: 'خیر'
+            cancelButtonText: 'خیر',
+            position: 'top',
+            showClass: {
+                popup: 'animate__animated animate__fadeIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut'
+            }
         }).then((result) => {
             if (result.value) {
 

@@ -21,7 +21,7 @@
 
                 <div class="box-tools">
                      
-                            <a id="btnAdd" class="btn btn-block btn-success">کسب و کار جدید</a>
+                            <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
                
                 </div>
             </div>
@@ -37,6 +37,7 @@
 
                     </tr>
                     @{ 
+                        if(Model!=null && Model.Data!=null)
                     @foreach (var item in Model.Data)
                     {
                         int i = 1;
@@ -80,7 +81,14 @@
                 confirmButtonColor: '#7cacbe',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'بله ، کسب و کار حذف شود',
-                cancelButtonText: 'خیر'
+                cancelButtonText: 'خیر',
+                position: 'top',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
             }).then((result) => {
                 if (result.value) {
 

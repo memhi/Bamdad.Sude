@@ -2,16 +2,18 @@
 
 @font-face {
     font-family: 'Sude';
-    src: url('https://localhost:5002/HomePageTemplate/fonts/Sude.eot');
-    src: url('https://localhost:5002/HomePageTemplate/fonts/Sude.eot?#iefix') format('embedded-opentype'), url('https://localhost:5002/HomePageTemplate/fonts/Sude.woff') format('woff'), url('https://localhost:5002/HomePageTemplate/fonts/Sude.ttf') format('truetype');
+    src: url('Sude.eot') ;
+    src: url('Sude.eot?#iefix') format('embedded-opentype'), url('Sude.woff') format('woff'), url('Sude.ttf') format('truetype');
     font-weight: normal;
 }
 
 body {
-  line-height: 1.7;
-  color: #999999;
-  font-weight: 300;
-  font-size: 15px; }
+    line-height: 1.7;
+    color: #999999;
+    font-weight: 300;
+    font-size: 15px;
+    font-family: 'Sude';
+}
 
 ::-moz-selection {
   background: #000;
@@ -30,7 +32,7 @@ a {
 
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
-  font-family: 'Sude', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: 'Sude';
   color: #5577B4; }
 
 .border-2 {
@@ -554,10 +556,12 @@ h1, h2, h3, h4, h5,
     color: #000; }
 
 .site-navbar {
-  margin-bottom: 0px;
-  z-index: 1999;
-  position: absolute;
-  width: 100%; }
+    margin-bottom: 0px;
+    z-index: 1999;
+    position: absolute;
+    width: 100%;
+ 
+}
   .site-navbar .container-fluid {
     padding-left: 7rem;
     padding-right: 7rem; }

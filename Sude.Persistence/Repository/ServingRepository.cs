@@ -21,12 +21,12 @@ namespace Sude.Persistence.Repository
 
         public async Task<IEnumerable<ServingInfo>> GetServingsByWorkIdAsync(Guid workId)
         {
-            return await _servingRepository.GetAsync(s=>s.WorkId==workId, null, "Work");
+            return await _servingRepository.GetAsync(s=>s.WorkId==workId, null, "Work,ServingInventory");
         }
 
         public async Task<IEnumerable<ServingInfo>> GetServingsAsync()
         {
-            return await _servingRepository.GetAsync(null,null,"Work");
+            return await _servingRepository.GetAsync(null,null, "Work,ServingInventory");
         }
         public bool AddServing(ServingInfo serving)
         {
@@ -57,7 +57,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<ServingInfo> GetServingByIdAsync(Guid servingId)
         {
-            return await _servingRepository.GetByIdAsync(s=>s.Id==servingId,"Work");
+            return await _servingRepository.GetByIdAsync(s=>s.Id==servingId, "Work,ServingInventory");
         
         }
 
@@ -71,7 +71,7 @@ namespace Sude.Persistence.Repository
 
         public IEnumerable<ServingInfo> GetServings()
         {
-            return _servingRepository.Get(null, null, "Work");
+            return _servingRepository.Get(null, null, "Work,ServingInventory");
         }
 
         public bool IsExistServing(string title,Guid? id, Guid workId)
@@ -102,7 +102,7 @@ namespace Sude.Persistence.Repository
 
         public ServingInfo GetServingById(Guid servingId)
         {
-            return _servingRepository.GetById(s=>s.Id== servingId,"Work");
+            return _servingRepository.GetById(s=>s.Id== servingId, "Work,ServingInventory");
         }
     }
 }

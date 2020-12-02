@@ -11,7 +11,7 @@ using Sude.Mvc.UI.ApiManagement;
 
 namespace Sude.Mvc.UI.Admin.Components
 {
-    public class HeaderWorksViewComponent: ViewComponent
+    public class HeaderWorksViewComponent : ViewComponent
     {
 
 
@@ -31,14 +31,24 @@ namespace Sude.Mvc.UI.Admin.Components
                 CurrentWorkId = "";
                 CurrentWorkName = "یک کسب و کار انتخاب کنید";
             }
-            if(Worklist!=null && Worklist.Data.Count()==1)
+            SelectList selectLists = null;
+            if (Worklist != null && Worklist.Data != null)
             {
-                CurrentWorkId = Worklist.Data.First().WorkId;
-                CurrentWorkName = Worklist.Data.First().Title;
-                HttpContext.Session.SetString("CurrentWorkId", CurrentWorkId);
-                HttpContext.Session.SetString("CurrentWorkName", CurrentWorkName);
+               
+                if (Worklist.Data.Count() == 1)
+                {
+                    CurrentWorkId = Worklist.Data.First().WorkId;
+                    CurrentWorkName = Worklist.Data.First().Title;
+                    HttpContext.Session.SetString("CurrentWorkId", CurrentWorkId);
+                    HttpContext.Session.SetString("CurrentWorkName", CurrentWorkName);
+                }
+
+                selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);
+
             }
-            SelectList selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title",CurrentWorkId);
+
+
+
             ViewData["Works"] = selectLists;
             ViewData["CurrentWorkName"] = CurrentWorkName;
 

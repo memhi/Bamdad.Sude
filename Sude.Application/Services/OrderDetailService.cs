@@ -28,6 +28,11 @@ namespace Sude.Application.Services
             };
         }
 
+        public async Task<OrderDetailInfo> GetOrderDetailByServingAndOrderIdAsync(Guid orderId ,Guid servingId)
+        {
+            return await _OrderDetailRepository.GetOrderDetailByServingAndOrderIdAsync(orderId,servingId);
+        }
+
         public ResultSet<OrderDetailInfo> GetOrderDetailById(Guid orderDetailId)
         {
             OrderDetailInfo OrderDetail = _OrderDetailRepository.GetOrderDetailById(orderDetailId);

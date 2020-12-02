@@ -72,7 +72,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
 
             SelectList selectLists = new SelectList(servinglist.Data as ICollection<CustomerDetailDtoModel>, "ServingId", "Title", CurrentWorkId);
-            ViewData["Customers"] = selectLists;
+            ViewData["Servings"] = selectLists;
 
             return PartialView();
         }
@@ -93,7 +93,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
           .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + CurrentWorkId);
 
-                SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
+                SelectList selectLists = null;
+                if(Customerslist!=null && Customerslist.Data!=null)
+                    selectLists=new  SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
                 ViewData["Customers"] = selectLists;
             }
             return PartialView(order);

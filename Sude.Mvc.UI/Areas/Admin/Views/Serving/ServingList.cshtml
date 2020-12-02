@@ -24,14 +24,13 @@
 
                 <div class="box-tools">
                   
-                            <a id="btnAdd" class="btn btn-block btn-success">خدمت جدید</a>
+                            <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
                    
                 </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                @if (Model != null && Model.Data != null)
-                {
+              
                 <table class="table table-hover">
                     <tr>
                         <td>#</td>
@@ -47,6 +46,7 @@
                     </tr>
                     @{ 
                         int i = 1;
+                        if (Model != null && Model.Data != null)
                         @foreach (var item in Model.Data)
                         {
                 <tr id="tr_@item.ServingId" role="row" class="odd">
@@ -67,7 +67,8 @@
 
                     @if (item.HasInventoryTracking)
                     {
-                        <td><span class="label label-success">دارد</span></td>
+                       
+                        <td><span class="label label-info">@item.InventoryCount</span></td>
                     }
                     else
                     {
@@ -88,7 +89,7 @@
                         }}
                 </table>
 
-                        }</div>
+                        </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->
@@ -117,7 +118,14 @@
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
             confirmButtonText: 'بله ، سرویس حذف شود',
-            cancelButtonText: 'خیر'
+            cancelButtonText: 'خیر',
+            position: 'top',
+            showClass: {
+                popup: 'animate__animated animate__fadeIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut'
+            }
         }).then((result) => {
             if (result.value) {
 

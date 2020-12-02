@@ -24,7 +24,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<IEnumerable<ServingInventoryInfo>> GetServingInventorysAsync()
         {
-            return await _ServingInventoryRepository.GetAsync(null,null, "ServingInventoryType");
+            return await _ServingInventoryRepository.GetAsync(null,null, "InventoryType");
         }
         public async Task<IEnumerable<ServingInventoryInfo>> GetServingInventorysByTypeAsync(Guid inventoryTypeId)
         {
@@ -58,7 +58,12 @@ namespace Sude.Persistence.Repository
 
         public async Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid servingInventoryId)
         {
-            return await _ServingInventoryRepository.GetByIdAsync(w=>w.Id==servingInventoryId,"ServingInventoryType");// (w => w.Id == ServingInventoryId, null, "ServingInventoryType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
+            return await _ServingInventoryRepository.GetByIdAsync(w=>w.Id==servingInventoryId, "InventoryType");// (w => w.Id == ServingInventoryId, null, "ServingInventoryType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
+        }
+
+        public async Task<ServingInventoryInfo> GetServingInventoryByServingIdAsync(Guid servingId)
+        {
+            return await _ServingInventoryRepository.GetByIdAsync(w => w.ServingId == servingId, "Serving,InventoryType");// (w => w.Id == ServingInventoryId, null, "ServingInventoryType").GetAwaiter().GetResult().FirstOrDefault();//.Result..FirstOrDefault() ;
         }
 
         public void Save()

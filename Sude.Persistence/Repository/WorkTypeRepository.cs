@@ -91,26 +91,31 @@ namespace Sude.Persistence.Repository
 
         public bool DeleteWorkType(Guid workTypeId)
         {
+
             var workType = GetWorkTypeById(workTypeId);
-            if (workType == null)
+            if (workType == null )
                 return false;
             try
             {
-
-                workType.IsRemoved = true;
-                workType.RemoveDate = DateTime.Now;
-                _WorkTypeRepository.Update(workType);
+                _WorkTypeRepository.Delete(workType);
             }
             catch
             {
                 return false;
             }
             return true;
+
+           
         }
 
         public WorkTypeInfo GetWorkTypeById(Guid workTypeId)
         {
             return _WorkTypeRepository.GetById(workTypeId);
+        }
+
+        public WorkTypeInfo GetWorkTypeWithWorksById(Guid workTypeId)
+        {
+            return _WorkTypeRepository.GetById(wt=>wt.Id== workTypeId,"Works");
         }
     }
 }

@@ -56,6 +56,11 @@ namespace Sude.Persistence.Repository
             return await _OrderDetailRepository.GetByIdAsync(od => od.Id == orderDetailId, "Serving");
         }
 
+        public async Task<OrderDetailInfo> GetOrderDetailByServingAndOrderIdAsync(Guid orderId,Guid servingId)
+        {
+            return await _OrderDetailRepository.GetByIdAsync(od => od.OrderId == orderId && od.ServingId==servingId, "Serving");
+        }
+
         public void Save()
         {
             _OrderDetailRepository.Save();

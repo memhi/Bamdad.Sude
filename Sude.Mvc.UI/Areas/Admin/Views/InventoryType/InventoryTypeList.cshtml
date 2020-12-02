@@ -2,144 +2,153 @@
 @using Sude.Dto.DtoModels.Serving
 @model ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>
 
-<div class="input-group">
-    <input type="text" name="message" placeholder="Type words ..." class="form-control">
-    <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
-    </span>
-</div>
 
-
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">فهرست  انواع واحدهای اندازه گیری</h3>
-
-                <div class="box-tools">
-
-                    <a id="btnAdd" class="btn btn-block btn-success">نوع واحد اندازه گیری جدید</a>
-
-                </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tr>
-                        <th>#</th>
-                        <th>عنوان</th>
-                        <th>توضیحات</th>
-                        <th>عملیات</th>
-
-                    </tr>
-                    @{ 
-                        int i = 1;
-                        @foreach (var item in Model.Data)
-                    {
-
-                <tr id="tr_@item.InventoryTypeId" role="row" class="odd">
-                    <td >@(i++)</td>
-                    <td >@item.Title</td>
-
-                    <td>@item.Description</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')">ویرایش</button>
-                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')">حذف</button>
-                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')">جزئیات</button>
-                    </td>
-                </tr>
-                    }
-                        }
-                </table>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
+    <div class="input-group">
+        <input type="text" name="message" placeholder="Type words ..." class="form-control">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+        </span>
     </div>
 
 
-</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">فهرست  انواع واحدهای اندازه گیری</h3>
 
+                    <div class="box-tools">
 
+                        <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
 
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>#</th>
+                            <th>عنوان</th>
+                            <th>توضیحات</th>
+                            <th>عملیات</th>
 
+                        </tr>
+                        @{
+                            int i = 1;
+                            if (Model != null && Model.Data != null)
+                            @foreach (var item in Model.Data)
+                            {
 
-<script>
-    function DeleteInventoryType(InventoryTypeId) {
+                                <tr id="tr_@item.InventoryTypeId" role="row" class="odd">
+                                    <td>@(i++)</td>
+                                    <td>@item.Title</td>
 
-        swal.fire({
-            title: 'حذف نوع',
-            text: "کاربر گرامی از حذف واحد اندازه گیری مطمئن هستید؟",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#7cacbe',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، واحد اندازه گیری حذف شود',
-            cancelButtonText: 'خیر'
-        }).then((result) => {
-            if (result.value) {
-
-                $.ajax({
-                    url: "InventoryType/Delete/" + InventoryTypeId,
-                    type: "Get",
-                    success: function (result) {
-                        if (result.isSucceed == true) {
-                            Command: toastr["success"]("نوع حذف شد");
-                         
-                       
-                            $("#tr_" + InventoryTypeId).addClass("danger");
-                            $("#tr_" + InventoryTypeId).hide('slow');
-                            $("#InventoryTypeView").load("InventoryType/List");
+                                    <td>@item.Description</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')">ویرایش</button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')">حذف</button>
+                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')">جزئیات</button>
+                                    </td>
+                                </tr>
+                            }
                         }
-                        else {
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
 
-                            Command: toastr["warning"](result.message, "هشدار");
 
+    </div>
+
+
+
+
+
+    <script>
+        function DeleteInventoryType(InventoryTypeId) {
+      
+            swal.fire({                
+                title: 'حذف نوع',
+                text: "کاربر گرامی از حذف واحد اندازه گیری مطمئن هستید؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#7cacbe',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله ، واحد اندازه گیری حذف شود',
+                cancelButtonText: 'خیر',
+                position: 'top',
+                showClass: {
+                    popup: 'animate__animated animate__fadeIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            }).then((result) => {
+                if (result.value) {
+
+                    $.ajax({
+                        url: "InventoryType/Delete/" + InventoryTypeId,
+                        type: "Get",
+                        success: function (result) {
+                            if (result.isSucceed == true) {
+                                Command: toastr["success"]("نوع حذف شد");
+
+
+                                $("#tr_" + InventoryTypeId).addClass("danger");
+                                $("#tr_" + InventoryTypeId).hide('slow');
+                                $("#InventoryTypeView").load("InventoryType/List");
+                            }
+                            else {
+
+                                Command: toastr["warning"](result.message, "هشدار");
+
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
                         }
-                    },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
-                    }
 
-                });
+                    });
 
-            }
-        })
-    }
+                }
+            })
+        }
 
 
-    $("#btnAdd").click(function () {
-        $("#InventoryTypeView").load("InventoryType/Add");
-    });
-
-
-    function ShowEditInventoryTypePop(InventoryTypeId) {
-        $.get("InventoryType/Edit/" + InventoryTypeId, function (result) {
-
-            $("#myModal").modal('show');
-            $("#myModalLabel").html("ویرایش واحد اندازه گیری");
-            $("#myModalBody").html(result);
+        $("#btnAdd").click(function () {
+            $("#InventoryTypeView").load("InventoryType/Add");
         });
-    }
+
+
+        function ShowEditInventoryTypePop(InventoryTypeId) {
+            $.get("InventoryType/Edit/" + InventoryTypeId, function (result) {
+
+                $("#myModal").modal('show');
+                $("#myModalLabel").html("ویرایش واحد اندازه گیری");
+                $("#myModalBody").html(result);
+            });
+        }
 
 
 
 
-    function ShowEditInventoryType(InventoryTypeId) {
-        $("#InventoryTypeView").load("InventoryType/Edit/" + InventoryTypeId);
+        function ShowEditInventoryType(InventoryTypeId) {
+            $("#InventoryTypeView").load("InventoryType/Edit/" + InventoryTypeId);
 
-    }
-
-
-    function ShowNewPageModalDetailInventoryType(InventoryTypeId) {
+        }
 
 
-        $.get("InventoryType/Detail/" + InventoryTypeId, function (result) {
+        function ShowNewPageModalDetailInventoryType(InventoryTypeId) {
 
-            $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات واحد اندازه گیری");
-            $("#myModalBody").html(result);
-        });
-    }
 
-</script>
+            $.get("InventoryType/Detail/" + InventoryTypeId, function (result) {
+
+                $("#myModal").modal('show');
+                $("#myModalLabel").html("جزئیات واحد اندازه گیری");
+                $("#myModalBody").html(result);
+            });
+        }
+
+    </script>

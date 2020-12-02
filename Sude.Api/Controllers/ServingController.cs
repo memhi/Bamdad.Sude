@@ -59,6 +59,7 @@ namespace Sude.Api.Controllers
                     Desc = s.Desc,
                     IsActive = s.IsActive,
                     HasInventoryTracking = s.HasInventoryTracking,
+                    InventoryCount = (s.ServingInventory != null ? s.ServingInventory.CurrentInventory : 0),
                     WorkId = s.Work.Id.ToString(),
                     WorkName = s.Work.Title
                 });
@@ -113,6 +114,7 @@ namespace Sude.Api.Controllers
                         Desc = s.Desc,
                         IsActive = s.IsActive,
                         HasInventoryTracking = s.HasInventoryTracking,
+                        InventoryCount =(s.ServingInventory!=null ?  s.ServingInventory.CurrentInventory:0),
                         WorkId = s.Work.Id.ToString(),
                         WorkName = s.Work.Title
                     });
@@ -173,6 +175,7 @@ namespace Sude.Api.Controllers
                     Desc = serving.Desc,
                     IsActive = serving.IsActive,
                     HasInventoryTracking = serving.HasInventoryTracking,
+                    InventoryCount = (serving.ServingInventory != null ? serving.ServingInventory.CurrentInventory : 0),
                     WorkId = serving.Work.Id.ToString(),
                     WorkName = serving.Work.Title
                 };

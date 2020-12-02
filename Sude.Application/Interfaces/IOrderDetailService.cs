@@ -20,5 +20,6 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> EditOrderDetailAsync(OrderDetailInfo orderDetail);
         Task<ResultSet> DeleteOrderDetailAsync(Guid orderDetailId);
         Task<ResultSet<OrderDetailInfo>> GetOrderDetailByIdAsync(Guid orderDetailId);
+        Task<OrderDetailInfo> GetOrderDetailByServingAndOrderIdAsync(Guid orderId, Guid servingId);
     }
 }

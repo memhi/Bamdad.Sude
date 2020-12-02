@@ -48,6 +48,29 @@ namespace Sude.Application.Services
             };
         }
 
+        public async Task<ResultSet<ServingInventoryInfo>> GetServingInventoryByServingIdAsync(Guid servingId)
+        {
+            ServingInventoryInfo ServingInventory = await _ServingInventoryRepository.GetServingInventoryByServingIdAsync(servingId);
+
+            if (ServingInventory == null)
+                return new ResultSet<ServingInventoryInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "ServingInventory Not Found",
+                    Data = null
+                };
+
+            return new ResultSet<ServingInventoryInfo>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = ServingInventory
+            };
+        }
+
+     
+
+
         public ResultSet<ServingInventoryInfo> AddServingInventory(ServingInventoryInfo  servingInventory)
         {
             _ServingInventoryRepository.AddServingInventory(servingInventory);

@@ -6,22 +6,39 @@
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("InventoryType");
+    ViewBag.PageTitle = "مدیریت نوع موجودی";
 }
 <hr />
 
 
 <div id="InventoryTypeView">
-    Please Wait ...
-</div>
+    <div class="col-md-3 text-center"></div>
+    <div class="col-md-6 text-center">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3> دریافت اطلاعات انواع موجودی</h3>
+            </div>
 
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
 
-@section Scripts
+        </div>
+
+    </div>
+    <div class="col-md-3 text-center"></div>
+    </div>
+
+    @section Scripts
 {
 
+        <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+        <link href="~/Sweetalert2/animate.min.css" rel="stylesheet" />
+        <script src="~/Sweetalert2/sweetalert2.min.js"></script>
 
-    <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
-    <script src="~/AdminLTE/js/toastr.min.js"></script>
-    <script>
+        <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
+        <script src="~/AdminLTE/js/toastr.min.js"></script>
+        <script>
         toastr.options = {
             "closeButton": false,
             "debug": false,
@@ -40,11 +57,11 @@
             "hideMethod": "fadeOut"
         }
 
-    </script>
+        </script>
 
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
+        <script>
 
         $(function () {
             $("#InventoryTypeView").load("InventoryType/List");
@@ -53,25 +70,25 @@
 
 
 
-    </script>
+        </script>
 
-}
+    }
 
-@section Modals
+    @section Modals
 {
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body" id="myModalBody">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body" id="myModalBody">
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--End Modal -->
-}
+        <!--End Modal -->
+    }

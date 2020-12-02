@@ -18,6 +18,7 @@ namespace Sude.Domain.Interfaces
         bool DeleteServingInventory(Guid servingInventoryId);
 
         Task<ServingInventoryInfo> GetServingInventoryByIdAsync(Guid servingInventoryId);
+        Task<ServingInventoryInfo> GetServingInventoryByServingIdAsync(Guid servingId);
         ServingInventoryInfo GetServingInventoryById(Guid servingInventoryId);
        
 

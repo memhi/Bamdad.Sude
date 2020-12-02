@@ -7,68 +7,88 @@
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Serving");
+    ViewBag.PageTitle = "مدیریت اقلام و خدمات";
 }
 <div id="servingView">
-    Please Wait ...
+
+    <div class="col-md-3 text-center"></div>
+    <div class="col-md-6 text-center">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3> دریافت اطلاعات اقلام و خدمات</h3>
+            </div>
+         
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-3 text-center"></div>
 </div>
 
 
-@section Scripts
+    @section Scripts
 {
 
-    <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
-    <script  src="~/AdminLTE/js/toastr.min.js"></script>
-    <script>
-        toastr.options = {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
 
-    </script>
+        <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+        <link href="~/Sweetalert2/animate.min.css" rel="stylesheet" />
+        <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+        <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
+        <script src="~/AdminLTE/js/toastr.min.js"></script>
+        <script>
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        </script>
 
-    <script>
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-        $(function () {
-            $("#servingView").load("Serving/List");
-        });
+        <script>
+
+            $(function () {
+                $("#servingView").load("Serving/List");
+            });
 
 
 
 
-    </script>
+        </script>
 
-}
+    }
 
-@section Modals
+    @section Modals
 {
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body" id="myModalBody">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body" id="myModalBody">
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--End Modal -->
-}
+        <!--End Modal -->
+    }
