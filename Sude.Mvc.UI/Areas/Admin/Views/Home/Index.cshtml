@@ -12,59 +12,204 @@
 }
 
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info " id="news-box">
+            <div class="box-header with-border clearfix">
+                <div class="box-title">
+                    <i class="fa fa-newspaper-o"></i>
+                    اخبار سامانه
+                </div>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading clearfix">
+                                <a class="pull-right" href='Home'>جدید ترین امکانات سایت</a>
+                            </div>
+                            <div class="panel-body">
+                                گزارش آمار سالانه در سامانه ایجاد شد.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading clearfix">
+                                <a class="pull-right" href='Home'>پشتیبانی سامانه</a>
+                            </div>
+                            <div class="panel-body">
+                                جهت تماس با واحد پشتیبانی با شماره 0000 تماس بگیرید.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading clearfix">
+                                <a class="pull-right" href='Home'>راهنمای سامانه</a>
+                            </div>
+                            <div class="panel-body">
+                                جهت مطالعه راهنمای سامانه از لینک زیر استفاده کنید.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="box box-info " id="statistics-box">
+            <div class="box-header with-border clearfix">
+                <div class="box-title">
+                    <i class="fa ion-stats-bars"></i>
+                    آمار
+                </div>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>@ViewData["WorkCount"]</h3>
+                            <p>کسب و کار</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-gears"></i>
+                        </div>
+                        <a class="small-box-footer" href="Work">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>@ViewData["ServingCount"]</h3>
+                            <p>خدمات و منابع</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bars"></i>
+                        </div>
+                        <a class="small-box-footer" href="Serving">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-blue">
+                        <div class="inner">
+                            <h3>@ViewData["OrderCount"]</h3>
+                            <p>سفارشات</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-shopping-cart"></i>
+                        </div>
+                        <a class="small-box-footer" href="Order">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box  bg-green">
+                        <div class="inner">
+                            <h3>50021000</h3>
+                            <p>درآمد ماه گذشته</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <a class="small-box-footer" href="">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
 
 
 <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <a href="~/Admin/Work">
-                <span class="info-box-icon bg-aqua"><i class="ion  ion-ios-cloud-outline"></i></span>
+    <div class="col-md-8">
 
-                <div class="info-box-content">
-                    <span class="info-box-text">کسب و کار</span>
-                    <span class="info-box-number">@ViewData["WorkCount"]</span>
+        <div class="box box-info " id="latest-orders-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <i class="fa fa-cart-plus"></i>
+                    آخرین سفارشات
+                    <a class="btn btn-xs btn-info btn-flat margin-l-10" href="Order">نمایش همه سفارشات</a>
+                </h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-            </a>
-            <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <a href="~/Admin/Serving">
-                <span class="info-box-icon bg-red"><i class="fa fa-gears"></i></span>
+            </div>
+            <script>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">خدمات و منابع</span>
-                    <span class="info-box-number">@ViewData["ServingCount"]</span>
+            </script>
+            <div class="box-body">
+                <table class="table table-bordered table-hover table-striped dataTable" width="100%" height="300px" id="orders-grid">
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+
+        <div class="box box-info" id="order-statistics-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <i class="fa fa-shopping-cart"></i>
+                    سفارشات
+                </h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="year">سال</button>
+                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="month">ماه</button>
+                    <button class="btn btn-xs btn-info btn-flat" data-chart-role="toggle-chart" data-chart-period="week">هفته</button>
+                    <button class="btn btn-box-tool margin-l-10" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-            </a>
-            <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <a href="~/Admin/Order">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">سفارشات</span>
-                    <span class="info-box-number">@ViewData["OrderCount"]</span>
+            </div>
+            <div class="box-body">
+                <div class="chart" style="height: 300px;">
+                    <canvas id="order-statistics-chart" height="300"></canvas>
                 </div>
-                <!-- /.info-box-content -->
-            </a>
+            </div>
         </div>
-        <!-- /.info-box -->
+
+
     </div>
-    <!-- /.col -->
-    <!-- /.col -->
+
 </div>
+
 
 @section Modals
 {
