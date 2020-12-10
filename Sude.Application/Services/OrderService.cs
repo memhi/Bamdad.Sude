@@ -29,6 +29,8 @@ namespace Sude.Application.Services
             };
         }
 
+
+
         public ResultSet<OrderInfo> GetOrderById(Guid orderId)
         {
             OrderInfo Order = _OrderRepository.GetOrderById(orderId);
@@ -101,6 +103,21 @@ namespace Sude.Application.Services
             }
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
+
+
+        public async Task<ResultSet<int>> GetSearchOrdersCountAsync
+            (DateTime orderDateFrom,DateTime orderDateTo, Guid? workId=null    )
+        {
+            var countResult = await _OrderRepository.GetSearchOrdersCountAsync(orderDateFrom, orderDateTo, workId);
+            return new ResultSet<int>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = countResult
+
+            };
+        }
+
 
         public async Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersAsync()
         {

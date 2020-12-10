@@ -17,7 +17,7 @@ namespace Sude.Dto.DtoModels.Order
         public string Description { get; set; }
         public DateTime OrderDate { get; set; }
         public string CustomerId { get; set; }
-
+        public bool IsBuy { get; set; }
         public string CustomerName { get; set; }
         public CustomerNewDtoModel Customer { get; set; }
         public ICollection<OrderDetailDetailDtoModel> OrderDetails { get; set; }

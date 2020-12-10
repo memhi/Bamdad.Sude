@@ -24,8 +24,8 @@ namespace Sude.Mvc.UI.Admin.Components
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
        .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
 
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
-            string CurrentWorkName = HttpContext.Session.GetString("CurrentWorkName");
+            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkName = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkName);
             if (string.IsNullOrEmpty(CurrentWorkId))
             {
                 CurrentWorkId = "";
@@ -39,8 +39,8 @@ namespace Sude.Mvc.UI.Admin.Components
                 {
                     CurrentWorkId = Worklist.Data.First().WorkId;
                     CurrentWorkName = Worklist.Data.First().Title;
-                    HttpContext.Session.SetString("CurrentWorkId", CurrentWorkId);
-                    HttpContext.Session.SetString("CurrentWorkName", CurrentWorkName);
+                    HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkId, CurrentWorkId);
+                    HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkName, CurrentWorkName);
                 }
 
                 selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);

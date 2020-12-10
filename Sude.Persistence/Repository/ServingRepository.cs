@@ -24,6 +24,11 @@ namespace Sude.Persistence.Repository
             return await _servingRepository.GetAsync(s=>s.WorkId==workId, null, "Work,ServingInventory");
         }
 
+        public async Task<IEnumerable<ServingInfo>> GetServingsByWorkIdAndHasTrackingAsync(Guid workId)
+        {
+            return await _servingRepository.GetAsync(s => s.WorkId == workId && s.HasInventoryTracking==true, null, "Work,ServingInventory");
+        }
+
         public async Task<IEnumerable<ServingInfo>> GetServingsAsync()
         {
             return await _servingRepository.GetAsync(null,null, "Work,ServingInventory");

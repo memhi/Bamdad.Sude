@@ -13,16 +13,29 @@
 </head>
 <body>
 
-    <section class="content">
-        <div class="box box-info">
+    <section class="content text-center">
+        <div class="box box-info text-center  bg-gray-light">
 
-            <div class="box-body">
-                @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
+            <div class="box-body text-center" >
+                @if (Model != null && Model.Count() > 0)
                 {
-                    <div class="col-md-4 margin-bottom">
-                        <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12">@w.Title </a>
-                    </div>
+                    @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
+                    {
+                        <div class="col-md-4 margin-bottom">
+                            <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-gray">@w.Title </a>
+                        </div>
 
+                    }
+                }
+
+                else
+
+                {
+
+                    <div class="col-md-12 margin-bottom">
+                       
+                        <label>لطفا از بخش  <a href="Work" title="اینجا">مدیریت کسب و کار</a> یک کسب و کار ثبت کنید </label>
+                    </div>
                 }
 
             </div>

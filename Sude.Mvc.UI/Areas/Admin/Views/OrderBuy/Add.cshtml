@@ -16,7 +16,7 @@
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h2 class="box-title">ثبت سفارش</h2>
+                <h2 class="box-title">ثبت خرید کالا</h2>
             </div>
             <div class="box-body">
                 @if (!string.IsNullOrEmpty(Model.WorkId))
@@ -26,7 +26,7 @@
 
                             <div class="box box-primary   bg-gray-light">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">اطلاعات سفارش</h3>
+                                    <h3 class="box-title">اطلاعات خرید</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
@@ -59,7 +59,7 @@
 
                                             <div class="form-group">
                                                 <div class="col-md-3">
-                                                    <label>تاریخ سفارش</label>
+                                                    <label>تاریخ</label>
                                                 </div>
                                                 <div class="col-md-9">
                                                     <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
@@ -76,7 +76,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <div class="col-md-3">
-                                                    <label>شماره سفارش</label>
+                                                    <label>شماره </label>
                                                 </div>
                                                 <div class="col-md-9">
                                                     <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
@@ -103,7 +103,7 @@
                             </div>
                             <div id="divOrderDetails" class="box box-primary   bg-gray-light">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">اطلاعات جزئیات سفارش</h3>
+                                    <h3 class="box-title">اطلاعات جزئیات خرید</h3>
                                 </div>
                                 <div class="box-body">
                                     <div id="adddetail" class="row">                                     
@@ -186,7 +186,7 @@
 
 
         $("#odetails").load("OrderDetail/List");
-        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0");
+        $("#adddetail").load("OrderDetail/Add?servingHasTracking=1");
         $('#drpCustomers').select2();
 
     });
@@ -206,7 +206,7 @@
 
         }
         $.ajax({
-            url: "Order/Add",
+            url: "OrderBuy/Add",
             type: "Post",
             data: order
         }).done(function (result) {

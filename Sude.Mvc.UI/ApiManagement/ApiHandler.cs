@@ -99,6 +99,8 @@ namespace Sude.Mvc.UI.ApiManagement
         }
         public class Order
         {
+         
+            public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
             public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
             public static readonly string GetOrderById = ServerAddress + "/api/Order/GetOrderById/";
             public static readonly string GetOrdersByWorkId = ServerAddress + "/api/Order/GetOrdersByWorkId/";
@@ -124,6 +126,8 @@ namespace Sude.Mvc.UI.ApiManagement
         }
         public class Serving
         {
+            
+            public static readonly string GetServingsByWorkIdAndHasTracking = ServerAddress + "/api/serving/GetServingsByWorkIdAndHasTracking/";
             public static readonly string GetServings = ServerAddress + "/api/serving/GetServings/";
             public static readonly string GetServingsByWorkId = ServerAddress + "/api/serving/GetServingsByWorkId/";
             public static readonly string GetServingById = ServerAddress + "/api/serving/GetServingById/";

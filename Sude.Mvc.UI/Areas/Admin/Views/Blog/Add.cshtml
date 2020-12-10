@@ -1,117 +1,145 @@
 ﻿ 
 @model Sude.Dto.DtoModels.Content.BlogNewDtoModel
-<hr />
-<h4>ایجاد مقاله</h4>
-<hr />
+
 <script src="~/lib/tinymce/tinymce.min.js"></script>
 
 <form id="frmAdd">
-    <div class="row">
-        <div class="col-8">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <div class="col-md-10">
-                    <input id="txtTitle" asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">ایجاد مقاله</h3>
+
+            </div>
+            <div class="box-body">
+
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Title" class="control-label">عنوان</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtTitle" asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                 </div>
-            <div class="form-group"  style="height:350px">
-                <label asp-for="ShortBody" class="control-label"></label>
-                <div class="col-md-10">
-                    <textarea id="txtShortBody" asp-for="ShortBody" class="form-control"></textarea>
-                    <span asp-validation-for="ShortBody" class="text-danger"></span>
+                <div class="form-group row" >
+                    <div class="col-md-2">
+                        <label asp-for="ShortBody" class="control-label">متن کوتاه</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea id="txtShortBody" asp-for="ShortBody" class="form-control"></textarea>
+                        <span asp-validation-for="ShortBody" class="text-danger"></span>
                     </div>
                 </div>
-            <div class="form-group" style="height:350px">
-                <label asp-for="FullBody" class="control-label"></label>
-                <div class="col-md-10">
-                    <textarea id="txtFullBody" asp-for="FullBody" type="text" class="form-control"></textarea>
-                    <span asp-validation-for="FullBody" class="text-danger"></span>
+                <div class="form-group row" >
+                    <div class="col-md-2">
+                        <label asp-for="FullBody" class="control-label">متن کامل</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea id="txtFullBody" asp-for="FullBody" type="text" class="form-control"></textarea>
+                        <span asp-validation-for="FullBody" class="text-danger"></span>
                     </div>
                 </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <div class="col-md-10">
-                    <input id="txtDescription" asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                   </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Description" class="control-label">توضیحات</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtDescription" asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="checkbox">
+                <div class="form-group row">
+
+                    <div class="col-md-2">
                         <label>
-                            <input id="chkIsActive" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                            <input id="chkIsActive" type="checkbox" asp-for="IsActive" /> فعال
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="checkbox">
+                <div class="form-group row">
+                    <div class="col-md-2">
                         <label>
-                            <input id="chkIsPublish" asp-for="IsPublish" /> @Html.DisplayNameFor(model => model.IsPublish)
+                            <input id="chkIsPublish" type="checkbox" asp-for="IsPublish" />منتشر شده
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="checkbox">
+                <div class="form-group row">
+                    <div class="col-md-2">
                         <label>
-                            <input id="chkAllowComment" asp-for="AllowComment" /> @Html.DisplayNameFor(model => model.AllowComment)
+                            <input id="chkAllowComment" type="checkbox" asp-for="AllowComment" /> مجوز ثبت نظرات
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="MetaTitle" class="control-label"></label>
+                <div class="form-group row">
+                    <div class="col-md-2">
+
+                        <label asp-for="MetaTitle" class="control-label">عنوان متا</label>
+                    </div>
                     <div class="col-md-10">
                         <input id="txtMetaTitle" asp-for="MetaTitle" class="form-control" />
                         <span asp-validation-for="MetaTitle" class="text-danger"></span>
-                        </div>
                     </div>
-                <div class="form-group">
-                    <label asp-for="MetaKeywords" class="control-label"></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="MetaKeywords" class="control-label">کلمات کلیدی متا</label>
+                    </div>
                     <div class="col-md-10">
                         <input id="txtMetaKeywords" asp-for="MetaKeywords" class="form-control" />
                         <span asp-validation-for="MetaKeywords" class="text-danger"></span>
-                        </div>
                     </div>
-                <div class="form-group">
-                    <label asp-for="MetaDescription" class="control-label"></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="MetaDescription" class="control-label">توضیحات متا</label>
+                    </div>
                     <div class="col-md-10">
                         <input id="txtMetaDescription" asp-for="MetaDescription" class="form-control" />
                         <span asp-validation-for="MetaDescription" class="text-danger"></span>
-                        </div>
                     </div>
-                <div class="form-group">
-                    <label asp-for="Tags" class="control-label"></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="Tags" class="control-label">تگ ها</label>
+                    </div>
                     <div class="col-md-10">
                         <input id="txtTags" asp-for="Tags" class="form-control" />
                         <span asp-validation-for="Tags" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="StartDate" class="control-label">تاریخ شروع</label>
                     </div>
-                <div class="form-group">
-                    <label asp-for="StartDate" class="control-label"></label>
                     <div class="col-md-10">
                         <input id="txtStartDate" asp-for="StartDate" class="form-control" />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                <div class="form-group">
-                  
-                        <label asp-for="EndDate" class="control-label"></label>
-                        <div class="col-md-10">
-                            <input id="txtEndDate" asp-for="EndDate" class="form-control" />
-                            <span asp-validation-for="EndDate" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <a id="btnSaveNewBlog" onclick="SaveNewBlog()" class="btn btn-success col-md-8">ثبت مقاله جدید</a>
                     </div>
                 </div>
-    </div>
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="EndDate" class="control-label">تاریخ پایان</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input id="txtEndDate" asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
 
-    <div>
-        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
-    </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <a id="btnSaveNewBlog" onclick="SaveNewBlog()" class="btn btn-success">ثبت مقاله جدید</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-accent-2" onclick="ToList()">بازگشت</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </section>
 </form>
 <script>
 

@@ -17,7 +17,7 @@ using Sude.Dto.DtoModels.Serving;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
-    public class OrderDetailController : BaseAdminController
+    public class OrderDetailBuyController : BaseAdminController
     {
         // GET: WorkTypeController
         [HttpGet]
@@ -36,7 +36,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> List()
         {
             //System.Threading.Thread.Sleep(1000);
-            IEnumerable<OrderDetailDetailDtoModel> CurrentDetails = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> CurrentDetails = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails");
 
             ViewData["OrderDetails"] = CurrentDetails;
         
@@ -59,7 +59,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
 
 
 
@@ -67,7 +67,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
 
             SelectList selectLists = new SelectList(servinglist.Data as ICollection<CustomerDetailDtoModel>, "ServingId", "Title", CurrentWorkId);
-            ViewData[Constants.ViewBagNames.Servings] = selectLists;
+            ViewData["Servings"] = selectLists;
 
             return PartialView();
         }
@@ -75,29 +75,23 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
 
         [HttpGet]
-        public async Task<ActionResult> Add(string servingHasTracking)
+        public async Task<ActionResult> Add()
         {
       
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
 
 
 
             ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
-            if(servinglist!=null && servinglist.Data!=null && servingHasTracking=="1")
-            {
-                servinglist.Data = servinglist.Data.Where(s => s.HasInventoryTracking == true).AsEnumerable<ServingDetailDtoModel>();
-
-            }
             foreach(ServingDetailDtoModel servingDetailDto in servinglist.Data)
             {
-                
                 servingDetailDto.ServingId = servingDetailDto.ServingId + "##" + servingDetailDto.Title + "##" + servingDetailDto.Price.ToString();
 
             }
 
-            SelectList selectServingsLists = new SelectList(servinglist.Data.ToList() as ICollection<ServingDetailDtoModel>, "ServingId", "Title");
-            ViewData[Constants.ViewBagNames.Servings] = selectServingsLists;
+            SelectList selectServingsLists = new SelectList(servinglist.Data as ICollection<ServingDetailDtoModel>, "ServingId", "Title");
+            ViewData["Servings"] = selectServingsLists;
 
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
@@ -106,7 +100,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             SelectList selectLists = null;
             if(Customerslist!=null && Customerslist.Data!=null)
                 selectLists= new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
-            ViewData[Constants.ViewBagNames.Customers] = selectLists;
+            ViewData["Customers"] = selectLists;
 
             return PartialView();
         }
@@ -141,7 +135,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 orderDetailSession.Count = request.Count;
                 orderDetailSession.ServingName = string.IsNullOrEmpty(request.ServingName) == true ? "" : request.ServingName;
                 orderDetailNewDtos.Add(orderDetailSession);
-                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                HttpContext.Session.SetObject("OrderDetails", orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
       
             }
           
@@ -167,7 +161,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 orderDetailSession.ServingName = string.IsNullOrEmpty(request.ServingName) == true ? "" : request.ServingName;
    
                 orderDetailNewDtos.Add(orderDetailSession);
-                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                HttpContext.Session.SetObject("OrderDetails", orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
             }
 
             //ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
@@ -242,12 +236,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         {
 
          
-                List<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails).ToList();
+                List<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails").ToList();
                 OrderDetailDetailDtoModel orderDetailNewDto = orderDetailNewDtoSession.Where(o => o.OrderDetailId == id && o.ServingId == servingId).FirstOrDefault();
                 if (orderDetailNewDto != null)
                 {
                     orderDetailNewDtoSession.Remove(orderDetailNewDto);
-                    HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtoSession.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                    HttpContext.Session.SetObject("OrderDetails", orderDetailNewDtoSession.AsEnumerable<OrderDetailDetailDtoModel>()); ;
                     return Ok(new ResultSetDto()
                     {
                         IsSucceed = true,

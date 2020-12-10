@@ -20,10 +20,21 @@ namespace Sude.Persistence.Repository
             this._orderRepository = new GenericRepository<OrderInfo>(ctx);
         }
 
-        public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
+        public async Task<int> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null)
+        {
+            if (workId==null)
+
+                return await _orderRepository.GetAsync(o => o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo).Result.ToCount();
+            else
+                return await _orderRepository.GetAsync(o => o.WorkId == workId && o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo).Result.ToCount();
+
+
+        }
+        
+            public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
         {
 
-            return await _orderRepository.GetAsync(o=>o.WorkId==workId,o=>o.OrderByDescending(or=>or.RegDate), "Work,Customer");
+            return await _orderRepository.GetAsync(o => o.WorkId == workId, o => o.OrderByDescending(or => or.RegDate), "Work,Customer") ;
         }
 
         public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()

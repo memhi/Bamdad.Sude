@@ -51,7 +51,7 @@ namespace Sude.Persistence.Repository
             if (includes != string.Empty)
                 foreach (var include in includes.Split(","))
                     query = query.Include(include);
-
+            
             return await query.ToListAsync();
         }
 

@@ -10,12 +10,13 @@
     <div class="form-group">
         <input id="txtOrderId" type="hidden" asp-for="OrderId" class="form-control" />
         <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+        <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
     </div>
 
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h2 class="box-title">تغییر اطلاعات سفارش</h2>
+                <h2 class="box-title">تغییر اطلاعات سفارش خرید</h2>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -100,7 +101,7 @@
                         </div>
                         <div id="divOrderDetails" class="box box-primary   bg-gray-light">
                             <div class="box-header with-border">
-                                <h3 class="box-title">اطلاعات جزئیات سفارش</h3>
+                                <h3 class="box-title">اطلاعات جزئیات سفارش خرید</h3>
 
 
                             </div>
@@ -118,7 +119,7 @@
 
                         <div class="box box-primary   bg-gray-light">
                             <div class="box-header with-border">
-                                <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش</h3>
+                                <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش خرید</h3>
 
 
                             </div>
@@ -176,7 +177,7 @@
     $(document).ready(function () {
 
         $("#odetails").load("OrderDetail/List");
-        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0");
+        $("#adddetail").load("OrderDetail/Add?servingHasTracking=1");
         $('#drpCustomers').select2();
 
     });
@@ -200,7 +201,7 @@
 
         }
         $.ajax({
-            url: "Order/Edit",
+            url: "OrderBuy/Edit",
             type: "Post",
             data: order
         }).done(function (result) {

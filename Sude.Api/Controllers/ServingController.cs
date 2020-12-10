@@ -149,6 +149,73 @@ namespace Sude.Api.Controllers
         }
 
 
+        [HttpGet("{workId}")]
+        //[Consumes("application/xml")]
+        //[Consumes("application/json")]
+        // [Authorize]
+        public async Task<ActionResult> GetServingsByWorkIdAndHasTracking(string workId)
+        {
+
+            try
+            {
+                Guid wid;
+                if (Guid.TryParse(workId, out wid))
+                {
+                    ResultSet<IEnumerable<ServingInfo>> resultSet = await _servingService.GetServingsByWorkIdAndHasTrackingAsync(wid);
+                    if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                        return NotFound(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                        {
+                            IsSucceed = false,
+                            Message = "Not found",
+                            Data = null
+
+
+                        });
+
+
+                    var result = resultSet.Data.Select(s => new ServingDetailDtoModel()
+                    {
+                        ServingId = s.Id.ToString(),
+                        Title = s.Title,
+                        Price = s.Price,
+                        Desc = s.Desc,
+                        IsActive = s.IsActive,
+                        HasInventoryTracking = s.HasInventoryTracking,
+                        InventoryCount = (s.ServingInventory != null ? s.ServingInventory.CurrentInventory : 0),
+                        WorkId = s.Work.Id.ToString(),
+                        WorkName = s.Work.Title
+                    });
+                    return Ok(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                    {
+                        IsSucceed = true,
+                        Message = "",
+                        Data = result
+                    });
+
+                }
+                else
+                {
+                    return NotFound(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "اطلاعات خدمات کسب و کار موجود نیست",
+                        Data = null
+                    });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<ServingDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
         //GET : api/GetServing/0
         [HttpGet("{servingId}")]
         public async Task<ActionResult> GetServingById(string servingId)

@@ -18,11 +18,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
-using System.Reflection.Metadata;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
-    public class OrderController : BaseAdminController
+    public class OrderBuyController : BaseAdminController
     {
         // GET: WorkTypeController
         [HttpGet]
@@ -180,7 +179,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
 
 
 
@@ -188,7 +187,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
 
             SelectList selectLists = new SelectList(servinglist.Data as ICollection<CustomerDetailDtoModel>, "ServingId", "Title", CurrentWorkId);
-            ViewData[Constants.ViewBagNames.Servings] = selectLists;
+            ViewData["Servings"] = selectLists;
 
             return PartialView();
         }
@@ -199,11 +198,11 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Add()
         {
       
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            HttpContext.Session.SetObject("OrderDetails", null);
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
-            order.IsBuy = false;
+            order.IsBuy = true;
             if (!string.IsNullOrEmpty(CurrentWorkId))
             {
                 order.OrderDate = DateTime.Now;
@@ -213,7 +212,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 SelectList selectLists = null;
                 if(Customerslist!=null && Customerslist.Data!=null)
                     selectLists=new  SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
-                ViewData[Constants.ViewBagNames.Customers] = selectLists;
+                ViewData["Customers"] = selectLists;
             }
             return PartialView(order);
         }
@@ -236,14 +235,14 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
 
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails");
             if(orderDetailNewDtoSession==null)
             {
                 return Json(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = Constants.Messages.InsertOrderDetail
-                }) ;
+                    Message = "لطفا اطلاعات جزئیات سفارش را وارد کنید."
+                });
 
             }
 
@@ -252,9 +251,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             {
                 request.OrderDetails = orderDetails;
             }
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
             request.WorkId = CurrentWorkId;
-            request.IsBuy = false;
+            request.IsBuy = true;
             ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
              .GetApiAsync<ResultSetDto<OrderNewDtoModel>>(ApiAddress.Order.AddOrder, request);
             if(!result.IsSucceed)
@@ -268,7 +267,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null) ;
+            HttpContext.Session.SetObject("OrderDetails", null) ;
 
             return Json(result);
 
@@ -279,19 +278,19 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         {
 
  
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            HttpContext.Session.SetObject("OrderDetails", null);
           
 
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, result.Data.OrderDetails.AsEnumerable());
+            HttpContext.Session.SetObject("OrderDetails", result.Data.OrderDetails.AsEnumerable());
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);
 
             SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
-            ViewData[Constants.ViewBagNames.Customers] = selectLists;
+            ViewData["Customers"] = selectLists;
 
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
             {
@@ -324,13 +323,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails");
             if (orderDetailNewDtoSession == null)
             {
                 return Json(new ResultSetDto()
                 {
                     IsSucceed = false,
-                    Message = Constants.Messages.InsertOrderDetail
+                    Message = "لطفا اطلاعات جزئیات سفارش را وارد کنید."
                 });
 
             }
@@ -343,11 +342,11 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             //string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
             //request.WorkId = CurrentWorkId;
 
-            request.IsBuy = false;
+            request.IsBuy = true;
 
             ResultSetDto<OrderEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderEditDtoModel>>(ApiAddress.Order.EditOrder, request);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            HttpContext.Session.SetObject("OrderDetails", null);
             return Json(result);
 
         }

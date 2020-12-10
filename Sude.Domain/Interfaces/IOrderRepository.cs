@@ -12,7 +12,7 @@ namespace Sude.Domain.Interfaces
         Task<IEnumerable<OrderInfo>> GetOrdersAsync();
         IEnumerable<OrderInfo> GetOrders();
         Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId);
-
+        Task<int> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null);
         bool AddOrder(OrderInfo order);
         bool EditOrder(OrderInfo order);
         bool DeleteOrder(Guid orderId);

@@ -12,16 +12,22 @@ namespace Sude.Persistence.Repository
     public static class ExtensionRepository
     {
 
-        public static IEnumerable<TEntity> ToPaged<TEntity>(this IEnumerable<TEntity> entities, int pageIndex, int pageSize , out int rowCount)
+        public async static  Task<int> ToCount<TEntity>(this IEnumerable<TEntity> source)
         {
-             rowCount = entities.Count();          
-            return entities.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+          return source.Count();          
+ 
         }
 
-        public static IEnumerable<TEntity> ToTake<TEntity>(this IEnumerable<TEntity> entities, int rowCount)
+        public  static IEnumerable<TEntity> ToTake<TEntity>(this IEnumerable<TEntity> source, int rowCount)
         {
-            return   entities.Take(rowCount);
+            return source.Take(rowCount);
 
         }
+        public static IEnumerable<TSource> ToPaged<TSource>(this IEnumerable<TSource> source, int page, int pageSize, out int rowsCount)
+        {
+            rowsCount = source.Count();
+            return source.Skip((page - 1) * pageSize).Take(pageSize);
+        }
+
     }
 }

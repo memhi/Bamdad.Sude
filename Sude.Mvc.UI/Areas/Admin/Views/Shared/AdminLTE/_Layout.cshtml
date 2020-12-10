@@ -9,6 +9,7 @@
 
     <partial name="AdminLTE/_Styles" />
     <partial name="AdminLTE/_Scripts" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition skin-red sidebar-mini">
     <div class="wrapper">
@@ -27,7 +28,7 @@
                     @ViewBag.PageTitle
 
                 </h1>
-              
+
             </section>
 
             <!-- Main content -->
@@ -52,8 +53,22 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
- 
+
     @await RenderSectionAsync("Scripts", required: false)
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center bg-red-gradient">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModalBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     @await RenderSectionAsync("Modals", required: false)
 </body>

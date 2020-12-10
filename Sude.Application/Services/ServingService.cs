@@ -21,101 +21,101 @@ namespace Sude.Application.Services
 
        
 
-        public ResultSet<IEnumerable<ServingInfo>> GetServings()
-        {
-            return new ResultSet<IEnumerable<ServingInfo>>()
-            {
-                IsSucceed = true,
-                Message = string.Empty,
-                Data = _servingRepository.GetServings()
-            };
-        }
+        //public ResultSet<IEnumerable<ServingInfo>> GetServings()
+        //{
+        //    return new ResultSet<IEnumerable<ServingInfo>>()
+        //    {
+        //        IsSucceed = true,
+        //        Message = string.Empty,
+        //        Data = _servingRepository.GetServings()
+        //    };
+        //}
 
-        public ResultSet<ServingInfo> GetServingById(Guid servingId)
-        {
-            ServingInfo serving = _servingRepository.GetServingById(servingId);
+        //public ResultSet<ServingInfo> GetServingById(Guid servingId)
+        //{
+        //    ServingInfo serving = _servingRepository.GetServingById(servingId);
 
-            if (serving == null)
-                return new ResultSet<ServingInfo>()
-                {
-                    IsSucceed = false,
-                    Message = "Serving Not Found",
-                    Data = null
-                };
+        //    if (serving == null)
+        //        return new ResultSet<ServingInfo>()
+        //        {
+        //            IsSucceed = false,
+        //            Message = "Serving Not Found",
+        //            Data = null
+        //        };
 
-            return new ResultSet<ServingInfo>()
-            {
-                IsSucceed = true,
-                Message = string.Empty,
-                Data = serving
-            };
-        }
+        //    return new ResultSet<ServingInfo>()
+        //    {
+        //        IsSucceed = true,
+        //        Message = string.Empty,
+        //        Data = serving
+        //    };
+        //}
 
-        public ResultSet<ServingInfo> AddServing(ServingInfo request)
-        {
+        //public ResultSet<ServingInfo> AddServing(ServingInfo request)
+        //{
 
-            if (_servingRepository.IsExistServing(request.Title, null, request.Work.Id))
-            {
-                return new ResultSet<ServingInfo>()
-                {
-                    IsSucceed = false,
-                    Message = "Duplicate Date",
-                    Data = null
-                };
-            }
+        //    if (_servingRepository.IsExistServing(request.Title, null, request.Work.Id))
+        //    {
+        //        return new ResultSet<ServingInfo>()
+        //        {
+        //            IsSucceed = false,
+        //            Message = "Duplicate Date",
+        //            Data = null
+        //        };
+        //    }
 
-            _servingRepository.AddServing(request);
-            _servingRepository.Save();
+        //    _servingRepository.AddServing(request);
+        //    _servingRepository.Save();
 
-            return new ResultSet<ServingInfo>()
-            {
-                IsSucceed = true,
-                Message = string.Empty,
-                Data = request
-            };
-        }
+        //    return new ResultSet<ServingInfo>()
+        //    {
+        //        IsSucceed = true,
+        //        Message = string.Empty,
+        //        Data = request
+        //    };
+        //}
 
-        public ResultSet EditServing(ServingInfo request)
-        {
-            if (_servingRepository.IsExistServing(request.Title, request.Id, request.Work.Id))
-                return new ResultSet<ServingInfo>()
-                {
-                    IsSucceed = false,
-                    Message = "Duplicate Date",
-                    Data = null
-                };
+        //public ResultSet EditServing(ServingInfo request)
+        //{
+        //    if (_servingRepository.IsExistServing(request.Title, request.Id, request.Work.Id))
+        //        return new ResultSet<ServingInfo>()
+        //        {
+        //            IsSucceed = false,
+        //            Message = "Duplicate Date",
+        //            Data = null
+        //        };
 
-            if (!_servingRepository.EditServing(request))
-                return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
+        //    if (!_servingRepository.EditServing(request))
+        //        return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
 
-            try
-            {
-                _servingRepository.Save();
-            }
-            catch
-            {
-                return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
-            }
-            return new ResultSet() { IsSucceed = true, Message = string.Empty };
+        //    try
+        //    {
+        //        _servingRepository.Save();
+        //    }
+        //    catch
+        //    {
+        //        return new ResultSet() { IsSucceed = false, Message = "Serving Not Edited" };
+        //    }
+        //    return new ResultSet() { IsSucceed = true, Message = string.Empty };
 
-        }
+        //}
 
-        public ResultSet DeleteServing(Guid servingId)
-        {
+        //public ResultSet DeleteServing(Guid servingId)
+        //{
 
-            if (!_servingRepository.DeleteServing(servingId))
-                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
+        //    if (!_servingRepository.DeleteServing(servingId))
+        //        return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
 
-            try
-            {
-                _servingRepository.Save();
-            }
-            catch
-            {
-                return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
-            }
-            return new ResultSet() { IsSucceed = true, Message = string.Empty };
-        }
+        //    try
+        //    {
+        //        _servingRepository.Save();
+        //    }
+        //    catch
+        //    {
+        //        return new ResultSet() { IsSucceed = false, Message = "Serving Not Deleted" };
+        //    }
+        //    return new ResultSet() { IsSucceed = true, Message = string.Empty };
+        //}
 
         public async Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsByWorkIdAsync(Guid workId)
         {
@@ -124,6 +124,16 @@ namespace Sude.Application.Services
                 IsSucceed = true,
                 Message = string.Empty,
                 Data = await _servingRepository.GetServingsByWorkIdAsync(workId)
+            };
+        }
+
+        public async Task<ResultSet<IEnumerable<ServingInfo>>> GetServingsByWorkIdAndHasTrackingAsync(Guid workId)
+        {
+            return new ResultSet<IEnumerable<ServingInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _servingRepository.GetServingsByWorkIdAndHasTrackingAsync(workId)
             };
         }
 

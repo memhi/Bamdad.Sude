@@ -21,5 +21,6 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> EditOrderAsync(OrderInfo order);
         Task<ResultSet> DeleteOrderAsync(Guid orderId);
         Task<ResultSet<OrderInfo>> GetOrderByIdAsync(Guid orderId);
+        Task<ResultSet<int>> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null);
     }
 }

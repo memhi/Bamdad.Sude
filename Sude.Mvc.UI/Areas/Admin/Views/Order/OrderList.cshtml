@@ -2,13 +2,15 @@
 @using Sude.Dto.DtoModels.Order
 @model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
 
-
+ <link rel="stylesheet"  href="~/AdminLTE/css/MobileStyle.css" />
 <div class="input-group">
     <input type="text" name="message" placeholder="Type words ..." class="form-control">
     <span class="input-group-btn">
         <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
     </span>
 </div>
+
+
 <div class="row">
     <div class="col-m-6">
         <div class="box">
@@ -17,53 +19,76 @@
 
                 <div class="box-tools">
 
+                    <table >
+                        <tr>
 
+                            <td style="padding-left:3px">
+                                <a  id="btnAdd"  class="btn btn-block btn-success"> ثبت فروش</a>
+                            </td>
+                            <td>
+                                <a id="btnAddBuy" class="btn btn-block btn-warning">ثبت خرید</a>
+                            </td>
+                        </tr>
 
-                    <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
-
+                    </table>
+                  
+                    </div>
 
                 </div>
-         
-            </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tr>
-                        <td>#</td>
-                        <th>شماره سفارش</th>
-                        <th>تاریخ</th>
-                        <th>عنوان کسب و کار</th>
-                        <th>مجموع مبلغ سفارش</th>
-          
+                <table class="table table-hover table-responsive tableorder">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <th>شماره سفارش</th>
+                            <th>تاریخ</th>
+                            <th>عنوان کسب و کار</th>
+                            <th>نوع سفارش</th>
+                            <th>مجموع مبلغ سفارش</th>
 
-                        <th>عملیات</th>
 
-                    </tr>
-                    @{
-                        if (Model != null && Model.Data != null)
-                        {
-                            int i = 1;
-                            @foreach (var item in Model.Data)
+                            <th>عملیات</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model != null && Model.Data != null)
                             {
+                                int i = 1;
+                                @foreach (var item in Model.Data)
+                                {
 
-                <tr id="tr_@item.OrderId" role="row" class="odd">
-                    <td>@(i++)</td>
-                    <td>@item.OrderNumber</td>
-                    <td>@item.OrderDate.ToLocalizationDateTime("D1")</td>
-                    <td>@item.WorkName</td>
+                        <tr id="tr_@item.OrderId">
+                            <td>@(i++)</td>
+                            <td>@item.OrderNumber</td>
+                            <td>@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                            <td>@item.WorkName</td>
+                            <td>
+                                @if (@item.IsBuy)
+                                {
+                                    <lable>   خرید</lable>
+                                }
+                                else
+                                {
+                                    <lable>   فروش</lable>
+                                }
+                            </td>
+                            <td>
+                                @item.SumPrice.ToString("0,0")
+                            </td>
 
-                    <td>@item.SumPrice.ToString("0,0")
-                    </td>
-
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId')">ویرایش</button>
-                        <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
-                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
-                    </td>
-                </tr>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')">ویرایش</button>
+                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
+                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
+                            </td>
+                        </tr>
                             }
                             }
                         }
+                    </tbody>
                     </table>
             </div>
             <!-- /.box-body -->
@@ -71,10 +96,7 @@
         <!-- /.box -->
     </div>
 
-
-
-
-
+  </div>
 
 
 
@@ -83,6 +105,10 @@
 <script>
     $("#btnAdd").click(function () {
         $("#orderView").load("Order/Add");
+    });
+
+    $("#btnAddBuy").click(function () {
+        $("#orderView").load("OrderBuy/Add");
     });
     function DeleteOrder(orderId) {
         swal.fire({
@@ -124,8 +150,15 @@
             }
         })
     }
-    function ShowEditOrderPop(orderId) {
-        $("#orderView").load("Order/Edit/" + orderId);
+    function ShowEditOrderPop(orderId, isBuy) {
+
+        if (isBuy) {
+            $("#orderView").load("OrderBuy/Edit/" + orderId);
+        }
+        else {
+            $("#orderView").load("Order/Edit/" + orderId);
+
+        }
         //$.get("/Order/Edit/" + orderId, function (result) {
         //    $("#myModal").modal('show');
 0        //    $("#myModalBody").html(result);
