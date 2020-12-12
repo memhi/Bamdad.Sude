@@ -34,23 +34,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return View();
         }
 
-      
-        [HttpGet]
-       // [Authorize]
-        public async Task<ActionResult> List()
-        {
-            //System.Threading.Thread.Sleep(1000);
-
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
-            ResultSetDto<IEnumerable<OrderDetailDtoModel>> Orderlist = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
-            if (!string.IsNullOrEmpty(CurrentWorkId))
-               Orderlist = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrdersByWorkId+CurrentWorkId);
-
-            return PartialView("OrderList", Orderlist);
-        }
-
-
+       
         [HttpGet]
         public async Task<ActionResult> AddDetail()
         {
@@ -59,127 +43,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return PartialView(orderDetailNewDto);
         }
 
-        [HttpGet()]
-        public async Task<ActionResult> GetOrdersStatistics(string statisticsType)
-        {
-            DateTime nowDt = DateTime.Now;
-            PersianCalendar persianCalendar = new PersianCalendar();
-            var result = new List<object>();
-            switch (statisticsType)
-            {
-                case "year":
-                    //year statistics
-                    var yearAgoDt = persianCalendar.AddYears(nowDt, -1).AddMonths(1);
-                    int agoDay = persianCalendar.GetDayOfMonth(yearAgoDt), agoMonth = persianCalendar.GetMonth(yearAgoDt), agoYear = persianCalendar.GetYear(yearAgoDt);
-                    var yearagoctopersian = persianCalendar.ToDateTime(agoYear, agoMonth, 1, 0, 0, 0, 0);
-                                     
-                    for (var i = 0; i <= 12; i++)
-                    {
-
-                        OrderStatisticsDtoModel orderStatistics = new OrderStatisticsDtoModel()
-                        {
-                            DateFrom = yearagoctopersian,
-                            DateTo = yearagoctopersian.AddMonths(1),
-                            WorkId = "",
-                            SearchCount = 0
-
-                        };
-                        int count = 0;
-                        ResultSetDto<OrderStatisticsDtoModel> resultGetStatistics = await Api.GetHandler
-        .GetApiAsync<ResultSetDto<OrderStatisticsDtoModel>>(ApiAddress.Order.GetOrdersStatistics, orderStatistics);
-                        if (resultGetStatistics.IsSucceed && resultGetStatistics.Data != null)
-                            count = resultGetStatistics.Data.SearchCount;
-                        
-
-                        result.Add(new
-                        {
-                            date = yearagoctopersian.ToPersianMonthName(),
-                            value = count.ToString()
-                        });
-
-                        yearagoctopersian = yearagoctopersian.AddMonths(1);
-                    }
-
-                    break;
-                case "month":
-                    //month statistics
-                    var monthAgoDt = nowDt.AddDays(-30);
-                    var searchMonthDateUser = new DateTime(monthAgoDt.Year, monthAgoDt.Month, monthAgoDt.Day);
-                    for (var i = 0; i <= 30; i++)
-                    {
-
-
-                        OrderStatisticsDtoModel orderStatistics = new OrderStatisticsDtoModel()
-                        {
-                            DateFrom = searchMonthDateUser,
-                            DateTo = searchMonthDateUser.AddDays(1),
-                            WorkId = "",
-                            SearchCount = 0
-
-                        };
-                        int count = 0;
-                        ResultSetDto<OrderStatisticsDtoModel> resultGetStatistics = await Api.GetHandler
-        .GetApiAsync<ResultSetDto<OrderStatisticsDtoModel>>(ApiAddress.Order.GetOrdersStatistics, orderStatistics);
-                        if (resultGetStatistics.IsSucceed && resultGetStatistics.Data != null)
-                            count = resultGetStatistics.Data.SearchCount;
-
-
-                        result.Add(new
-                        {
-                            date = searchMonthDateUser.ToPersianDay().ToString() +" "+searchMonthDateUser.ToPersianMonthName(),
-                            value = count.ToString()
-                        });
-
-                        searchMonthDateUser = searchMonthDateUser.AddDays(1);
-                    }
-
-                    break;
-                case "week":
-                default:
-                    //week statistics
-                    var weekAgoDt = nowDt.AddDays(-7);
-                    var searchWeekDateUser = new DateTime(weekAgoDt.Year, weekAgoDt.Month, weekAgoDt.Day);
-                    for (var i = 0; i <= 7; i++)
-                    {
-                        OrderStatisticsDtoModel orderStatistics = new OrderStatisticsDtoModel()
-                        {
-                            DateFrom = searchWeekDateUser,
-                            DateTo = searchWeekDateUser.AddDays(1),
-                            WorkId = "",
-                            SearchCount = 0
-
-                        };
-                        int count = 0;
-                        ResultSetDto<OrderStatisticsDtoModel> resultGetStatistics = await Api.GetHandler
-        .GetApiAsync<ResultSetDto<OrderStatisticsDtoModel>>(ApiAddress.Order.GetOrdersStatistics, orderStatistics);
-                        if (resultGetStatistics.IsSucceed && resultGetStatistics.Data != null)
-                            count = resultGetStatistics.Data.SearchCount;
-
-
-
-                        result.Add(new
-                        {
-                            date =  searchWeekDateUser.ToPersianWeekDayName()+" " +searchWeekDateUser.ToPersianDay().ToString(),
-                            value = count.ToString()
-                        });
-
-                        searchWeekDateUser = searchWeekDateUser.AddDays(1);
-                    }
-
-                    break;
-            }
-
-
-            return Json(result);
-        }
-
-
+    
 
         [HttpPost]
         public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
 
 
 
@@ -187,7 +57,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
 
             SelectList selectLists = new SelectList(servinglist.Data as ICollection<CustomerDetailDtoModel>, "ServingId", "Title", CurrentWorkId);
-            ViewData["Servings"] = selectLists;
+            ViewData[Constants.ViewBagNames.Servings] = selectLists;
 
             return PartialView();
         }
@@ -198,8 +68,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Add()
         {
       
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
-            HttpContext.Session.SetObject("OrderDetails", null);
+            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
             order.IsBuy = true;
@@ -212,7 +82,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 SelectList selectLists = null;
                 if(Customerslist!=null && Customerslist.Data!=null)
                     selectLists=new  SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
-                ViewData["Customers"] = selectLists;
+                ViewData[Constants.ViewBagNames.Customers] = selectLists;
             }
             return PartialView(order);
         }
@@ -235,7 +105,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
 
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails");
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
             if(orderDetailNewDtoSession==null)
             {
                 return Json(new ResultSetDto()
@@ -251,7 +121,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             {
                 request.OrderDetails = orderDetails;
             }
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
             request.WorkId = CurrentWorkId;
             request.IsBuy = true;
             ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
@@ -267,7 +137,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            HttpContext.Session.SetObject("OrderDetails", null) ;
+            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null) ;
 
             return Json(result);
 
@@ -278,25 +148,23 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         {
 
  
-            HttpContext.Session.SetObject("OrderDetails", null);
+            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
           
 
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
-            HttpContext.Session.SetObject("OrderDetails", result.Data.OrderDetails.AsEnumerable());
+            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, result.Data.OrderDetails.AsEnumerable());
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);
 
             SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
-            ViewData["Customers"] = selectLists;
+            ViewData[Constants.ViewBagNames.Customers] = selectLists;
 
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
             {
-                OrderId = result.Data.OrderId,
-                CustomerId = result.Data.Customer.CustomerId,
-                CustomerName = result.Data.Customer.Title,
+                OrderId = result.Data.OrderId,              
                 Description = result.Data.Description,
                  OrderDate=result.Data.OrderDate,
                   OrderNumber=result.Data.OrderNumber,
@@ -323,7 +191,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>("OrderDetails");
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
             if (orderDetailNewDtoSession == null)
             {
                 return Json(new ResultSetDto()
@@ -346,29 +214,10 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             ResultSetDto<OrderEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderEditDtoModel>>(ApiAddress.Order.EditOrder, request);
-            HttpContext.Session.SetObject("OrderDetails", null);
+            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
             return Json(result);
 
         }
-
-        [HttpGet]
-        public async Task<ActionResult> Detail(string id)
-        {
-            ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
-             .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById+ id);
-
-            var orderDetail = result.Data;
-
-            return View(viewName: "Detail", model: orderDetail);
-        }
-
-
-        public async Task<ActionResult> Delete(string id)
-        {
-            ResultSetDto result = await Api.GetHandler
-              .GetApiAsync<ResultSetDto>(ApiAddress.Order.DeleteOrder, id);
-
-            return Json(result);
-        }
+ 
     }
 }

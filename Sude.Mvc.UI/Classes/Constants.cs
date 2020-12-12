@@ -18,7 +18,8 @@ namespace Sude.Mvc.UI
         {
             public const string Customers = "Customers";
             public const string Servings = "Servings";
-            
+            public const string OrderDetails = "OrderDetails";
+
         }
 
         public static class Messages

@@ -61,11 +61,11 @@
                                 {
 
                         <tr id="tr_@item.OrderId">
-                            <td>@(i++)</td>
-                            <td>@item.OrderNumber</td>
-                            <td>@item.OrderDate.ToLocalizationDateTime("D1")</td>
-                            <td>@item.WorkName</td>
-                            <td>
+                            <td lable="" style="--bgcolor: silver;">@(i++)</td>
+                            <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
+                            <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                            <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
+                            <td lable="نوع سفارش" style="--minwidth:40%">
                                 @if (@item.IsBuy)
                                 {
                                     <lable>   خرید</lable>
@@ -75,7 +75,7 @@
                                     <lable>   فروش</lable>
                                 }
                             </td>
-                            <td>
+                            <td lable="مبلغ سفارش" style="--minwidth:40%">
                                 @item.SumPrice.ToString("0,0")
                             </td>
 
@@ -151,8 +151,9 @@
         })
     }
     function ShowEditOrderPop(orderId, isBuy) {
+  
+        if (isBuy == 'True') {
 
-        if (isBuy) {
             $("#orderView").load("OrderBuy/Edit/" + orderId);
         }
         else {
@@ -161,7 +162,7 @@
         }
         //$.get("/Order/Edit/" + orderId, function (result) {
         //    $("#myModal").modal('show');
-0        //    $("#myModalBody").html(result);
+      //    $("#myModalBody").html(result);
         //});
     }
     function ShowEditOrder(orderId) {

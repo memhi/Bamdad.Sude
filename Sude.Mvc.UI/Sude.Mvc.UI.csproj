@@ -231,7 +231,9 @@
     <Content Include="wwwroot\AdminLTE\bower_components\Flot\package.json" />
     <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\.bower.json" />
     <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\bower.json" />
-    <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\css\font-awesome.css" />
+    <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\css\font-awesome.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\css\font-awesome.min.css" />
     <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="wwwroot\AdminLTE\bower_components\font-awesome\fonts\fontawesome-webfont.ttf" />
@@ -1993,7 +1995,7 @@
     <Content Include="wwwroot\AdminLTE\bower_components\chart.js\Chart.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="wwwroot\AdminLTE\bower_components\chart.js\Chart.min.js" />
+    <Content Include="wwwroot\AdminLTE\bower_components\chart.js\Chart.min.js" />
     <None Include="wwwroot\AdminLTE\bower_components\chart.js\CONTRIBUTING.md" />
     <None Include="wwwroot\AdminLTE\bower_components\chart.js\docs\00-Getting-Started.md" />
     <None Include="wwwroot\AdminLTE\bower_components\chart.js\docs\01-Line-Chart.md" />

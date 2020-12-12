@@ -1,10 +1,11 @@
-﻿@media only screen and (max-width: 719px), (min-device-width: 768px) and (max-device-width: 1024px) {
+﻿@media only screen and (max-width: 600px) {
 
 
     
 /* Force table to not be like tables anymore */
     .tableorder, .tableorder thead, .tableorder tbody, .tableorder th, .tableorder td, .tableorder tr {
         display: block;
+        width: 100%;
     }
 
         /* Hide table headers (but not display: none;, for accessibility) */
@@ -12,30 +13,28 @@
         position: absolute;
         top: -9999px;
         left: -9999px;
+ 
     }
 
         .tableorder tr {
             border: 1px solid #ccc;
+            width: 100%;
         }
 
         .tableorder td {
             /* Behave  like a "row" */
             border: none;
             border-bottom: 1px solid #eee;
-            position:relative;    
-            width: 100%;
-
-     
+            display: flex;      
+            width: 100%;           
+            background-color: var(--bgcolor);
         }
 
             .tableorder td:before {
                 /* Now like a table header */
-                position: relative;
-                /* Top/left values mimic padding */
-                top: 6px;
-                right: 6px;
-                padding-left: 30%;
+                content: attr(lable);
                 font-weight: bold;
+                min-width: var(--minwidth);
             }
 
 
@@ -43,7 +42,8 @@
         /*
 	Label the data
 	*/
-            .tableorder td:nth-of-type(1) {
+    /* 
+         .tableorder td:nth-of-type(1) {
                 content: "";
                 text-align: center !important;
            background-color:silver;
@@ -81,7 +81,7 @@
             .tableorder td:nth-of-type(7) {
             
                 text-align: center;
-            }
+            }*/
 
         
 }

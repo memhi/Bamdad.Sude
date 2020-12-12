@@ -222,7 +222,7 @@ namespace Sude.Api.Controllers
             {
                 var o = (await _OrderService.GetOrderByIdAsync(Guid.Parse(orderId))).Data;
                 if (o == null)
-                    return NotFound(new ResultSetDto<OrderInfo>()
+                    return NotFound(new ResultSetDto<OrderDetailDtoModel>()
                     {
                         IsSucceed = false,
                         Message = "Not found",
@@ -245,9 +245,12 @@ namespace Sude.Api.Controllers
                 };
 
                 result.Customer = new CustomerDetailDtoModel();
-                result.Customer.CustomerId = o.Customer.Id.ToString();
-                result.Customer.Phone = o.Customer.Phone;
-                result.Customer.Title = o.Customer.Title;
+                if (o.Customer != null)
+                {
+                    result.Customer.CustomerId = o.Customer.Id.ToString();
+                    result.Customer.Phone = o.Customer.Phone;
+                    result.Customer.Title = o.Customer.Title;
+                }
                 List<OrderDetailDetailDtoModel> orderDetailDetailDtoModels = new List<OrderDetailDetailDtoModel>();
 
                 if (o.Details != null && o.Details.Count > 0)
@@ -523,32 +526,37 @@ namespace Sude.Api.Controllers
                         }
                     }
 
-                    Guid CID, OID;
-                    if (orderdto.Customer != null && !string.IsNullOrEmpty(orderdto.Customer.CustomerId))
+                    Guid? CID, OID;
+                    if (!orderdto.IsBuy)
                     {
-                        CustomerInfo customer = new CustomerInfo();
+                        if (orderdto.Customer != null && !string.IsNullOrEmpty(orderdto.Customer.CustomerId))
+                        {
+                            CustomerInfo customer = new CustomerInfo();
 
-                        customer.IsActive = true;
-                        customer.NationalCode = orderdto.Customer.NationalCode;
-                        customer.Phone = orderdto.Customer.Phone;
-                        customer.Title = orderdto.Customer.Title;
-                        var resultcustomer = await _CustomerService.AddCustomerAsync(customer);
-                        if (!resultcustomer.IsSucceed)
-                            return BadRequest(new ResultSetDto<OrderNewDtoModel>()
-                            {
-                                IsSucceed = false,
-                                Message = resultcustomer.Message,
-                                Data = null
-                            });
-                        CID = resultcustomer.Data.Id;
+                            customer.IsActive = true;
+                            customer.NationalCode = orderdto.Customer.NationalCode;
+                            customer.Phone = orderdto.Customer.Phone;
+                            customer.Title = orderdto.Customer.Title;
+                            var resultcustomer = await _CustomerService.AddCustomerAsync(customer);
+                            if (!resultcustomer.IsSucceed)
+                                return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                                {
+                                    IsSucceed = false,
+                                    Message = resultcustomer.Message,
+                                    Data = null
+                                });
+                            CID = resultcustomer.Data.Id;
+                        }
+                        else
+                        {
+                            CID = Guid.Parse(orderdto.CustomerId);
+
+                        }
                     }
                     else
-                    {
-                        CID = Guid.Parse(orderdto.CustomerId);
+                        CID = null;
 
-                    }
-
-                    OrderInfo order = new OrderInfo()
+                   OrderInfo order = new OrderInfo()
                     {
                         CustomerId = CID,
                         Description = orderdto.Description,
@@ -581,7 +589,7 @@ namespace Sude.Api.Controllers
                             OrderDetailInfo orderDetail = new OrderDetailInfo()
                             {
                                 Count = detailNewDtoModel.Count,
-                                OrderId = OID,
+                                OrderId = OID.Value,
                                 Price = detailNewDtoModel.Price,
                                 ServingId = Guid.Parse(detailNewDtoModel.ServingId)
 
@@ -690,7 +698,7 @@ namespace Sude.Api.Controllers
 
 
                 OrderInfo orderInfo = resultOrder.Data;
-                orderInfo.CustomerId = Guid.Parse(orderDTO.CustomerId);
+                orderInfo.CustomerId = (orderDTO.CustomerId==null ? null : Guid.Parse(orderDTO.CustomerId));
                 orderInfo.Description = orderDTO.Description;
                 orderInfo.Number = orderDTO.OrderNumber;
                 orderInfo.OrderDate = orderDTO.OrderDate;
@@ -861,6 +869,82 @@ namespace Sude.Api.Controllers
 
 
         }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<ResultSetDto<OrderDetailDtoModel>>> DeleteOrder([FromBody]string orderId)
+        {
+
+            
+
+            try
+            {
+                var o = (await _OrderService.GetOrderByIdAsync(Guid.Parse(orderId))).Data;
+                if (o == null)
+                    return NotFound(new ResultSetDto<OrderDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
+                //  double sumpriceoriginal = resultOrder.Data.SumPrice;
+
+                var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(o.Id);
+                foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
+                {
+                    
+                        var Message = await UpdateServingInventory(orderDetailDetail.ServingId.Value, 0, orderDetailDetail.Count, !o.IsBuy, true);
+                        if (!string.IsNullOrEmpty(Message))
+                            return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = Message,
+                                Data = null
+                            });
+
+ 
+                }
+
+             
+
+
+
+                var resultDeleteOrder = await _OrderService.DeleteOrderAsync(o.Id);
+                if (!resultDeleteOrder.IsSucceed)
+                    return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultDeleteOrder.Message,
+                        Data = null
+                    });
+
+                return Ok(new ResultSetDto<OrderDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = null
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+
+
+
+
+        }
+
 
 
 
