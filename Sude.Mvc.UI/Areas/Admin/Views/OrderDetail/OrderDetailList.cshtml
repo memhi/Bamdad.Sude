@@ -20,7 +20,7 @@
     @foreach (var item in Model)
     {
         sum += (item.Price * item.Count);
-        <tr id="tr_@item.OrderDetailId" class="row">
+        <tr id="tr_@item.OrderDetailId" class="row" onclick="SetValues('@item.OrderDetailId')">
             <td class="col-md-1"><label></label>@(i++)</td>
             <td class="col-md-4"><label> @item.ServingName</label></td>
             <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
@@ -28,7 +28,7 @@
             <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
             <td class="col-md-1">
 
-                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')">حذف</a>
+                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></a>
 
             </td>
         </tr>
@@ -57,6 +57,24 @@
         
             <script>
 
+                function SetValues(servingId) {
+
+                    var i = 0;
+                    $("#drpServing").find("option").each(function () {
+                   
+                        
+                        if (($(this).val().split("##")[0]) = servingId) {
+
+                            $("#drpServing").val($(this).val());
+                        
+                          
+                        }
+                    });
+
+                
+                    alert(servingId);
+                
+                }
                 function DeleteOrderDetail(detailid, serving) {
 
                     swal.fire({

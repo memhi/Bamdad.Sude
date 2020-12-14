@@ -5,7 +5,7 @@
      <div class="input-group">
         <input type="text" name="message" placeholder="Type words ..." class="form-control">
         <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+            <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
         </span>
     </div>
 
@@ -14,45 +14,51 @@
 
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-12">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">فهرست  کسب و کارها</h3>
 
                 <div class="box-tools">
-                     
-                            <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
-               
+
+                    <a id="btnAdd" class="btn btn-block btn-success "><span class="fa fa-plus margin-r-5"></span><lable>جدید</lable></a>
+
                 </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <tr>
-                        <th>#</th>
-                        <th>عنوان</th>
-                        <th>نوع</th>
-                        <th>توضیحات</th>
-                        <th>عملیات</th>
+                <table class="table table-hover tablemobile">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>عنوان</th>
+                            <th>نوع</th>
+                            <th>توضیحات</th>
+                            <th>عملیات</th>
 
-                    </tr>
-                    @{ 
-                        if(Model!=null && Model.Data!=null)
-                    @foreach (var item in Model.Data)
-                    {
-                        int i = 1;
-                <tr id="tr_@item.WorkTypeId" role="row" class="odd">
-                    <td>@(i++)</td>
-                    <td>@item.Title</td>
-                    <td>@item.WorkTypeName</td>
-                    <td>@item.Desc</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="ShowEditWorkPop('@item.WorkId')">ویرایش</button>
-                        <button class="btn btn-danger btn-sm" onclick="DeleteWork('@item.WorkId')">حذف</button>
-                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailWork('@item.WorkId')">جزئیات</button>
-                    </td>
-                </tr>
-                    }}
+                        </tr>
+                        </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            if (Model != null && Model.Data != null)
+                                @foreach (var item in Model.Data)
+                                {
+                                
+                                    <tr id="tr_@item.WorkTypeId">
+                                        <td lable="" style="--bgcolor: silver;">@(i++)</td>
+                                        <td lable="عنوان" style="--minwidth:40%">@item.Title</td>
+                                        <td lable="نوع" style="--minwidth:40%">@item.WorkTypeName</td>
+                                        <td lable="توضیحات" style="--minwidth:40%">@item.Desc</td>
+                                        <td>
+                                            <a class="btn btn-warning btn-sm" onclick="ShowEditWorkPop('@item.WorkId')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></a>
+                                            <a class="btn btn-danger btn-sm" onclick="DeleteWork('@item.WorkId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></a>
+                                            <a class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailWork('@item.WorkId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></a>
+                                            <a class="btn btn-primary btn-sm" onclick="GoToServing('@item.WorkId')"><span class="fa fa-bars margin-r-5"> </span><lable>اقلام و خدمات</lable></a>
+                                        </td>
+                                    </tr>
+                                }}
+                    </tbody>
                 </table>
             </div>
             <!-- /.box-body -->
@@ -70,7 +76,28 @@
             $("#WorkView").load("Work/Add");
         });
 
+        function GoToServing(workId) {
 
+
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "Work/SetDefaultWork",
+                data: { "workId": workId },
+                success: function (data) {
+
+                    location.replace("Serving");
+                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+
+                }
+            });
+
+
+
+        }
         function DeleteWork(workId) {
 
             swal.fire({

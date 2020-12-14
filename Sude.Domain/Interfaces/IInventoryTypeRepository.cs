@@ -31,6 +31,7 @@ namespace Sude.Domain.Interfaces
         Task<InventoryTypeInfo> GetInventoryTypeByIdAsync(Guid inventoryTypeId);
         Task<IEnumerable<InventoryTypeInfo>> GetInventoryTypesAsync();
         Task<InventoryTypeInfo> GetInventoryTypeByTitleAsync(string Title);
+        Task<IEnumerable<InventoryTypeInfo>> SearchInventoryTypesByTitleAsync(string title);
         Task SaveAsync();
 
         #endregion

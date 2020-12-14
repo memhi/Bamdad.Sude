@@ -16,7 +16,7 @@ namespace Sude.Dto.DtoModels.Serving
 
         //[MaxLength(5)]
         [Required(ErrorMessage = "مبلغ را وارد نمایید")]
-        [Range(1000,1000000,ErrorMessage ="بازه مبلغ را درست وارد نمایید")]
+        [Range(0,4000000000,ErrorMessage ="بازه مبلغ را درست وارد نمایید")]
         public int Price { get; set; }
 
         public string Desc { get; set; }

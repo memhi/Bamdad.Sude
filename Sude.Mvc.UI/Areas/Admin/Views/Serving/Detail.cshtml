@@ -14,48 +14,73 @@
 <body>
 
 <div>
-    <h4></h4>
-    <hr />
+ 
     <dl class="row">
 
-        <dt class="col-sm-3">
+        <dt class="col-md-4">
             عنوان
         </dt>
-        <dd class="col-sm-9">
+        <dd class="col-md-8">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class="col-sm-3">
+        </dl>
+    <dl class="row">
+        <dt class="col-md-4">
             قیمت
         </dt>
-        <dd class="col-sm-9">
-         @Model.Price.ToString("0,0")
+        <dd class="col-md-8">
+            @Model.Price.ToString("0,0")
         </dd>
-        <dt class="col-sm-3">
+        </dl>
+    <dl class="row">
+        <dt class="col-md-4">
             کسب و کار
         </dt>
-        <dd class="col-sm-9">
+        <dd class="col-md-8">
             @Html.DisplayFor(model => model.WorkName)
         </dd>
-        <dt class="col-sm-3">
+        </dl>
+    <dl class="row">
+        <dt class="col-md-4">
             توضیحات
         </dt>
-        <dd class="col-sm-9">
+        <dd class="col-md-8">
             @Html.DisplayFor(model => model.Desc)
         </dd>
-        <dt class="col-sm-3">
+        </dl>
+    <dl class="row">
+        <dt class="col-md-4">
             رهگیری موجودی
         </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.HasInventoryTracking)
-        </dd>
-        <dt class="col-sm-3">
-            فعال
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
+        <dd class="col-md-8">
+            @if (Model.HasInventoryTracking)
+                                {
+            <span class="label label-success">دارد</span>
+                                }
+                                else
+                                {
+            <span class="label label-danger">ندارد</span>
 
-    </dl>
+                                }
+        </dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-md-4">
+                امکان عرضه و فروش
+            </dt>
+            <dd class="col-md-8">
+                @if (Model.IsActive)
+                                {
+                <span class="label label-success">دارد</span>
+                                }
+                                else
+                                {
+                <span class="label label-danger">ندارد</span>
+
+                                }
+            </dd>
+
+        </dl>
 </div>
  
 </body>

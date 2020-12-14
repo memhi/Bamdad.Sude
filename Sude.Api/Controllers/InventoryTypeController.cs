@@ -72,6 +72,55 @@ namespace Sude.Api.Controllers
             }
         }
 
+        [HttpGet("{title}")]
+        //[Consumes("application/xml")]
+        //[Consumes("application/json")]
+        // [Authorize]
+        public async Task<ActionResult> SearchInventoryTypes(string title)
+        {
+            try
+            {
+
+                ResultSet<IEnumerable<InventoryTypeInfo>> resultSet = await _InventoryTypeService.SearchInventoryTypesByTitleAsync(title);
+
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+
+                    });
+
+
+                var result = resultSet.Data.Select(s => new InventoryTypeDetailDtoModel()
+                {
+                    InventoryTypeId = s.Id.ToString(),
+                    Title = s.Title,
+                    Description = s.Description
+                });
+                return Ok(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
         //GET : api/GetInventoryType/0
         [HttpGet("{InventoryTypeId}")]
         public async Task<ActionResult> GetInventoryTypeById(string InventoryTypeId)

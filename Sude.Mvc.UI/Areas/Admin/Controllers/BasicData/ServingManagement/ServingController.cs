@@ -47,20 +47,18 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         public async Task<ActionResult> Add()
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            WorkDetailDtoModel CurrentWork = HttpContext.Session.GetObject<WorkDetailDtoModel>(Constants.SessionNames.CurrentWork);
          
-            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-           .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
+            
             ServingNewDtoModel  servingNewDtoModel  = new ServingNewDtoModel();
 
             servingNewDtoModel.Desc = "";
             servingNewDtoModel.Title = "";
-            servingNewDtoModel.WorkId = "";
+            servingNewDtoModel.WorkId = CurrentWork.WorkId;
             servingNewDtoModel.HasInventoryTracking = false;
             servingNewDtoModel.IsActive = true;
-            SelectList selectLists = new SelectList(Worklist.Data.Where(w => w.WorkId == CurrentWorkId).ToList() as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",CurrentWorkId);
-
-            ViewData["Works"] = selectLists;
+   
+            ViewData[Constants.ViewBagNames.CurrentWorkName] = CurrentWork.Title;
 
             return PartialView("Add", servingNewDtoModel);
 
@@ -95,16 +93,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         public async Task<ActionResult> Edit(string id)
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
-              ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
+            WorkDetailDtoModel CurrentWork = HttpContext.Session.GetObject<WorkDetailDtoModel>(Constants.SessionNames.CurrentWork);
+            ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.Serving.GetServingById + id);
 
-            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-          .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
-         
-            SelectList selectLists = new SelectList(Worklist.Data.Where(w=>w.WorkId==CurrentWorkId).ToList() as ICollection<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>, "WorkId", "Title",result.Data.WorkId);
-
-            ViewData["Works"] = selectLists;
+          
+            ViewData[Constants.ViewBagNames.CurrentWorkName] = CurrentWork.Title;
 
 
 

@@ -3,25 +3,25 @@
 
     
 /* Force table to not be like tables anymore */
-    .tableorder, .tableorder thead, .tableorder tbody, .tableorder th, .tableorder td, .tableorder tr {
+    .tablemobile, .tablemobile thead, .tablemobile tbody, .tablemobile th, .tablemobile td, .tablemobile tr {
         display: block;
         width: 100%;
     }
 
         /* Hide table headers (but not display: none;, for accessibility) */
-    .tableorder thead tr {
+    .tablemobile thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
  
     }
 
-        .tableorder tr {
+        .tablemobile tr {
             border: 1px solid #ccc;
             width: 100%;
         }
 
-        .tableorder td {
+        .tablemobile td {
             /* Behave  like a "row" */
             border: none;
             border-bottom: 1px solid #eee;
@@ -30,7 +30,7 @@
             background-color: var(--bgcolor);
         }
 
-            .tableorder td:before {
+            .tablemobile td:before {
                 /* Now like a table header */
                 content: attr(lable);
                 font-weight: bold;
@@ -43,42 +43,42 @@
 	Label the data
 	*/
     /* 
-         .tableorder td:nth-of-type(1) {
+         .tablemobile td:nth-of-type(1) {
                 content: "";
                 text-align: center !important;
            background-color:silver;
             }
 
-            .tableorder td:nth-of-type(2)::before {
+            .tablemobile td:nth-of-type(2)::before {
                 content: "شماره سفارش";      
         
       
             }
 
-            .tableorder td:nth-of-type(3)::before {
+            .tablemobile td:nth-of-type(3)::before {
                 content: "تاریخ";
 
 
             }
 
-            .tableorder td:nth-of-type(4)::before {
+            .tablemobile td:nth-of-type(4)::before {
                 content: "کسب و کار";
     
     
             }
 
-            .tableorder td:nth-of-type(5)::before {
+            .tablemobile td:nth-of-type(5)::before {
                 content: "نوع";
 
             }
 
-            .tableorder td:nth-of-type(6)::before {
+            .tablemobile td:nth-of-type(6)::before {
                 content: "مجموع";
       
         
             }
 
-            .tableorder td:nth-of-type(7) {
+            .tablemobile td:nth-of-type(7) {
             
                 text-align: center;
             }*/

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Domain.Interfaces;
@@ -22,6 +23,14 @@ namespace Sude.Persistence.Repository
         public async Task<IEnumerable<InventoryTypeInfo>> GetInventoryTypesAsync()
         {
             return await _InventoryTypeRepository.GetAsync();
+        }
+
+        public async Task<IEnumerable<InventoryTypeInfo>> SearchInventoryTypesByTitleAsync(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+                return await _InventoryTypeRepository.GetAsync();
+            else
+                return await _InventoryTypeRepository.GetAsync(i => i.Title.Contains(title));
         }
         public bool AddInventoryType(InventoryTypeInfo inventoryType)
         {

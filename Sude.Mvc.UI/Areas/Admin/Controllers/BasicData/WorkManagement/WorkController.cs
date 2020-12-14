@@ -53,9 +53,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
              .GetApiAsync<ResultSetDto<WorkDetailDtoModel>>(ApiAddress.Work.GetWorkById + workId);
 
 
-            HttpContext.Session.SetString("CurrentWorkId", result.Data.WorkId);
-            HttpContext.Session.SetString("CurrentWorkName", result.Data.Title);
-
+            HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkId, result.Data.WorkId);
+            HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkName, result.Data.Title);
+            HttpContext.Session.SetObject(Constants.SessionNames.CurrentWork, result.Data);
 
             return Json(workId);
         }

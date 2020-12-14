@@ -20,5 +20,6 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> EditInventoryTypeAsync(InventoryTypeInfo inventoryType);
         Task<ResultSet> DeleteInventoryTypeAsync(Guid inventoryTypeId);
         Task<ResultSet<InventoryTypeInfo>> GetInventoryTypeByIdAsync(Guid inventoryTypeId);
+        Task<ResultSet<IEnumerable<InventoryTypeInfo>>> SearchInventoryTypesByTitleAsync(string title);
     }
 }

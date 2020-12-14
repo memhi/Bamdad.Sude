@@ -41,6 +41,7 @@ namespace Sude.Mvc.UI.Admin.Components
                     CurrentWorkName = Worklist.Data.First().Title;
                     HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkId, CurrentWorkId);
                     HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkName, CurrentWorkName);
+                    HttpContext.Session.SetObject(Constants.SessionNames.CurrentWork, Worklist.Data.First());
                 }
 
                 selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);

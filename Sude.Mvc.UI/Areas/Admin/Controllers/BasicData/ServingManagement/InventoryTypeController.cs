@@ -27,14 +27,24 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.InventoryTypeManagement
         }
 
         [HttpGet]
-      //  [Authorize]
-        public async Task<ActionResult> List()
+        //  [Authorize]
+        public async Task<ActionResult> List(string title)
         {
-          
-           
-            ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>> InventoryTypelist = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>>(ApiAddress.InventoryType.GetInventoryTypes);
+            ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>> InventoryTypelist = null;
+            if (string.IsNullOrEmpty(title) || title.Length < 3)
+            {
+                InventoryTypelist = await Api.GetHandler
+                    .GetApiAsync<ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>>(ApiAddress.InventoryType.GetInventoryTypes);
 
+   
+                    }
+            else
+            {
+                 InventoryTypelist = await Api.GetHandler
+                    .GetApiAsync<ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>>(ApiAddress.InventoryType.SearchInventoryTypes+title);
+
+
+            }
             return PartialView("InventoryTypeList", InventoryTypelist);
         }
 

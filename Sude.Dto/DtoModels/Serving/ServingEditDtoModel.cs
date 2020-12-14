@@ -14,7 +14,7 @@ namespace Sude.Dto.DtoModels.Serving
         [Required(ErrorMessage ="عنوان را وارد نمایید")]
         public string Title { get; set; }
 
-        [Range(100, 100000,
+        [Range(0, 4000000000,
             ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int Price { get; set; }
 

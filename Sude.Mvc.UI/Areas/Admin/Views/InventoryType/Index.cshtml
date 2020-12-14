@@ -8,7 +8,17 @@
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("InventoryType");
     ViewBag.PageTitle = "مدیریت نوع موجودی";
 }
+<div id="searchInventoryType">
 
+    <div class="input-group">
+        <input type="text"  id="txtSearch" placeholder="Type words ..." oninput="SearchInventory()" class="form-control">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
+        </span>
+    </div>
+
+
+</div>
 
 <div id="InventoryTypeView">
     <div class="col-md-3 text-center"></div>
@@ -62,6 +72,19 @@
 
         <script>
 
+           
+
+            function SearchInventory() {
+             
+                var Title = $("#txtSearch").val();
+
+                if (Title.length > 2) {
+
+                    $("#InventoryTypeView").load("InventoryType/List?title=" + Title);
+                }
+                if (Title.length <= 0)
+                    $("#InventoryTypeView").load("InventoryType/List?title=" + Title);
+            }
         $(function () {
             $("#InventoryTypeView").load("InventoryType/List");
         });

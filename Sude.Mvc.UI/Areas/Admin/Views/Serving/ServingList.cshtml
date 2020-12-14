@@ -8,7 +8,7 @@
 <div class="input-group">
     <input type="text" name="message" placeholder="Type words ..." class="form-control">
     <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+        <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
     </span>
 </div>
 
@@ -24,69 +24,74 @@
 
                 <div class="box-tools">
                   
-                            <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
+                    <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-plus margin-r-5"></span><lable>جدید</lable></a>
                    
                 </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               
-                <table class="table table-hover">
-                    <tr>
-                        <td>#</td>
-                        <th>عنوان</th>
-                        <th>عنوان کسب و کار</th>
-                        <th>قیمت</th>
-                        <th>وضعیت</th>
-                        <th>کنترل موجودی</th>
-                        <th>توضیحات</th>
-                        <th>عملیات</th>
+                <table class="table table-hover tablemobile">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <th>عنوان</th>
+                            <th>عنوان کسب و کار</th>
+                            <th>قیمت</th>
+                            <th>وضعیت</th>
+                            <th>کنترل موجودی</th>
+                            <th>توضیحات</th>
+                            <th>عملیات</th>
 
 
-                    </tr>
-                    @{ 
-                        int i = 1;
-                        if (Model != null && Model.Data != null)
-                        @foreach (var item in Model.Data)
-                        {
-                <tr id="tr_@item.ServingId" role="row" class="odd">
-                    <td>@(i++)</td>
-                    <td>@item.Title</td>
-                    <td>@item.WorkName</td>
-                    <td>@item.Price.ToString("0,0")</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            if (Model != null && Model.Data != null)
+                                @foreach (var item in Model.Data)
+                                {
+                        <tr id="tr_@item.ServingId">
+                            <td lable="" style="--bgcolor: silver;">@(i++)</td>
+                            <td lable="عنوان" style="--minwidth:40%">@item.Title</td>
+                            <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
+                            <td lable="قیمت" style="--minwidth:40%">@item.Price.ToString("0,0")</td>
+                            <td lable="وضعیت" style="--minwidth:40%">
+                                @if (item.IsActive)
+                                {
+                                    <span class="label label-success">امکان عرضه و فروش</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-danger">غیر قابل عرضه و فروش</span>
 
-                    @if (item.IsActive)
-                    {
-                        <td><span class="label label-success">فعال</span></td>
-                    }
-                    else
-                    {
-                        <td><span class="label label-danger">غیرفعال</span></td>
+                                }
+                            </td>
+                            <td lable="رهگیری موجودی" style="--minwidth:40%">
+                                @if (item.HasInventoryTracking)
+                                {
 
-                    }
+                                <span class="label label-info">@item.InventoryCount</span>
+                            }
+                            else
+                            {
+                              <span class="label label-danger">ندارد</span>
 
-                    @if (item.HasInventoryTracking)
-                    {
-                       
-                        <td><span class="label label-info">@item.InventoryCount</span></td>
-                    }
-                    else
-                    {
-                        <td><span class="label label-danger">ندارد</span></td>
-
-                    }
+                            }
+</td>
 
 
+                                <td lable="توضیحات" style="--minwidth:40%">@item.Desc</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
+                                    <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+                                </td>
+                            </tr>
 
-                    <td>@item.Desc</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="ShowEditServingPop('@item.ServingId')">ویرایش</button>
-                        <button class="btn btn-danger btn-sm" onclick="DeleteServing('@item.ServingId')">حذف</button>
-                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailServing('@item.ServingId')">جزئیات</button>
-                    </td>
-                </tr>
-
-                        }}
+                                }}
+                    </tbody>
                 </table>
 
                         </div>

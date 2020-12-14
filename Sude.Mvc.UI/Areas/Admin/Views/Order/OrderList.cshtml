@@ -2,11 +2,11 @@
 @using Sude.Dto.DtoModels.Order
 @model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
 
- <link rel="stylesheet"  href="~/AdminLTE/css/MobileStyle.css" />
+
 <div class="input-group">
     <input type="text" name="message" placeholder="Type words ..." class="form-control">
     <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
+        <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
     </span>
 </div>
 
@@ -23,10 +23,10 @@
                         <tr>
 
                             <td style="padding-left:3px">
-                                <a  id="btnAdd"  class="btn btn-block btn-success"> ثبت فروش</a>
+                                <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-shopping-cart margin-r-5"></span><lable>فروش جدید</lable></a>
                             </td>
                             <td>
-                                <a id="btnAddBuy" class="btn btn-block btn-warning">ثبت خرید</a>
+                                <a id="btnAddBuy" class="btn btn-block btn-warning"><span class="fa fa-shopping-bag margin-r-5"></span><lable>خرید جدید</lable></a>
                             </td>
                         </tr>
 
@@ -37,7 +37,7 @@
                 </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover table-responsive tableorder">
+                <table class="table table-hover table-responsive tablemobile">
                     <thead>
                         <tr>
                             <td>#</td>
@@ -80,9 +80,9 @@
                             </td>
 
                             <td>
-                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')">ویرایش</button>
-                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')">حذف</button>
-                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')">جزئیات</button>
+                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
+                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
                             </td>
                         </tr>
                             }

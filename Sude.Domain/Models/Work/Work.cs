@@ -22,6 +22,7 @@ namespace Sude.Domain.Models.Work
         public virtual ICollection<ServingInfo> Servings { get; set; }
         public Guid? AddressId { get; set; }
         public AddressInfo Address { get; set; }
+        public string LogoAddress { get; set; }
     }
 
 }

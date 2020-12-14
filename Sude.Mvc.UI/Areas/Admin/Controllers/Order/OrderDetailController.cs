@@ -75,7 +75,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
 
         [HttpGet]
-        public async Task<ActionResult> Add(string servingHasTracking)
+        public async Task<ActionResult> Add(string servingHasTracking,string isActive)
         {
       
             string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
@@ -84,12 +84,18 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = await Api.GetHandler
       .GetApiAsync<ResultSetDto<IEnumerable<ServingDetailDtoModel>>>(ApiAddress.Serving.GetServingsByWorkId + CurrentWorkId);
+           
             if(servinglist!=null && servinglist.Data!=null && servingHasTracking=="1")
             {
                 servinglist.Data = servinglist.Data.Where(s => s.HasInventoryTracking == true).AsEnumerable<ServingDetailDtoModel>();
 
             }
-            foreach(ServingDetailDtoModel servingDetailDto in servinglist.Data)
+            if (servinglist != null && servinglist.Data != null && isActive == "1")
+            {
+                servinglist.Data = servinglist.Data.Where(s => s.IsActive == true).AsEnumerable<ServingDetailDtoModel>();
+
+            }
+            foreach (ServingDetailDtoModel servingDetailDto in servinglist.Data)
             {
                 
                 servingDetailDto.ServingId = servingDetailDto.ServingId + "##" + servingDetailDto.Title + "##" + servingDetailDto.Price.ToString();

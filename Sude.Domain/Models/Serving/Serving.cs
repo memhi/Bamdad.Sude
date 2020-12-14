@@ -24,10 +24,10 @@ namespace Sude.Domain.Models.Serving
         public bool HasInventoryTracking { get; set; }
       
         public virtual ServingInventoryInfo ServingInventory { get; set; }
-       
+
  
 
-  
+
 
 
     }

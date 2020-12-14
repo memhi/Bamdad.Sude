@@ -3,13 +3,6 @@
 @model ResultSetDto<IEnumerable<InventoryTypeDetailDtoModel>>
 
 
-    <div class="input-group">
-        <input type="text" name="message" placeholder="Type words ..." class="form-control">
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary btn-flat">جستجو</button>
-        </span>
-    </div>
-
 
     <div class="row">
         <div class="col-xs-12">
@@ -19,7 +12,7 @@
 
                     <div class="box-tools">
 
-                        <a id="btnAdd" class="btn btn-block btn-success">جدید</a>
+                        <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-plus margin-r-5"></span><lable>جدید</lable></a>
 
                     </div>
                 </div>
@@ -45,9 +38,9 @@
 
                                     <td>@item.Description</td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')">ویرایش</button>
-                                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')">حذف</button>
-                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')">جزئیات</button>
+                                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
                                     </td>
                                 </tr>
                             }
@@ -118,6 +111,8 @@
 
 
         $("#btnAdd").click(function () {
+            searchInventoryType
+            $("#searchInventoryType").hide();
             $("#InventoryTypeView").load("InventoryType/Add");
         });
 

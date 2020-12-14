@@ -27,6 +27,7 @@ namespace Sude.Domain.Models.Content
         public string Tags { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string UrlAddress { get; set; }
 
 
 

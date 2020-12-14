@@ -2,95 +2,92 @@
 
  
 <form id="frmEdit">
-
+    <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <input id="txtServingId" type="hidden" asp-for="ServingId" class="form-control" />
     </div>
- 
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label class="control-label">عنوان</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="txtTitle" asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">کسب و کار</label>
+        </div>
+        <div class="col-md-9">
+            @ViewData[Constants.ViewBagNames.CurrentWorkName]
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">عنوان</label>
+        </div>
+        <div class="col-md-9">
+            <input id="txtTitle" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
 
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label class="control-label">قیمت</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="txtPrice" asp-for="Price" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label class="control-label">توضیحات</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="txtDesc" asp-for="Desc" class="form-control" />
-                        <span asp-validation-for="Desc" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-3">
-                        <label class="control-label">کسب و کار</label>
-                    </div>
-                    <div class="col-md-9">
-
-                        <select id="drpServingWorks" asp-for="WorkId"
-                                class="form-control"
-                                asp-items="(SelectList)@ViewData["Works"]">
-                        </select>
-
-                    </div>
-                </div>
-
-
-
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label class="control-label">رهگیری موجودی</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="cbHasInventoryTracking" type="checkbox" asp-for="HasInventoryTracking" />
-
-                    </div>
-                </div>
-
-
-
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <label class="control-label">فعال</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="cbIsActive" type="checkbox" asp-for="IsActive" />
-
-                    </div>
-                </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">قیمت</label>
+        </div>
+        <div class="col-md-9">
+            <input id="txtPrice" asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">توضیحات</label>
+        </div>
+        <div class="col-md-9">
+            <input id="txtDesc" asp-for="Desc" class="form-control" />
+            <span asp-validation-for="Desc" class="text-danger"></span>
+        </div>
+    </div>
 
 
 
 
-     
 
-                <div class="form-group row" style="text-align:center">
-                    <div class="col-md-6">
-                        <a id="btnEditServing" onclick="EditServing()" class="btn btn-success">ثبت</a>
-                    </div>
-                    <div class="col-md-6">
-                        <a class="btn btn-default" onclick="ToList()">بازگشت</a>
-                    </div>
-                </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">رهگیری موجودی</label>
+        </div>
+        <div class="col-md-9">
+                
 
-            
+                <input id="cbHasInventoryTracking" type="checkbox" asp-for="HasInventoryTracking">
+         
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label class="control-label">قابلیت عرضه و فروش</label>
+        </div>
+        <div class="col-md-9">
+            <input id="cbIsActive" type="checkbox" asp-for="IsActive" />
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="form-group row" style="text-align:center">
+        <div class="col-md-6">
+            <a id="btnEditServing" onclick="EditServing()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ثبت</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+        </div>
+    </div>
+
+
 
 
 
@@ -117,7 +114,7 @@
                 Desc: $("#txtDesc").val() ,
                 IsActive: $("#cbIsActive").is(":checked"),
                 HasInventoryTracking: $("#cbHasInventoryTracking").is(":checked"),
-                WorkId: $("#drpServingWorks").val()
+                WorkId: $("#txtWorkId").val()
             }
 
             $.ajax({

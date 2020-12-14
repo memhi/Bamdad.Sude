@@ -118,6 +118,7 @@ namespace Sude.Mvc.UI.ApiManagement
         }
         public class InventoryType
         {
+            public static readonly string SearchInventoryTypes = ServerAddress + "/api/InventoryType/SearchInventoryTypes/";
             public static readonly string GetInventoryTypes = ServerAddress + "/api/InventoryType/GetInventoryTypes/";
             public static readonly string GetInventoryTypeById = ServerAddress + "/api/InventoryType/GetInventoryTypeById/";
             public static readonly string EditInventoryType = ServerAddress + "/api/InventoryType/EditInventoryType/";

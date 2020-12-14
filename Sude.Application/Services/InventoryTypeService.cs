@@ -14,10 +14,24 @@ namespace Sude.Application.Services
     {
         private IInventoryTypeRepository _InventoryTypeRepository;
 
+
         public InventoryTypeService(IInventoryTypeRepository inventoryTypeRepository)
         {
             this._InventoryTypeRepository = inventoryTypeRepository;
         }
+
+       public async Task<ResultSet< IEnumerable<InventoryTypeInfo>>> SearchInventoryTypesByTitleAsync(string title)
+        {
+
+            return new ResultSet<IEnumerable<InventoryTypeInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _InventoryTypeRepository.SearchInventoryTypesByTitleAsync(title)
+            };
+        }
+
+
         public ResultSet<IEnumerable<InventoryTypeInfo>> GetInventoryTypes()
         {
             return new ResultSet<IEnumerable<InventoryTypeInfo>>()

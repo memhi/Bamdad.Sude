@@ -48,7 +48,7 @@
                                                     </select>
 
                                                     <div class="input-group-btn">
-                                                        <a id="btnShowSaveNewOrderCustomerForm" onclick="btnShowSaveNewOrderCustomerForm()" class="btn btn-success">جدید</a>
+                                                        <a id="btnShowSaveNewOrderCustomerForm" onclick="btnShowSaveNewOrderCustomerForm()" class="btn btn-success"><span class="fa fa-plus margin-r-5"></span>جدید</a>
                                                     </div>
 
                                                 </div>
@@ -128,13 +128,13 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6">ثبت نهایی سفارش</a>
+                                                <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت نهایی سفارش</a>
 
                                             </div>
                                         </div>
                                         <div class="col-md-6">
 
-                                            <a class="btn btn-default" onclick="ToList()">بازگشت</a>
+                                            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
 
                                         </div>
 
@@ -186,7 +186,7 @@
 
 
         $("#odetails").load("OrderDetail/List");
-        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0");
+        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0&IsActive=1");
         $('#drpCustomers').select2();
 
     });
