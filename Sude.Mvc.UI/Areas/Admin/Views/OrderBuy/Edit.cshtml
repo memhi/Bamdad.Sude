@@ -16,7 +16,7 @@
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h2 class="box-title">تغییر اطلاعات سفارش خرید</h2>
+                <h2 class="box-title">تغییر اطلاعات سفارش خرید شماره @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -27,53 +27,43 @@
                                 <h3 class="box-title">اطلاعات سفارش</h3>
                             </div>
                             <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-3">
-                                                <label>شماره سفارش</label>
+                           
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group">
+                                                <div class="col-md-2">
+                                                    <label>تاریخ سفارش</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                    <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                    <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                                </div>
                                             </div>
-                                            <div class="col-md-9">
-                                                <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
-                                                <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                                            </div>
+
+
+
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="row">
 
-                                        <div class="form-group">
-                                            <div class="col-md-3">
-                                                <label>تاریخ سفارش</label>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-2">
+                                                    <label>توضیحات</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input id="txtDesc" asp-for="Description" class="form-control" />
+                                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                                </div>
                                             </div>
-                                            <div class="col-md-9">
-                                                <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
-                                                <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
-                                                <span asp-validation-for="OrderDate" class="text-danger"></span>
-                                            </div>
+
                                         </div>
-
-
-
                                     </div>
+
                                 </div>
-                                <div class="row">
-            
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="col-md-2">
-                                                <label>توضیحات</label>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <input id="txtDesc" asp-for="Description" class="form-control" />
-                                                <span asp-validation-for="Description" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                         <div id="divOrderDetails" class="box box-primary   bg-gray-light">
                             <div class="box-header with-border">

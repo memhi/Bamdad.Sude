@@ -59,12 +59,28 @@ namespace Sude.Application.Services
             };
         }
 
+        public async Task<ResultSet<BlogInfo>> GetBlogByUrlAsync(string UrlAddress)
+        {
+            BlogInfo Blog =await _BlogRepository.GetBlogByUrlAsync(UrlAddress);
+
+            if (Blog == null)
+                return new ResultSet<BlogInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Blog Not Found",
+                    Data = null
+                };
+
+            return new ResultSet<BlogInfo>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = Blog
+            };
+        }
+
         public ResultSet<BlogInfo> AddBlog(BlogInfo  Blog)
         {
-
-
-          
- 
             _BlogRepository.AddBlog(Blog);
             _BlogRepository.Save();
            

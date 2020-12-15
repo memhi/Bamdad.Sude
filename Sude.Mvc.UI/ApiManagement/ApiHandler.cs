@@ -81,6 +81,7 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public class News
         {
+            public static readonly string GetNewsByUrl = ServerAddress + "/api/News/GetNewsByUrl/";
             public static readonly string GetNews = ServerAddress + "/api/News/GetNews/";
             public static readonly string GetHomePageNews = ServerAddress + "/api/News/GetHomePageNews/";
             public static readonly string GetNewsById = ServerAddress + "/api/News/GetNewsById/";
@@ -90,6 +91,7 @@ namespace Sude.Mvc.UI.ApiManagement
         }
         public class Blog
         {
+            public static readonly string GetBlogByUrl = ServerAddress + "/api/Blog/GetBlogByUrl/";
             public static readonly string GetBlogs = ServerAddress + "/api/Blog/GetBlogs/";
             public static readonly string GetHomePageBlogs = ServerAddress + "/api/Blog/GetHomePageBlogs/";
             public static readonly string GetBlogById = ServerAddress + "/api/Blog/GetBlogById/";

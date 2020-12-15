@@ -10,8 +10,8 @@
             {
                 <div class="news-item">
                     <div class="news-head">
-                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.MetaTitle })">@item.Title</a>
-                        <span class="news-date">-@item.StartDate.ToString("D")</span>
+                        <a class="news-title" href="News/@item.UrlNews">@item.Title</a>
+                        <span class="news-date">-@item.StartDate.ToLocalizationDateTime("D")</span>
                     </div>
                     <div class="news-body">
                         @Html.Raw(item.ShortBody)

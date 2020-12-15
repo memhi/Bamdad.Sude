@@ -16,93 +16,87 @@
 <body>
 
     <div>
-        <h4></h4>
-        <hr />
+ 
         <dl class="dl-horizontal">
+           
             <dt>
-                @Html.DisplayNameFor(model => model.BlogId)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.BlogId)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Title)
+            عنوان
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Title)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.ShortBody)
+             متن کوتاه
             </dt>
             <dd>
                 @Html.Raw(Model.ShortBody)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.FullBody)
+              متن کامل مقاله
             </dt>
             <dd>
                 @Html.Raw(Model.FullBody)
         
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Description)
+توضیحات
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.IsActive)
+              فعال
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsActive)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.IsPublish)
+   منتشر شده
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsPublish)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.AllowComment)
+              مجوز ثبت نظرات
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.AllowComment)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.MetaTitle)
+             عنوان متا
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaTitle)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.MetaKeywords)
+         کلمات کلیدی
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaKeywords)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.MetaDescription)
+       توضیحات متا
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaDescription)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Tags)
+          برچسب ها
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Tags)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.StartDate)
+           تاریخ شروع
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.StartDate)
+          @Model.StartDate.ToLocalizationDateTime("g");
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.EndDate)
+            تاریخ پایان
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.EndDate)
+                @Model.EndDate.ToLocalizationDateTime("g");
             </dd>
         </dl>
     </div>

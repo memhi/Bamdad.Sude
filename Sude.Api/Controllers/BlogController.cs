@@ -73,11 +73,13 @@ namespace Sude.Api.Controllers
                     StartDate = b.StartDate,
                     Tags = b.Tags,
                     Title = b.Title,
-                    RegDate=b.RegDate
+                    RegDate=b.RegDate,
+                     UrlBlog=b.UrlAddress
 
 
 
                 });
+    
                 return Ok(new ResultSetDto<IEnumerable<BlogDetailDtoModel>>()
                 {
                     IsSucceed = true,
@@ -126,7 +128,8 @@ namespace Sude.Api.Controllers
                     StartDate = b.StartDate,
                     Tags = b.Tags,
                     Title = b.Title,
-                    RegDate = b.RegDate
+                    RegDate = b.RegDate,
+                    UrlBlog=b.UrlAddress
 
 
                 });
@@ -143,6 +146,61 @@ namespace Sude.Api.Controllers
                 {
                     IsSucceed = false,
                     Message = ex.Message + "&&&" + ex.StackTrace,
+                    Data = null
+                });
+            }
+        }
+
+        [HttpGet("{UrlAddress}")]
+        public async Task<ActionResult> GetBlogByUrlAsync(string UrlAddress)
+        {
+            try
+            {
+                ResultSet<BlogInfo> resultSet = await _BlogService.GetBlogByUrlAsync(UrlAddress);
+                if (resultSet == null || resultSet.Data == null)
+                    return NotFound(new ResultSetDto<BlogDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not Found",
+                        Data = null
+                    });
+
+                BlogDetailDtoModel Blog = new BlogDetailDtoModel()
+                {
+                    BlogId = resultSet.Data.Id.ToString(),
+                    AllowComment = resultSet.Data.AllowComment,
+                    Description = resultSet.Data.Description,
+                    EndDate = resultSet.Data.EndDate,
+                    FullBody = resultSet.Data.FullBody,
+                    IsActive = resultSet.Data.IsActive,
+                    IsPublish = resultSet.Data.IsPublish,
+                    MetaDescription = resultSet.Data.MetaDescription,
+                    MetaKeywords = resultSet.Data.MetaKeywords,
+                    MetaTitle = resultSet.Data.MetaTitle,
+                    ShortBody = resultSet.Data.ShortBody,
+                    StartDate = resultSet.Data.StartDate,
+                    Tags = resultSet.Data.Tags,
+                    Title = resultSet.Data.Title,
+                    RegDate = resultSet.Data.RegDate,
+                    UrlBlog = resultSet.Data.UrlAddress
+
+
+                };
+
+                ;
+                return Ok(new ResultSetDto<BlogDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = Blog
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<BlogDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
                     Data = null
                 });
             }
@@ -179,7 +237,8 @@ namespace Sude.Api.Controllers
                     StartDate = resultSet.Data.StartDate,
                     Tags = resultSet.Data.Tags,
                     Title = resultSet.Data.Title,
-                    RegDate = resultSet.Data.RegDate
+                    RegDate = resultSet.Data.RegDate,
+                     UrlBlog=resultSet.Data.UrlAddress
 
 
                 };
@@ -313,11 +372,13 @@ namespace Sude.Api.Controllers
                     MetaDescription = requestBlog.MetaDescription,
                     StartDate = requestBlog.StartDate,
                     Tags = requestBlog.Tags,
-                    RegDate = DateTime.Now
+                    RegDate = DateTime.Now,
+                    UrlAddress = Guid.NewGuid().ToString()
 
 
 
-                };
+            };
+           
 
                 var resultSave = await _BlogService.AddBlogAsync(Blog);
 

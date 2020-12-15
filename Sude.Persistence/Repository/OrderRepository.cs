@@ -30,8 +30,10 @@ namespace Sude.Persistence.Repository
 
 
         }
-        
-            public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
+
+       
+
+        public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
         {
 
             return await _orderRepository.GetAsync(o => o.WorkId == workId, o => o.OrderByDescending(or => or.RegDate), "Work,Customer") ;

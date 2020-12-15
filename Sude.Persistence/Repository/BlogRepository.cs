@@ -56,6 +56,10 @@ namespace Sude.Persistence.Repository
             return true;
         }
 
+        public async Task<BlogInfo> GetBlogByUrlAsync(string UrlAddress)
+        {
+            return await _BlogRepository.GetByIdAsync(b=>b.UrlAddress==UrlAddress);
+        }
         public async Task<BlogInfo> GetBlogByIdAsync(Guid BlogId)
         {
             return await _BlogRepository.GetByIdAsync(BlogId);

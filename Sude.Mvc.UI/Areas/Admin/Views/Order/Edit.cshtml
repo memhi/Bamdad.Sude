@@ -15,7 +15,7 @@
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h2 class="box-title">تغییر اطلاعات سفارش</h2>
+                <h2 class="box-title">تغییر اطلاعات سفارش شماره @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -26,16 +26,17 @@
                                 <h3 class="box-title">اطلاعات سفارش</h3>
                             </div>
                             <div class="box-body">
+                           
                                 <div class="row">
                                     <div class="col-md-6">
 
 
 
                                         <div class="form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label>خدمات گیرنده</label>
                                             </div>
-                                            <div class="input-group  col-md-9">
+                                            <div class="input-group  col-md-8">
 
                                                 <select id="drpCustomers" asp-for="CustomerId"
                                                         class="form-control"
@@ -55,10 +56,10 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label>تاریخ سفارش</label>
                                             </div>
-                                            <div class="col-md-9">
+                                            <div class="col-md-8">
                                                 <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
                                                 <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
                                                 <span asp-validation-for="OrderDate" class="text-danger"></span>
@@ -70,24 +71,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-3">
-                                                <label>شماره سفارش</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
-                                                <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label>توضیحات</label>
                                             </div>
-                                            <div class="col-md-9">
+                                            <div class="col-md-10">
                                                 <input id="txtDesc" asp-for="Description" class="form-control" />
                                                 <span asp-validation-for="Description" class="text-danger"></span>
                                             </div>

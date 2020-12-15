@@ -20,9 +20,9 @@
     @foreach (var item in Model)
     {
         sum += (item.Price * item.Count);
-        <tr id="tr_@item.OrderDetailId" class="row" onclick="SetValues('@item.OrderDetailId')">
+        <tr id="tr_@item.OrderDetailId" class="row" >
             <td class="col-md-1"><label></label>@(i++)</td>
-            <td class="col-md-4"><label> @item.ServingName</label></td>
+            <td class="col-md-4"><label  class="btn  btn-flat bg-olive-active col-md-8" onclick="SetValues('@item.ServingId', '@item.Price', '@item.Count');">  @item.ServingName</label></td>
             <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
             <td class="col-md-2"><label> @item.Count.ToString("0,0")</label></td>
             <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
@@ -57,22 +57,26 @@
         
             <script>
 
-                function SetValues(servingId) {
-
+                function SetValues(servingId,price,count) {
+                    
                     var i = 0;
                     $("#drpServing").find("option").each(function () {
-                   
-                        
-                        if (($(this).val().split("##")[0]) = servingId) {
 
-                            $("#drpServing").val($(this).val());
                         
+                        
+                        if (($(this).val().split("##")[0]) == servingId.toString()) {
+
                           
+                            $("#drpServing").val($(this).val()).change();
+                            $("#txtPrice").val(price.toString());
+                            $("#txtCount").val(count.toString());
+                            
+                      
                         }
                     });
 
                 
-                    alert(servingId);
+              
                 
                 }
                 function DeleteOrderDetail(detailid, serving) {

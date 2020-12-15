@@ -25,6 +25,7 @@ namespace Sude.Api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _OrderService;
+        private readonly IOrderNumberService _OrderNumberService;
         private readonly IOrderDetailService _OrderDetailService;
         private readonly ICustomerService _CustomerService;
 
@@ -34,11 +35,12 @@ namespace Sude.Api.Controllers
 
         public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
             ICustomerService customerService, IServingService servingService, IServingInventoryService servingInventoryService,
-        IServingInventoryTrackingService servingInventoryTrackingService)
+        IServingInventoryTrackingService servingInventoryTrackingService, IOrderNumberService orderNumberService)
         {
 
             _OrderService = orderService;
             _OrderDetailService = orderdetailService;
+            _OrderNumberService = orderNumberService;
             _CustomerService = customerService;
             _ServingService = servingService;
             _ServingInventoryTrackingService = servingInventoryTrackingService;
@@ -556,11 +558,28 @@ namespace Sude.Api.Controllers
                     else
                         CID = null;
 
+                     ResultSet<OrderNumberInfo> ordernumberresult = _OrderNumberService.GenerateOrderNumberByWorkId(Guid.Parse(orderdto.WorkId),orderdto.IsBuy);
+
+                    if (!ordernumberresult.IsSucceed || ordernumberresult.Data == null)
+                    {
+                        return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = ordernumberresult.Message,
+                            Data = null
+                        });
+
+                    }
+
+                    string ordenumber = (orderdto.IsBuy? "B-":"S-")+ordernumberresult.Data.LastNumber.ToString();
+
+
+                   
                    OrderInfo order = new OrderInfo()
                     {
                         CustomerId = CID,
                         Description = orderdto.Description,
-                        Number = orderdto.OrderNumber,
+                        Number = ordenumber,
                         OrderDate = orderdto.OrderDate,
                         WorkId = Guid.Parse(orderdto.WorkId),
                         Status = true,
@@ -699,8 +718,7 @@ namespace Sude.Api.Controllers
 
                 OrderInfo orderInfo = resultOrder.Data;
                 orderInfo.CustomerId = (orderDTO.CustomerId==null ? null : Guid.Parse(orderDTO.CustomerId));
-                orderInfo.Description = orderDTO.Description;
-                orderInfo.Number = orderDTO.OrderNumber;
+                orderInfo.Description = orderDTO.Description;             
                 orderInfo.OrderDate = orderDTO.OrderDate;
                 orderInfo.IsBuy = orderDTO.IsBuy;
                 //  double sumpriceoriginal = resultOrder.Data.SumPrice;

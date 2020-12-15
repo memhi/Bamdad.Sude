@@ -29,19 +29,8 @@
                                     <h3 class="box-title">اطلاعات خرید</h3>
                                 </div>
                                 <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <div class="col-md-3">
-                                                    <label>شماره </label>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
-                                                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                    <div class="row">                               
+                                        <div class="col-md-12">
 
                                             <div class="form-group">
                                                 <div class="col-md-3">
@@ -173,7 +162,7 @@
         if (!isValid)
             return;
         var order = {
-            OrderNumber: $("#txtOrderNumber").val(),
+            OrderNumber:'',
             OrderDate: $("#OrderDateVal").val(),
             Description: $("#txtDesc").val()
          

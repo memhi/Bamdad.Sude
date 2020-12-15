@@ -75,7 +75,8 @@ namespace Sude.Api.Controllers
                     StartDate = b.StartDate,
                     Tags = b.Tags,
                     Title = b.Title,
-                    RegDate=b.RegDate
+                    RegDate=b.RegDate,
+             UrlNews =b.UrlAddress
 
 
                 });
@@ -130,7 +131,8 @@ namespace Sude.Api.Controllers
                     StartDate = b.StartDate,
                     Tags = b.Tags,
                     Title = b.Title,
-                    RegDate = b.RegDate
+                    RegDate = b.RegDate,
+                    UrlNews = b.UrlAddress
 
 
                 });
@@ -184,7 +186,8 @@ namespace Sude.Api.Controllers
                     StartDate = resultSet.Data.StartDate,
                     Tags = resultSet.Data.Tags,
                     Title = resultSet.Data.Title,
-                    RegDate = resultSet.Data.RegDate
+                    RegDate = resultSet.Data.RegDate,
+                    UrlNews = resultSet.Data.UrlAddress
 
 
                 };
@@ -203,6 +206,61 @@ namespace Sude.Api.Controllers
                 {
                     IsSucceed = false,
                     Message = ex.Message  ,
+                    Data = null
+                });
+            }
+        }
+
+        [HttpGet("{UrlAddress}")]
+        public async Task<ActionResult> GetNewsByUrlAsync(string UrlAddress)
+        {
+            try
+            {
+                ResultSet<NewsInfo> resultSet = await _NewsService.GetNewsByUrlAsync(UrlAddress);
+                if (resultSet == null || resultSet.Data == null)
+                    return NotFound(new ResultSetDto<NewsDetailDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not Found",
+                        Data = null
+                    });
+
+                NewsDetailDtoModel News = new NewsDetailDtoModel()
+                {
+                    NewsId = resultSet.Data.Id.ToString(),
+                    AllowComment = resultSet.Data.AllowComment,
+                    Description = resultSet.Data.Description,
+                    EndDate = resultSet.Data.EndDate,
+                    FullBody = resultSet.Data.FullBody,
+                    IsActive = resultSet.Data.IsActive,
+                    IsPublish = resultSet.Data.IsPublish,
+                    MetaDescription = resultSet.Data.MetaDescription,
+                    MetaKeywords = resultSet.Data.MetaKeywords,
+                    MetaTitle = resultSet.Data.MetaTitle,
+                    ShortBody = resultSet.Data.ShortBody,
+                    StartDate = resultSet.Data.StartDate,
+                    Tags = resultSet.Data.Tags,
+                    Title = resultSet.Data.Title,
+                    RegDate = resultSet.Data.RegDate,
+                     UrlNews=resultSet.Data.UrlAddress
+                  
+
+                };
+
+                ;
+                return Ok(new ResultSetDto<NewsDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = News
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<NewsDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
                     Data = null
                 });
             }
@@ -318,11 +376,13 @@ namespace Sude.Api.Controllers
                     MetaDescription = requestNews.MetaDescription,
                     StartDate = requestNews.StartDate,
                     Tags = requestNews.Tags,
-                    RegDate = DateTime.Now
+                    RegDate = DateTime.Now,
+                    UrlAddress = Guid.NewGuid().ToString()
 
 
 
-                };
+            };
+                News.UrlAddress = News.Id.ToString();
 
                 var resultSave = await _NewsService.AddNewsAsync(News);
 

@@ -20,7 +20,7 @@ namespace Sude.Dto.DtoModels.Content
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
         public string Tags { get; set; }
-
+        public string UrlNews { get; set; }
         public DateTime RegDate { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

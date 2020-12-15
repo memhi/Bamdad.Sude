@@ -20,6 +20,7 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> EditNewsAsync(NewsInfo News);
         Task<ResultSet> DeleteNewsAsync(Guid NewsId);
         Task<ResultSet<NewsInfo>> GetNewsByIdAsync(Guid NewsId);
+        Task<ResultSet<NewsInfo>> GetNewsByUrlAsync(string UrlAddress);
         ResultSet<IEnumerable<NewsInfo>> GetHomePageNews();
     }
 }

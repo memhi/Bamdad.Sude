@@ -23,6 +23,15 @@ namespace Sude.Mvc.UI
             public const string CurrentWorkName = "CurrentWorkName";
             public const string CurrentWorkId = "CurrentWorkId";
 
+            public const string WorkCount = "WorkCount";
+            public const string ServingCount = "ServingCount";
+            public const string OrderCount = "OrderCount";
+            public const string OrderBuyCount = "OrderBuyCount";
+
+            public const string SumOrderPrice = "SumOrderPrice";
+            public const string SumOrderBuyPrice = "SumOrderBuyPrice";
+
+
         }
 
         public static class Messages

@@ -18,6 +18,7 @@ namespace Sude.Domain.Interfaces
         bool DeleteBlog(Guid BlogId);
 
         Task<BlogInfo> GetBlogByIdAsync(Guid BlogId);
+        Task<BlogInfo> GetBlogByUrlAsync(string UrlAddress);
         BlogInfo GetBlogById(Guid BlogId);
        
 

@@ -21,5 +21,6 @@ namespace Sude.Application.Interfaces
         ResultSet<IEnumerable<BlogInfo>> GetHomePageBlogs();
         Task<ResultSet> DeleteBlogAsync(Guid BlogId);
         Task<ResultSet<BlogInfo>> GetBlogByIdAsync(Guid BlogId);
+        Task<ResultSet<BlogInfo>> GetBlogByUrlAsync(string UrlAddress);
     }
 }

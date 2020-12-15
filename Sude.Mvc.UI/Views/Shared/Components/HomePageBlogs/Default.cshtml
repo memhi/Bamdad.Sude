@@ -25,10 +25,10 @@
                         <a href="#">
 
                             <div class="date">
-                                <span>@item.StartDate.ToString("D")</span>
+                                <span>@item.StartDate.ToLocalizationDateTime("D")</span>
                             </div>
                         </a>
-                        <h3 class="mb-0"><a href="#">@item.Title</a></h3>
+                        <h3 class="mb-0"><a href="Blog/@item.UrlBlog">@item.Title</a></h3>
                     </div>
                     <div class="feature-1-content">
                         @Html.Raw(item.ShortBody)

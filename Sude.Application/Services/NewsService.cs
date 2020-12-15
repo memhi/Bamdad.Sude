@@ -174,6 +174,25 @@ namespace Sude.Application.Services
             return new ResultSet() { IsSucceed = true, Message = string.Empty };
         }
 
+        public async Task<ResultSet<NewsInfo>> GetNewsByUrlAsync(string UrlAddress)
+        {
+            NewsInfo News = await _NewsRepository.GetNewsByUrlAsync(UrlAddress);
+
+            if (News == null)
+                return new ResultSet<NewsInfo>()
+                {
+                    IsSucceed = false,
+                    Message = "Blog Not Found",
+                    Data = null
+                };
+
+            return new ResultSet<NewsInfo>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = News
+            };
+        }
         public async Task<ResultSet<NewsInfo>> GetNewsByIdAsync(Guid NewsId)
         {
             NewsInfo News = await _NewsRepository.GetNewsByIdAsync(NewsId);

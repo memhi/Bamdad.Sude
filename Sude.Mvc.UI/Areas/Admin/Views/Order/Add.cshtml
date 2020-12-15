@@ -73,24 +73,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <div class="col-md-3">
-                                                    <label>شماره سفارش</label>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <input id="txtOrderNumber" asp-for="OrderNumber" class="form-control" />
-                                                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                      
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label>توضیحات</label>
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-10">
                                                     <input id="txtDesc" asp-for="Description" class="form-control" />
                                                     <span asp-validation-for="Description" class="text-danger"></span>
                                                 </div>
@@ -198,7 +188,7 @@
         if (!isValid)
             return;
         var order = {
-            OrderNumber: $("#txtOrderNumber").val(),
+            OrderNumber: '',
             OrderDate: $("#OrderDateVal").val(),
             Description: $("#txtDesc").val(),
             CustomerId: $("#drpCustomers").val(),

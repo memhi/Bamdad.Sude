@@ -18,6 +18,7 @@ namespace Sude.Domain.Interfaces
         bool DeleteNews(Guid NewsId);
 
         Task<NewsInfo> GetNewsByIdAsync(Guid NewsId);
+        Task<NewsInfo> GetNewsByUrlAsync(string UrlAddress);
         NewsInfo GetNewsById(Guid NewsId);
        
 

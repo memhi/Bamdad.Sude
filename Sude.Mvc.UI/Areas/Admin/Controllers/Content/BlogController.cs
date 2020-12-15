@@ -146,6 +146,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             return View(viewName: "Detail", model: BlogDetail);
         }
 
+   
+
 
         public async Task<ActionResult> Delete(string id)
         {

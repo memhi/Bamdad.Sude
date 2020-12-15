@@ -1,105 +1,91 @@
 ﻿
-@model  Sude.Dto.DtoModels.Content.NewsDetailDtoModel
+@model  Sude.Dto.DtoModels.Content.BlogDetailDtoModel
 
-  @{
-                                        Layout=null;
-                                        }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>جزئیات  خبر</title>
-</head>
-<body>
+  
 
     <div>
-
+ 
         <dl class="dl-horizontal">
-
+           
             <dt>
-                عنوان
+            عنوان
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Title)
             </dd>
             <dt>
-                متن کوتاه
+             متن کوتاه
             </dt>
             <dd>
                 @Html.Raw(Model.ShortBody)
             </dd>
             <dt>
-                متن کامل مقاله
+              متن کامل مقاله
             </dt>
             <dd>
                 @Html.Raw(Model.FullBody)
-
+        
             </dd>
             <dt>
-                توضیحات
+توضیحات
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt>
-                فعال
+              فعال
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsActive)
             </dd>
             <dt>
-                منتشر شده
+   منتشر شده
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsPublish)
             </dd>
             <dt>
-                مجوز ثبت نظرات
+              مجوز ثبت نظرات
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.AllowComment)
             </dd>
             <dt>
-                عنوان متا
+             عنوان متا
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaTitle)
             </dd>
             <dt>
-                کلمات کلیدی
+         کلمات کلیدی
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaKeywords)
             </dd>
             <dt>
-                توضیحات متا
+       توضیحات متا
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaDescription)
             </dd>
             <dt>
-                برچسب ها
+          برچسب ها
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Tags)
             </dd>
             <dt>
-                تاریخ شروع
+           تاریخ شروع
             </dt>
             <dd>
-                @Model.StartDate.ToLocalizationDateTime("g");
+          @Model.StartDate.ToLocalizationDateTime("g")
             </dd>
             <dt>
-                تاریخ پایان
+            تاریخ پایان
             </dt>
             <dd>
-                @Model.EndDate.ToLocalizationDateTime("g");
+                @Model.EndDate.ToLocalizationDateTime("g")
             </dd>
         </dl>
     </div>
-<div>
-</div>
-</body>
-</html>
+ 

@@ -83,43 +83,14 @@
             </div>
             <div class="box-body">
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-olive">
                         <div class="inner">
-                            <h3>@ViewData["WorkCount"]</h3>
-                            <p>کسب و کار</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-gears"></i>
-                        </div>
-                        <a class="small-box-footer" href="Work">
-                            اطلاعات بیشتر
-                            <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-yellow">
-                        <div class="inner">
-                            <h3>@ViewData["ServingCount"]</h3>
-                            <p>خدمات و منابع</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-bars"></i>
-                        </div>
-                        <a class="small-box-footer" href="Serving">
-                            اطلاعات بیشتر
-                            <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-blue">
-                        <div class="inner">
-                            <h3>@ViewData["OrderCount"]</h3>
-                            <p>سفارشات</p>
+                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderCount]).ToString("0,0"))</h3>
+                            <p>سفارشات فروش</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-shopping-cart"></i>
+
                         </div>
                         <a class="small-box-footer" href="Order">
                             اطلاعات بیشتر
@@ -128,20 +99,62 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box  bg-green">
+                    <div class="small-box bg-green-gradient">
                         <div class="inner">
-                            <h3>50021000</h3>
-                            <p>درآمد ماه گذشته</p>
+                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderPrice]).ToString("0,0"))</h3>
+                            <p>مبلغ سفارشات فروش</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-money"></i>
                         </div>
-                        <a class="small-box-footer" href="">
+                        <a class="small-box-footer" href="Order">
                             اطلاعات بیشتر
                             <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
                 </div>
+
+
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-blue">
+                        <div class="inner">
+                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderBuyCount]).ToString("0,0"))</h3>
+
+                            <p>سفارشات خرید</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fa fa-shopping-cart"></i>
+
+                        </div>
+                        <a class="small-box-footer" href="Order">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-light-blue-gradient">
+                        <div class="inner">
+                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderBuyPrice]).ToString("0,0"))</h3>
+
+                            <p>مبلغ سفارشات خرید</p>
+
+                        </div>
+
+                        <div class="icon">
+                            <i class="fa fa-money"></i>
+
+                        </div>
+                        <a class="small-box-footer" href="Order">
+                            اطلاعات بیشتر
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
 
 
             </div>

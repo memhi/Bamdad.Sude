@@ -30,10 +30,12 @@ namespace Sude.Mvc.UI.Admin.Controllers
 
 
 
-            ViewData["WorkCount"] = (worklist != null  && worklist.Data!=null ? worklist.Data.Count().ToString() : "0");
-            ViewData["ServingCount"] = (servinglist!= null && servinglist.Data != null ? servinglist.Data.Count().ToString() :"0");
-            ViewData["OrderCount"] = (orderlist != null && orderlist.Data != null ? orderlist.Data.Count().ToString() : "0");
-            
+            ViewData[Constants.ViewBagNames.WorkCount] = (worklist != null  && worklist.Data!=null ? worklist.Data.Count().ToString() : "0");
+            ViewData[Constants.ViewBagNames.ServingCount] = (servinglist!= null && servinglist.Data != null ? servinglist.Data.Count().ToString() :"0");
+            ViewData[Constants.ViewBagNames.OrderCount] = (orderlist != null && orderlist.Data != null ? orderlist.Data.Where(o=>o.IsBuy==false).ToList().Count().ToString() : "0");
+            ViewData[Constants.ViewBagNames.OrderBuyCount] = (orderlist != null && orderlist.Data != null ? orderlist.Data.Where(o => o.IsBuy == true).ToList().Count().ToString() :"0");
+            ViewData[Constants.ViewBagNames.SumOrderPrice] = (orderlist != null && orderlist.Data != null ? orderlist.Data.Where(o => o.IsBuy == false).ToList().Sum(op=>op.SumPrice).ToString() : "0");
+            ViewData[Constants.ViewBagNames.SumOrderBuyPrice] = (orderlist != null && orderlist.Data != null ? orderlist.Data.Where(o => o.IsBuy == true).ToList().Sum(op => op.SumPrice).ToString() : "0");
 
 
             return View();

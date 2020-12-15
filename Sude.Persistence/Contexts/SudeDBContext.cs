@@ -27,7 +27,8 @@ namespace Sude.Persistence.Contexts
         public DbSet<WorkInfo> Works { get; set; }
         public DbSet<ServingInfo> Servings { get; set; }
         public DbSet<OrderInfo> Orders { get; set; }
-        public DbSet<OrderDetailInfo>  OrderDetails { get; set; }        
+        public DbSet<OrderDetailInfo>  OrderDetails { get; set; }
+        public DbSet<OrderNumberInfo>  OrderNumbers { get; set; }
         public DbSet<UserInfo> Users { get; set; }
         public DbSet<RoleInfo> Roles { get; set; }
       

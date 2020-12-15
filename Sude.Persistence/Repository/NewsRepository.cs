@@ -55,7 +55,10 @@ namespace Sude.Persistence.Repository
             }
             return true;
         }
-
+        public async Task<NewsInfo> GetNewsByUrlAsync(string UrlAddress)
+        {
+            return await _NewsRepository.GetByIdAsync(n => n.UrlAddress == UrlAddress);
+        }
         public async Task<NewsInfo> GetNewsByIdAsync(Guid NewsId)
         {
             return await _NewsRepository.GetByIdAsync(NewsId);
