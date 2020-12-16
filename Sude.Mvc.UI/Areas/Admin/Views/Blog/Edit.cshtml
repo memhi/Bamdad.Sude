@@ -247,7 +247,7 @@
         }).done(function (result) {
             if (result.isSucceed) {
                 Command: toastr["success"]("اطلاعات مقاله اصلاح شد");
-                $("#myModal").modal("hide");
+          
                 $("#blogView").load("Blog/List");
 
             }
@@ -258,7 +258,7 @@
     }
 
     function ToList() {
-        $("#myModal").modal("hide");
+        $("#blogView").load("Blog/List");
     }
 
 

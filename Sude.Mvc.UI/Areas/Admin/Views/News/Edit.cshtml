@@ -246,7 +246,7 @@
         }).done(function (result) {
             if (result.isSucceed) {
                 Command: toastr["success"]("خبر اصلاح شد")
-                $("#myModal").modal("hide");
+        
                 $("#newsView").load("News/List");
 
             }
@@ -257,7 +257,7 @@
     }
 
     function ToList() {
-        $("#myModal").modal("hide");
+        $("#newsView").load("News/List");
     }
 
 

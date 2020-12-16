@@ -1,50 +1,59 @@
 ﻿@model IEnumerable<Sude.Dto.DtoModels.Content.BlogDetailDtoModel>
-@if (Model!=null && Model.Count() > 0)
+@if (Model != null && Model.Count() > 0)
 {
 
- 
-    <div class="title">
-        <strong>مقالات</strong>
-    </div>
+<div dir="rtl" class="col-md-12">
+    <div class="col-md-12 text-center">
+        <div class="text-center col-md-12">
+            <h3>مقالات</h3>
+        </div>
 
 
-     
 
 
-    <div class="row">
-
-       
-
-        @foreach (Sude.Dto.DtoModels.Content.BlogDetailDtoModel item in Model)
-        {
+        <div class="row">
 
 
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-1">
-                    <div>
-                        <a href="#">
 
-                            <div class="date">
-                                <span>@item.StartDate.ToLocalizationDateTime("D")</span>
+            @foreach (Sude.Dto.DtoModels.Content.BlogDetailDtoModel item in Model)
+            {
+
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-1 text-center">
+                        <div>
+
+                            <h5 class="mb-0 bg-gray"><a href="Blog/@item.UrlBlog">@item.Title</a></h5>
+                            <div>
+                                <span class="text-sm">@item.StartDate.ToLocalizationDateTime("D")</span>
                             </div>
-                        </a>
-                        <h3 class="mb-0"><a href="Blog/@item.UrlBlog">@item.Title</a></h3>
+
+
+                        </div>
+                        <div class="feature-1-content col-md-12">
+                            <div class="col-md-12 text-center">  @Html.Raw(item.ShortBody)</div>
+                            <div class="date">    <a class="btn btn-outline-primary" href="Blog/@item.UrlBlog">ادامه مقاله</a></div>
+                          
+                        </div>
+ 
+
                     </div>
-                    <div class="feature-1-content">
-                        @Html.Raw(item.ShortBody)
-                    </div>
+
+
+
+
                 </div>
 
 
 
-                }
-            </div>
+            }
 
-
-
-        }
-        <div class="view-all">
-            <a href="@Url.RouteUrl("BlogsArchive")">آرشیو مقالات</a>
+        </div>
+        <div class="col-12 text-center">
+          
+                <h4>  <a href="Blog">آرشیو مقالات</a></h4>
+           
         </div>
     </div>
-        }
+</div>
+}

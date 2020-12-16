@@ -1,91 +1,86 @@
-﻿
-@model  Sude.Dto.DtoModels.Content.BlogDetailDtoModel
+﻿@model List<Sude.Dto.DtoModels.Content.BlogDetailDtoModel>
 
-  
 
-    <div>
- 
-        <dl class="dl-horizontal">
-           
-            <dt>
-            عنوان
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-            <dt>
-             متن کوتاه
-            </dt>
-            <dd>
-                @Html.Raw(Model.ShortBody)
-            </dd>
-            <dt>
-              متن کامل مقاله
-            </dt>
-            <dd>
-                @Html.Raw(Model.FullBody)
-        
-            </dd>
-            <dt>
-توضیحات
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt>
-              فعال
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.IsActive)
-            </dd>
-            <dt>
-   منتشر شده
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.IsPublish)
-            </dd>
-            <dt>
-              مجوز ثبت نظرات
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.AllowComment)
-            </dd>
-            <dt>
-             عنوان متا
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MetaTitle)
-            </dd>
-            <dt>
-         کلمات کلیدی
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MetaKeywords)
-            </dd>
-            <dt>
-       توضیحات متا
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MetaDescription)
-            </dd>
-            <dt>
-          برچسب ها
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Tags)
-            </dd>
-            <dt>
-           تاریخ شروع
-            </dt>
-            <dd>
-          @Model.StartDate.ToLocalizationDateTime("g")
-            </dd>
-            <dt>
-            تاریخ پایان
-            </dt>
-            <dd>
-                @Model.EndDate.ToLocalizationDateTime("g")
-            </dd>
-        </dl>
-    </div>
- 
+@{
+   
+        ViewBag.SitePageTitle="مقالات";
+   if (Model != null && Model.Count() == 1)
+        ViewBag.SitePageTitle = @Model.First().Title;
+}
+
+<div style="padding-top:100px">
+    @{
+        if (Model != null && Model.Count() == 1)
+        {
+
+            <div dir="rtl" class="text-right">
+                <section class="content margin" style="direction:rtl">
+                    <div class="box box-default">
+                        <div class="box-header with-border  bg-gray-light">
+                            <h3 class="box-title">@Model.First().Title</h3>
+                            <label class="box-tools"> @Model.First().RegDate.ToLocalizationDateTime("D") </label>
+                        </div>
+                        <div class="box-body">
+                            <div class="row col-md-12">
+                                @Html.Raw(Model.First().FullBody)
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        }
+        else if (Model != null && Model.Count() > 1)
+        {
+
+            <div dir="rtl" class="text-right">
+                <section class="content margin" style="direction:rtl">
+                    <div class="box box-default">
+                        <div class="box-header with-border  bg-gray-light text-center">
+                            <h3 class="box-title">مقالات</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                @foreach (Sude.Dto.DtoModels.Content.BlogDetailDtoModel item in Model)
+                                {
+
+
+
+
+                                    <div class="box box-default col-md-4">
+                                        <div class="box-header with-border  bg-gray-light">
+                                            <h3 class="box-title"><a href="Blog/@item.UrlBlog"> @item.Title</a></h3>
+                                            <label class="box-tools"> @item.RegDate.ToLocalizationDateTime("D") </label>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row col-md-12">
+                                                @Html.Raw(item.ShortBody)
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+
+
+
+
+
+
+        }
+
+
+    }
+</div>
+

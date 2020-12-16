@@ -101,7 +101,7 @@ namespace Sude.Mvc.UI
 
                 endpoints.MapControllerRoute(
                    name: "blog",
-                   pattern: "Blog/{UrlAddress}",
+                   pattern: "Blog/{UrlAddress?}",
                     defaults: new { controller = "Blog", action = "DetailByUrl", });
                 endpoints.MapControllerRoute(name: "areaRoute",
                pattern: "{area}/{controller=Home}/{action=Index}/{id?}");

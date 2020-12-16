@@ -1,126 +1,126 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Order
 @model IEnumerable<OrderDetailDetailDtoModel>
+
+
+
+
+@if (Model != null)
+{
+    int i = 1;
+    double sum = 0;
+
+
+
+
+    <table class="table table-hover tablemobile  table-bordered  border   border-dark">
+
+        @if (Model != null)
+        {
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sum += (item.Price * item.Count);
+                    <tr id="tr_@item.OrderDetailId" class="row">
+                        <td lable="" style="--bgcolor: silver;"><label>@(i++)</label></td>
+                        <td lable="عنوان" style="--minwidth:40%"><label class="btn  btn-flat bg-olive-active col-md-8" onclick="SetValues('@item.ServingId', '@item.Price', '@item.Count');">  @item.ServingName</label></td>
+                        <td lable="مبلغ" style="--minwidth:40%"><label> @item.Price.ToString("0,0")</label></td>
+                        <td lable="تعداد" style="--minwidth:40%"><label> @item.Count.ToString("0,0")</label></td>
+                        <td lable="مجموع" style="--minwidth:40%"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
+                        <td>
+
+                            <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف از سفارش</lable></a>
+
+                        </td>
+                    </tr>
+                }
+
+                
+            </tbody>
+        }
+    </table>
+   
+    <div class="box-header text-center">
+        <div class="box-title col-md-6">
+ 
+            مجموع مبلغ
+        </div>
+        <div class="box-title col-md-6">
+            <label>@sum.ToString("0,0")</label>
+        </div>
+        
+    </div>
  
 
-
-  
-            @if (Model != null)
-            {
-                int i = 1;
-                double sum = 0;
+        }
 
 
+        <script>
 
-          
-<table class="table table-hover">
+            function SetValues(servingId, price, count) {
 
-    @if(Model!=null)
-
-    @foreach (var item in Model)
-    {
-        sum += (item.Price * item.Count);
-        <tr id="tr_@item.OrderDetailId" class="row" >
-            <td class="col-md-1"><label></label>@(i++)</td>
-            <td class="col-md-4"><label  class="btn  btn-flat bg-olive-active col-md-8" onclick="SetValues('@item.ServingId', '@item.Price', '@item.Count');">  @item.ServingName</label></td>
-            <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
-            <td class="col-md-2"><label> @item.Count.ToString("0,0")</label></td>
-            <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
-            <td class="col-md-1">
-
-                <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></a>
-
-            </td>
-        </tr>
-    }
-
-    <tr class="row">
-        <td class="col-md-1"></td>
-        <td class="col-md-4"><label>مجموع</label></td>
-        <td class="col-md-2"></td>
-        <td class="col-md-2"></td>
-        <td class="col-md-2">
-            <label>
-                @sum.ToString("0,0")
-            </label>
+                var i = 0;
+                $("#drpServing").find("option").each(function () {
 
 
 
-        </td>
-        <td class="col-md-1"></td>
-    </tr>
+                    if (($(this).val().split("##")[0]) == servingId.toString()) {
 
-</table>
-            
+
+                        $("#drpServing").val($(this).val()).change();
+                        $("#txtPrice").val(price.toString());
+                        $("#txtCount").val(count.toString());
+
+
                     }
+                });
 
-        
-            <script>
 
-                function SetValues(servingId,price,count) {
-                    
-                    var i = 0;
-                    $("#drpServing").find("option").each(function () {
 
-                        
-                        
-                        if (($(this).val().split("##")[0]) == servingId.toString()) {
 
-                          
-                            $("#drpServing").val($(this).val()).change();
-                            $("#txtPrice").val(price.toString());
-                            $("#txtCount").val(count.toString());
-                            
-                      
-                        }
-                    });
+            }
+            function DeleteOrderDetail(detailid, serving) {
 
-                
-              
-                
-                }
-                function DeleteOrderDetail(detailid, serving) {
+                swal.fire({
+                    title: 'حذف اقلام',
+                    text: 'کاربر گرامی از حذف اقلام مطمئن هستید؟',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7cacbe',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'بله ، اقلام حذف شود',
+                    cancelButtonText: 'خیر'
+                }).then((result) => {
+                    if (result.value) {
 
-                    swal.fire({
-                        title: 'حذف اقلام',
-                        text: 'کاربر گرامی از حذف اقلام مطمئن هستید؟',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#7cacbe',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'بله ، اقلام حذف شود',
-                        cancelButtonText: 'خیر'
-                    }).then((result) => {
-                        if (result.value) {
+                        $.ajax({
+                            url: "OrderDetail/Delete",
+                            type: "Post",
+                            data: { id: detailid, servingId: serving },
+                            success: function (result) {
+                                if (result.isSucceed == true) {
 
-                            $.ajax({
-                                url: "OrderDetail/Delete",
-                                type: "Post",
-                                data: { id: detailid, servingId: serving },
-                                success: function (result) {
-                                    if (result.isSucceed == true) {                                    
+                                    Command: toastr["success"]("اقلام سفارش حذف شد");
+                                    $("#tr_" + detailid).addClass("danger");
+                                    $("#tr_" + detailid).hide('slow');
 
-                                        Command: toastr["success"]("اقلام سفارش حذف شد");
-                                        $("#tr_" + detailid).addClass("danger");
-                                        $("#tr_" + detailid).hide('slow');
-
-                                        $("#odetails").load("OrderDetail/List");
-                                    }
-                                    else {
-
-                                        Command: toastr["warning"](result.message, "هشدار");
-                                    }
-                                },
-                                error: function (request, status, error) {
-                                    alert(request.responseText);
+                                    $("#odetails").load("OrderDetail/List");
                                 }
+                                else {
 
-                            });
+                                    Command: toastr["warning"](result.message, "هشدار");
+                                }
+                            },
+                            error: function (request, status, error) {
+                                alert(request.responseText);
+                            }
 
-                        }
-                    })
-                }
+                        });
+
+                    }
+                })
+            }
 
 
 
-            </script>
+        </script>

@@ -14,15 +14,15 @@
 
     <section class="content">
         <div class="box box-info">
-            <div class="box-header with-border">
+            <div class="box-header with-border text-center ">
                 <h2 class="box-title">تغییر اطلاعات سفارش شماره @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">
 
-                        <div class="box box-primary   bg-gray-light">
-                            <div class="box-header with-border">
+                        <div class="box box-primary">
+                            <div class="box-header with-border text-center ">
                                 <h3 class="box-title">اطلاعات سفارش</h3>
                             </div>
                             <div class="box-body">
@@ -89,13 +89,13 @@
 
                             </div>
                         </div>
-                        <div id="divOrderDetails" class="box box-primary   bg-gray-light">
-                            <div class="box-header with-border">
+                        <div id="divOrderDetails" class="box box-primary">
+                            <div class="box-header with-border  text-center ">
                                 <h3 class="box-title">اطلاعات جزئیات سفارش</h3>
 
 
                             </div>
-                            <div class="box-body">
+                            <div class="box-body ">
                                 <div id="adddetail" class="row">
                                     @*@await Component.InvokeAsync("AddDetail");*@
 
@@ -107,8 +107,8 @@
 
                         </div>
 
-                        <div class="box box-primary   bg-gray-light">
-                            <div class="box-header with-border">
+                        <div class="box box-primary">
+                            <div class="box-header with-border  text-center">
                                 <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش</h3>
 
 
@@ -167,7 +167,7 @@
     $(document).ready(function () {
 
         $("#odetails").load("OrderDetail/List");
-        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0");
+        $("#adddetail").load("OrderDetail/Add?servingHasTracking=0&IsActive=1");
         $('#drpCustomers').select2();
 
     });

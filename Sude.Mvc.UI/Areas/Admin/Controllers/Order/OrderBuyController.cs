@@ -154,7 +154,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, result.Data.OrderDetails.AsEnumerable());
+            if (result.Data.OrderDetails != null)
+                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, result.Data.OrderDetails.AsEnumerable());
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);

@@ -26,10 +26,28 @@ namespace Sude.Mvc.UI.Controllers
 
         public async Task<ActionResult> DetailByUrl(string UrlAddress)
         {
-            ResultSetDto<BlogDetailDtoModel> result = await Api.GetHandler
-             .GetApiAsync<ResultSetDto<BlogDetailDtoModel>>(ApiAddress.Blog.GetBlogByUrl + UrlAddress);
 
-            var BlogDetail = result.Data;
+            List<BlogDetailDtoModel> BlogDetail = new List<BlogDetailDtoModel>(); ;
+            if (string.IsNullOrEmpty(UrlAddress))
+            {
+                ResultSetDto<IEnumerable<BlogDetailDtoModel>> result = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<IEnumerable<BlogDetailDtoModel>>>(ApiAddress.Blog.GetBlogs);
+
+               if(result.IsSucceed && result.Data!=null)
+                {
+                    foreach (BlogDetailDtoModel blog in result.Data)
+                        BlogDetail.Add(blog);
+                }
+            }
+            else
+            {
+                ResultSetDto<BlogDetailDtoModel> result = await Api.GetHandler
+               .GetApiAsync<ResultSetDto<BlogDetailDtoModel>>(ApiAddress.Blog.GetBlogByUrl + UrlAddress);
+
+                BlogDetail.Add(result.Data);
+
+            }
+          
 
             return View(viewName: "DetailByUrl", model: BlogDetail);
         }

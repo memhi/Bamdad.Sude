@@ -17,7 +17,6 @@
     <Compile Remove="wwwroot\AdminLTE\bower_components\raphael\**" />
     <Compile Remove="wwwroot\AdminLTE\bower_components\tinymce\**" />
     <Compile Remove="wwwroot\AdminTemplate\**" />
-    <Compile Remove="wwwroot\Content\**" />
     <Compile Remove="wwwroot\Scripts\i18n\**" />
     <Compile Remove="wwwroot\Scripts\KendoCultures\**" />
     <Content Remove="Models\DataTables\**" />
@@ -31,7 +30,6 @@
     <Content Remove="wwwroot\AdminLTE\bower_components\raphael\**" />
     <Content Remove="wwwroot\AdminLTE\bower_components\tinymce\**" />
     <Content Remove="wwwroot\AdminTemplate\**" />
-    <Content Remove="wwwroot\Content\**" />
     <Content Remove="wwwroot\Scripts\i18n\**" />
     <Content Remove="wwwroot\Scripts\KendoCultures\**" />
     <EmbeddedResource Remove="Models\DataTables\**" />
@@ -45,7 +43,6 @@
     <EmbeddedResource Remove="wwwroot\AdminLTE\bower_components\raphael\**" />
     <EmbeddedResource Remove="wwwroot\AdminLTE\bower_components\tinymce\**" />
     <EmbeddedResource Remove="wwwroot\AdminTemplate\**" />
-    <EmbeddedResource Remove="wwwroot\Content\**" />
     <EmbeddedResource Remove="wwwroot\Scripts\i18n\**" />
     <EmbeddedResource Remove="wwwroot\Scripts\KendoCultures\**" />
     <None Remove="Models\DataTables\**" />
@@ -59,7 +56,6 @@
     <None Remove="wwwroot\AdminLTE\bower_components\raphael\**" />
     <None Remove="wwwroot\AdminLTE\bower_components\tinymce\**" />
     <None Remove="wwwroot\AdminTemplate\**" />
-    <None Remove="wwwroot\Content\**" />
     <None Remove="wwwroot\Scripts\i18n\**" />
     <None Remove="wwwroot\Scripts\KendoCultures\**" />
   </ItemGroup>

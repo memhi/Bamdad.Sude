@@ -280,12 +280,12 @@ namespace Sude.Api.Controllers
                 }
                 else
                 {
-                    return NotFound(new ResultSetDto<OrderDetailDtoModel>()
-                    {
-                        IsSucceed = false,
-                        Message = "اطلاعات جزئیات سفارش یافت نشد",
-                        Data = null
-                    });
+                    //return NotFound(new ResultSetDto<OrderDetailDtoModel>()
+                    //{
+                    //    IsSucceed = false,
+                    //    Message = "اطلاعات جزئیات سفارش یافت نشد",
+                    //    Data = null
+                    //});
 
                 }
                 result.OrderDetails = orderDetailDetailDtoModels;
