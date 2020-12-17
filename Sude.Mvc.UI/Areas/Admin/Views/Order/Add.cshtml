@@ -8,95 +8,103 @@
 
   
 }
-<form id="frmAdd">
-    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
-    <link href="~/css/select2.css" rel="stylesheet" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <section class="content">
-        <div class="box box-info">
+        <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
                 <h2 class="box-title">ثبت سفارش</h2>
             </div>
             <div class="box-body">
                 @if (!string.IsNullOrEmpty(Model.WorkId))
                 {
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="box box-primary">
-                                <div class="box-header with-border text-center">
-                                    <h3 class="box-title">اطلاعات سفارش</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
+                    <div class="col-md-12">
+                        <div class="row">
 
 
 
-                                            <div class="form-group">
-                                                <div class="col-md-3">
-                                                    <label>خدمات گیرنده</label>
-                                                </div>
-                                                <div class="input-group  col-md-9">
+                            <form id="frmAdd">
+                                <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+                                <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+                                <link href="~/css/select2.css" rel="stylesheet" />
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                                                    <select id="drpCustomers" asp-for="CustomerId"
-                                                            class="form-control"
-                                                            asp-items="(SelectList)@ViewData[Constants.ViewBagNames.Customers]">
-                                                        <option>لطفا یک  خدمات گیرنده انتخاب کنید</option>
+                                <div class="box box-info">
+                                    <div class="box-header with-border text-center">
+                                        <h3 class="box-title">اطلاعات سفارش</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
 
-                                                    </select>
 
-                                                    <div class="input-group-btn">
-                                                        <a id="btnShowSaveNewOrderCustomerForm" onclick="btnShowSaveNewOrderCustomerForm()" class="btn btn-success"><span class="fa fa-plus margin-r-5"></span>جدید</a>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>خدمات گیرنده</label>
                                                     </div>
+                                                    <div class="input-group  col-md-9">
 
+                                                        <select id="drpCustomers" asp-for="CustomerId"
+                                                                class="form-control"
+                                                                asp-items="(SelectList)@ViewData[Constants.ViewBagNames.Customers]">
+                                                            <option>لطفا یک  خدمات گیرنده انتخاب کنید</option>
+
+                                                        </select>
+
+                                                        <div class="input-group-btn">
+                                                            <a id="btnShowSaveNewOrderCustomerForm" onclick="btnShowSaveNewOrderCustomerForm()" class="btn btn-success"><span class="fa fa-plus margin-r-5"></span>جدید</a>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
+
                                             </div>
+                                            <div class="col-md-6">
 
-                                        </div>
-                                        <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>تاریخ سفارش</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                        <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                        <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                                    </div>
+                                                </div>
 
-                                            <div class="form-group">
-                                                <div class="col-md-3">
-                                                    <label>تاریخ سفارش</label>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
-                                                    <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
-                                                    <span asp-validation-for="OrderDate" class="text-danger"></span>
-                                                </div>
+
+
                                             </div>
-
-
-
                                         </div>
+                                        <div class="row">
+
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-md-2">
+                                                        <label>توضیحات</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input id="txtDesc" asp-for="Description" class="form-control" />
+                                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="row">
-                                      
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <div class="col-md-2">
-                                                    <label>توضیحات</label>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <input id="txtDesc" asp-for="Description" class="form-control" />
-                                                    <span asp-validation-for="Description" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
                                 </div>
-                            </div>
-                            <div id="divOrderDetails" class="box box-primary  text-center">
+
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div id="divOrderDetails" class="box box-info  text-center">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">اطلاعات جزئیات سفارش</h3>
                                 </div>
                                 <div class="box-body">
-                                    <div id="adddetail" class="row">                                     
+                                    <div id="adddetail" class="row">
 
                                     </div>
                                     <div class="row" id="odetails"></div>
@@ -106,7 +114,9 @@
 
                             </div>
 
-                            <div class="box box-primary  text-center">
+                        </div>
+                        <div class="row">
+                            <div class="box box-info  text-center">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
 
@@ -132,23 +142,24 @@
                                 </div>
                             </div>
 
+
                         </div>
-                    </div>
-                }
-                else
+                        </div>
+                        }
+                        else
 
-                {
+                        {
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>لطفا یک کسب و کار انتخاب کنید</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>لطفا یک کسب و کار انتخاب کنید</label>
                             </div>
                         </div>
-                            }
+                        }
 
 
-                        </div>
                     </div>
+                </div>
 </section>
 
     <div class="col-sm-6">
@@ -164,7 +175,7 @@
        
     </div>
 
-</form>
+ 
 <script src="~/js/select2.js">
 </script>
 

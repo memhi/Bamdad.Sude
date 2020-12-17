@@ -1,42 +1,45 @@
 ﻿
 @model Sude.Dto.DtoModels.Order.OrderNewDtoModel
- 
+
 
 @section Scripts
 {
- 
 
-  
+
+
 }
-<form id="frmAdd">
-    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
-    <link href="~/css/select2.css" rel="stylesheet" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+<script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+<link href="~/css/select2.css" rel="stylesheet" />
+
     <section class="content">
-        <div class="box box-info bg-gray-light">
+        <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
                 <h2 class="box-title">ثبت خرید کالا</h2>
             </div>
             <div class="box-body">
                 @if (!string.IsNullOrEmpty(Model.WorkId))
                 {
+                <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-12">
 
-                            <div class="box box-primary ">
+                        <form id="frmAdd">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="box box-info ">
                                 <div class="box-header with-border  text-center">
                                     <h3 class="box-title">اطلاعات خرید</h3>
                                 </div>
                                 <div class="box-body">
-                                    <div class="row">                               
+                                    <div class="row">
                                         <div class="col-md-12">
 
                                             <div class="form-group">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label>تاریخ</label>
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-10">
                                                     <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
                                                     <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
                                                     <span asp-validation-for="OrderDate" class="text-danger"></span>
@@ -47,7 +50,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="row">                                 
+                                    <div class="row margin-bottom">
 
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -65,49 +68,54 @@
 
                                 </div>
                             </div>
-                            <div id="divOrderDetails" class="box box-primary  ">
-                                <div class="box-header with-border text-center">
-                                    <h3 class="box-title">اطلاعات جزئیات خرید</h3>
+                        </form>
+
+                    </div>
+                    <div class="row">
+                        <div id="divOrderDetails" class="box box-info  ">
+                            <div class="box-header with-border text-center">
+                                <h3 class="box-title">اطلاعات جزئیات خرید</h3>
+                            </div>
+                            <div class="box-body">
+                                <div id="adddetail" class="row">
+
                                 </div>
-                                <div class="box-body">
-                                    <div id="adddetail" class="row">                                     
-
-                                    </div>
-                                    <div class="row" id="odetails"></div>
-                                </div>
-
-
-
+                                <div class="row" id="odetails"></div>
                             </div>
 
-                            <div class="box box-primary  ">
-                                <div class="box-header with-border  text-center">
-                                    <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
 
-
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت نهایی سفارش</a>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="box box-info  ">
+                            <div class="box-header with-border  text-center">
+                                <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
+
+
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت نهایی سفارش</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 }
                 else
 
@@ -116,29 +124,28 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>لطفا یک کسب و کار انتخاب کنید</label>
-                            </div>
-                        </div>
-                            }
-
-
                         </div>
                     </div>
-</section>
+                }
+
+
+            </div>
+        </div>
+    </section>
 
     <div class="col-sm-6">
         <script>
             $('#txtOrderDate').MdPersianDateTimePicker({
-                targetTextSelector: '#txtOrderDate',  
-                targetDateSelector:'#OrderDateVal',
+                targetTextSelector: '#txtOrderDate',
+                targetDateSelector: '#OrderDateVal',
                 dateFormat: 'yyyy-MM-dd HH:mm:ss',
                 isGregorian: false,
-                enableTimePicker: true 
+                enableTimePicker: true
             });
         </script>
-       
-    </div>
 
-</form>
+    </div>
+ 
 <script src="~/js/select2.js">
 </script>
 
@@ -146,7 +153,7 @@
 
     $(document).ready(function () {
 
-        
+
 
 
         $("#odetails").load("OrderDetail/List");
@@ -162,10 +169,10 @@
         if (!isValid)
             return;
         var order = {
-            OrderNumber:'',
+            OrderNumber: '',
             OrderDate: $("#OrderDateVal").val(),
             Description: $("#txtDesc").val()
-         
+
 
         }
         $.ajax({
@@ -183,7 +190,7 @@
             else {
                 Command: toastr["warning"](result.message, "هشدار");
 
-             
+
             }
         });
     }
@@ -206,37 +213,37 @@
         });
 
     }
-        function SuccessAddCustomer(customerId) {
-            if (customerId != "") {
+    function SuccessAddCustomer(customerId) {
+        if (customerId != "") {
 
-                $.ajax({
-                    url: "Customer/GetCurrentCustomers",
-                    type: "Get"
-                }).done(function (result) {
+            $.ajax({
+                url: "Customer/GetCurrentCustomers",
+                type: "Get"
+            }).done(function (result) {
 
-                    $("#drpCustomers").empty();
+                $("#drpCustomers").empty();
 
-                   
-                
-                    $.each(result, function () {
-                        var opt = '<option>';
-                      //  if (this.value == customerId)
-                       //     opt = '<option selected="selected">';
-                        $("#drpCustomers").append(
-                            $(opt, {
-                                value: this.value
-                            }).text(this.text)
-                        );
-                    });
-                    $('#drpCustomers option[value=' + customerId + ']').attr('selected', 'selected');
-                   
-                  
-          
 
+
+                $.each(result, function () {
+                    var opt = '<option>';
+                    //  if (this.value == customerId)
+                    //     opt = '<option selected="selected">';
+                    $("#drpCustomers").append(
+                        $(opt, {
+                            value: this.value
+                        }).text(this.text)
+                    );
                 });
-                    
+                $('#drpCustomers option[value=' + customerId + ']').attr('selected', 'selected');
 
-            }
+
+
+
+            });
+
+
         }
-    
+    }
+
 </script>

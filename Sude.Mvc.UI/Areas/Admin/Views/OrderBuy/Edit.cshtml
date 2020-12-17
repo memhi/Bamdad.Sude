@@ -2,11 +2,10 @@
 @model Sude.Dto.DtoModels.Order.OrderEditDtoModel
 
 
-<form id="frmEdit">
-    <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-    <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
-    <link href="~/css/select2.css" rel="stylesheet" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+<script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+<link href="~/css/select2.css" rel="stylesheet" />
+
     <div class="form-group">
         <input id="txtOrderId" type="hidden" asp-for="OrderId" class="form-control" />
         <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
@@ -14,104 +13,112 @@
     </div>
 
     <section class="content">
-        <div class="box box-info bg-gray-light">
+        <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
                 <h2 class="box-title">تغییر اطلاعات سفارش خرید شماره @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
-                <div class="row">
+           
                     <div class="col-md-12">
 
-                        <div class="box box-primary  ">
-                            <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات سفارش</h3>
-                            </div>
-                            <div class="box-body">
-                           
-                                    <div class="row">
-                                        <div class="col-md-12">
+                        <form id="frmEdit">
 
-                                            <div class="form-group">
-                                                <div class="col-md-2">
-                                                    <label>تاریخ سفارش</label>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="box box-info  ">
+                                    <div class="box-header with-border  text-center">
+                                        <h3 class="box-title">اطلاعات سفارش</h3>
+                                    </div>
+                                    <div class="box-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-2">
+                                                        <label>تاریخ سفارش</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                        <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                        <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-10">
-                                                    <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
-                                                    <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
-                                                    <span asp-validation-for="OrderDate" class="text-danger"></span>
-                                                </div>
+
+
+
                                             </div>
-
-
-
                                         </div>
+                                        <div class="row">
+
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-md-2">
+                                                        <label>توضیحات</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input id="txtDesc" asp-for="Description" class="form-control" />
+                                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div id="divOrderDetails" class="box box-info">
+                                <div class="box-header text-center">
+                                    <h3 class="box-title">اطلاعات جزئیات سفارش خرید</h3>
+
+
+                                </div>
+                                <div class="box-body text-center">
+                                    <div id="adddetail" class="row">
+                                        @*@await Component.InvokeAsync("AddDetail");*@
+
+                                    </div>
+                                    <div class="row" id="odetails"></div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="box box-info   ">
+                                <div class="box-header with-border  text-center">
+                                    <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش خرید</h3>
+
+
+                                </div>
+                                <div class="box-body">
                                     <div class="row">
 
 
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <div class="col-md-2">
-                                                    <label>توضیحات</label>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <input id="txtDesc" asp-for="Description" class="form-control" />
-                                                    <span asp-validation-for="Description" class="text-danger"></span>
-                                                </div>
+                                                <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت تغییرات نهایی سفارش</a>
+
                                             </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
 
                                         </div>
-                                    </div>
-
-                                </div>
-                        </div>
-                        <div id="divOrderDetails" class="box box-primary">
-                            <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات جزئیات سفارش خرید</h3>
-
-
-                            </div>
-                            <div class="box-body">
-                                <div id="adddetail" class="row">
-                                    @*@await Component.InvokeAsync("AddDetail");*@
-
-                                </div>
-                                <div class="row" id="odetails"></div>
-                            </div>
-
-
-
-                        </div>
-
-                        <div class="box box-primary   ">
-                            <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات ثبت تغییرات نهایی سفارش خرید</h3>
-
-
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت تغییرات نهایی سفارش</a>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-
-                                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
 
                                     </div>
-
                                 </div>
                             </div>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-            </div>
+           
         </div>
     </section>
 
@@ -129,7 +136,7 @@
     </div>
 
 
-</form>
+ 
 <script src="~/js/select2.js">
 </script>
 
@@ -158,7 +165,7 @@
             return;
         var order = {
             OrderId: $("#txtOrderId").val(),
-           WorkId: $("#txtWorkd").val(),
+            WorkId: $("#txtWorkd").val(),
             OrderNumber: $("#txtOrderNumber").val(),
             OrderDate: $("#OrderDateVal").val(),
             Description: $("#txtDesc").val()

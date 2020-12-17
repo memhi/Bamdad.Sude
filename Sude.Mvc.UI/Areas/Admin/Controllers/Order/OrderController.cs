@@ -237,7 +237,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
-            if (orderDetailNewDtoSession == null)
+            if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)
             {
                 return Json(new ResultSetDto()
                 {
@@ -326,7 +326,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
-            if (orderDetailNewDtoSession == null)
+            if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)
             {
                 return Json(new ResultSetDto()
                 {

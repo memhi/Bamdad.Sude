@@ -14,7 +14,7 @@ namespace Sude.Dto.DtoModels.Order
         public string ServingId { get; set; }
         public string ServingName{ get; set; }
         //[MaxLength(5)]
-        [Required(ErrorMessage = "مبلغ را وارد نمایید")]
+        [Required(ErrorMessage = "مبلغ را وارد نمایید")]        
         [Range(1,1000000000,ErrorMessage ="بازه مبلغ را درست وارد نمایید")]
         public double Price { get; set; }
 
