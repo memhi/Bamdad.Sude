@@ -13,12 +13,25 @@ namespace Sude.Application.Services
     public class WorkService : IWorkService
     {
         private IWorkRepository _WorkRepository;
-       
+        private IWorkUserRepository _WorkUserRepository;
 
-        public WorkService(IWorkRepository workRepository)
+
+        public WorkService(IWorkRepository workRepository, IWorkUserRepository workUserRepository)
         {
             this._WorkRepository = workRepository;
-        
+
+            this._WorkUserRepository = workUserRepository;
+
+        }
+      public async Task<ResultSet<IEnumerable<WorkInfo>>> GetWorksByUserIdAsync(Guid UserID)
+        {
+            return new ResultSet<IEnumerable<WorkInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _WorkRepository.GetWorksByUserIdAsync(UserID)
+            };
+
         }
         public ResultSet<IEnumerable<WorkInfo>> GetWorks()
         {
@@ -69,6 +82,28 @@ namespace Sude.Application.Services
                 IsSucceed = true,
                 Message = string.Empty,
                 Data = work
+            };
+        }
+
+        public async Task<ResultSet<WorkUserInfo>> AddWorkUserAsync(WorkUserInfo workUser)
+        {
+           IEnumerable<WorkUserInfo> workUsers    = await _WorkUserRepository.GetWorkUsersAsync(workUser.WorkId,workUser.UserId);
+            if (workUsers != null && workUsers.Any())
+            {
+
+                return new ResultSet<WorkUserInfo>() { IsSucceed = false, Message = "Duplicate Data" };
+
+
+            }
+
+            _WorkUserRepository.AddWorkUser(workUser);
+          await  _WorkUserRepository.SaveAsync();
+
+            return new ResultSet<WorkUserInfo>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = workUser
             };
         }
 

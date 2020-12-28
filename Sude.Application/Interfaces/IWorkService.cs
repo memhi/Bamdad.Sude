@@ -17,8 +17,10 @@ namespace Sude.Application.Interfaces
         ResultSet<WorkInfo> GetWorkById(Guid workId);
         Task<ResultSet<IEnumerable<WorkInfo>>> GetWorksAsync();
         Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work);
+        Task<ResultSet<WorkUserInfo>> AddWorkUserAsync(WorkUserInfo workUser);
         Task<ResultSet> EditWorkAsync(WorkInfo work);
         Task<ResultSet> DeleteWorkAsync(Guid workId);
         Task<ResultSet<WorkInfo>> GetWorkByIdAsync(Guid workId);
+        Task<ResultSet<IEnumerable<WorkInfo>>> GetWorksByUserIdAsync(Guid UserID);
     }
 }

@@ -14,6 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IServingRepository, ServingRepository>(),
                 ServiceDescriptor.Scoped<IWorkTypeRepository, WorkTypeRepository>(),
                 ServiceDescriptor.Scoped<IWorkRepository, WorkRepository>(),
+                   ServiceDescriptor.Scoped<IWorkUserRepository, WorkUserRepository>(),
                 ServiceDescriptor.Scoped<IInventoryTypeRepository, InventoryTypeRepository>(),
                 ServiceDescriptor.Scoped<IServingInventoryRepository, ServingInventoryRepository>(),
                     ServiceDescriptor.Scoped<IServingInventoryTrackingRepository, ServingInventoryTrackingRepository>(),

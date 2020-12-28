@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Sude.Mvc.UI.Admin;
 
 namespace Sude.Mvc.UI
 {
@@ -11,9 +12,10 @@ namespace Sude.Mvc.UI
     public class CheckSessionMiddleware
     {
         private readonly RequestDelegate _next;
-
-        public CheckSessionMiddleware(RequestDelegate next)
+        public readonly SudeSessionContext _sudeSessionContext;
+        public CheckSessionMiddleware(RequestDelegate next, SudeSessionContext sudeSessionContext)
         {
+            _sudeSessionContext = sudeSessionContext;
             _next = next;
         }
 
@@ -26,18 +28,13 @@ namespace Sude.Mvc.UI
             {
 
 
-           // string CurrentWorkId= httpContext.Session.GetString("CurrentWorkId");
-            //    if(string.IsNullOrEmpty(CurrentWorkId))
-              //  {
-
-             
                 
-
-               //     await httpContext.Response.WriteAsync("لطفا یک کسب و کار انتخاب کنید");
-              //  }
-
-             //   else
-
+                if(_sudeSessionContext.CurrentUser==null &&  !httpContext.Request.Path.Value.Contains("/Admin/Login"))
+                {
+                    httpContext.Request.Path = "/Admin/Login";
+                    httpContext.Response.Redirect("/Admin/Login");
+                }
+                else
                 await _next(httpContext);
 
                  

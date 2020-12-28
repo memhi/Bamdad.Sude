@@ -17,6 +17,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
 {
     public class WorkController : BaseAdminController
     {
+        public readonly SudeSessionContext _sudeSessionContext;
+        public WorkController (SudeSessionContext sudeSessionContext)
+        {
+            _sudeSessionContext = sudeSessionContext;
+
+
+        }
         // GET: WorkController
         [HttpGet]
      //   [Authorize]
@@ -36,7 +43,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
         {
 
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-                        .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
+                        .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId+_sudeSessionContext.CurrentUser.id);
 
 
 
@@ -52,10 +59,10 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             ResultSetDto<WorkDetailDtoModel> result = await Api.GetHandler
              .GetApiAsync<ResultSetDto<WorkDetailDtoModel>>(ApiAddress.Work.GetWorkById + workId);
 
-
-            HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkId, result.Data.WorkId);
-            HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkName, result.Data.Title);
-            HttpContext.Session.SetObject(Constants.SessionNames.CurrentWork, result.Data);
+            
+              _sudeSessionContext.CurrentWorkId= result.Data.WorkId;
+            _sudeSessionContext.CurrentWorkName= result.Data.Title;
+            _sudeSessionContext.CurrentWork= result.Data;
 
             return Json(workId);
         }
@@ -68,8 +75,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             //System.Threading.Thread.Sleep(1000);
 
             ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
-          
+                .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId + _sudeSessionContext.CurrentUser.id);
+
 
             return PartialView("WorkList", Worklist);
         }
@@ -109,6 +116,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
                     Message = message
                 });
             }
+            request.UserId = _sudeSessionContext.CurrentUser.id;
 
             ResultSetDto<WorkNewDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<WorkNewDtoModel>>(ApiAddress.Work.AddWork, request);

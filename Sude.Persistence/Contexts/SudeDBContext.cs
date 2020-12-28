@@ -45,7 +45,7 @@ namespace Sude.Persistence.Contexts
 
         public DbSet<CustomerInfo> Customers { get; set; }
         public DbSet<AddressInfo>  Addresses { get; set; }
-
+        public DbSet<WorkUserInfo> WorkUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

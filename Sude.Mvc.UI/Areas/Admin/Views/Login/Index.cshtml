@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Sude.Mvc.UI.Admin.Models.LoginViewModel
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>ورود به مدیریت کسب و کار</title>
+    <link rel="stylesheet" href="~/AdminLTE/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="~/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/AdminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/AdminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="~/AdminLTE/css/skins/skin-red.min.css">
+    <link rel="stylesheet" href="~/AdminLTE/css/rtl.css">
+    <!-- iCheck -->
+
+
+</head>
+<body class="hold-transition login-page">
+    <div id="loginorregister">
+
+
+    </div>
+
+
+    <!-- /.login-box -->
+    <!-- jQuery 3 -->
+    <script src="~/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="~/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+    <script>
+
+
+
+        $(function () {
+
+            $("#loginorregister").load("Login/Login");
+
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+</body>
+
+</html>

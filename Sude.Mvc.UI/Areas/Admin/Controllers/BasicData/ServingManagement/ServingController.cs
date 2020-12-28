@@ -18,6 +18,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
 {
     public class ServingController : BaseAdminController
     {
+        public readonly SudeSessionContext _sudeSessionContext;
+        public ServingController(SudeSessionContext sudeSessionContext)
+
+        {
+
+            _sudeSessionContext = sudeSessionContext;
+        }
         // GET: ServingController
         [HttpGet]
      //   [Authorize]
@@ -34,7 +41,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         public async Task<ActionResult> List()
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString("CurrentWorkId");
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
             ResultSetDto<IEnumerable<ServingDetailDtoModel>> servinglist = new ResultSetDto<IEnumerable<ServingDetailDtoModel>>();
             if (!string.IsNullOrEmpty(CurrentWorkId ))
                 servinglist = await Api.GetHandler
@@ -47,18 +54,21 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         public async Task<ActionResult> Add()
         {
 
-            WorkDetailDtoModel CurrentWork = HttpContext.Session.GetObject<WorkDetailDtoModel>(Constants.SessionNames.CurrentWork);
+            WorkDetailDtoModel CurrentWork = _sudeSessionContext.CurrentWork;
          
             
             ServingNewDtoModel  servingNewDtoModel  = new ServingNewDtoModel();
 
             servingNewDtoModel.Desc = "";
             servingNewDtoModel.Title = "";
-            servingNewDtoModel.WorkId = CurrentWork.WorkId;
+            if (CurrentWork!=null)
+            {
+                servingNewDtoModel.WorkId = CurrentWork.WorkId;
+                ViewData[Constants.ViewBagNames.CurrentWorkName] = CurrentWork.Title;
+            }
             servingNewDtoModel.HasInventoryTracking = false;
-            servingNewDtoModel.IsActive = true;
-   
-            ViewData[Constants.ViewBagNames.CurrentWorkName] = CurrentWork.Title;
+            servingNewDtoModel.IsActive = true;   
+          
 
             return PartialView("Add", servingNewDtoModel);
 
@@ -93,7 +103,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.ServingManagement
         public async Task<ActionResult> Edit(string id)
         {
 
-            WorkDetailDtoModel CurrentWork = HttpContext.Session.GetObject<WorkDetailDtoModel>(Constants.SessionNames.CurrentWork);
+            WorkDetailDtoModel CurrentWork = _sudeSessionContext.CurrentWork;
             ResultSetDto<ServingDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<ServingDetailDtoModel>>(ApiAddress.Serving.GetServingById + id);
 

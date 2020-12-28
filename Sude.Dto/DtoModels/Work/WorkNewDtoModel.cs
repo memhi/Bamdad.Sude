@@ -10,6 +10,7 @@ namespace Sude.Dto.DtoModels.Work
     public class WorkNewDtoModel
     {
         public string WorkId { get; set; }
+        public string UserId { get; set; }
         public string WorkTypeId { get; set; }
 
         [Required(ErrorMessage ="عنوان را وارد نمایید")]

@@ -9,8 +9,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using Sude.Mvc.UI.Admin;
+using Microsoft.AspNetCore.Identity;
+using Sude.Mvc.UI.Admin.Models;
 
 namespace Sude.Mvc.UI
 {
@@ -30,13 +34,24 @@ namespace Sude.Mvc.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+     
+
+
             services.AddMvc();
             // services.AddProgressiveWebApp();
             services.AddServerSideBlazor();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             IdentityModelEventSource.ShowPII = true;
+         
             services.AddSession();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+           
+
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<SudeSessionContext>();
+            
+ 
             IMvcBuilder builder = services.AddRazorPages();
 
  

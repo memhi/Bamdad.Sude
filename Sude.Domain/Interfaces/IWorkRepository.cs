@@ -11,6 +11,7 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<WorkInfo>> GetWorksAsync();
         Task<IEnumerable<WorkInfo>> GetWorksByTypeAsync(WorkTypeInfo workType);
+        Task<IEnumerable<WorkInfo>> GetWorksByUserIdAsync(Guid UserID);
         IEnumerable<WorkInfo> GetWorks();
  
 

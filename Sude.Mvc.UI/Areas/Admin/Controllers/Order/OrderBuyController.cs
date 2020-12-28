@@ -23,6 +23,14 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
     public class OrderBuyController : BaseAdminController
     {
+
+        public readonly SudeSessionContext _sudeSessionContext;
+        public OrderBuyController(SudeSessionContext sudeSessionContext)
+
+        {
+
+            _sudeSessionContext = sudeSessionContext;
+        }
         // GET: WorkTypeController
         [HttpGet]
      //   [Authorize]
@@ -49,7 +57,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
 
 
 
@@ -68,8 +76,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Add()
         {
       
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
+            _sudeSessionContext.CurrentOrderDetails= null;
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
             order.IsBuy = true;
@@ -105,7 +113,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
 
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
             if(orderDetailNewDtoSession==null || orderDetailNewDtoSession.Count() <= 0)
             {
                 return Json(new ResultSetDto()
@@ -121,7 +129,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             {
                 request.OrderDetails = orderDetails;
             }
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
             request.WorkId = CurrentWorkId;
             request.IsBuy = true;
             ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
@@ -137,7 +145,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null) ;
+            _sudeSessionContext.CurrentOrderDetails = null;
 
             return Json(result);
 
@@ -147,15 +155,14 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Edit(string id)
         {
 
- 
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            _sudeSessionContext.CurrentOrderDetails = null;
           
 
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
             if (result.Data.OrderDetails != null)
-                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, result.Data.OrderDetails.AsEnumerable());
+                _sudeSessionContext.CurrentOrderDetails= result.Data.OrderDetails.AsEnumerable();
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);
@@ -192,7 +199,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
             if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count()<=0)
             {
                 return Json(new ResultSetDto()
@@ -215,7 +222,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             ResultSetDto<OrderEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderEditDtoModel>>(ApiAddress.Order.EditOrder, request);
-            HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, null);
+            _sudeSessionContext.CurrentOrderDetails= null;
             return Json(result);
 
         }

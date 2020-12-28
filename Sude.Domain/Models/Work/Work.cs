@@ -23,6 +23,7 @@ namespace Sude.Domain.Models.Work
         public Guid? AddressId { get; set; }
         public AddressInfo Address { get; set; }
         public string LogoAddress { get; set; }
+        public virtual ICollection<WorkUserInfo>  WorkUsers { get; set; }
     }
 
 }

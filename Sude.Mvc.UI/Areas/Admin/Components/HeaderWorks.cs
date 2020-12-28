@@ -13,19 +13,24 @@ namespace Sude.Mvc.UI.Admin.Components
 {
     public class HeaderWorksViewComponent : ViewComponent
     {
+        public readonly SudeSessionContext _sudeSessionContext;
 
-
-        public HeaderWorksViewComponent()
+        public HeaderWorksViewComponent(SudeSessionContext sudeSessionContext)
         {
+            _sudeSessionContext = sudeSessionContext;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-       .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorks);
 
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
-            string CurrentWorkName = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkName);
+            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
+       .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId+_sudeSessionContext.CurrentUser.id);
+
+             
+
+
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
+            string CurrentWorkName = _sudeSessionContext.CurrentWorkName;
             if (string.IsNullOrEmpty(CurrentWorkId))
             {
                 CurrentWorkId = "";
@@ -39,9 +44,9 @@ namespace Sude.Mvc.UI.Admin.Components
                 {
                     CurrentWorkId = Worklist.Data.First().WorkId;
                     CurrentWorkName = Worklist.Data.First().Title;
-                    HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkId, CurrentWorkId);
-                    HttpContext.Session.SetString(Constants.SessionNames.CurrentWorkName, CurrentWorkName);
-                    HttpContext.Session.SetObject(Constants.SessionNames.CurrentWork, Worklist.Data.First());
+                    _sudeSessionContext.CurrentWorkId= CurrentWorkId;
+                    _sudeSessionContext.CurrentWorkName = CurrentWorkName;
+                   _sudeSessionContext.CurrentWork= Worklist.Data.First();
                 }
 
                 selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);

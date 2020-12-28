@@ -19,6 +19,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
     public class OrderDetailBuyController : BaseAdminController
     {
+        public readonly SudeSessionContext _sudeSessionContext;
+        public OrderDetailBuyController(SudeSessionContext sudeSessionContext)
+
+        {
+
+            _sudeSessionContext = sudeSessionContext;
+        }
         // GET: WorkTypeController
         [HttpGet]
      //   [Authorize]
@@ -36,7 +43,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> List()
         {
             //System.Threading.Thread.Sleep(1000);
-            IEnumerable<OrderDetailDetailDtoModel> CurrentDetails = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> CurrentDetails = _sudeSessionContext.CurrentOrderDetails;
 
             ViewData[Constants.ViewBagNames.OrderDetails] = CurrentDetails;
         
@@ -59,7 +66,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
         {
 
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
 
 
 
@@ -78,7 +85,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public async Task<ActionResult> Add()
         {
       
-            string CurrentWorkId = HttpContext.Session.GetString(Constants.SessionNames.CurrentWorkId);
+            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
 
 
 
@@ -122,7 +129,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
-            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = HttpContext.Session.GetObject<IEnumerable<OrderDetailDetailDtoModel>>(Constants.SessionNames.OrderDetails);
+            IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
             
             if (orderDetailNewDtoSession == null)
             {
@@ -135,7 +142,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 orderDetailSession.Count = request.Count;
                 orderDetailSession.ServingName = string.IsNullOrEmpty(request.ServingName) == true ? "" : request.ServingName;
                 orderDetailNewDtos.Add(orderDetailSession);
-                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                _sudeSessionContext.CurrentOrderDetails=  orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>() ;
       
             }
           
@@ -161,7 +168,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 orderDetailSession.ServingName = string.IsNullOrEmpty(request.ServingName) == true ? "" : request.ServingName;
    
                 orderDetailNewDtos.Add(orderDetailSession);
-                HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                _sudeSessionContext.CurrentOrderDetails= orderDetailNewDtos.AsEnumerable<OrderDetailDetailDtoModel>();
             }
 
             //ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
@@ -241,7 +248,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 if (orderDetailNewDto != null)
                 {
                     orderDetailNewDtoSession.Remove(orderDetailNewDto);
-                    HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, orderDetailNewDtoSession.AsEnumerable<OrderDetailDetailDtoModel>()); ;
+                _sudeSessionContext.CurrentOrderDetails= orderDetailNewDtoSession.AsEnumerable<OrderDetailDetailDtoModel>() ;
                     return Ok(new ResultSetDto()
                     {
                         IsSucceed = true,

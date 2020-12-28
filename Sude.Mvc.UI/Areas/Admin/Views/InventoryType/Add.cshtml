@@ -60,7 +60,6 @@
 
     function SaveNewInventoryType() {
         $.validator.unobtrusive.parse($('#frmAdd'));
-
         var isValid = $('#frmAdd').valid();
         if (!isValid)
             return;

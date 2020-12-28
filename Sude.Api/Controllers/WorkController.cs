@@ -19,6 +19,7 @@ namespace Sude.Api.Controllers
     public class WorkController : ControllerBase
     {
         private readonly IWorkService _WorkService;
+ 
         private readonly IWorkTypeService _WorkTypeService;
         public WorkController(IWorkService WorkService, IWorkTypeService WorkTypeService)
         {
@@ -119,6 +120,52 @@ namespace Sude.Api.Controllers
             }
 
         }
+
+
+        [HttpGet("{UserId}")]
+        public async Task<ActionResult> GetWorksByUserId(string UserId)
+        {
+            try
+            {
+                ResultSet<IEnumerable<WorkInfo>> resultSet = await _WorkService.GetWorksByUserIdAsync(Guid.Parse(UserId));
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<WorkDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
+
+                var result = resultSet.Data.Select(wt => new WorkDetailDtoModel()
+                {
+                    WorkId = wt.Id.ToString(),
+                    Title = wt.Title,
+                    WorkTypeId = wt.WorkType.Id.ToString(),
+                    WorkTypeName = wt.WorkType.Title,
+                    Desc = wt.Desc
+                });
+                return Ok(new ResultSetDto<IEnumerable<WorkDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<WorkDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<ResultSetDto<WorkEditDtoModel>>> EditWork([FromBody] WorkEditDtoModel request)
@@ -233,13 +280,20 @@ namespace Sude.Api.Controllers
                 {
                     Title = request.Title,
                     Desc = request.Desc,
-                    WorkType = resultTypeWork.Data
+                    WorkType = resultTypeWork.Data,
+                   
+                    
 
                 };
 
 
 
+
+
                 var resultSave = await _WorkService.AddWorkAsync(Work);
+
+
+
 
                 if (!resultSave.IsSucceed)
                 {
@@ -256,6 +310,24 @@ namespace Sude.Api.Controllers
 
 
                 request.WorkId = resultSave.Data.Id.ToString();
+                WorkUserInfo workUser = new WorkUserInfo()
+                {
+                    UserId = Guid.Parse(request.UserId),
+                    WorkId = Guid.Parse(request.WorkId)
+
+                };
+                var resultSaveWorkUser = await _WorkService.AddWorkUserAsync(workUser);
+                if (!resultSaveWorkUser.IsSucceed)
+                {
+                    return BadRequest(new ResultSetDto<WorkNewDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSaveWorkUser.Message,
+                        Data = null
+                    });
+
+                }
+
 
                 return Ok(new ResultSetDto<WorkNewDtoModel>()
                 {

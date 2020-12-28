@@ -17,6 +17,8 @@ using Sude.Persistence.Contexts;
 using Sude.Domain.Models.Serving;
 using System.Runtime.CompilerServices;
 using System.Globalization;
+using Sude.Domain.Models.Work;
+using Sude.Dto.DtoModels.Work;
 
 namespace Sude.Api.Controllers
 {
@@ -28,6 +30,7 @@ namespace Sude.Api.Controllers
         private readonly IOrderNumberService _OrderNumberService;
         private readonly IOrderDetailService _OrderDetailService;
         private readonly ICustomerService _CustomerService;
+        private readonly IWorkService _WorkService;
 
         private readonly IServingService _ServingService;
         private readonly IServingInventoryService _ServingInventoryService;
@@ -35,7 +38,8 @@ namespace Sude.Api.Controllers
 
         public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
             ICustomerService customerService, IServingService servingService, IServingInventoryService servingInventoryService,
-        IServingInventoryTrackingService servingInventoryTrackingService, IOrderNumberService orderNumberService)
+        IServingInventoryTrackingService servingInventoryTrackingService, IOrderNumberService orderNumberService,
+        IWorkService workService)
         {
 
             _OrderService = orderService;
@@ -45,6 +49,7 @@ namespace Sude.Api.Controllers
             _ServingService = servingService;
             _ServingInventoryTrackingService = servingInventoryTrackingService;
             _ServingInventoryService = servingInventoryService;
+            _WorkService = workService;
 
         }
 
@@ -58,6 +63,82 @@ namespace Sude.Api.Controllers
             try
             {
                 ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
+
+                var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
+                {
+                    OrderId = o.Id.ToString(),
+                    OrderNumber = o.Number,
+                    WorkId = o.WorkId.ToString(),
+                    WorkName = o.Work.Title,
+                    OrderDate = o.OrderDate,
+                    SumPrice = o.SumPrice,
+                    Description = o.Description,
+                    IsBuy = o.IsBuy
+
+
+
+                });
+                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult> GetUserOrders(string userId)
+        {
+            try
+            {
+
+                ResultSet<IEnumerable<WorkInfo>> resultSetWork = await _WorkService.GetWorksByUserIdAsync(Guid.Parse(userId));
+                if (resultSetWork == null || resultSetWork.Data == null || !resultSetWork.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+                ResultSet<IEnumerable<OrderInfo>> resultSet = new ResultSet<IEnumerable<OrderInfo>>();
+                foreach (WorkInfo workInfo in resultSetWork.Data)
+                {
+                    ResultSet<IEnumerable<OrderInfo>> resultSetOrder = await _OrderService.GetOrdersByWorkIdAsync(workInfo.Id);
+                    if (resultSetOrder != null || resultSetOrder.Data == null && resultSetOrder.Data.Any())
+                    {
+                     foreach(OrderInfo orderInfo in resultSetOrder.Data)
+                        {
+                            resultSet.Data.Append(orderInfo);
+
+                        }
+
+                    }
+                }
+               
+
+               // ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
                     return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                     {

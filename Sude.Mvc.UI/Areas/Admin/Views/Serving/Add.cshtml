@@ -11,90 +11,103 @@
 
 
             </div>
-            <div class="box-body">
+            @if (!string.IsNullOrEmpty(Model.WorkId))
+            {
+                <div class="box-body">
 
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">کسب و کار</label>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">کسب و کار</label>
+                        </div>
+                        <div class="col-md-10">
+                            @ViewData[Constants.ViewBagNames.CurrentWorkName]
+                        </div>
                     </div>
-                    <div class="col-md-10">
-                        @ViewData[Constants.ViewBagNames.CurrentWorkName]
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">عنوان</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="txtTitle" asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">قیمت</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="txtPrice" asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">توضیحات</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="txtDesc" asp-for="Desc" class="form-control" />
+                            <span asp-validation-for="Desc" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">رهگیری موجودی</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="cbHasInventoryTracking" type="checkbox" asp-for="HasInventoryTracking" />
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">قابلیت عرضه و فروش</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="cbIsActive" type="checkbox" asp-for="IsActive" />
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="box-footer with-border">
+
+                    <div class="form-group" style="text-align:center">
+                        <div class="col-md-2">
+                            <a id="btnSaveNewServing" onclick="SaveNewServing()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ثبت</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            else
+
+            {
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>لطفا یک کسب و کار انتخاب کنید</label>
                     </div>
                 </div>
-
-
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">عنوان</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input id="txtTitle" asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">قیمت</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input id="txtPrice" asp-for="Price" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">توضیحات</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input id="txtDesc" asp-for="Desc" class="form-control" />
-                        <span asp-validation-for="Desc" class="text-danger"></span>
-                    </div>
-                </div>
-
-              
-
-
-
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">رهگیری موجودی</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input id="cbHasInventoryTracking" type="checkbox" asp-for="HasInventoryTracking" />
-
-                    </div>
-                </div>
-
-
-
-                <div class="form-group row">
-                    <div class="col-md-2">
-                        <label class="control-label">قابلیت عرضه و فروش</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input id="cbIsActive" type="checkbox" asp-for="IsActive" />
-
-                    </div>
-                </div>
-
-
-
-
-
-            </div>
-            <div class="box-footer with-border">
-
-                <div class="form-group" style="text-align:center">
-                    <div class="col-md-2">
-                        <a id="btnSaveNewServing" onclick="SaveNewServing()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ثبت</a>
-                    </div>
-                    <div class="col-md-2">
-                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
-                    </div>
-                </div>
-
-            </div>
+            }
 
         </div>
     </section>

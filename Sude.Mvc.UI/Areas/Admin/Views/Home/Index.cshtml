@@ -5,6 +5,7 @@
 }
 @using Microsoft.AspNetCore.Http;
 @inject IHttpContextAccessor HttpContextAccessor
+
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Dashboard");
@@ -205,8 +206,8 @@
                 </h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" onclick="changeType('year')" data-chart-period="year">سال</button>
-                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="month" onclick="changeType('month')" >ماه</button>
-                    <button class="btn btn-xs btn-info btn-flat" data-chart-role="toggle-chart" data-chart-period="week" onclick="changeType('week')" >هفته</button>
+                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="month" onclick="changeType('month')">ماه</button>
+                    <button class="btn btn-xs btn-info btn-flat" data-chart-role="toggle-chart" data-chart-period="week" onclick="changeType('week')">هفته</button>
                     <button class="btn btn-box-tool margin-l-10" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
@@ -228,107 +229,107 @@
     $(document).ready(function () {
         changeType('week');
     });
-           var osConfig = {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    {
-                        label: "آمار سفارشات",
-                        fillColor: "rgba(60,141,188,0.9)",
-                        strokeColor: "rgba(60,141,188,0.8)",
-                        pointColor: "#3b8bba",
-                        pointStrokeColor: "rgba(60,141,188,1)",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(60,141,188,1)",
-                        borderColor: 'rgba(60, 141, 188, 0.7)',
-                        backgroundColor: 'rgba(44, 152, 214, 0.5)',
-                        pointBorderColor: 'rgba(37, 103, 142, 0.9)',
-                        pointBackgroundColor: 'rgba(60, 141, 188, 0.4)',
-                        pointBorderWidth: 1,
-                        data: []
-                    }
-                ]
-            },
-            options: {
-                legend: {
-                    display: false
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        ticks: {
-                            userCallback: function (dataLabel, index) {
-                                if (window.orderStatistics && window.orderStatistics.config.data.labels.length > 12) {
-                                    return index % 5 === 0 ? dataLabel : '';
-                                }
-                                return dataLabel;
-                            }
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            userCallback: function (dataLabel, index) {
-                                return (dataLabel ^ 0) === dataLabel ? dataLabel : '';
-                            },
-                            min: 0
-                        }
-                    }]
-                },
-                showScale: true,
-                scaleShowGridLines: false,
-                scaleGridLineColor: "rgba(0,0,0,.05)",
-                scaleGridLineWidth: 1,
-                scaleShowHorizontalLines: true,
-                scaleShowVerticalLines: true,
-                bezierCurve: true,
-                pointDot: false,
-                pointDotRadius: 4,
-                pointDotStrokeWiioldth: 1,
-                pointHitDetectionRadius: 20,
-                datasetStroke: true,
-                datasetFill: true,
-                maintainAspectRatio: false,
-                responsive: true
-            }
-        };
-
-        function changeType(type) {
-            var osLabels = [];
-            var osData = [];
-
-            $.ajax({
-                cache: false,
-                type: "GET",
-                url: "Order/GetOrdersStatistics/",
-                data: {
-                    statisticsType: type
-                },
-                success: function (data, textStatus, jqXHR) {
-                    for (var i = 0; i < data.length; i++) {
-                        osLabels.push(data[i].date);
-                      
-                        osData.push(data[i].value);
-                    }
-
-                  //  if (!window.orderStatistics) {
-
-                        osConfig.data.labels = osLabels;
-                        osConfig.data.datasets[0].data = osData;
-                        osConfig.data.scales =
-                        window.orderStatistics = new Chart(document.getElementById("order-statistics-chart").getContext("2d"), osConfig);
-                 //   } else {
-                 //       window.orderStatistics.config.data.labels = osLabels;
-                  //      window.orderStatistics.config.data.datasets[0].data = osData;
-                   //     window.orderStatistics.update();
-                   // }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus);
+    var osConfig = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: "آمار سفارشات",
+                    fillColor: "rgba(60,141,188,0.9)",
+                    strokeColor: "rgba(60,141,188,0.8)",
+                    pointColor: "#3b8bba",
+                    pointStrokeColor: "rgba(60,141,188,1)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(60,141,188,1)",
+                    borderColor: 'rgba(60, 141, 188, 0.7)',
+                    backgroundColor: 'rgba(44, 152, 214, 0.5)',
+                    pointBorderColor: 'rgba(37, 103, 142, 0.9)',
+                    pointBackgroundColor: 'rgba(60, 141, 188, 0.4)',
+                    pointBorderWidth: 1,
+                    data: []
                 }
-            });
+            ]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    ticks: {
+                        userCallback: function (dataLabel, index) {
+                            if (window.orderStatistics && window.orderStatistics.config.data.labels.length > 12) {
+                                return index % 5 === 0 ? dataLabel : '';
+                            }
+                            return dataLabel;
+                        }
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        userCallback: function (dataLabel, index) {
+                            return (dataLabel ^ 0) === dataLabel ? dataLabel : '';
+                        },
+                        min: 0
+                    }
+                }]
+            },
+            showScale: true,
+            scaleShowGridLines: false,
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            scaleGridLineWidth: 1,
+            scaleShowHorizontalLines: true,
+            scaleShowVerticalLines: true,
+            bezierCurve: true,
+            pointDot: false,
+            pointDotRadius: 4,
+            pointDotStrokeWiioldth: 1,
+            pointHitDetectionRadius: 20,
+            datasetStroke: true,
+            datasetFill: true,
+            maintainAspectRatio: false,
+            responsive: true
         }
+    };
+
+    function changeType(type) {
+        var osLabels = [];
+        var osData = [];
+
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "Order/GetOrdersStatistics/",
+            data: {
+                statisticsType: type
+            },
+            success: function (data, textStatus, jqXHR) {
+                for (var i = 0; i < data.length; i++) {
+                    osLabels.push(data[i].date);
+
+                    osData.push(data[i].value);
+                }
+
+                //  if (!window.orderStatistics) {
+
+                osConfig.data.labels = osLabels;
+                osConfig.data.datasets[0].data = osData;
+                osConfig.data.scales =
+                    window.orderStatistics = new Chart(document.getElementById("order-statistics-chart").getContext("2d"), osConfig);
+                //   } else {
+                //       window.orderStatistics.config.data.labels = osLabels;
+                //      window.orderStatistics.config.data.datasets[0].data = osData;
+                //     window.orderStatistics.update();
+                // }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+    }
 
 </script>
 

@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
  
@@ -11,8 +13,11 @@ namespace Sude.Mvc.UI.ApiManagement
     public class Api
     {
         private static Api apiHandler = null;
+        private static Sude.Mvc.UI.Admin.SudeSessionContext SudeSessionContext;
 
-        private Api() { }
+        private Api() { 
+        
+        }
 
         public static Api GetHandler
         {
@@ -20,6 +25,7 @@ namespace Sude.Mvc.UI.ApiManagement
             {
                 if (apiHandler == null)
                     apiHandler = new Api();
+
                 return apiHandler;
             }
         }
@@ -34,6 +40,48 @@ namespace Sude.Mvc.UI.ApiManagement
 
                 //http Get Request
                 HttpResponseMessage response = await client.GetAsync(ActionAddress);
+
+                string result = await response.Content.ReadAsStringAsync();
+                resultGet = JsonConvert.DeserializeObject<T>(result);
+
+            }
+
+            return resultGet;
+        }
+
+
+        public async Task<T> GetApiAsync<T>(string ActionAddress, TokenResponse token)
+        {
+            T resultGet = default(T);
+            using (var client = new HttpClient())
+            {
+                client.SetBearerToken(token.AccessToken);
+                /*client.BaseAddress = new Uri("");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));*/
+              
+                //http Get Request
+                HttpResponseMessage response = await client.GetAsync(ActionAddress);
+
+                string result = await response.Content.ReadAsStringAsync();
+                resultGet = JsonConvert.DeserializeObject<T>(result);
+
+            }
+
+            return resultGet;
+        }
+
+
+
+        public async Task<T> GetApiAsync<T>(string ActionAddress, object request,TokenResponse token)
+        {
+            T resultGet = default(T);
+            using (var client = new HttpClient())
+            {
+                client.SetBearerToken(token.AccessToken);
+                var serilizedUser = JsonConvert.SerializeObject(request);
+                StringContent content = new StringContent(serilizedUser, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsJsonAsync(ActionAddress, request);
 
                 string result = await response.Content.ReadAsStringAsync();
                 resultGet = JsonConvert.DeserializeObject<T>(result);
@@ -73,6 +121,17 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public static string ServerAddress { get; set; }
         //protected static readonly string ServerAddress = "http://localhost:2184";
+        public class IdentityServer
+        {
+            public static readonly string RegisterService = "https://bamdadserver:8085/api/Users";
+            public static readonly string GetUserInfoByUerName = "https://bamdadserver:8085/api/Users/GetUser?UserName=";
+            public static readonly string GetUserInfoByUerId = "https://bamdadserver:8085/api/Users/";
+            public static readonly string ChangePassword = "https://bamdadserver:8085/api/Users/ChangePassword";
+
+        }
+
+
+
         public class Customer
         {
             public static readonly string GetCustomersByWorkId = ServerAddress + "/api/Customer/GetCustomersByWorkId/";
@@ -104,6 +163,7 @@ namespace Sude.Mvc.UI.ApiManagement
          
             public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
             public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
+            public static readonly string GetUserOrders = ServerAddress + "/api/Order/GetUserOrders/";
             public static readonly string GetOrderById = ServerAddress + "/api/Order/GetOrderById/";
             public static readonly string GetOrdersByWorkId = ServerAddress + "/api/Order/GetOrdersByWorkId/";
             public static readonly string EditOrder = ServerAddress + "/api/Order/EditOrder/";
@@ -149,6 +209,7 @@ namespace Sude.Mvc.UI.ApiManagement
         public class Work
         {
             public static readonly string GetWorks= ServerAddress + "/api/work/GetWorks/";
+            public static readonly string GetWorksByUserId = ServerAddress + "/api/work/GetWorksByUserId/";
             public static readonly string GetWorkById = ServerAddress + "/api/work/GetWorkById/";
             public static readonly string EditWork = ServerAddress + "/api/work/EditWork/";
             public static readonly string AddWork = ServerAddress + "/api/work/AddWork/";

@@ -1,0 +1,157 @@
+﻿@font-face {
+    font-family: Vazir;
+    src: url('../fonts/Vazir-FD-WOL.eot');
+    src: url('../fonts/Vazir-FD-WOL.eot?#iefix') format('embedded-opentype'), url('../fonts/Vazir-FD-WOL.woff') format('woff'), url('../fonts/Vazir-FD-WOL.ttf') format('truetype');
+    font-weight: normal;
+}
+
+
+/* http://meyerweb.com/eric/tools/css/reset/
+           v2.0 | 20110126
+           License: none (public domain)
+        */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: 'Vazir';
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+body {
+    background: #c0c0c0;
+    color: #000;
+    font-family: 'Varela Round', sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 100%;
+    direction: rtl;
+}
+
+input {
+    background-image: none;
+    border: none;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    transition: all .3s;
+}
+
+/* ---------- ALIGN ---------- */
+
+.align {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ---------- GRID ---------- */
+
+.grid {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    width: 400px;
+}
+
+/* ---------- LOGIN ---------- */
+
+#login h2 {
+    background: #f95252;
+    border-radius: 20px 20px 0 0;
+    color: #fff;
+    font-size: 28px;
+    padding: 20px 26px;
+}
+
+    #login h2 span[class*="fontawesome-"] {
+        margin-right: 14px;
+    }
+
+#login fieldset {
+    background: #fff;
+    border-radius: 0 0 20px 20px;
+    padding: 20px 26px;
+}
+
+    #login fieldset p {
+        color: #777;
+        margin-bottom: 14px;
+    }
+
+        #login fieldset p:last-child {
+            margin-bottom: 0;
+        }
+
+    #login fieldset input {
+        border-radius: 3px;
+    }
+
+        #login fieldset input[type="email"], #login fieldset input[type="password"] {
+            background: #eee;
+            color: #777;
+            padding: 4px 10px;
+            width: 100%;
+        }
+
+        #login fieldset input[type="submit"] {
+            background: #33cc77;
+            color: #fff;
+            display: block;
+            margin: 0 auto;
+            padding: 4px 0;
+            width: 100px;
+        }
+
+            #login fieldset input[type="submit"]:hover {
+                background: #28ad63;
+            }

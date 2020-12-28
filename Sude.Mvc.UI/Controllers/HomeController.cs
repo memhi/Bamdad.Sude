@@ -11,7 +11,7 @@ using Sude.Dto.DtoModels.Serving;
 using Sude.Dto.DtoModels.Order;
 using Sude.Dto.DtoModels.Work;
 using Sude.Mvc.UI.ApiManagement;
-
+using Sude.Mvc.UI.Admin;
 
 namespace Sude.Mvc.UI.Controllers
 {
@@ -19,9 +19,12 @@ namespace Sude.Mvc.UI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public readonly SudeSessionContext _sudeSessionContext;
+        public HomeController(ILogger<HomeController> logger ,SudeSessionContext sudeSessionContext)
         {
+            _sudeSessionContext = sudeSessionContext;
             _logger = logger;
+            
         }
 
         public async Task<ActionResult> Index()
@@ -43,6 +46,7 @@ namespace Sude.Mvc.UI.Controllers
             ViewData["WorkCount"] =((worklist  != null && worklist.Data!=null) ? worklist.Data.Count().ToString() : "0");
             ViewData["ServingCount"] = ((servinglist != null && servinglist.Data != null) ? servinglist.Data.Count().ToString() : "0");
             ViewData["OrderCount"] = ((orderlist != null && orderlist.Data != null) ? orderlist.Data.Count().ToString() : "0");
+           
 
 
             return View();
