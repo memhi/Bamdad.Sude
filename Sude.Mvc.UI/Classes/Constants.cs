@@ -33,6 +33,8 @@ namespace Sude.Mvc.UI
 
         public static class ViewBagNames
         {
+            public const string OrderDateFrom = "OrderDateFrom";
+            public const string OrderDateTo = "OrderDateTo";
             public const string Customers = "Customers";
             public const string Servings = "Servings";
             public const string OrderDetails = "OrderDetails";
@@ -43,7 +45,8 @@ namespace Sude.Mvc.UI
             public const string ServingCount = "ServingCount";
             public const string OrderCount = "OrderCount";
             public const string OrderBuyCount = "OrderBuyCount";
-
+            public const string OrderSearchType = "OrderSearchType";
+            
             public const string SumOrderPrice = "SumOrderPrice";
             public const string SumOrderBuyPrice = "SumOrderBuyPrice";
 

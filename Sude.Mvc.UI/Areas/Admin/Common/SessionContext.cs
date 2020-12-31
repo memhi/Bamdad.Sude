@@ -11,6 +11,9 @@ using Sude.Mvc.UI.ApiManagement;
 using Sude.Dto.DtoModels.Work;
 using Sude.Dto.DtoModels.Order;
 using System.Collections.Generic;
+using Sude.Mvc.UI.Menu;
+using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 
 namespace Sude.Mvc.UI.Admin
 {
@@ -18,10 +21,11 @@ namespace Sude.Mvc.UI.Admin
     public class SudeSessionContext
     {
         private readonly IHttpContextAccessor _contextAccessor;
-
-        public SudeSessionContext(IHttpContextAccessor contextAccessor)
+        private readonly IWebHostEnvironment _HostingEnvitonment;
+        public SudeSessionContext(IHttpContextAccessor contextAccessor, IWebHostEnvironment hostingEnvitonment)
         {
             _contextAccessor = contextAccessor;
+            _HostingEnvitonment = hostingEnvitonment;
         }
 
         public virtual void LogoutUser()
@@ -31,6 +35,7 @@ namespace Sude.Mvc.UI.Admin
             CurrentWorkId = null;
             CurrentWorkName = null;
             CurrentUser = null;
+            IsAdmin = false;
    
 
         }
@@ -123,22 +128,42 @@ namespace Sude.Mvc.UI.Admin
 
             }
         }
+
+        public UserInfo GetUserInfo(string userName,string password)
+        {
+            XmlUsers users = new XmlUsers();
+            users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
+         UserInfo userInfo=  users.Users.Where(u => u.userName.ToLower() == userName.ToLower() && u.password == password).FirstOrDefault();
+            return userInfo;
+
+        }
+
+        private UserInfo GetUserInfoById(string id)
+        {
+            XmlUsers users = new XmlUsers();
+            users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
+            UserInfo userInfo = users.Users.Where(u => u.id == id).FirstOrDefault();
+            return userInfo;
+
+        }
         public UserInfo CurrentUser
         {
             get
             {
+                
                 UserInfo userInfo = _contextAccessor.HttpContext.Session.GetObject<UserInfo>(Constants.SessionNames.CurrentUser);
+      
+
                 if (userInfo == null)
                 {
                     var userCookie = GetUserCookie();
+
                     if (Guid.TryParse(userCookie, out var userId))
                     {
-
-                        TokenResponse tresponse = CurrentTokenClient.RequestClientCredentialsTokenAsync("adminClient01_api").Result;
-                        var resultuser = Api.GetHandler
-                      .GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerId + userId.ToString(), tresponse);
-                        //get customer from cookie (should not be registered)
-                        userInfo = resultuser.Result;
+                       
+                        userInfo = GetUserInfoById(userCookie);
+                        if (userInfo != null && userInfo.userName.ToLower() == "bamdad")
+                            IsAdmin = true;
                     }
 
                     _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentUser, userInfo);
@@ -287,7 +312,7 @@ namespace Sude.Mvc.UI.Admin
 
                 var _client = new HttpClient()
                 {
-                    BaseAddress = new Uri("https://bamdadserver:8080/connect/token")
+                    BaseAddress = new Uri("https://idpsts.somee.com/connect/token")
                 };
 
                 return _client;

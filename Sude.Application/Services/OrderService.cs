@@ -19,6 +19,19 @@ namespace Sude.Application.Services
         {
             this._OrderRepository = orderRepository;
         }
+
+     public ResultSet< IEnumerable<OrderInfo>> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount)
+        {
+
+            return new ResultSet<IEnumerable<OrderInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = _OrderRepository.GetSearchOrders(orderDateFrom,orderDateTo,workId,isBuy,pageSize,pageIndex,out rowCount)
+            };
+
+        }
+
         public ResultSet<IEnumerable<OrderInfo>> GetOrders()
         {
             return new ResultSet<IEnumerable<OrderInfo>>()

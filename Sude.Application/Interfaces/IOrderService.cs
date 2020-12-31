@@ -10,6 +10,7 @@ namespace Sude.Application.Interfaces
 {
     public interface IOrderService
     {
+        ResultSet<IEnumerable<OrderInfo>> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount);
         ResultSet<IEnumerable<OrderInfo>> GetOrders();
         Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersByWorkIdAsync(Guid workId);
         ResultSet<OrderInfo> AddOrder(OrderInfo order);

@@ -19,7 +19,8 @@ namespace Sude.Domain.Interfaces
 
         Task<OrderInfo> GetOrderByIdAsync(Guid orderId);
         OrderInfo GetOrderById(Guid orderId);
-       
+
+        IEnumerable<OrderInfo> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo,Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount);
 
         void Save();
         Task SaveAsync();

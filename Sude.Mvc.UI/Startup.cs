@@ -27,6 +27,7 @@ namespace Sude.Mvc.UI
             Configuration = configuration;
             Env = env;
             Sude.Mvc.UI.ApiManagement.ApiAddress.ServerAddress = configuration.GetSection("AppSettings").GetSection("ApiAddress").Value.ToString(); ;
+            Sude.Mvc.UI.ApiManagement.ApiAddress.IdpServerAddress = configuration.GetSection("AppSettings").GetSection("IdpApiAddress").Value.ToString(); ;
         }
 
    

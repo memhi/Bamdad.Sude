@@ -44,20 +44,27 @@ namespace Sude.Mvc.UI.Admin.Controllers
         public async Task<ActionResult> Login(LoginViewModel request)
         {
 
-            TokenResponse tokenResponse = await _sudeSessionContext.CurrentTokenClient.RequestPasswordTokenAsync(request.Username, request.Password, "adminClient01_api");
 
-            _sudeSessionContext.AccessToken = tokenResponse.AccessToken;
-            if (tokenResponse.IsError)
-            {
-                ModelState.AddModelError("", tokenResponse.Error);
-                return View(request);
-            }
-            UserInfo userInfo = new UserInfo
-            {
-                userName = request.Username
-            };
-            var resultuser = await Api.GetHandler
-        .GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerName + request.Username, tokenResponse);
+
+            ///////// For IDP
+            //    TokenResponse tokenResponse = await _sudeSessionContext.CurrentTokenClient.RequestPasswordTokenAsync(request.Username, request.Password, "adminClient01_api");
+
+            //    _sudeSessionContext.AccessToken = tokenResponse.AccessToken;
+            //    if (tokenResponse.IsError)
+            //    {
+            //        ModelState.AddModelError("", tokenResponse.Error);
+            //        return View(request);
+            //    }
+            //    UserInfo userInfo = new UserInfo
+            //    {
+            //        userName = request.Username
+            //    };
+            //    var resultuser = await Api.GetHandler
+            //.GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerName + request.Username, tokenResponse);
+
+
+            UserInfo resultuser = _sudeSessionContext.GetUserInfo(request.Username, request.Password);
+
 
             if (string.IsNullOrEmpty(resultuser.id))
             {
@@ -70,6 +77,8 @@ namespace Sude.Mvc.UI.Admin.Controllers
             {
 
                 _sudeSessionContext.CurrentUser = resultuser;
+                if (resultuser.userName.ToLower() == "bamdad")
+                    _sudeSessionContext.IsAdmin = true;
                 ResultSetDto resultSet = new ResultSetDto()
                 {
                     IsSucceed = true,

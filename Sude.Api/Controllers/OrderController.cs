@@ -62,6 +62,9 @@ namespace Sude.Api.Controllers
         {
             try
             {
+
+
+
                 ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
                     return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
@@ -106,6 +109,70 @@ namespace Sude.Api.Controllers
             }
         }
 
+
+        [HttpPost]
+        //[Consumes("application/xml")]
+        //[Consumes("application/json")]
+        // [Authorize]
+        public async Task<ActionResult<ResultSetDto<IEnumerable<SearchOrderDtoModel>>>> GetSearchOrders([FromBody] SearchOrderDtoModel searchOrder)
+        {
+            try
+            {
+
+
+                int count = 0;
+
+                ResultSet<IEnumerable<OrderInfo>> resultSet = _OrderService.GetSearchOrders(searchOrder.DateFrom, searchOrder.DateTo, Guid.Parse(searchOrder.WorkId),
+                     searchOrder.IsBuy, searchOrder.PageSize, searchOrder.PageIndex, out count);
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
+
+
+                var result = resultSet.Data.Select(o => new SearchOrderDtoModel()
+                {
+                    DateFrom = o.OrderDate,
+                    DateTo = o.OrderDate,
+                    IsBuy = o.IsBuy,
+                    PageIndex = searchOrder.PageIndex,
+                    PageSize = searchOrder.PageSize,
+                    SearchCount = count,
+                    WorkId = searchOrder.WorkId,
+                    SumPrice=o.SumPrice
+
+
+
+
+
+
+                }) ;
+                return Ok(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
+
         [HttpGet("{userId}")]
         public async Task<ActionResult> GetUserOrders(string userId)
         {
@@ -123,22 +190,29 @@ namespace Sude.Api.Controllers
 
                     });
                 ResultSet<IEnumerable<OrderInfo>> resultSet = new ResultSet<IEnumerable<OrderInfo>>();
+   
                 foreach (WorkInfo workInfo in resultSetWork.Data)
                 {
                     ResultSet<IEnumerable<OrderInfo>> resultSetOrder = await _OrderService.GetOrdersByWorkIdAsync(workInfo.Id);
-                    if (resultSetOrder != null || resultSetOrder.Data == null && resultSetOrder.Data.Any())
+                    if (resultSetOrder != null && resultSetOrder.Data != null && resultSetOrder.Data.Any())
                     {
-                     foreach(OrderInfo orderInfo in resultSetOrder.Data)
+                        if (resultSet.Data == null)
                         {
-                            resultSet.Data.Append(orderInfo);
+                            resultSet.Data = resultSetOrder.Data;
 
                         }
+                        else
+                            foreach (OrderInfo orderInfo in resultSetOrder.Data)
+                            {
+                                resultSet.Data.Append(orderInfo);
+
+                            }
 
                     }
                 }
-               
 
-               // ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
+
+                // ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
                     return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                     {
@@ -323,7 +397,7 @@ namespace Sude.Api.Controllers
                     OrderDate = o.OrderDate,
                     SumPrice = o.SumPrice,
                     Description = o.Description,
-                     IsBuy=o.IsBuy
+                    IsBuy = o.IsBuy
 
                 };
 
@@ -452,11 +526,11 @@ namespace Sude.Api.Controllers
         }
 
 
-        private async Task<string> UpdateServingInventory (Guid servingId,double oldCount, double newCount , bool isOrder,bool IsDelete)
+        private async Task<string> UpdateServingInventory(Guid servingId, double oldCount, double newCount, bool isOrder, bool IsDelete)
         {
-          string  message = "";
+            string message = "";
 
-       
+
 
 
             if (isOrder)
@@ -473,28 +547,28 @@ namespace Sude.Api.Controllers
             if (IsDelete)
             {
                 newCount = newCount * -1;
-              
-    
-            }
-            
 
-           
+
+            }
+
+
+
 
             var servingresult = await _ServingService.GetServingByIdAsync(servingId);
-            if (!servingresult.IsSucceed || servingresult == null || servingresult.Data == null)   
+            if (!servingresult.IsSucceed || servingresult == null || servingresult.Data == null)
             {
                 message = "اطلاعات خدمت یا قلم موجود نیست";
 
                 return message;
             }
-            if(servingresult.Data.HasInventoryTracking)
+            if (servingresult.Data.HasInventoryTracking)
             {
                 var servinginventoryresult = await _ServingInventoryService.GetServingInventoryByServingIdAsync(servingresult.Data.Id);
                 ServingInventoryInfo servingInventory;
-                if(!servinginventoryresult.IsSucceed || servingresult.Data==null )
+                if (!servinginventoryresult.IsSucceed || servingresult.Data == null)
                 {
                     servingInventory = new ServingInventoryInfo();
-                    servingInventory.CurrentInventory = (newCount + oldCount); 
+                    servingInventory.CurrentInventory = (newCount + oldCount);
                     servingInventory.ServingId = servingresult.Data.Id;
                     var addservinginventoryresult = await _ServingInventoryService.AddServingInventoryAsync(servingInventory);
                     if (!addservinginventoryresult.IsSucceed)
@@ -509,7 +583,7 @@ namespace Sude.Api.Controllers
                 else
                 {
                     servingInventory = servinginventoryresult.Data;
-                    servingInventory.CurrentInventory += (newCount+oldCount);
+                    servingInventory.CurrentInventory += (newCount + oldCount);
                     var editservinginventoryresult = await _ServingInventoryService.EditServingInventoryAsync(servingInventory);
                     if (!editservinginventoryresult.IsSucceed)
                     {
@@ -528,11 +602,11 @@ namespace Sude.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetOrdersStatistics (OrderStatisticsDtoModel orderStatistics)
+        public async Task<ActionResult> GetOrdersStatistics(OrderStatisticsDtoModel orderStatistics)
         {
             try
             {
-                var resultSet =await  _OrderService.GetSearchOrdersCountAsync(orderStatistics.DateFrom, orderStatistics.DateTo,string.IsNullOrEmpty(orderStatistics.WorkId)?null : Guid.Parse(orderStatistics.WorkId));
+                var resultSet = await _OrderService.GetSearchOrdersCountAsync(orderStatistics.DateFrom, orderStatistics.DateTo, string.IsNullOrEmpty(orderStatistics.WorkId) ? null : Guid.Parse(orderStatistics.WorkId));
                 if (resultSet.IsSucceed)
                 {
 
@@ -557,13 +631,13 @@ namespace Sude.Api.Controllers
                     {
                         IsSucceed = false,
                         Message = "",
-                       
+
                     });
 
                 }
-              
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new ResultSetDto()
                 {
@@ -639,7 +713,7 @@ namespace Sude.Api.Controllers
                     else
                         CID = null;
 
-                     ResultSet<OrderNumberInfo> ordernumberresult = _OrderNumberService.GenerateOrderNumberByWorkId(Guid.Parse(orderdto.WorkId),orderdto.IsBuy);
+                    ResultSet<OrderNumberInfo> ordernumberresult = _OrderNumberService.GenerateOrderNumberByWorkId(Guid.Parse(orderdto.WorkId), orderdto.IsBuy);
 
                     if (!ordernumberresult.IsSucceed || ordernumberresult.Data == null)
                     {
@@ -652,11 +726,11 @@ namespace Sude.Api.Controllers
 
                     }
 
-                    string ordenumber = (orderdto.IsBuy? "B-":"S-")+ordernumberresult.Data.LastNumber.ToString();
+                    string ordenumber = (orderdto.IsBuy ? "B-" : "S-") + ordernumberresult.Data.LastNumber.ToString();
 
 
-                   
-                   OrderInfo order = new OrderInfo()
+
+                    OrderInfo order = new OrderInfo()
                     {
                         CustomerId = CID,
                         Description = orderdto.Description,
@@ -665,7 +739,7 @@ namespace Sude.Api.Controllers
                         WorkId = Guid.Parse(orderdto.WorkId),
                         Status = true,
                         SumPrice = sumprice,
-                        IsBuy=orderdto.IsBuy
+                        IsBuy = orderdto.IsBuy
 
                     };
                     var resultorder = await _OrderService.AddOrderAsync(order);
@@ -705,9 +779,9 @@ namespace Sude.Api.Controllers
                                 });
 
 
-                           
-                           var Message = await UpdateServingInventory(orderDetail.ServingId.Value,0, orderDetail.Count, !orderdto.IsBuy, false); 
-                           if(!string.IsNullOrEmpty(Message))
+
+                            var Message = await UpdateServingInventory(orderDetail.ServingId.Value, 0, orderDetail.Count, !orderdto.IsBuy, false);
+                            if (!string.IsNullOrEmpty(Message))
                                 return BadRequest(new ResultSetDto<OrderNewDtoModel>()
                                 {
                                     IsSucceed = false,
@@ -798,8 +872,8 @@ namespace Sude.Api.Controllers
 
 
                 OrderInfo orderInfo = resultOrder.Data;
-                orderInfo.CustomerId = (orderDTO.CustomerId==null ? null : Guid.Parse(orderDTO.CustomerId));
-                orderInfo.Description = orderDTO.Description;             
+                orderInfo.CustomerId = (orderDTO.CustomerId == null ? null : Guid.Parse(orderDTO.CustomerId));
+                orderInfo.Description = orderDTO.Description;
                 orderInfo.OrderDate = orderDTO.OrderDate;
                 orderInfo.IsBuy = orderDTO.IsBuy;
                 //  double sumpriceoriginal = resultOrder.Data.SumPrice;
@@ -810,8 +884,8 @@ namespace Sude.Api.Controllers
                     if (orderDetailsRequest.Where(od => od.ServingId.ToString() == orderDetailDetail.ServingId.ToString()).Count() <= 0)
                     {
 
-                 
-                        var Message = await UpdateServingInventory(orderDetailDetail.ServingId.Value, 0,orderDetailDetail.Count, !orderDTO.IsBuy, true);
+
+                        var Message = await UpdateServingInventory(orderDetailDetail.ServingId.Value, 0, orderDetailDetail.Count, !orderDTO.IsBuy, true);
                         if (!string.IsNullOrEmpty(Message))
                             return BadRequest(new ResultSetDto<OrderEditDtoModel>()
                             {
@@ -842,20 +916,20 @@ namespace Sude.Api.Controllers
 
                     sumpricerequestorder += (detailDetailDtoModel.Price * detailDetailDtoModel.Count);
                     ServingInventoryInfo servingInventory = new ServingInventoryInfo();
-                   OrderDetailInfo orderDetail  = await _OrderDetailService.GetOrderDetailByServingAndOrderIdAsync(Guid.Parse(orderDTO.OrderId), Guid.Parse(detailDetailDtoModel.ServingId));
+                    OrderDetailInfo orderDetail = await _OrderDetailService.GetOrderDetailByServingAndOrderIdAsync(Guid.Parse(orderDTO.OrderId), Guid.Parse(detailDetailDtoModel.ServingId));
                     if (orderDetail != null)
                     {
 
 
 
-                      
 
-                    
+
+
 
                         if (orderDetail.Serving.HasInventoryTracking)
                         {
 
-                            
+
                             var Message = await UpdateServingInventory(orderDetail.ServingId.Value, orderDetail.Count, detailDetailDtoModel.Count, !orderDTO.IsBuy, false);
                             if (!string.IsNullOrEmpty(Message))
                                 return BadRequest(new ResultSetDto<OrderEditDtoModel>()
@@ -913,19 +987,19 @@ namespace Sude.Api.Controllers
 
                         }
 
-                       
-
-                            var Message = await UpdateServingInventory(orderDetailInfo.ServingId.Value, 0, detailDetailDtoModel.Count, !orderDTO.IsBuy, false);
-                            if (!string.IsNullOrEmpty(Message))
-                                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
-                                {
-                                    IsSucceed = false,
-                                    Message = Message,
-                                    Data = null
-                                });
 
 
-                      
+                        var Message = await UpdateServingInventory(orderDetailInfo.ServingId.Value, 0, detailDetailDtoModel.Count, !orderDTO.IsBuy, false);
+                        if (!string.IsNullOrEmpty(Message))
+                            return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = Message,
+                                Data = null
+                            });
+
+
+
 
 
                     }
@@ -972,10 +1046,10 @@ namespace Sude.Api.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<ResultSetDto<OrderDetailDtoModel>>> DeleteOrder([FromBody]string orderId)
+        public async Task<ActionResult<ResultSetDto<OrderDetailDtoModel>>> DeleteOrder([FromBody] string orderId)
         {
 
-            
+
 
             try
             {
@@ -995,20 +1069,20 @@ namespace Sude.Api.Controllers
                 var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(o.Id);
                 foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
                 {
-                    
-                        var Message = await UpdateServingInventory(orderDetailDetail.ServingId.Value, 0, orderDetailDetail.Count, !o.IsBuy, true);
-                        if (!string.IsNullOrEmpty(Message))
-                            return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
-                            {
-                                IsSucceed = false,
-                                Message = Message,
-                                Data = null
-                            });
 
- 
+                    var Message = await UpdateServingInventory(orderDetailDetail.ServingId.Value, 0, orderDetailDetail.Count, !o.IsBuy, true);
+                    if (!string.IsNullOrEmpty(Message))
+                        return BadRequest(new ResultSetDto<OrderDetailDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = Message,
+                            Data = null
+                        });
+
+
                 }
 
-             
+
 
 
 

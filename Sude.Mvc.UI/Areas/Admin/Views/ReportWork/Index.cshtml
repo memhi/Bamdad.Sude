@@ -1,0 +1,147 @@
+﻿@model ResultSetDto<IEnumerable<SearchOrderDtoModel>>
+@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+
+    HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Report");
+    ViewBag.PageTitle = "گزارشات کسب و کار";
+}
+
+<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+<script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+<div class="box box-primary">
+    <div class="box-header with-border text-center">
+        <h3 class="box-title">جستجو</h3>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>تاریخ شروع جستجو</label>
+                    </div>
+                    <div class="input-group  col-md-8">
+
+                        <input id="txtOrderDateFrom" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateFrom]).ToLocalizationDateTime("g1"))" class="form-control" />
+                        <input id="OrderDateFromVal" hidden="hidden" value="@Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateFrom])" />
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>تاریخ پایان جستجو</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input id="txtOrderDateTo" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateTo]).ToLocalizationDateTime("g1"))" class="form-control" />
+                        <input id="OrderDateToVal" hidden="hidden" value="@Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateTo])" />
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-12 text-center">
+
+                <a class="btn btn-default btn-primary" onclick="SearchOrders()"><span class="fa fa-search margin-r-5"></span>جستجو</a>
+
+
+
+
+            </div>
+
+        </div>
+        <div class="row margin-bottom"></div>
+            <div class="row">
+
+                <div id="searchOrderView" class="col-md-12">
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+@section Scripts
+{
+
+
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Sweetalert2/animate.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    <script>
+        $('#txtOrderDateFrom').MdPersianDateTimePicker({
+            targetTextSelector: '#txtOrderDateFrom',
+            targetDateSelector: '#OrderDateFromVal',
+            dateFormat: 'yyyy-MM-dd HH:mm:ss',
+            isGregorian: false,
+            enableTimePicker: true
+        });
+
+        $('#txtOrderDateTo').MdPersianDateTimePicker({
+            targetTextSelector: '#txtOrderDateTo',
+            targetDateSelector: '#OrderDateToVal',
+            dateFormat: 'yyyy-MM-dd HH:mm:ss',
+            isGregorian: false,
+            enableTimePicker: true
+        });
+    </script>
+    <script>
+
+        function SearchOrders() {
+
+            //var address = "Report/SearchReport?DateFrom=" + encodeURIComponent($('#OrderDateFromVal').val()) + "&DateTo=" + encodeURIComponent($('#OrderDateToVal').val()) + "&IsBuy=";
+
+
+            $("#searchOrderView").load("ReportWork/SearchReport?DateFrom=" + encodeURIComponent($('#OrderDateFromVal').val()) + "&DateTo=" + encodeURIComponent($('#OrderDateToVal').val()) + "&IsBuy=");
+        }
+
+
+
+    </script>
+
+
+}

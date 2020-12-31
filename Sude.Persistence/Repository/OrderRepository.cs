@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Sude.Domain.Interfaces;
 using Sude.Domain.Models.Order;
  
+ 
 using Sude.Persistence.Contexts;
 
 namespace Sude.Persistence.Repository
@@ -22,7 +23,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<int> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null)
         {
-            if (workId==null)
+            if (workId == null)
 
                 return await _orderRepository.GetAsync(o => o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo).Result.ToCount();
             else
@@ -31,7 +32,21 @@ namespace Sude.Persistence.Repository
 
         }
 
-       
+        public IEnumerable<OrderInfo>  GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo,Guid workId,bool? isBuy,int pageSize ,int pageIndex, out int rowCount )
+        {
+            //if (workId == null)
+
+            //    return  _orderRepository.GetAsync(o => o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo).Result
+            //        .GroupBy(og =>new  { og.OrderDate.Date, og.IsBuy }).Select(g => new { DateOrder = g.Key.Date, IsBuy=g.Key.IsBuy, SumPrice = g.Sum(ri => ri.SumPrice)});
+            //else
+            return  _orderRepository.Get(o => o.WorkId==workId && o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo &&(o.IsBuy==isBuy || isBuy==null))
+                .GroupBy(og => new { og.OrderDate.Date, og.IsBuy }).Select(g => new OrderInfo { OrderDate = g.Key.Date, IsBuy = g.Key.IsBuy, SumPrice = g.Sum(ri => ri.SumPrice) }).OrderByDescending(o=>o.OrderDate)
+                .ToPaged(pageIndex,pageSize,out rowCount);
+
+
+        }
+
+
 
         public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
         {

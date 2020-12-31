@@ -2,12 +2,13 @@
 @using Sude.Mvc.UI.Menu
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+@inject Sude.Mvc.UI.Admin.SudeSessionContext SudeSessionContext
 @{
     var supportRtl = true;
     string url = null;
     if (!string.IsNullOrEmpty(Model.ControllerName) && !string.IsNullOrEmpty(Model.ActionName))
     {
-        url = Model.ControllerName + "/"+ Model.ActionName;
+        url = Model.ControllerName + "/" + Model.ActionName;
     }
     else if (!string.IsNullOrEmpty(Model.Url))
     {
@@ -15,63 +16,67 @@
     }
     var isActive = Model.ContainsSystemName(HttpContextAccessor.HttpContext.Session.GetActiveMenuItemSystemName());
 }
-@if (!string.IsNullOrEmpty(url))
+
+@if (SudeSessionContext.IsAdmin == true || (Model.SystemName != "SystemManagement" && SudeSessionContext.IsAdmin == false))
 {
-    <li @(isActive ? Html.Raw("class=\"active current-active-item\"") : null)>
-        <a href="@url" class="menu-item-link" @(Model.OpenUrlInNewTab ? Html.Raw(" target=\"_blank\"") : null)>
-            @if (!string.IsNullOrEmpty(Model.IconClass))
-            {
-                <text>
-                    <i class="fa @Url.Content(Model.IconClass)"></i>
-                </text>
-            }
-            <span class="menu-item-title">@Model.Title</span>
-        </a>
-    </li>
-}
-else
-{
-    var childNodes = Model.ChildNodes.Where(x => x.Visible).ToList();
-    var hasChildNodes = childNodes.Any();
-    var liCssClass = "";
-    if (hasChildNodes)
+    @if (!string.IsNullOrEmpty(url))
     {
-        liCssClass = "treeview";
-    }
-    if (isActive)
-    {
-        if (!String.IsNullOrEmpty(liCssClass))
-        {
-            liCssClass += " ";
-        }
-        liCssClass += "active current-active-item";
-    }
-    <li @(!String.IsNullOrEmpty(liCssClass) ? Html.Raw("class=\"" + liCssClass + "\"") : null)>
-        <a href="#">
-            @if (!string.IsNullOrEmpty(Model.IconClass))
-            {
-                <text>
-                    <i class="fa @Url.Content(Model.IconClass)"></i>
-                </text>
-            }
-            <span>@Model.Title</span>
-            @if (supportRtl)
-            {
-                <i class="fa fa-angle-right pull-right"></i>
-            }
-            else
-            {
-                <i class="fa fa-angle-left pull-right"></i>
-            }
-        </a>
-        @if (hasChildNodes)
-        {
-            <ul class="treeview-menu">
-                @foreach (var childItem in childNodes)
+        <li @(isActive ? Html.Raw("class=\"active current-active-item\"") : null)>
+            <a href="@url" class="menu-item-link" @(Model.OpenUrlInNewTab ? Html.Raw(" target=\"_blank\"") : null)>
+                @if (!string.IsNullOrEmpty(Model.IconClass))
                 {
-                    @await Html.PartialAsync("_MenuItem", childItem)
+                    <text>
+                        <i class="fa @Url.Content(Model.IconClass)"></i>
+                    </text>
                 }
-            </ul>
+                <span class="menu-item-title">@Model.Title</span>
+            </a>
+        </li>
+    }
+    else
+    {
+        var childNodes = Model.ChildNodes.Where(x => x.Visible).ToList();
+        var hasChildNodes = childNodes.Any();
+        var liCssClass = "";
+        if (hasChildNodes)
+        {
+            liCssClass = "treeview";
         }
-    </li>
+        if (isActive)
+        {
+            if (!String.IsNullOrEmpty(liCssClass))
+            {
+                liCssClass += " ";
+            }
+            liCssClass += "active current-active-item";
+        }
+        <li @(!String.IsNullOrEmpty(liCssClass) ? Html.Raw("class=\"" + liCssClass + "\"") : null)>
+            <a href="#">
+                @if (!string.IsNullOrEmpty(Model.IconClass))
+                {
+                    <text>
+                        <i class="fa @Url.Content(Model.IconClass)"></i>
+                    </text>
+                }
+                <span>@Model.Title</span>
+                @if (supportRtl)
+                {
+                    <i class="fa fa-angle-right pull-right"></i>
+                }
+                else
+                {
+                    <i class="fa fa-angle-left pull-right"></i>
+                }
+            </a>
+            @if (hasChildNodes)
+            {
+                <ul class="treeview-menu">
+                    @foreach (var childItem in childNodes)
+                    {
+                        @await Html.PartialAsync("_MenuItem", childItem)
+                    }
+                </ul>
+            }
+        </li>
+    }
 }

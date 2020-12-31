@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Sude.Dto.DtoModels.Order.SearchOrderDtoModel>
+@inject Sude.Mvc.UI.Admin.SudeSessionContext _sudeSessionContext
+
+ 
+
+    @if (string.IsNullOrEmpty(_sudeSessionContext.CurrentWorkId))
+    {
+
+        <div class="col-md-12">
+            <label>لطفا یک کسب و کار انتخاب کنید</label>
+        </div>
+
+
+    }
+    else
+
+    {
+        if (Model != null && Model.Any())
+        {
+           <div class="box box-info">
+<div class="box-header with-border text-center">
+    <h3 class="box-title">نتایج جستجو</h3>
+</div>
+<div class="box-body">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <label>تاریخ</label>
+                    </th>
+                    <th>
+                        نوع سفارش
+                    </th>
+                    <th>
+                        مجموع مبلغ
+                    </th>
+
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                                        {
+                <tr>
+                    <td>
+                        @item.DateFrom.ToLocalizationDateTime("D")
+                    </td>
+                    <td>
+                        @if (item.IsBuy.Value)
+                                                            {
+                        <label>خرید</label>
+                                                            }
+                                                            else
+                                                            {
+                        <label>فروش</label>
+                                                            }
+
+                    </td>
+                    <td>
+                        @item.SumPrice.ToString("0,0")
+                    </td>
+
+                    <td>
+                        <a href="#" class="btn btn-default">مشاهده جزئیات</a>
+                    </td>
+                </tr>
+                                        }
+            </tbody>
+        </table>
+    </div>
+    </div>
+    </div>
+
+    }
+    else
+
+    {
+
+    <div class="col-md-12">
+        <label>سفارشی یافت نشد</label>
+    </div>
+
+
+    }
+
+    }
+
+
+
+ 

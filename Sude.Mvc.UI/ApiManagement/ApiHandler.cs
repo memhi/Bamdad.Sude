@@ -120,13 +120,15 @@ namespace Sude.Mvc.UI.ApiManagement
         public static IConfiguration Config { get;  set; }
 
         public static string ServerAddress { get; set; }
+          public static string IdpServerAddress { get; set; }
+        
         //protected static readonly string ServerAddress = "http://localhost:2184";
         public class IdentityServer
         {
-            public static readonly string RegisterService = "https://bamdadserver:8085/api/Users";
-            public static readonly string GetUserInfoByUerName = "https://bamdadserver:8085/api/Users/GetUser?UserName=";
-            public static readonly string GetUserInfoByUerId = "https://bamdadserver:8085/api/Users/";
-            public static readonly string ChangePassword = "https://bamdadserver:8085/api/Users/ChangePassword";
+            public static readonly string RegisterService = IdpServerAddress +"/api/Users";
+            public static readonly string GetUserInfoByUerName = IdpServerAddress+"/api/Users/GetUser?UserName=";
+            public static readonly string GetUserInfoByUerId = IdpServerAddress + "/api/Users/";
+            public static readonly string ChangePassword = IdpServerAddress + "/api/Users/ChangePassword";
 
         }
 
@@ -160,7 +162,8 @@ namespace Sude.Mvc.UI.ApiManagement
         }
         public class Order
         {
-         
+            
+          public static readonly string GetSearchOrders = ServerAddress + "/api/Order/GetSearchOrders/";
             public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
             public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
             public static readonly string GetUserOrders = ServerAddress + "/api/Order/GetUserOrders/";
