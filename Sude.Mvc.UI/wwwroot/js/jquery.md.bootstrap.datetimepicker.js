@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * Bootstrap 4+ Persian Date Time Picker jQuery Plugin
  * version : 3.9.2
  * https://github.com/Mds92/MD.BootstrapPersianDateTimePicker
@@ -199,7 +199,7 @@
 
 
   var popverHtmlTemplate = `
-<div class="popover mds-bootstrap-persian-datetime-picker-popover" role="tooltip" ${mdDatePickerElementFlag}>    
+<div class="popover mds-bootstrap-persian-datetime-picker-popover leftPosition" role="tooltip" ${mdDatePickerElementFlag}>    
     <div class="arrow"></div>    
     <h3 class="popover-header text-center" data-name="mds-datetimepicker-title"></h3>    
     <div class="popover-body p-0" data-name="mds-datetimepicker-body"></div>
@@ -723,7 +723,8 @@
   }
 
   function showPopover($element) {
-    if (!$element) return;
+      if (!$element) return;
+      
     $element.popover('show');
   }
 
@@ -1959,7 +1960,8 @@
   $('html').on('click', function (e) {
     if (triggerStart) return;
     var $target = $(e.target),
-      $popoverDescriber = getPopoverDescriber($target);
+        $popoverDescriber = getPopoverDescriber($target);
+ 
     if ($popoverDescriber.length >= 1 || isWithinMdModal($target) || isCalendarOpen($target)) return;
     hidePopover($(mdDatePickerElementSelector));
   });
@@ -2077,7 +2079,9 @@
             }, 10);
           });
         } else if (setting.modalMode) {
-          $('body').append(modalHtmlTemplate);
+         
+            $('body').append(modalHtmlTemplate);
+
           $this.on('click', function () {
             if (setting.disabled) {
               return;
@@ -2085,19 +2089,24 @@
             setting.selectedDateToShow = setting.selectedDate != undefined ? getClonedDate(setting.selectedDate) : new Date();
             var calendarHtml = getDateTimePickerHtml(setting);
             $(mdDatePickerElementSelector).find('[data-name="mds-datetimepicker-body"]').html(calendarHtml);
-            $(mdDatePickerElementSelector).find('[data-buttonselector]').attr('data-buttonselector', uniqeId);
-            $(mdDatePickerElementSelector).modal('show');
+              $(mdDatePickerElementSelector).find('[data-buttonselector]').attr('data-buttonselector', uniqeId);
+            
+              $(mdDatePickerElementSelector).modal('show');
+    
           });
         }
+
         $(document).on('change', setting.targetTextSelector, function () {
           if (triggerChangeCalling) {
             setTimeout(function () {
-              triggerChangeCalling = false;
+                triggerChangeCalling = false;
+              
             }, 100);
             return;
           }
           var $this1 = $(this),
-            value1 = $this1.val();
+              value1 = $this1.val();
+ 
           if (!value1) {
             $this.MdPersianDateTimePicker('clearDate');
             return;
@@ -2114,6 +2123,7 @@
           }
         });
       });
+  
     },
     getText: function () {
       var textArray = [];
@@ -2223,7 +2233,8 @@
       });
     },
     hide: function () {
-      return this.each(function () {
+        return this.each(function () {
+      
         hidePopover($(this));
       });
     },

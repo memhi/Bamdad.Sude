@@ -32,7 +32,9 @@ namespace Microsoft.Extensions.DependencyInjection
                                     ServiceDescriptor.Scoped<IBlogService,BlogService>(),
                              ServiceDescriptor.Scoped<INewsService,NewsService>(),
                                   ServiceDescriptor.Scoped<IBlogCommentService,BlogCommentService>(),
-                             ServiceDescriptor.Scoped<INewsCommentService,NewsCommentService>()
+                             ServiceDescriptor.Scoped<INewsCommentService,NewsCommentService>(),
+                                            ServiceDescriptor.Scoped<ITypeService,TypeService>(),
+
             });
 
             return services;

@@ -40,7 +40,7 @@
                                                     <label>تاریخ</label>
                                                 </div>
                                                 <div class="col-md-10">
-                                                    <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                    <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
                                                     <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
                                                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                                                 </div>
@@ -135,13 +135,7 @@
 
     <div class="col-sm-6">
         <script>
-            $('#txtOrderDate').MdPersianDateTimePicker({
-                targetTextSelector: '#txtOrderDate',
-                targetDateSelector: '#OrderDateVal',
-                dateFormat: 'yyyy-MM-dd HH:mm:ss',
-                isGregorian: false,
-                enableTimePicker: true
-            });
+        
         </script>
 
     </div>
@@ -161,7 +155,7 @@
         $('#drpCustomers').select2();
 
     });
-
+    initializeDateTime('#txtOrderDate', '#OrderDateVal');
 
     function SaveNewOrder() {
         $.validator.unobtrusive.parse($('#frmAdd'));
@@ -170,11 +164,9 @@
             return;
         var order = {
             OrderNumber: '',
-            OrderDate: $("#OrderDateVal").val(),
+            OrderDate: getControlAltValueDateStructure('#OrderDateVal'),
             Description: $("#txtDesc").val()
-
-
-        }
+                    }
         $.ajax({
             url: "OrderBuy/Add",
             type: "Post",
@@ -183,7 +175,6 @@
             if (result.isSucceed) {
 
                 Command: toastr["success"]("سفارش ایجاد شد");
-
 
                 $("#orderView").load("Order/List");
             }

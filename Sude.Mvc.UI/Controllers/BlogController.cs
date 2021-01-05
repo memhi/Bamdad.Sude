@@ -49,6 +49,13 @@ namespace Sude.Mvc.UI.Controllers
             }
           
 
+
+
+                ViewBag.SitePageTitle = "مقالات";
+                if (BlogDetail != null && BlogDetail.Count() == 1)
+                    ViewBag.SitePageTitle = BlogDetail.First().Title;
+            
+
             return View(viewName: "DetailByUrl", model: BlogDetail);
         }
 

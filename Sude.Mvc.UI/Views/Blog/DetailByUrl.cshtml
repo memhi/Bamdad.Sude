@@ -1,14 +1,7 @@
 ﻿@model List<Sude.Dto.DtoModels.Content.BlogDetailDtoModel>
 
 
-@{
-   
-        ViewBag.SitePageTitle="مقالات";
-   if (Model != null && Model.Count() == 1)
-        ViewBag.SitePageTitle = @Model.First().Title;
-}
-
-<div style="padding-top:100px">
+<div>
     @{
         if (Model != null && Model.Count() == 1)
         {

@@ -86,7 +86,9 @@ namespace Sude.Api.Controllers
                     OrderDate = o.OrderDate,
                     SumPrice = o.SumPrice,
                     Description = o.Description,
-                    IsBuy = o.IsBuy
+                    IsBuy = o.IsBuy,
+                    PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
 
 
 
@@ -233,7 +235,9 @@ namespace Sude.Api.Controllers
                     OrderDate = o.OrderDate,
                     SumPrice = o.SumPrice,
                     Description = o.Description,
-                    IsBuy = o.IsBuy
+                    IsBuy = o.IsBuy,
+                    PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
 
 
 
@@ -397,7 +401,10 @@ namespace Sude.Api.Controllers
                     OrderDate = o.OrderDate,
                     SumPrice = o.SumPrice,
                     Description = o.Description,
-                    IsBuy = o.IsBuy
+                    IsBuy = o.IsBuy,
+                    PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+                     PaymentStatusTitle=o.PaymentStatus.TypeTitle.ToString()
+                   
 
                 };
 
@@ -492,7 +499,9 @@ namespace Sude.Api.Controllers
                         OrderDate = o.OrderDate,
                         SumPrice = o.SumPrice,
                         Description = o.Description,
-                        IsBuy = o.IsBuy
+                        IsBuy = o.IsBuy,
+                        PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+                        PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
 
 
                     });
@@ -729,6 +738,7 @@ namespace Sude.Api.Controllers
                     string ordenumber = (orderdto.IsBuy ? "B-" : "S-") + ordernumberresult.Data.LastNumber.ToString();
 
 
+              
 
                     OrderInfo order = new OrderInfo()
                     {
@@ -739,7 +749,9 @@ namespace Sude.Api.Controllers
                         WorkId = Guid.Parse(orderdto.WorkId),
                         Status = true,
                         SumPrice = sumprice,
-                        IsBuy = orderdto.IsBuy
+                        IsBuy = orderdto.IsBuy,
+                        PaymentStatusId=(string.IsNullOrEmpty(orderdto.PaymentStatusId)==true ? null: Guid.Parse(orderdto.PaymentStatusId))
+                       
 
                     };
                     var resultorder = await _OrderService.AddOrderAsync(order);
@@ -837,6 +849,80 @@ namespace Sude.Api.Controllers
 
 
         [HttpPost]
+        public async Task<ActionResult<ResultSetDto<OrderEditDtoModel>>> SetPayment([FromBody] OrderEditDtoModel orderDTO)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
+
+                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = message,
+                    Data = null
+                });
+            }
+
+            try
+            {
+
+             
+
+
+                var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
+
+                if (!resultOrder.IsSucceed)
+                    return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultOrder.Message,
+                        Data = null
+                    });
+
+
+                OrderInfo orderInfo = resultOrder.Data;               
+                orderInfo.PaymentStatusId = (string.IsNullOrEmpty(orderDTO.PaymentStatusId) == true ? null : Guid.Parse(orderDTO.PaymentStatusId));
+     
+
+
+                var resultSaveOrder = await _OrderService.EditOrderAsync(orderInfo);
+                if (!resultSaveOrder.IsSucceed)
+                    return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                    {
+                        IsSucceed = false,
+                        Message = resultSaveOrder.Message,
+                        Data = null
+                    });
+
+                return Ok(new ResultSetDto<OrderEditDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = orderDTO
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<OrderEditDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+
+
+
+
+        }
+
+
+
+        [HttpPost]
         public async Task<ActionResult<ResultSetDto<OrderDetailDtoModel>>> EditOrder([FromBody] OrderEditDtoModel orderDTO)
         {
 
@@ -876,7 +962,8 @@ namespace Sude.Api.Controllers
                 orderInfo.Description = orderDTO.Description;
                 orderInfo.OrderDate = orderDTO.OrderDate;
                 orderInfo.IsBuy = orderDTO.IsBuy;
-                //  double sumpriceoriginal = resultOrder.Data.SumPrice;
+                orderInfo.PaymentStatusId = (string.IsNullOrEmpty(orderDTO.PaymentStatusId) == true ? null : Guid.Parse(orderDTO.PaymentStatusId));
+
 
                 var orderDetailsOriginal = await _OrderDetailService.GetOrderDetailsAsync(resultOrder.Data.Id);
                 foreach (OrderDetailInfo orderDetailDetail in orderDetailsOriginal.Data)
@@ -1042,6 +1129,8 @@ namespace Sude.Api.Controllers
 
 
         }
+
+
 
 
 

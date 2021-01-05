@@ -134,6 +134,15 @@ namespace Sude.Mvc.UI.ApiManagement
 
 
 
+        public class Type
+        {
+            public static readonly string GetTypeByKey = ServerAddress + "/api/Type/GetTypeByKey/";
+            public static readonly string GetTypeById = ServerAddress + "/api/Type/GetTypeById/";
+            public static readonly string GetTypesByGroupKey = ServerAddress + "/api/Type/GetTypesByGroupKey/";
+
+        }
+
+
         public class Customer
         {
             public static readonly string GetCustomersByWorkId = ServerAddress + "/api/Customer/GetCustomersByWorkId/";
@@ -163,7 +172,8 @@ namespace Sude.Mvc.UI.ApiManagement
         public class Order
         {
             
-          public static readonly string GetSearchOrders = ServerAddress + "/api/Order/GetSearchOrders/";
+                public static readonly string SetPayment = ServerAddress + "/api/Order/SetPayment/";
+            public static readonly string GetSearchOrders = ServerAddress + "/api/Order/GetSearchOrders/";
             public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
             public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
             public static readonly string GetUserOrders = ServerAddress + "/api/Order/GetUserOrders/";

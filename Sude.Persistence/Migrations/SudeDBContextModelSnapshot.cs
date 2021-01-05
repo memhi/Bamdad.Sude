@@ -473,6 +473,9 @@ namespace Sude.Persistence.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("PaymentStatusId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
 
@@ -494,6 +497,8 @@ namespace Sude.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("PaymentStatusId");
 
                     b.HasIndex("WorkId");
 
@@ -535,6 +540,45 @@ namespace Sude.Persistence.Migrations
                     b.HasIndex("WorkId");
 
                     b.ToTable("OrderNumbers");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderPaymentInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PaymentModeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentModeId");
+
+                    b.ToTable("OrderPayments");
                 });
 
             modelBuilder.Entity("Sude.Domain.Models.PushNotification.UserDeviceInfo", b =>
@@ -729,6 +773,75 @@ namespace Sude.Persistence.Migrations
                     b.ToTable("ServingInventoryTrackings");
                 });
 
+            modelBuilder.Entity("Sude.Domain.Models.Type.TypeGroupInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TypeGroupKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeGroupTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeGroups");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Type.TypeInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TypeGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TypeKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeGroupId");
+
+                    b.ToTable("Types");
+                });
+
             modelBuilder.Entity("Sude.Domain.Models.Work.WorkInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -903,6 +1016,10 @@ namespace Sude.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("Sude.Domain.Models.Type.TypeInfo", "PaymentStatus")
+                        .WithMany()
+                        .HasForeignKey("PaymentStatusId");
+
                     b.HasOne("Sude.Domain.Models.Work.WorkInfo", "Work")
                         .WithMany()
                         .HasForeignKey("WorkId")
@@ -910,6 +1027,8 @@ namespace Sude.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("PaymentStatus");
 
                     b.Navigation("Work");
                 });
@@ -923,6 +1042,23 @@ namespace Sude.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Work");
+                });
+
+            modelBuilder.Entity("Sude.Domain.Models.Order.OrderPaymentInfo", b =>
+                {
+                    b.HasOne("Sude.Domain.Models.Order.OrderInfo", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sude.Domain.Models.Type.TypeInfo", "PaymentMode")
+                        .WithMany()
+                        .HasForeignKey("PaymentModeId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("PaymentMode");
                 });
 
             modelBuilder.Entity("Sude.Domain.Models.Serving.ServingInfo", b =>
@@ -970,6 +1106,17 @@ namespace Sude.Persistence.Migrations
                     b.Navigation("ServingInventory");
                 });
 
+            modelBuilder.Entity("Sude.Domain.Models.Type.TypeInfo", b =>
+                {
+                    b.HasOne("Sude.Domain.Models.Type.TypeGroupInfo", "TypeGroup")
+                        .WithMany()
+                        .HasForeignKey("TypeGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TypeGroup");
+                });
+
             modelBuilder.Entity("Sude.Domain.Models.Work.WorkInfo", b =>
                 {
                     b.HasOne("Sude.Domain.Models.Account.AddressInfo", "Address")
@@ -1001,6 +1148,8 @@ namespace Sude.Persistence.Migrations
             modelBuilder.Entity("Sude.Domain.Models.Order.OrderInfo", b =>
                 {
                     b.Navigation("Details");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Sude.Domain.Models.Serving.ServingInfo", b =>

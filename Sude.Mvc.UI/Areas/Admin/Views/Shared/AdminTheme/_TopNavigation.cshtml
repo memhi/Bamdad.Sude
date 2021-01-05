@@ -1,0 +1,218 @@
+﻿@inject Sude.Mvc.UI.Admin.SudeSessionContext _SudeSessionContext
+<header class="main-header">
+    <!-- Logo -->
+    <a href="Home" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini">پنل</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>کنترل پنل مدیریت</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- Messages: style can be found in dropdown.less-->
+                <!--<li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="label label-success">2</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">2 پیام خوانده نشده</li>
+                        <li>-->
+                <!-- inner menu: contains the actual data -->
+                <!--<ul class="menu">
+                    <li>-->
+                <!-- start message -->
+                <!--<a href="#">
+                        <div class="pull-right">
+
+                        </div>
+                        <h4>
+                            سیستم
+                            <small><i class="fa fa-clock-o"></i> ۵ دقیقه پیش</small>
+                        </h4>
+                        <p>موجودی 3 نوع کالا در حال اتمام است</p>
+                    </a>
+                </li>-->
+                <!-- end message -->
+                <!--<li>
+                                    <a href="#">
+                                        <div class="pull-right">
+
+                                        </div>
+                                        <h4>
+                                            کسب و کار آرایشگاه محمد
+                                            <small><i class="fa fa-clock-o"></i> ۲ ساعت پیش</small>
+                                        </h4>
+                                        <p>یک عدد نوشابه رزرو کنید</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="#">نمایش تمام پیام ها</a></li>
+                    </ul>
+                </li>-->
+                <!-- Notifications: style can be found in dropdown.less -->
+                <!--<li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning">4</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">4 اعلان جدید</li>
+                        <li>-->
+                <!-- inner menu: contains the actual data -->
+                <!--<ul class="menu">
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-money text-aqua"></i> درآمد روز گذشته = 500000
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-shopping-cart text-yellow"></i> تعداد سفارشات روز گذشته = 1000
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-money text-aqua"></i> درآمد ماه گذشته = 450000000
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-shopping-cart text-yellow"></i> تعداد سفارشات ماه گذشته = 51000
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                        <li class="footer"><a href="#">نمایش همه</a></li>
+                    </ul>
+                </li>-->
+                <!-- Tasks: style can be found in dropdown.less -->
+                <!--<li class="dropdown tasks-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-flag-o"></i>
+                        <span class="label label-danger">6</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">6 کار برای انجام دارید</li>
+                        <li>-->
+                <!-- inner menu: contains the actual data -->
+                <!--<ul class="menu">
+                    <li>-->
+                <!-- Task item -->
+                <!--<a href="#">
+                        <h3>
+                            خرید 10000 عدد نوشابه
+                            <small class="pull-left">20%</small>
+                        </h3>
+                        <div class="progress xs">
+                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
+                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                <span class="sr-only">20% تکمیل شده</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>-->
+                <!-- end task item -->
+                <!--<li>-->
+                <!-- Task item -->
+                <!--<a href="#">
+                        <h3>
+                            خرید ده عدد میز
+                            <small class="pull-left">40%</small>
+                        </h3>
+                        <div class="progress xs">
+                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar"
+                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                <span class="sr-only">40% تکمیل شده</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>-->
+                <!-- end task item -->
+                <!--</ul>
+                        </li>
+                        <li class="footer">
+                            <a href="#">نمایش همه</a>
+                        </li>
+                    </ul>
+                </li>-->
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <!--  <img src="AdminLte/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
+                        <span class="hidden-xs"> @_SudeSessionContext.CurrentUser.userName</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+
+
+                            <p>
+
+                                <small>مدیریت</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">صفحه من</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">فروش</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">خرید</a>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat">پروفایل</a>
+                            </div>
+                            <div class="pull-left">
+                                <a  id="btnLogout" class="btn btn-danger btn-flat">خروج</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+
+            </ul>
+        </div>
+
+
+    </nav>
+</header>
+<script>
+    $("#btnLogout").click(function () {
+
+        $.ajax({
+            url: "Login/Logout",
+            type: "Post"      
+        }).done(function (result) {
+            if (result.isSucceed) {
+
+                location.replace("Login");
+
+            }
+            else {
+
+                Command: toastr["warning"](result.message, "هشدار");
+            }
+        });
+    });
+</script>

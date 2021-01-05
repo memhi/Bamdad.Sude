@@ -16,7 +16,7 @@
     <div class="col-m-6">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">فهرست  سفارشات</h3>
+                <h3 class="box-title">سفارشات</h3>
 
                 <div class="box-tools">
                     
@@ -83,6 +83,7 @@
                             <td>
                                 <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
                                 <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+                                <button class="btn btn-primary btn-sm" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
                                 <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
 
 
@@ -170,6 +171,16 @@
     }
     function ShowEditOrder(orderId) {
         $("#orderView").load("Order/Edit/" + orderId);
+    }
+
+    
+    function ShowModalPayments(orderId) {
+        $.get("Order/ViewPayments/" + orderId, function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("جزئیات  پرداخت");
+            $("#myModalBody").html(result);
+
+        });
     }
     function ShowNewPageModalDetailOrder(orderId) {
         $.get("Order/Detail/" + orderId, function (result) {

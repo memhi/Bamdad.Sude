@@ -8,11 +8,31 @@ namespace Sude.Mvc.UI
     public static class Constants
     {
 
-        public static class CookieNames
+        public static class GroupType
+        {
+            public const string PaymentMode = "PaymentMode";
+            public const string PaymentStatus = "PaymentStatus";
+        }
+
+        public static class PaymentMode
             {
+            public const string ByCard = "ByCard";
+            public const string ByCash = "ByCash";
+        }
+        public static class PaymenStatus
+        {
+            public const string NotPaid = "NotPaid";
+            public const string CompletePaidByCard = "CompletePaidByCard";
+            public const string CompletePaidByCash = "CompletePaidByCash";
+        }
+
+        public static class CookieNames
+        {
             public const string Sude_ManagementWork_Cookie = "Sude_ManagementWork_Cookie";
             public const string Sude_ManagementWork_Cookie_UserName = "Sude_ManagementWork_Cookie_UserName";
         }
+
+
         public static class SessionNames
         {
             public const string CurrentWorkId = "CurrentWorkId";
@@ -33,6 +53,7 @@ namespace Sude.Mvc.UI
 
         public static class ViewBagNames
         {
+            public const string PaymentStatus = "PaymentStatus";
             public const string OrderDateFrom = "OrderDateFrom";
             public const string OrderDateTo = "OrderDateTo";
             public const string Customers = "Customers";
@@ -56,6 +77,7 @@ namespace Sude.Mvc.UI
         public static class Messages
         {
             public const string InsertOrderDetail = "لطفا اطلاعات جزئیات سفارش را وارد کنید.";
+            public const string OrderNotFound = "اطلاعات سفارش یافت نشد.";
 
         }
 

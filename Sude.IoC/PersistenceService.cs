@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sude.Domain.Interfaces;
+using Sude.Domain.Models.Order;
 using Sude.Persistence.Repository;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -26,7 +27,10 @@ namespace Microsoft.Extensions.DependencyInjection
                       ServiceDescriptor.Scoped<IBlogRepository, BlogRepository>(),
                         ServiceDescriptor.Scoped<IBlogCommentRepository, BlogCommentRepository>(),
                           ServiceDescriptor.Scoped<INewsRepository, NewsRepository>(),
-                            ServiceDescriptor.Scoped<INewsCommentRepository, NewsCommentRepository>()
+                            ServiceDescriptor.Scoped<INewsCommentRepository, NewsCommentRepository>(),
+                                    ServiceDescriptor.Scoped<ITypeRepository, TypeRepository>(),
+                                            ServiceDescriptor.Scoped<ITypeGroupRepository, TypeGroupRepository>(),
+                                                    ServiceDescriptor.Scoped<IOrderPaymentRepository, OrderPaymentRepository>()
 
 
 

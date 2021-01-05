@@ -23,9 +23,7 @@
 
 
                             <form id="frmAdd">
-                                <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-                                <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
-                                <link href="~/css/select2.css" rel="stylesheet" />
+                              
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                                 <div class="box box-info">
@@ -66,8 +64,8 @@
                                                         <label>تاریخ سفارش</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
-                                                        <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                        <input id="txtOrderDate"  class="form-control" value="@Model.OrderDate" />
+                                                       <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
                                                         <span asp-validation-for="OrderDate" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -164,13 +162,16 @@
 
     <div class="col-sm-6">
         <script>
-            $('#txtOrderDate').MdPersianDateTimePicker({
-                targetTextSelector: '#txtOrderDate',  
-                targetDateSelector:'#OrderDateVal',
-                dateFormat: 'yyyy-MM-dd HH:mm:ss',
-                isGregorian: false,
-                enableTimePicker: true 
-            });
+
+
+
+            //$('#txtOrderDate').MdPersianDateTimePicker({
+            //    targetTextSelector: '#txtOrderDate',  
+            //    targetDateSelector:'#OrderDateVal',
+            //    dateFormat: 'yyyy-MM-dd HH:mm:ss',         
+            //    enableTimePicker: true,
+            //    modalMode:true
+            //});
         </script>
        
     </div>
@@ -182,25 +183,30 @@
 <script>
 
     $(document).ready(function () {
-
-        
-
-
         $("#odetails").load("OrderDetail/List");
         $("#adddetail").load("OrderDetail/Add?servingHasTracking=0&IsActive=1");
         $('#drpCustomers').select2();
+    
 
     });
 
+
+
+
+
+ 
+
+    initializeDateTime('#txtOrderDate', '#OrderDateVal');
 
     function SaveNewOrder() {
         $.validator.unobtrusive.parse($('#frmAdd'));
         var isValid = $('#frmAdd').valid();
         if (!isValid)
             return;
-        var order = {
+ 
+                var order = {
             OrderNumber: '',
-            OrderDate: $("#OrderDateVal").val(),
+                    OrderDate: getControlAltValueDateStructure('#OrderDateVal'),
             Description: $("#txtDesc").val(),
             CustomerId: $("#drpCustomers").val(),
             CustomerName: $("#drpCustomers option:selected").text()

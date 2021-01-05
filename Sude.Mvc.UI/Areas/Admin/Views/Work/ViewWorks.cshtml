@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>
-
+@inject Sude.Mvc.UI.Admin.SudeSessionContext  SudeSessionContext
 @{
     Layout = null;
 }
@@ -16,14 +16,29 @@
     <section class="content text-center">
         <div class="box box-info text-center  bg-gray-light">
 
-            <div class="box-body text-center" >
+            <div class="box-body text-center">
                 @if (Model != null && Model.Count() > 0)
                 {
                     @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
                     {
-                        <div class="col-md-4 margin-bottom">
-                            <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-gray">@w.Title </a>
-                        </div>
+
+                        if (SudeSessionContext.CurrentWorkId==w.WorkId)
+                        {
+                            <div class="col-md-4 margin-bottom">
+                                <a  onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@w.Title </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4 margin-bottom">
+                                <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-gray">@w.Title </a>
+                            </div>
+
+                        }
+
+
+
+
 
                     }
                 }
@@ -33,34 +48,34 @@
                 {
 
                     <div class="col-md-12 margin-bottom">
-                       
+
                         <label>لطفا از بخش  <a href="Work" title="اینجا">مدیریت کسب و کار</a> یک کسب و کار ثبت کنید </label>
                     </div>
                 }
 
             </div>
-            </div>
-        </section>
-            <script>
-                function SelectDefaultWork(workId) {
+        </div>
+    </section>
+    <script>
+        function SelectDefaultWork(workId) {
 
-                    $.ajax({
-                        cache: false,
-                        type: "GET",
-                        url: "Work/SetDefaultWork",
-                        data: { "workId": workId },
-                        success: function (data) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "Work/SetDefaultWork",
+                data: { "workId": workId },
+                success: function (data) {
 
-                            location.reload();
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert('Failed to retrieve states.');
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
 
-                        }
-                    });
                 }
+            });
+        }
 
-            </script>
+    </script>
 </body>
 </html>
 

@@ -51,13 +51,13 @@ namespace Sude.Persistence.Repository
         public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
         {
 
-            return await _orderRepository.GetAsync(o => o.WorkId == workId, o => o.OrderByDescending(or => or.RegDate), "Work,Customer") ;
+            return await _orderRepository.GetAsync(o => o.WorkId == workId, o => o.OrderByDescending(or => or.RegDate), "Work,Customer,PaymentStatus") ;
         }
 
         public async Task<IEnumerable<OrderInfo>> GetOrdersAsync()
         {
            
-            return await _orderRepository.GetAsync(null,null,"Work,Customer");
+            return await _orderRepository.GetAsync(null,null, "Work,Customer,PaymentStatus");
         }
         public bool AddOrder(OrderInfo order)
         {
@@ -87,7 +87,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<OrderInfo> GetOrderByIdAsync(Guid orderId)
         {
-            return await _orderRepository.GetByIdAsync(o=>o.Id== orderId, "Details,Customer,Work,Details.Serving");
+            return await _orderRepository.GetByIdAsync(o=>o.Id== orderId, "Details,Customer,Work,PaymentStatus,Payments,Payments.PaymentMode,Details.Serving");
                 
         }
 
@@ -129,7 +129,7 @@ namespace Sude.Persistence.Repository
 
         public OrderInfo GetOrderById(Guid orderId)
         {
-            return _orderRepository.GetById(o => o.Id == orderId, "Details,Customer,Work");
+            return _orderRepository.GetById(o => o.Id == orderId, "Details,Customer,Work,Payments,Payments.PaymentMode,PaymentStatus");
         }
     }
 }

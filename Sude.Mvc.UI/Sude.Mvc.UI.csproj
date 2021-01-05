@@ -1876,7 +1876,7 @@
     <Content Include="wwwroot\AdminLTE\bower_components\bootstrap\dist\js\bootstrap.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="wwwroot\AdminLTE\bower_components\bootstrap\dist\js\bootstrap.min.js" />
+    <Resource Include="wwwroot\AdminLTE\bower_components\bootstrap\dist\js\bootstrap.min.js" />
     <None Include="wwwroot\AdminLTE\bower_components\bootstrap\dist\js\npm.js" />
     <None Include="wwwroot\AdminLTE\bower_components\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\AdminLTE\bower_components\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
@@ -3807,6 +3807,23 @@
     <None Include="wwwroot\AdminLTE\bower_components\select2\tests\vendor\jquery-1.7.2.js" />
     <None Include="wwwroot\AdminLTE\bower_components\select2\tests\vendor\qunit-1.23.1.js" />
     <None Include="wwwroot\AdminLTE\bower_components\select2\vendor\jquery-2.1.0.js" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\AdminLTE\css\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\AdminLTE\jqueryui\external\jquery\jquery.js" />
+    <None Include="wwwroot\AdminLTE\jqueryui\jquery-ui.js" />
+    <None Include="wwwroot\AdminLTE\jqueryui\jquery-ui.min.js" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.js" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.js.map" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.min.js" />
+    <None Include="wwwroot\AdminLTE\js\bootstrap.min.js.map" />
     <None Include="wwwroot\HomePageTemplate\css\.DS_Store" />
     <None Include="wwwroot\HomePageTemplate\css\bootstrap.min.css.map" />
     <None Include="wwwroot\HomePageTemplate\fonts\.DS_Store" />
@@ -4043,6 +4060,9 @@
 
   <ItemGroup>
     <Content Update="wwwroot\AdminLTE\js\adminlte.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\AdminLTE\js\adminlte.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Sweetalert2\sweetalert2.min.js">

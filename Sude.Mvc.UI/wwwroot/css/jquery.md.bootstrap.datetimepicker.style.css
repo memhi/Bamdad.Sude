@@ -210,6 +210,10 @@
     margin-bottom: 1px;
     cursor: default;
 }
+.leftPosition{
+    left:10% !important;
+
+}
 
 .mds-bootstrap-persian-datetime-picker-popover {
     max-width: 100%;

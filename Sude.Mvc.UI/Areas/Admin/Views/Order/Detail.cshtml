@@ -30,7 +30,7 @@
             </div>
 
             <div class="box-body with-border">
-              
+
                 <div class="row">
 
 
@@ -131,9 +131,20 @@
                             }
                         </table>
                     </div>
+
+                </div>
+                <div class="row bg-gray">
+                    <div class="col-md-6">
+                        <label asp-for="Description">وضعیت پرداخت</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Model.PaymentStatusTitle
+
+                    </div>
+                </div>
+
                 </div>
             </div>
-        </div>
 
 </body>
 </html>

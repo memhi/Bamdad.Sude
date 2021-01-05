@@ -23,5 +23,15 @@ namespace Sude.Application.Interfaces
         Task<ResultSet> DeleteOrderAsync(Guid orderId);
         Task<ResultSet<OrderInfo>> GetOrderByIdAsync(Guid orderId);
         Task<ResultSet<int>> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null);
+        ResultSet<OrderPaymentInfo> AddOrderPayment(OrderPaymentInfo orderPayment);
+        Task<ResultSet<OrderPaymentInfo>> AddOrderPaymentAsync(OrderPaymentInfo orderPayment);
+        ResultSet<OrderPaymentInfo> GetOrderPaymentById(Guid orderPaymentId);
+
+        Task<ResultSet<IEnumerable<OrderPaymentInfo>>> GetOrderPaymentByOrderIdAsync(Guid orderId);
+        Task<ResultSet<OrderPaymentInfo>> GetOrderPaymentByIdAsync(Guid orderPaymentId);
+        ResultSet EditOrderPayment(OrderPaymentInfo orderPayment);
+        ResultSet DeleteOrderPayment(Guid orderPaymentId);
+        Task<ResultSet> DeleteOrderPaymentAsync(Guid orderPaymentId);
+
     }
 }

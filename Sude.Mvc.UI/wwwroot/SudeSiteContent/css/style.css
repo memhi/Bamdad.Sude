@@ -1,0 +1,15 @@
+
+@font-face {
+    font-family: 'Sude';
+    src: url('Sude.eot');
+    src: url('Sude.eot?#iefix') format('embedded-opentype'), url('Sude.woff') format('woff'), url('Sude.ttf') format('truetype');
+    font-weight: normal;
+}
+
+body {
+    line-height: 1.7;
+    color: #999999;
+    font-weight: 300;
+    font-size: 15px;
+    font-family: 'Sude';
+}

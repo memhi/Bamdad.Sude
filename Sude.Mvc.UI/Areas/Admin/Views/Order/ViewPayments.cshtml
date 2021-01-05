@@ -1,0 +1,77 @@
+﻿@model List<Sude.Dto.DtoModels.Type.TypeDetailDtoModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detail</title>
+</head>
+<body>
+
+    <section class="content text-center">
+        <div class="box box-info text-center  bg-gray-light">
+            <input id="OrderId" type="hidden" value="@ViewBag.OrderId" />
+            <div class="box-body text-center">
+                @if (Model != null && Model.Count() > 0)
+                {
+                    @foreach (Sude.Dto.DtoModels.Type.TypeDetailDtoModel type in Model)
+                    {
+
+                        if (ViewBag.PaymentStatusId == type.TypeId)
+                        {
+                            <div class="col-md-4 margin-bottom">
+                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@type.Title </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4 margin-bottom">
+                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-gray">@type.Title </a>
+                            </div>
+
+                        }
+
+                    }
+                }
+
+                else
+
+                {
+
+                    <div class="col-md-12 margin-bottom">
+
+
+                    </div>
+                }
+
+            </div>
+            </div>
+        </section>
+            <script>
+                function SelectPayment(orderId,typeId) {
+                   
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: "Order/SetPayment",
+                        data: { "orderId":orderId, "typeId": typeId },
+                        success: function (data) {
+
+                            location.reload();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve states.');
+
+                        }
+                    });
+                }
+
+            </script>
+</body>
+</html>
+

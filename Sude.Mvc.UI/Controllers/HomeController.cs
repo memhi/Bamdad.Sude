@@ -46,8 +46,8 @@ namespace Sude.Mvc.UI.Controllers
             ViewData["WorkCount"] =((worklist  != null && worklist.Data!=null) ? worklist.Data.Count().ToString() : "0");
             ViewData["ServingCount"] = ((servinglist != null && servinglist.Data != null) ? servinglist.Data.Count().ToString() : "0");
             ViewData["OrderCount"] = ((orderlist != null && orderlist.Data != null) ? orderlist.Data.Count().ToString() : "0");
-           
 
+            ViewBag.SitePageTitle = "سامانه مدیریت کسب و کارهای کوچک";
 
             return View();
          

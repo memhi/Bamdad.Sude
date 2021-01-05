@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Sude.Dto.DtoModels.Type;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
@@ -129,6 +130,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             {
                 request.OrderDetails = orderDetails;
             }
+
+            var type = await Api.GetHandler
+            .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey+ Constants.PaymenStatus.NotPaid);
+            if (type != null && type.Data != null)
+                request.PaymentStatusId = type.Data.TypeId;
+
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
             request.WorkId = CurrentWorkId;
             request.IsBuy = true;
@@ -170,15 +177,22 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
             ViewData[Constants.ViewBagNames.Customers] = selectLists;
 
+
+            ResultSetDto<IEnumerable<TypeDetailDtoModel>> PaymentStatus = await Api.GetHandler
+   .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey + Constants.GroupType.PaymentStatus);
+            ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
+
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
             {
                 OrderId = result.Data.OrderId,              
                 Description = result.Data.Description,
                  OrderDate=result.Data.OrderDate,
                   OrderNumber=result.Data.OrderNumber,
-                   WorkId=result.Data.WorkId
-                  
- 
+                   WorkId=result.Data.WorkId,
+                PaymentStatusId = result.Data.PaymentStatusId,
+                IsBuy = result.Data.IsBuy
+
+
             });
         }
         //[Route("Edit/{request}")]

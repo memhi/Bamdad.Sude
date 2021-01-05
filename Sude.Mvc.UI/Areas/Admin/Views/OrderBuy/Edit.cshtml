@@ -39,7 +39,7 @@
                                                         <label>تاریخ سفارش</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input id="txtOrderDate" value="@Model.OrderDate.ToLocalizationDateTime("g1")" class="form-control" />
+                                                        <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
                                                         <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
                                                         <span asp-validation-for="OrderDate" class="text-danger"></span>
                                                     </div>
@@ -97,6 +97,38 @@
 
                                 </div>
                                 <div class="box-body">
+                                    <div class="row text-center">
+                                        <div class="btn-group margin-bottom text-center" data-toggle="buttons">
+                                            @{
+                                                int i = 0;
+                                                foreach (Sude.Dto.DtoModels.Type.TypeDetailDtoModel typepayment in ((IEnumerable<Sude.Dto.DtoModels.Type.TypeDetailDtoModel>)ViewData[Constants.ViewBagNames.PaymentStatus]))
+                                                {
+                                                    i++;
+                                                    string name = "btnRadio" + i.ToString();
+
+
+                                                    @if (typepayment.TypeId == Model.PaymentStatusId)
+                                                    {
+                                                        <label class="btn btn-primary active" for="@name">
+                                                            <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
+                                                            @typepayment.Title
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="btn btn-primary" for="@name">
+                                                            <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
+                                                            @typepayment.Title
+                                                        </label>
+
+
+
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
                                     <div class="row">
 
 
@@ -124,13 +156,7 @@
 
     <div class="col-sm-6">
         <script>
-            $('#txtOrderDate').MdPersianDateTimePicker({
-                targetTextSelector: '#txtOrderDate',
-                targetDateSelector: '#OrderDateVal',
-                dateFormat: 'yyyy-MM-dd HH:mm:ss',
-                isGregorian: false,
-                enableTimePicker: true
-            });
+            initializeDateTime('#txtOrderDate', '#OrderDateVal');
         </script>
 
     </div>
@@ -167,8 +193,9 @@
             OrderId: $("#txtOrderId").val(),
             WorkId: $("#txtWorkd").val(),
             OrderNumber: $("#txtOrderNumber").val(),
-            OrderDate: $("#OrderDateVal").val(),
-            Description: $("#txtDesc").val()
+            OrderDate: getControlAltValueDateStructure('#OrderDateVal'),
+            Description: $("#txtDesc").val(),
+            PaymentStatusId: $('input[name=PaymentStatusId]:radio:checked').val(),
 
         }
         $.ajax({
