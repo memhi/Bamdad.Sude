@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Sude.Mvc.UI.Menu;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using Sude.Dto.DtoModels.Result;
 
 namespace Sude.Mvc.UI.Admin
 {
@@ -35,8 +36,9 @@ namespace Sude.Mvc.UI.Admin
             CurrentWorkId = null;
             CurrentWorkName = null;
             CurrentUser = null;
+            UserWorks = null;
             IsAdmin = false;
-   
+
 
         }
 
@@ -44,7 +46,7 @@ namespace Sude.Mvc.UI.Admin
         protected virtual void RemoveUserCookie()
         {
             var cookieName = Constants.CookieNames.Sude_ManagementWork_Cookie;
-         _contextAccessor.HttpContext?.Response?.Cookies.Delete(cookieName);
+            _contextAccessor.HttpContext?.Response?.Cookies.Delete(cookieName);
         }
 
 
@@ -129,20 +131,27 @@ namespace Sude.Mvc.UI.Admin
             }
         }
 
-        public UserInfo GetUserInfo(string userName,string password)
+        public UserInfo GetUserInfo(string userName, string password)
         {
             XmlUsers users = new XmlUsers();
             users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
-         UserInfo userInfo=  users.Users.Where(u => u.userName.ToLower() == userName.ToLower() && u.password == password).FirstOrDefault();
+            UserInfo userInfo = users.Users.Where(u => u.userName.ToLower() == userName.ToLower() && u.password == password).FirstOrDefault();
             return userInfo;
 
         }
 
-        private UserInfo GetUserInfoById(string id)
+        private UserInfo GetUserInfoById(Guid userId)
         {
-            XmlUsers users = new XmlUsers();
-            users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
-            UserInfo userInfo = users.Users.Where(u => u.id == id).FirstOrDefault();
+
+
+            TokenResponse tresponse = CurrentTokenClient.RequestClientCredentialsTokenAsync("adminClient01_api").Result;
+            var resultuser = Api.GetHandler
+          .GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerId + userId.ToString(), tresponse);
+            UserInfo userInfo = resultuser.Result;
+
+            //XmlUsers users = new XmlUsers();
+            //users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
+            //UserInfo userInfo = users.Users.Where(u => u.id == userId.ToString()).FirstOrDefault();
             return userInfo;
 
         }
@@ -150,9 +159,9 @@ namespace Sude.Mvc.UI.Admin
         {
             get
             {
-                
+
                 UserInfo userInfo = _contextAccessor.HttpContext.Session.GetObject<UserInfo>(Constants.SessionNames.CurrentUser);
-      
+
 
                 if (userInfo == null)
                 {
@@ -160,12 +169,16 @@ namespace Sude.Mvc.UI.Admin
 
                     if (Guid.TryParse(userCookie, out var userId))
                     {
-                       
-                        userInfo = GetUserInfoById(userCookie);
+
+
+
+
+
+                        userInfo = GetUserInfoById(userId);
                         if (userInfo != null && userInfo.userName.ToLower() == "bamdad")
                             IsAdmin = true;
                     }
-
+                    if(userInfo != null)
                     _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentUser, userInfo);
                 }
                 return userInfo;
@@ -200,6 +213,42 @@ namespace Sude.Mvc.UI.Admin
                 _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.OrderDetails, value);
             }
         }
+
+
+
+        public List<WorkDetailDtoModel> UserWorks
+        {
+            get
+            {
+                List<WorkDetailDtoModel> works = _contextAccessor.HttpContext.Session.GetObject<List<WorkDetailDtoModel>>(Constants.SessionNames.UserWorks);
+                if ((works == null || !works.Any()) && CurrentUser != null)
+                {
+                    ResultSetDto<IEnumerable<WorkDetailDtoModel>> workListResult = Api.GetHandler
+   .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId + CurrentUser.id).Result;
+
+
+                    if (workListResult.IsSucceed && workListResult.Data != null)
+                    {
+                        works = new List<WorkDetailDtoModel>();
+                        foreach (WorkDetailDtoModel workDetailDto in workListResult.Data)
+                            works.Add(workDetailDto);
+                        _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.UserWorks, works);
+                    }
+
+
+                }
+                return works;
+
+
+            }
+            set
+            {
+
+
+                _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.UserWorks, value);
+            }
+        }
+
 
 
         public WorkDetailDtoModel CurrentWork
@@ -312,7 +361,7 @@ namespace Sude.Mvc.UI.Admin
 
                 var _client = new HttpClient()
                 {
-                    BaseAddress = new Uri("https://idpsts.somee.com/connect/token")
+                    BaseAddress = new Uri(ApiManagement.ApiAddress.IdpTokenAddress)
                 };
 
                 return _client;

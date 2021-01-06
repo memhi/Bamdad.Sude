@@ -121,13 +121,14 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public static string ServerAddress { get; set; }
           public static string IdpServerAddress { get; set; }
-        
-        //protected static readonly string ServerAddress = "http://localhost:2184";
+        public static string IdpTokenAddress { get; set; }
+
+ 
         public class IdentityServer
         {
-            public static readonly string RegisterService = IdpServerAddress +"/api/Users";
-            public static readonly string GetUserInfoByUerName = IdpServerAddress+"/api/Users/GetUser?UserName=";
-            public static readonly string GetUserInfoByUerId = IdpServerAddress + "/api/Users/";
+            public static readonly string RegisterService = IdpServerAddress + "/api/IDentityProviderFacade/RegisterUser";
+            public static readonly string GetUserInfoByUerName = IdpServerAddress+ "/api/IDentityProviderFacade/GetUserByUserName?Username=";
+            public static readonly string GetUserInfoByUerId = IdpServerAddress + "/api/IDentityProviderFacade/GetUserById/";
             public static readonly string ChangePassword = IdpServerAddress + "/api/Users/ChangePassword";
 
         }

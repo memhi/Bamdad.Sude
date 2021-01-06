@@ -23,19 +23,27 @@ namespace Sude.Mvc.UI
         {
    
            
-            if (httpContext.Request.Path.StartsWithSegments("/Admin")==true && httpContext.Request.Path.StartsWithSegments("/Admin/Work")==false)
+            if (httpContext.Request.Path.StartsWithSegments("/Admin")==true)
 
             {
 
 
-                
-                if(_sudeSessionContext.CurrentUser==null &&  !httpContext.Request.Path.Value.Contains("/Admin/Login"))
+
+                if (_sudeSessionContext.CurrentUser == null && !httpContext.Request.Path.StartsWithSegments("/Admin/Login"))
                 {
                     httpContext.Request.Path = "/Admin/Login";
                     httpContext.Response.Redirect("/Admin/Login");
                 }
                 else
-                await _next(httpContext);
+                {
+                    if(_sudeSessionContext.CurrentUser!=null  &&(_sudeSessionContext.UserWorks==null || _sudeSessionContext.UserWorks.Count()<0) && !httpContext.Request.Path.StartsWithSegments("/Admin/Work")  && !httpContext.Request.Path.StartsWithSegments("/Admin/Login"))
+                    {
+
+                        httpContext.Request.Path = "/Admin/Work";
+                        httpContext.Response.Redirect("/Admin/Work");
+                    }
+                    await _next(httpContext);
+                }
 
                  
                   

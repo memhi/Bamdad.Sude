@@ -1,6 +1,6 @@
 ﻿@using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Work
-@model ResultSetDto<IEnumerable<WorkDetailDtoModel>>
+@model IEnumerable<WorkDetailDtoModel>
  
      <div class="input-group">
         <input type="text" name="message" placeholder="Type words ..." class="form-control">
@@ -41,11 +41,12 @@
                     <tbody>
                         @{
                             int i = 1;
-                            if (Model != null && Model.Data != null)
-                                @foreach (var item in Model.Data)
+                            if (Model != null )
+                            {
+                                @foreach (var item in Model)
                                 {
-                                
-                                    <tr id="tr_@item.WorkTypeId">
+
+                                    <tr id="tr_@item.WorkId">
                                         <td lable="" style="--bgcolor: silver;">@(i++)</td>
                                         <td lable="عنوان" style="--minwidth:40%">@item.Title</td>
                                         <td lable="نوع" style="--minwidth:40%">@item.WorkTypeName</td>
@@ -57,7 +58,16 @@
                                             <a class="btn btn-danger btn-sm" onclick="DeleteWork('@item.WorkId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></a>
                                         </td>
                                     </tr>
-                                }}
+                                }
+
+                            }
+                        else
+                        {
+                        <tr>
+                            <td><label>کاربر گرامی، با انتخاب دکمه جدید یک کسب و کار ثبت نمایید</label></td>
+                        </tr>
+                            }
+                             }
                     </tbody>
                 </table>
             </div>

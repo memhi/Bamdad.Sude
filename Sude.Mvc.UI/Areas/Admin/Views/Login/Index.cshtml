@@ -19,6 +19,39 @@
     <link rel="stylesheet" href="~/AdminLTE/css/skins/skin-red.min.css">
     <link rel="stylesheet" href="~/AdminLTE/css/rtl.css">
     <!-- iCheck -->
+    <script src="~/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="~/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+   
+
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Sweetalert2/animate.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    </script>
 
 
 </head>
@@ -28,14 +61,6 @@
 
     </div>
 
-
-    <!-- /.login-box -->
-    <!-- jQuery 3 -->
-    <script src="~/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap 3.3.7 -->
-    <script src="~/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- iCheck -->
-    <script src="~/AdminLTE/plugins/iCheck/icheck.min.js"></script>
     <script>
 
 
@@ -51,6 +76,10 @@
             });
         });
     </script>
+
+    <!-- /.login-box -->
+    <!-- jQuery 3 -->
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 </body>
 

@@ -5,7 +5,9 @@
 @{
     Layout = null;
 }
- 
+
+
+
     <div class="register-box bg-red-gradient">
         <div class="register-logo">
             <a href="/">مدیریت کسب و کار</a>
@@ -16,21 +18,14 @@
 
             <form id="frmRegister">
                 <div class="form-group has-feedback">
-                    <input type="text" asp-for="Name" id="txtName" class="form-control" placeholder="نام">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="text" asp-for="Username" id="txtUserName" class="form-control" placeholder="نام">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="tel" class="form-control" id="txtPhone" asp-for="Phone" placeholder="تلفن">
+                    <input type="tel" class="form-control" id="txtPhone" asp-for="Phone" placeholder="شماره موبایل">
                     <span class="glyphicon glyphicon-phone form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="email" class="form-control" id="txtEmail" asp-for="Email" placeholder="ایمیل">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <input type="text" asp-for="Name" id="txtName" class="form-control" placeholder="نام">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
+
                 <div class="form-group has-feedback">
                     <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="کلمه عبور">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -55,31 +50,31 @@
                 </div>
             </form>
 
-        
-   
+
+
         </div>
         <!-- /.form-box -->
     </div>
     <!-- /.register-box -->
-    
+
     <script>
 
         function Register() {
- 
+
             $.validator.unobtrusive.parse($('#frmRegister'));
 
             var isValid = $('#frmRegister').valid();
             if (!isValid)
                 return;
-      
+
             var register = {
                 Name: $("#txtName").val(),
                 Username: $("#txtUserName").val(),
                 Email: $("#txtEmail").val(),
-                Password: $("#txtPassword").val(),    
+                Password: $("#txtPassword").val(),
                 ConfirmPassword: $("#txtConfirmPassword").val(),
                 Phone: $("#txtPhone").val()
-       
+
             }
 
             $.ajax({
@@ -89,9 +84,9 @@
             }).done(function (result) {
                 if (result.isSucceed) {
 
-                    Command: toastr["success"]("کاربر ایجاد شد", "ثبت نام");
+                  
                     $("#loginorregister").load("Login/Login");
-
+                    Command: toastr["success"]("کاربر ایجاد شد", "ثبت نام");
 
                 }
                 else {
@@ -104,7 +99,7 @@
 
 
         $("#btnLogin").click(function () {
-            
+
             $("#loginorregister").load("Login/Login");
         });
         $(function () {
@@ -115,4 +110,3 @@
             });
         });
     </script>
- 

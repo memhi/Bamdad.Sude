@@ -1,29 +1,32 @@
 ﻿@model ResultSetDto<IEnumerable<SearchOrderDtoModel>>
 @using Sude.Dto.DtoModels.Result
-@using Sude.Dto.DtoModels.Order 
+@using Sude.Dto.DtoModels.Order
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Report");
     ViewBag.PageTitle = "گزارشات کسب و کار";
 }
+<link href="~/Content/PersianDate/persian-datepicker.min.css" rel="stylesheet" />
+<script src="~/Content/PersianDate/persian-date.min.js"></script>
+<script src="~/Content/PersianDate/persian-datepicker.min.js"></script>
+<script src="~/Content/PersianDate/persian-date-function.js"></script>
 
-<link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
-<script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+
 <div class="box box-primary">
     <div class="box-header with-border text-center">
         <h3 class="box-title">جستجو</h3>
     </div>
     <div class="box-body">
-        <div class="row">
+        <div class="row margin-bottom">
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-4">
                         <label>تاریخ شروع جستجو</label>
                     </div>
-                    <div class="input-group  col-md-8">
+                    <div class="col-md-8">
 
-                        <input id="txtOrderDateFrom" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateFrom]).ToLocalizationDateTime("g1"))" class="form-control" />
+                        <input id="txtOrderDateFrom" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateFrom]))" class="form-control" />
                         <input id="OrderDateFromVal" hidden="hidden" value="@Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateFrom])" />
 
 
@@ -39,7 +42,7 @@
                         <label>تاریخ پایان جستجو</label>
                     </div>
                     <div class="col-md-8">
-                        <input id="txtOrderDateTo" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateTo]).ToLocalizationDateTime("g1"))" class="form-control" />
+                        <input id="txtOrderDateTo" value="@(Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateTo]))" class="form-control" />
                         <input id="OrderDateToVal" hidden="hidden" value="@Convert.ToDateTime(ViewData[Constants.ViewBagNames.OrderDateTo])" />
 
                     </div>
@@ -63,17 +66,17 @@
 
         </div>
         <div class="row margin-bottom"></div>
-            <div class="row">
+        <div class="row">
 
-                <div id="searchOrderView" class="col-md-12">
-
-                </div>
-
-
+            <div id="searchOrderView" class="col-md-12">
 
             </div>
+
+
+
         </div>
     </div>
+</div>
 
 
 
@@ -113,21 +116,9 @@
 
 
     <script>
-        $('#txtOrderDateFrom').MdPersianDateTimePicker({
-            targetTextSelector: '#txtOrderDateFrom',
-            targetDateSelector: '#OrderDateFromVal',
-            dateFormat: 'yyyy-MM-dd HH:mm:ss',
-            isGregorian: false,
-            enableTimePicker: true
-        });
+        initializeDateTime('#txtOrderDateFrom', '#OrderDateFromVal');
+        initializeDateTime('#txtOrderDateTo', '#OrderDateToVal');
 
-        $('#txtOrderDateTo').MdPersianDateTimePicker({
-            targetTextSelector: '#txtOrderDateTo',
-            targetDateSelector: '#OrderDateToVal',
-            dateFormat: 'yyyy-MM-dd HH:mm:ss',
-            isGregorian: false,
-            enableTimePicker: true
-        });
     </script>
     <script>
 
@@ -135,8 +126,10 @@
 
             //var address = "Report/SearchReport?DateFrom=" + encodeURIComponent($('#OrderDateFromVal').val()) + "&DateTo=" + encodeURIComponent($('#OrderDateToVal').val()) + "&IsBuy=";
 
+            OrderDateFrom = getControlAltValueDateStructure('#OrderDateFromVal');
+            OrderDateTo = getControlAltValueDateStructure('#OrderDateToVal');
 
-            $("#searchOrderView").load("ReportWork/SearchReport?DateFrom=" + encodeURIComponent($('#OrderDateFromVal').val()) + "&DateTo=" + encodeURIComponent($('#OrderDateToVal').val()) + "&IsBuy=");
+            $("#searchOrderView").load("ReportWork/SearchReport?DateFrom=" + encodeURIComponent(OrderDateFrom) + "&DateTo=" + encodeURIComponent(OrderDateTo) + "&IsBuy=");
         }
 
 

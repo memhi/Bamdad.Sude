@@ -21,42 +21,45 @@ namespace Sude.Mvc.UI.Admin.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
-
-            ResultSetDto<IEnumerable<WorkDetailDtoModel>> Worklist = await Api.GetHandler
-       .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId+_sudeSessionContext.CurrentUser.id);
-
-             
-
-
+         
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
             string CurrentWorkName = _sudeSessionContext.CurrentWorkName;
+            if (_sudeSessionContext.UserWorks == null || !_sudeSessionContext.UserWorks.Any() || !_sudeSessionContext.UserWorks.Any(w => w.WorkId == CurrentWorkId))
+            {
+                CurrentWorkId = "";
+                CurrentWorkName = "";
+                _sudeSessionContext.CurrentWorkId = null;
+                _sudeSessionContext.CurrentWorkName = null;
+                _sudeSessionContext.CurrentWork = null;
+            }
+
+
             if (string.IsNullOrEmpty(CurrentWorkId))
             {
                 CurrentWorkId = "";
                 CurrentWorkName = "یک کسب و کار انتخاب کنید";
             }
             SelectList selectLists = null;
-            if (Worklist != null && Worklist.Data != null)
+            if (_sudeSessionContext.UserWorks != null)
             {
-               
-                if (Worklist.Data.Count() == 1)
+
+                if (_sudeSessionContext.UserWorks.Count() == 1)
                 {
-                    CurrentWorkId = Worklist.Data.First().WorkId;
-                    CurrentWorkName = Worklist.Data.First().Title;
-                    _sudeSessionContext.CurrentWorkId= CurrentWorkId;
+                    CurrentWorkId = _sudeSessionContext.UserWorks.First().WorkId;
+                    CurrentWorkName = _sudeSessionContext.UserWorks.First().Title;
+                    _sudeSessionContext.CurrentWorkId = CurrentWorkId;
                     _sudeSessionContext.CurrentWorkName = CurrentWorkName;
-                   _sudeSessionContext.CurrentWork= Worklist.Data.First();
+                    _sudeSessionContext.CurrentWork = _sudeSessionContext.UserWorks.First();
                 }
 
-                selectLists = new SelectList(Worklist.Data as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);
+                selectLists = new SelectList(_sudeSessionContext.UserWorks as ICollection<WorkDetailDtoModel>, "WorkId", "Title", CurrentWorkId);
 
             }
 
 
 
-            ViewData["Works"] = selectLists;
-            ViewData["CurrentWorkName"] = CurrentWorkName;
+            ViewData[Constants.ViewBagNames.Works] = selectLists;
+            ViewData[Constants.ViewBagNames.CurrentWorkName] = CurrentWorkName;
 
             return View();
         }

@@ -13,6 +13,7 @@ function initializeDateTime(controlName,ControlAltValueName)
             "onlyTimePicker": false,
             "onlySelectOnDate": false,
             "calendarType": "persian",
+            "maxDate":"today",
             "inputDelay": 800,
             "observer": false,
             "calendar": {
@@ -23,7 +24,7 @@ function initializeDateTime(controlName,ControlAltValueName)
                 },
                 "gregorian": {
                     "locale": "en",
-                    "showHint": true
+                    "showHint": false
                 }
             },
             "navigator": {

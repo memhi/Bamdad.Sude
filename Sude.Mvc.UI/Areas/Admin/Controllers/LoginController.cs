@@ -46,38 +46,46 @@ namespace Sude.Mvc.UI.Admin.Controllers
 
 
 
-            ///////// For IDP
-            //    TokenResponse tokenResponse = await _sudeSessionContext.CurrentTokenClient.RequestPasswordTokenAsync(request.Username, request.Password, "adminClient01_api");
-
-            //    _sudeSessionContext.AccessToken = tokenResponse.AccessToken;
-            //    if (tokenResponse.IsError)
-            //    {
-            //        ModelState.AddModelError("", tokenResponse.Error);
-            //        return View(request);
-            //    }
-            //    UserInfo userInfo = new UserInfo
-            //    {
-            //        userName = request.Username
-            //    };
-            //    var resultuser = await Api.GetHandler
-            //.GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerName + request.Username, tokenResponse);
+            /////// For IDP
+            TokenResponse tokenResponse = await _sudeSessionContext.CurrentTokenClient.RequestPasswordTokenAsync(request.Username, request.Password, "adminClient01_api");
 
 
-            UserInfo resultuser = _sudeSessionContext.GetUserInfo(request.Username, request.Password);
-
-
-            if (string.IsNullOrEmpty(resultuser.id))
+            if (tokenResponse.IsError)
             {
-                ModelState.AddModelError("", "خطا در بازیابی اطلاعات کاربر");
-                return View(request);
 
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = tokenResponse.Error
+                });
+            }
+            _sudeSessionContext.AccessToken = tokenResponse.AccessToken;
+            UserInfo userInfo = new UserInfo
+            {
+                userName = request.Username
+            };
+            var resultuser = await Api.GetHandler
+        .GetApiAsync<ResultSetDto<UserInfo>>(ApiAddress.IdentityServer.GetUserInfoByUerName + request.Username, tokenResponse);
+
+            //    UserInfo resultuser = _sudeSessionContext.GetUserInfo(request.Username, request.Password);
+
+
+
+            if (resultuser==null || resultuser.Data==null ||  string.IsNullOrEmpty(resultuser.Data.id))
+            {
+         
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = "خطا در بازیابی اطلاعات کاربر"
+                });
 
             }
             else
             {
 
-                _sudeSessionContext.CurrentUser = resultuser;
-                if (resultuser.userName.ToLower() == "bamdad")
+                _sudeSessionContext.CurrentUser = resultuser.Data;
+                if (resultuser.Data.userName.ToLower() == "bamdad")
                     _sudeSessionContext.IsAdmin = true;
                 ResultSetDto resultSet = new ResultSetDto()
                 {
@@ -148,39 +156,61 @@ namespace Sude.Mvc.UI.Admin.Controllers
 
             UserInfo userInfo = new UserInfo()
             {
-                email = request.Email,
-                userName = request.Username,
+             
+                userName = request.Phone,
                 name = request.Name,
-                phoneNumber = request.Phone
+                phoneNumber = request.Phone,
+                password=request.Password,
+                confirmPassword=request.ConfirmPassword,
+                email=Guid.NewGuid().ToString().Replace("-","")+"test@Test.com"
 
             };
 
-            UserInfo responseCreateUser;
+         //   UserInfo responseCreateUser;
             try
             {
                 TokenResponse tresponse = await _sudeSessionContext.CurrentTokenClient.RequestClientCredentialsTokenAsync("adminClient01_api");
-                responseCreateUser = await Api.GetHandler
-                .GetApiAsync<UserInfo>(ApiAddress.IdentityServer.RegisterService, userInfo, tresponse);
+              var  responseCreateUser = await Api.GetHandler
+                .GetApiAsync<ResultSetDto<UserInfo>>(ApiAddress.IdentityServer.RegisterService, userInfo, tresponse);
 
-                if (responseCreateUser != null)
+                if (responseCreateUser.IsSucceed)
                 {
-                    UserPassword userPassword = new UserPassword
-                    {
-                        userId = responseCreateUser.id,
-                        password = request.Password,
-                        confirmPassword = request.ConfirmPassword
-                    };
 
 
-                    var responsechangePass = await Api.GetHandler
-                    .GetApiAsync<HttpContent>(ApiAddress.IdentityServer.ChangePassword, userPassword, tresponse);
-                    if (responsechangePass!=null)
+                    return Json(new ResultSetDto()
                     {
-                        ModelState.AddModelError("", "changer Pass User: " + responsechangePass.ToString());
-                    }
+                        IsSucceed = true,
+                        Message = "کاربر ایجاد شد، لطفا با نام کاربری و کلمه عبور وارد شوید"
+                    });
+
+
+                    //UserPassword userPassword = new UserPassword
+                    //{
+                    //    userId = responseCreateUser.id,
+                    //    password = request.Password,
+                    //    confirmPassword = request.ConfirmPassword
+                    //};
+
+
+                    //var responsechangePass = await Api.GetHandler
+                    //.GetApiAsync<HttpContent>(ApiAddress.IdentityServer.ChangePassword, userPassword, tresponse);
+                    //if (responsechangePass!=null)
+                    //{
+                    //    ModelState.AddModelError("", "changer Pass User: " + responsechangePass.ToString());
+                    //}
+                }
+                else
+                {
+
+                    return Json(new ResultSetDto()
+                    {
+                        IsSucceed = false,
+                        Message = responseCreateUser.Message
+                    });
+
                 }
 
-                return View(request);
+           
             }
             catch(Exception ex)
             {

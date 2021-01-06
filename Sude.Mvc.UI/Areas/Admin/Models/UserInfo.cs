@@ -14,6 +14,8 @@ namespace Sude.Mvc.UI.Admin.Models
         public string name { get; set; }
         public string email { get; set; }
         public string password { get; set; }
+        public string confirmPassword { get; set; }
+
         public bool emailConfirmed { get; set; } = false;
         public string? phoneNumber { get; set; } = null;
         public bool phoneNumberConfirmed { get; set; } = false;
