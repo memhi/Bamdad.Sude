@@ -7,82 +7,104 @@
 }
 
 
-    <div class="login-box  bg-red-gradient ">
-        <div class="login-logo ">
-            <a href="/">مدیریت کسب و کار</a>
-        </div>
-        <div class="login-box-body">
-            <p class="login-box-msg">ورود</p>
+<div class="login-box  bg-red-gradient text-center">
+    <div class="login-logo">
 
-            <form  id="frmLogin">
-                <div class="form-group has-feedback">
-                    <input type="text" asp-for="Username" id="txtUsername" class="form-control" placeholder="شماره موبایل">
-                    <span class="glyphicon  glyphicon-log-in form-control-feedback"></span>
+  <h4> <a class="" href="/">مدیریت کسب و کار</a> </h4> 
+    </div>
+    <div class="login-box-body">
+        <p class="login-box-msg">ورود</p>
 
+        <form id="frmLogin">
+            <div class="form-group has-feedback">
+                <input type="text" asp-for="Username" id="txtUsername" class="form-control" placeholder="شماره موبایل">
+                <span class="glyphicon  glyphicon-phone form-control-feedback"></span>
+                <span asp-validation-for="Username" class="text-danger"></span>
+
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="کلمه عبور">
+                <span class="fa fa-key form-control-feedback"></span>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="row">
+
+                <div class="col-xs-8">
+                    <a onclick="Login()" id="btnLogin" class="btn btn-primary btn-block btn-flat ">
+
+                        ورود
+                    </a>
+                </div> <!-- /.col -->
+                <div class="col-xs-4">
+                    <a id="btnRegister" class="btn btn-info btn-block btn-flat">ثبت نام</a>
                 </div>
-                <div class="form-group has-feedback">
-                    <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="کلمه عبور">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-
-                    <div class="col-xs-8">
-                        <a onclick="Login()" class="btn btn-primary btn-block btn-flat">ورود</a>
-                    </div> <!-- /.col -->
-                    <div class="col-xs-4">
-                        <a id="btnRegister" class="btn btn-info btn-block btn-flat">ثبت نام</a>
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </form>
+                <!-- /.col -->
+            </div>
+        </form>
 
 
-            <!-- /.social-auth-links -->
-            @*<div class="row text-center">
+        <!-- /.social-auth-links -->
+        @*<div class="row text-center">
                 <a href="#">کلمه عبور را فراموش کردم</a><br>
 
                 </div>
             </div>*@
-            <!-- /.login-box-body -->
-        </div>
+        <!-- /.login-box-body -->
+    </div>
     <!-- /.login-box -->
     <!-- jQuery 3 -->
-   
-<script>
+
+    <script>
 
 
-      function Login() {
-          $.validator.unobtrusive.parse($('#frmLogin'));
+        function Login() {
+            try {
+                $.validator.unobtrusive.parse($('#frmLogin'));
 
-          var isValid = $('#frmLogin').valid();
-        if (!isValid)
-            return;
+                var isValid = $('#frmLogin').valid();
+                if (!isValid)
+                    return;
 
-        var login = {
-            Username: $("#txtUsername").val(),
-            Password: $("#txtPassword").val()
-        }
-        $.ajax({
-            url: "Login/Login",
-            type: "Post",
-            data: login
-        }).done(function (result) {
-            if (result.isSucceed) {
 
-                location.replace("Home");
+                // add spinner to button
+                $("#btnLogin").html(
+                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i> ورود...'
+                );
 
-                           }
-            else {
-     
-                Command: toastr["warning"](result.message, "هشدار");
+
+                var login = {
+                    Username: $("#txtUsername").val(),
+                    Password: $("#txtPassword").val()
+                }
+                $.ajax({
+                    url: "Login/Login",
+                    type: "Post",
+                    data: login
+                }).done(function (result) {
+                    if (result.isSucceed) {
+
+                        location.replace("Home");
+
+                    }
+                    else {
+                        $("#btnLogin").html(
+                            'ورود'
+                        );
+                        Command: toastr["warning"](result.message, "هشدار");
+                    }
+                });
+
             }
+            catch (err) {
+                Command: toastr["warning"](err.message, "هشدار");
+            }
+        }
+
+
+        $("#btnRegister").click(function () {
+
+            $("#loginorregister").load("Login/Register");
         });
-    }
 
-
-    $("#btnRegister").click(function () {
-        
-        $("#loginorregister").load("Login/Register");
-    });
-
-</script>
+    </script>
+    </div>

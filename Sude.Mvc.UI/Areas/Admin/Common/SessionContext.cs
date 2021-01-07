@@ -146,9 +146,12 @@ namespace Sude.Mvc.UI.Admin
 
             TokenResponse tresponse = CurrentTokenClient.RequestClientCredentialsTokenAsync("adminClient01_api").Result;
             var resultuser = Api.GetHandler
-          .GetApiAsync<UserInfo>(ApiAddress.IdentityServer.GetUserInfoByUerId + userId.ToString(), tresponse);
-            UserInfo userInfo = resultuser.Result;
-
+          .GetApiAsync<ResultSetDto<UserInfo>>(ApiAddress.IdentityServer.GetUserInfoByUerId + userId.ToString(), tresponse);
+            UserInfo userInfo = null;
+            if (resultuser != null && resultuser.Result != null && resultuser.Result.Data != null)
+            {
+                userInfo = resultuser.Result.Data;
+            }
             //XmlUsers users = new XmlUsers();
             //users.LoadFrom("\\Areas\\Admin\\user.config", _HostingEnvitonment);
             //UserInfo userInfo = users.Users.Where(u => u.id == userId.ToString()).FirstOrDefault();
@@ -178,8 +181,8 @@ namespace Sude.Mvc.UI.Admin
                         if (userInfo != null && userInfo.userName.ToLower() == "bamdad")
                             IsAdmin = true;
                     }
-                    if(userInfo != null)
-                    _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentUser, userInfo);
+                    if (userInfo != null)
+                        _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentUser, userInfo);
                 }
                 return userInfo;
 

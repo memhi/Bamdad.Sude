@@ -10,7 +10,7 @@
 
     <div class="register-box bg-red-gradient">
         <div class="register-logo">
-            <a href="/">مدیریت کسب و کار</a>
+            <h4>   <a href="/">مدیریت کسب و کار</a></h4>
         </div>
 
         <div class="register-box-body">
@@ -20,24 +20,29 @@
                 <div class="form-group has-feedback">
                     <input type="tel" class="form-control" id="txtPhone" asp-for="Phone" placeholder="شماره موبایل">
                     <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
                     <input type="text" asp-for="Name" id="txtName" class="form-control" placeholder="نام">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-group has-feedback">
+                   
                     <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="کلمه عبور">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span class="fa fa-key form-control-feedback"></span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
                     <input type="password" class="form-control" asp-for="ConfirmPassword" id="txtConfirmPassword" placeholder="تکرار کلمه عبور">
-                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                    <span class="fa fa-key form-control-feedback"></span>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
 
-                        <a onclick="Register()" class="btn btn-primary btn-block btn-flat">ثبت نام</a>
+                        <a onclick="Register()" id="btnRegister" class="btn btn-primary btn-block btn-flat">ثبت نام</a>
 
                     </div>
                     <!-- /.col -->
@@ -45,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center margin">
-                        <a id="btnLogin" class="text-center">کاربر سامانه هستم</a>
+                        <a id="btnLogin" class="btn btn-default text-center">کاربر سامانه هستم</a>
                     </div>
                 </div>
             </form>
@@ -66,6 +71,9 @@
             var isValid = $('#frmRegister').valid();
             if (!isValid)
                 return;
+            $("#btnRegister").html(
+                '<i class="fa fa-refresh fa-spin  margin-r-5"></i> ثبت نام...'
+            );
 
             var register = {
                 Name: $("#txtName").val(),
@@ -90,6 +98,10 @@
 
                 }
                 else {
+
+                    $("#btnRegister").html(
+                        'ثبت نام'
+                    );
 
                     Command: toastr["warning"](result.message, "هشدار");
                 }

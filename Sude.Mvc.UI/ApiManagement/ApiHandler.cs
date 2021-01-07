@@ -128,7 +128,7 @@ namespace Sude.Mvc.UI.ApiManagement
         {
             public static readonly string RegisterService = IdpServerAddress + "/api/IDentityProviderFacade/RegisterUser";
             public static readonly string GetUserInfoByUerName = IdpServerAddress+ "/api/IDentityProviderFacade/GetUserByUserName?Username=";
-            public static readonly string GetUserInfoByUerId = IdpServerAddress + "/api/IDentityProviderFacade/GetUserById/";
+            public static readonly string GetUserInfoByUerId = IdpServerAddress + "/api/IDentityProviderFacade/GetUserById?id=";
             public static readonly string ChangePassword = IdpServerAddress + "/api/Users/ChangePassword";
 
         }

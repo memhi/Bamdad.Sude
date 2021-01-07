@@ -173,7 +173,7 @@ namespace Sude.Mvc.UI.Admin.Controllers
               var  responseCreateUser = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<UserInfo>>(ApiAddress.IdentityServer.RegisterService, userInfo, tresponse);
 
-                if (responseCreateUser.IsSucceed)
+                if (responseCreateUser.IsSucceed && responseCreateUser.Data!=null)
                 {
 
 
@@ -205,7 +205,7 @@ namespace Sude.Mvc.UI.Admin.Controllers
                     return Json(new ResultSetDto()
                     {
                         IsSucceed = false,
-                        Message = responseCreateUser.Message
+                        Message =" اطلاعات ثبت نام را صحیح وارد کنید"
                     });
 
                 }

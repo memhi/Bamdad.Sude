@@ -4065,6 +4065,12 @@
     <Content Update="wwwroot\AdminLTE\js\adminlte.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\HomePageTemplate\images\hero_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\HomePageTemplate\images\hero_2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Sweetalert2\sweetalert2.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
