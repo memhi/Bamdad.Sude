@@ -38,62 +38,78 @@
                 </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <table class="table table-hover table-responsive tablemobile">
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <th>شماره سفارش</th>
-                            <th>تاریخ</th>
-                            <th>عنوان کسب و کار</th>
-                            <th>نوع سفارش</th>
-                            <th>مجموع مبلغ سفارش</th>
+                <div class="row">
+                    <table class="table table-hover table-responsive tablemobile">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <th>شماره سفارش</th>
+                                <th>تاریخ</th>
+                                <th>عنوان کسب و کار</th>
+                                <th>نوع سفارش</th>
+                                <th>مجموع مبلغ سفارش</th>
 
 
-                            <th>عملیات</th>
+                                <th>عملیات</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            if (Model != null && Model.Data != null)
-                            {
-                                int i = 1;
-                                @foreach (var item in Model.Data)
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null && Model.Data != null)
                                 {
+                                    int i = 1;
+                                    @foreach (var item in Model.Data)
+                                    {
 
-                        <tr id="tr_@item.OrderId">
-                            <td lable="" style="--bgcolor: silver;">@(i++)</td>
-                            <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
-                            <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
-                            <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
-                            <td lable="نوع سفارش" style="--minwidth:40%">
-                                @if (@item.IsBuy)
-                                {
-                                    <lable>   خرید</lable>
+                                        <tr id="tr_@item.OrderId">
+                                            <td lable="" style="--bgcolor: silver;">@(i++)</td>
+                                            <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
+                                            <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                                            <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
+                                            <td lable="نوع سفارش" style="--minwidth:40%">
+                                                @if (@item.IsBuy)
+                                                {
+                                                    <lable>   خرید</lable>
+                                                }
+                                                else
+                                                {
+                                                    <lable>   فروش</lable>
+                                                }
+                                            </td>
+                                            <td lable="مبلغ سفارش" style="--minwidth:40%">
+                                                @item.SumPrice.ToString("0,0")
+                                            </td>
+
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
+                                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+                                                <button class="btn btn-primary btn-sm" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+
+
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                                else
-                                {
-                                    <lable>   فروش</lable>
-                                }
-                            </td>
-                            <td lable="مبلغ سفارش" style="--minwidth:40%">
-                                @item.SumPrice.ToString("0,0")
-                            </td>
-
-                            <td>
-                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
-                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
-                                <button class="btn btn-primary btn-sm" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
-                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
-
-
-                            </td>
-                        </tr>
                             }
-                            }
-                        }
-                    </tbody>
+                        </tbody>
                     </table>
+                </div>
+                <div class="row text-center">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="disabled"><a aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                            @for (int i = 1; i <= (Model.RowCount/Constants.PageSize + 1); i++)
+                            {
+                                <li class="@(((int)ViewBag.PageID==i)?"active":"")"><a href="#" onclick="PageChange(@i)">@i<span class="sr-only">(current)</span></a></li>
+                            }
+
+                            <li><a aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+
             </div>
             <!-- /.box-body -->
         </div>
@@ -173,6 +189,11 @@
         $("#orderView").load("Order/Edit/" + orderId);
     }
 
+
+    function PageChange(pageindex) {
+
+        $("#orderView").load("Order/List", { "PageIndex": pageindex });
+    }
     
     function ShowModalPayments(orderId) {
         $.get("Order/ViewPayments/" + orderId, function (result) {

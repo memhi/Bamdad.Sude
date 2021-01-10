@@ -37,6 +37,24 @@ namespace Sude.Application.Services
 
         }
 
+      public  ResultSet<IEnumerable<OrderInfo>> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
+        DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
+        bool? isBuy = null, string description = null)
+        {
+
+           
+            IEnumerable<OrderInfo> orders = _OrderRepository. GetOrders(workId, pageIndex, pageSize, out rowCount,
+         orderDateFrom, orderDateTo, customerId, isBuy, description);
+            return new ResultSet<IEnumerable<OrderInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = orders
+            };
+        }
+
+
+
         public ResultSet<IEnumerable<OrderInfo>> GetOrders()
         {
             return new ResultSet<IEnumerable<OrderInfo>>()

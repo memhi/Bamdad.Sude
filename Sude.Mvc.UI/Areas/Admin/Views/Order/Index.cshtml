@@ -68,7 +68,8 @@
     <script>
 
         $(function () {
-            $("#orderView").load("Order/List");
+  
+            $("#orderView").load("Order/List", { "PageIndex": "1", "PageSize": "100","Description": "" });
         });
 
 

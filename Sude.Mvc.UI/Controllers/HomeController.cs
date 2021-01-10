@@ -38,14 +38,14 @@ namespace Sude.Mvc.UI.Controllers
 
 
 
-            ResultSetDto<IEnumerable<OrderDetailDtoModel>> orderlist = await Api.GetHandler
-    .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrders);
+    //        ResultSetDto<IEnumerable<OrderDetailDtoModel>> orderlist = await Api.GetHandler
+    //.GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrders);
 
 
 
             ViewData["WorkCount"] =((worklist  != null && worklist.Data!=null) ? worklist.Data.Count().ToString() : "0");
             ViewData["ServingCount"] = ((servinglist != null && servinglist.Data != null) ? servinglist.Data.Count().ToString() : "0");
-            ViewData["OrderCount"] = ((orderlist != null && orderlist.Data != null) ? orderlist.Data.Count().ToString() : "0");
+            ViewData["OrderCount"] = 0;// ((orderlist != null && orderlist.Data != null) ? orderlist.Data.Count().ToString() : "0");
 
             ViewBag.SitePageTitle = "سامانه مدیریت کسب و کارهای کوچک";
 

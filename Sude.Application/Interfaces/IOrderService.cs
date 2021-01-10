@@ -12,6 +12,10 @@ namespace Sude.Application.Interfaces
     {
         ResultSet<IEnumerable<OrderInfo>> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount);
         ResultSet<IEnumerable<OrderInfo>> GetOrders();
+        
+        ResultSet<IEnumerable<OrderInfo>> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
+        DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
+        bool? isBuy = null, string description = null);
         Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersByWorkIdAsync(Guid workId);
         ResultSet<OrderInfo> AddOrder(OrderInfo order);
         ResultSet EditOrder(OrderInfo order);

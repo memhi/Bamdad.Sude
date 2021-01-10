@@ -176,7 +176,7 @@ namespace Sude.Mvc.UI.ApiManagement
                 public static readonly string SetPayment = ServerAddress + "/api/Order/SetPayment/";
             public static readonly string GetSearchOrders = ServerAddress + "/api/Order/GetSearchOrders/";
             public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
-            public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders/";
+            public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders";
             public static readonly string GetUserOrders = ServerAddress + "/api/Order/GetUserOrders/";
             public static readonly string GetOrderById = ServerAddress + "/api/Order/GetOrderById/";
             public static readonly string GetOrdersByWorkId = ServerAddress + "/api/Order/GetOrdersByWorkId/";

@@ -48,6 +48,19 @@ namespace Sude.Persistence.Repository
 
 
 
+        public  IEnumerable<OrderInfo> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
+          DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
+          bool? isBuy = null, string description = null)
+        {
+
+
+            return _orderRepository.Get(o => o.WorkId == workId && (o.OrderDate >= orderDateFrom || orderDateFrom == null)
+           && (o.OrderDate < orderDateTo || orderDateTo == null) && (o.CustomerId == customerId || customerId == null)
+           && (o.IsBuy == isBuy || isBuy == null) && (o.Description.Contains(description) || string.IsNullOrEmpty(description)),
+             o => o.OrderByDescending(or => or.RegDate), "Work,Customer,PaymentStatus").ToPaged(pageIndex, pageSize, out rowCount);
+        }
+
+
         public async Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId)
         {
 

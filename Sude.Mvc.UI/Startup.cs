@@ -40,7 +40,7 @@ namespace Sude.Mvc.UI
 
 
             services.AddMvc();
-            // services.AddProgressiveWebApp();
+            services.AddProgressiveWebApp();
             services.AddServerSideBlazor();
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             IdentityModelEventSource.ShowPII = true;

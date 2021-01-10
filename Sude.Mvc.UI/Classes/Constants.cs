@@ -7,7 +7,7 @@ namespace Sude.Mvc.UI
 {
     public static class Constants
     {
-
+        public const int PageSize = 20;
         public static class GroupType
         {
             public const string PaymentMode = "PaymentMode";

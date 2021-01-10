@@ -49,7 +49,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
         public async Task<ActionResult> ViewPayments(string id)
         {
-         
+
 
             ResultSetDto<OrderDetailDtoModel> orderDetailDto = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
@@ -68,28 +68,37 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             ViewBag.PaymentStatusId = orderDetailDto.Data.PaymentStatusId;
 
             ResultSetDto<IEnumerable<TypeDetailDtoModel>> paymentStatus = await Api.GetHandler
-                        .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey +Constants.GroupType.PaymentStatus);
-            
+                        .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey + Constants.GroupType.PaymentStatus);
+
             List<TypeDetailDtoModel> list = new List<TypeDetailDtoModel>();
             if (paymentStatus != null && paymentStatus.Data != null && paymentStatus.Data.Any())
-                foreach(TypeDetailDtoModel typeDetailDto in paymentStatus.Data)
-                list.Add(typeDetailDto);
+                foreach (TypeDetailDtoModel typeDetailDto in paymentStatus.Data)
+                    list.Add(typeDetailDto);
             return View(list);
         }
 
 
-        [HttpGet]
+        [HttpPost]
         // [Authorize]
-        public async Task<ActionResult> List()
+
+        public async Task<ActionResult> List(GetOrderListDtoModel getOrderListRequest)
         {
             //System.Threading.Thread.Sleep(1000);
 
-            string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
-            ResultSetDto<IEnumerable<OrderDetailDtoModel>> Orderlist = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
-            if (!string.IsNullOrEmpty(CurrentWorkId))
-                Orderlist = await Api.GetHandler
-                 .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrdersByWorkId + CurrentWorkId);
 
+            ResultSetDto<IEnumerable<OrderDetailDtoModel>> Orderlist = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
+            string parameters = string.Format("?workId={0}&pageIndex={1}&pageSize={2}&orderDateFrom={3}&orderDateTo={4}&customerId={5}&isBuy={6}&description={7}",
+                _sudeSessionContext.CurrentWorkId, getOrderListRequest.PageIndex, Constants.PageSize,
+                (getOrderListRequest.DateFrom != null ? getOrderListRequest.DateFrom.ToString() : ""),
+                (getOrderListRequest.DateTo != null ? getOrderListRequest.DateTo.ToString() : ""),
+                (!string.IsNullOrEmpty(getOrderListRequest.CustomerId) ? getOrderListRequest.CustomerId : ""),
+                (getOrderListRequest.IsBuy != null ? getOrderListRequest.IsBuy : ""),
+                (!string.IsNullOrEmpty(getOrderListRequest.Description) ? getOrderListRequest.Description : ""));
+
+
+            Orderlist = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrders + parameters);
+            ViewBag.PageID = getOrderListRequest.PageIndex;
             return PartialView("OrderList", Orderlist);
         }
 
@@ -242,7 +251,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         {
 
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
-            _sudeSessionContext.CurrentOrderDetails=null;
+            _sudeSessionContext.CurrentOrderDetails = null;
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
             order.IsBuy = false;
@@ -295,9 +304,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 request.OrderDetails = orderDetails;
             }
 
-          
-           var type= await Api.GetHandler
-             .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey+ Constants.PaymenStatus.NotPaid);
+
+            var type = await Api.GetHandler
+              .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.PaymenStatus.NotPaid);
             if (type != null && type.Data != null)
                 request.PaymentStatusId = type.Data.TypeId;
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
@@ -316,7 +325,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            _sudeSessionContext.CurrentOrderDetails= null;
+            _sudeSessionContext.CurrentOrderDetails = null;
 
             return Json(result);
 
@@ -327,27 +336,27 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         {
 
 
-            _sudeSessionContext.CurrentOrderDetails= null;
+            _sudeSessionContext.CurrentOrderDetails = null;
 
 
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
             if (result.Data.OrderDetails != null)
-                _sudeSessionContext.CurrentOrderDetails= result.Data.OrderDetails.AsEnumerable();
+                _sudeSessionContext.CurrentOrderDetails = result.Data.OrderDetails.AsEnumerable();
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);
 
 
             ResultSetDto<IEnumerable<TypeDetailDtoModel>> PaymentStatus = await Api.GetHandler
-   .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey+Constants.GroupType.PaymentStatus);
+   .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey + Constants.GroupType.PaymentStatus);
 
 
             SelectList selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
 
-    
-                        ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
+
+            ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
             ViewData[Constants.ViewBagNames.Customers] = selectLists;
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
             {
@@ -358,9 +367,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 OrderDate = result.Data.OrderDate,
                 OrderNumber = result.Data.OrderNumber,
                 WorkId = result.Data.WorkId,
-                 PaymentStatusId=result.Data.PaymentStatusId,
-                  IsBuy=result.Data.IsBuy
-                  
+                PaymentStatusId = result.Data.PaymentStatusId,
+                IsBuy = result.Data.IsBuy
+
 
 
             });
@@ -406,8 +415,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             ResultSetDto<OrderEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderEditDtoModel>>(ApiAddress.Order.EditOrder, request);
-            if(result.IsSucceed)
-            _sudeSessionContext.CurrentOrderDetails= null;
+            if (result.IsSucceed)
+                _sudeSessionContext.CurrentOrderDetails = null;
             return Json(result);
 
         }
@@ -423,12 +432,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return View(viewName: "Detail", model: orderDetail);
         }
 
-        public async Task<ActionResult> SetPayment(string orderId,string typeId)
+        public async Task<ActionResult> SetPayment(string orderId, string typeId)
         {
 
             ResultSetDto<OrderDetailDtoModel> orderDetailDto = await Api.GetHandler
-                .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById+ orderId);
-            if(!orderDetailDto.IsSucceed && orderDetailDto.Data==null)
+                .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + orderId);
+            if (!orderDetailDto.IsSucceed && orderDetailDto.Data == null)
             {
                 return Json(new ResultSetDto()
                 {
@@ -464,7 +473,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return Json(result);
 
 
-         
+
         }
         public async Task<ActionResult> Delete(string id)
         {

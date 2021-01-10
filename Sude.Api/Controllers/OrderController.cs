@@ -53,19 +53,23 @@ namespace Sude.Api.Controllers
 
         }
 
-        //GET : api/GetWorks
+
         [HttpGet]
-        //[Consumes("application/xml")]
-        //[Consumes("application/json")]
-        // [Authorize]
-        public async Task<ActionResult> GetOrders()
+
+        public async Task<ActionResult> GetOrders(string workId, int pageIndex, int pageSize,
+          DateTime? orderDateFrom = null, DateTime? orderDateTo = null, string customerId = null,
+          bool? isBuy = null, string description = null)
         {
             try
             {
 
+                int rowCount = 0;
+
+                ResultSet<IEnumerable<OrderInfo>> resultSet = _OrderService.GetOrders(Guid.Parse(workId), pageIndex, pageSize,
+                  out rowCount, orderDateFrom, orderDateTo, (string.IsNullOrEmpty(customerId) ? null : Guid.Parse(customerId)),
+ isBuy, description);
 
 
-                ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
                     return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
                     {
@@ -88,7 +92,16 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
+                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    Customer = (o.Customer != null ? new CustomerDetailDtoModel()
+                    {
+                        CustomerId = o.Customer.Id.ToString(),
+                        Title = o.Customer.Title,
+                        Phone = o.Customer.Phone,
+                        WorkId = o.Customer.WorkId.ToString(),
+                        NationalCode = o.Customer.NationalCode
+
+                    } : null)
 
 
 
@@ -97,7 +110,10 @@ namespace Sude.Api.Controllers
                 {
                     IsSucceed = true,
                     Message = "",
-                    Data = result
+                    Data = result,
+                    CurrentPage = pageIndex,
+                    PageSize = pageSize,
+                    RowCount = rowCount
                 });
             }
             catch (Exception ex)
@@ -110,6 +126,62 @@ namespace Sude.Api.Controllers
                 });
             }
         }
+
+
+        [HttpGet]
+
+        //public async Task<ActionResult> GetOrders()
+        //{
+        //    try
+        //    {
+
+
+
+        //        ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersAsync();
+        //        if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+        //            return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+        //            {
+        //                IsSucceed = false,
+        //                Message = "Not found",
+        //                Data = null
+
+
+        //            });
+
+
+        //        var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
+        //        {
+        //            OrderId = o.Id.ToString(),
+        //            OrderNumber = o.Number,
+        //            WorkId = o.WorkId.ToString(),
+        //            WorkName = o.Work.Title,
+        //            OrderDate = o.OrderDate,
+        //            SumPrice = o.SumPrice,
+        //            Description = o.Description,
+        //            IsBuy = o.IsBuy,
+        //            PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+        //            PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
+
+
+
+        //        });
+        //        return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+        //        {
+        //            IsSucceed = true,
+        //            Message = "",
+        //            Data = result
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+        //        {
+        //            IsSucceed = false,
+        //            Message = ex.Message,
+        //            Data = null
+        //        });
+        //    }
+        //}
 
 
         [HttpPost]
@@ -147,14 +219,14 @@ namespace Sude.Api.Controllers
                     PageSize = searchOrder.PageSize,
                     SearchCount = count,
                     WorkId = searchOrder.WorkId,
-                    SumPrice=o.SumPrice
+                    SumPrice = o.SumPrice
 
 
 
 
 
 
-                }) ;
+                });
                 return Ok(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
                 {
                     IsSucceed = true,
@@ -192,7 +264,7 @@ namespace Sude.Api.Controllers
 
                     });
                 ResultSet<IEnumerable<OrderInfo>> resultSet = new ResultSet<IEnumerable<OrderInfo>>();
-   
+
                 foreach (WorkInfo workInfo in resultSetWork.Data)
                 {
                     ResultSet<IEnumerable<OrderInfo>> resultSetOrder = await _OrderService.GetOrdersByWorkIdAsync(workInfo.Id);
@@ -403,8 +475,18 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                     PaymentStatusTitle=o.PaymentStatus.TypeTitle.ToString()
-                   
+                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    Customer = (o.Customer != null ? new CustomerDetailDtoModel()
+                    {
+                        CustomerId = o.Customer.Id.ToString(),
+                        Title = o.Customer.Title,
+                        Phone = o.Customer.Phone,
+                        WorkId = o.Customer.WorkId.ToString(),
+                        NationalCode = o.Customer.NationalCode
+
+                    } : null)
+
+
 
                 };
 
@@ -738,7 +820,7 @@ namespace Sude.Api.Controllers
                     string ordenumber = (orderdto.IsBuy ? "B-" : "S-") + ordernumberresult.Data.LastNumber.ToString();
 
 
-              
+
 
                     OrderInfo order = new OrderInfo()
                     {
@@ -750,8 +832,8 @@ namespace Sude.Api.Controllers
                         Status = true,
                         SumPrice = sumprice,
                         IsBuy = orderdto.IsBuy,
-                        PaymentStatusId=(string.IsNullOrEmpty(orderdto.PaymentStatusId)==true ? null: Guid.Parse(orderdto.PaymentStatusId))
-                       
+                        PaymentStatusId = (string.IsNullOrEmpty(orderdto.PaymentStatusId) == true ? null : Guid.Parse(orderdto.PaymentStatusId))
+
 
                     };
                     var resultorder = await _OrderService.AddOrderAsync(order);
@@ -869,7 +951,7 @@ namespace Sude.Api.Controllers
             try
             {
 
-             
+
 
 
                 var resultOrder = await _OrderService.GetOrderByIdAsync(Guid.Parse(orderDTO.OrderId));
@@ -883,9 +965,9 @@ namespace Sude.Api.Controllers
                     });
 
 
-                OrderInfo orderInfo = resultOrder.Data;               
+                OrderInfo orderInfo = resultOrder.Data;
                 orderInfo.PaymentStatusId = (string.IsNullOrEmpty(orderDTO.PaymentStatusId) == true ? null : Guid.Parse(orderDTO.PaymentStatusId));
-     
+
 
 
                 var resultSaveOrder = await _OrderService.EditOrderAsync(orderInfo);
