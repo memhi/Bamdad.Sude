@@ -29,7 +29,7 @@
             قیمت
         </dt>
         <dd class="col-md-8">
-            @Model.Price.ToString("0,0")
+    @String.Format("{0:n0}", @Model.Price)
         </dd>
         </dl>
     <dl class="row">

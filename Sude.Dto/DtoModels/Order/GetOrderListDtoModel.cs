@@ -18,8 +18,9 @@ namespace Sude.Dto.DtoModels.Order
         public DateTime? DateTo { get; set; } 
         public bool? IsBuy { get; set; }
         public string CustomerId { get; set; }
+        public string OrderNumber { get; set; }
         public string Description { get; set; }
-        public int PageSize { get; set; }
+ 
         public int PageIndex { get; set; }
 
 

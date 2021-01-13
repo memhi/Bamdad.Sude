@@ -7,7 +7,7 @@ using Sude.Application.Interfaces;
 using Sude.Application.Result;
 using Sude.Domain.Interfaces;
 using Sude.Domain.Models.Order;
- 
+using Sude.Domain.Models.Report;
 
 namespace Sude.Application.Services
 {
@@ -25,26 +25,49 @@ namespace Sude.Application.Services
 
         #region Order
 
-        public ResultSet< IEnumerable<OrderInfo>> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount)
+        public ResultSet<IEnumerable<ReportOrderGroupInfo>> GetReportOrder(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount)
         {
 
-            return new ResultSet<IEnumerable<OrderInfo>>()
+            return new ResultSet<IEnumerable<ReportOrderGroupInfo>>()
             {
                 IsSucceed = true,
                 Message = string.Empty,
-                Data = _OrderRepository.GetSearchOrders(orderDateFrom,orderDateTo,workId,isBuy,pageSize,pageIndex,out rowCount)
+                Data = _OrderRepository.GetReportOrder( orderDateFrom,  orderDateTo,  workId,   isBuy,  pageSize,  pageIndex, out  rowCount)
             };
 
         }
 
+        //public ResultSet< IEnumerable<OrderInfo>> GetSearchOrders(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount)
+        //{
+
+        //    return new ResultSet<IEnumerable<OrderInfo>>()
+        //    {
+        //        IsSucceed = true,
+        //        Message = string.Empty,
+        //        Data = _OrderRepository.GetSearchOrders(orderDateFrom,orderDateTo,workId,isBuy,pageSize,pageIndex,out rowCount)
+        //    };
+
+        //}
+
+      public async  Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersWithDetailsAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy)
+        {
+            return new ResultSet<IEnumerable<OrderInfo>>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = await _OrderRepository.GetOrderWithDetailsAsync(orderDateFrom, orderDateTo, workId, isBuy)
+               
+            };
+
+        }
       public  ResultSet<IEnumerable<OrderInfo>> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
         DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
-        bool? isBuy = null, string description = null)
+        bool? isBuy = null, string description = null,string orderNumber=null)
         {
 
            
             IEnumerable<OrderInfo> orders = _OrderRepository. GetOrders(workId, pageIndex, pageSize, out rowCount,
-         orderDateFrom, orderDateTo, customerId, isBuy, description);
+         orderDateFrom, orderDateTo, customerId, isBuy, description,orderNumber);
             return new ResultSet<IEnumerable<OrderInfo>>()
             {
                 IsSucceed = true,

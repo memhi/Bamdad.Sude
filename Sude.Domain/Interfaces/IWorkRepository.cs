@@ -21,8 +21,8 @@ namespace Sude.Domain.Interfaces
 
         Task<WorkInfo> GetWorkByIdAsync(Guid workId);
         WorkInfo GetWorkById(Guid workId);
-        Task<WorkInfo> GetWorkAsync(string title, WorkTypeInfo workType);
-        WorkInfo GetWork(string title, WorkTypeInfo workType);
+        Task<WorkInfo> GetWorkAsync(string title, Guid userId, WorkTypeInfo workType);
+        WorkInfo GetWork(string title, Guid userId, WorkTypeInfo workType);
 
 
 

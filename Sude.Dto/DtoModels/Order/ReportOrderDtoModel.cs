@@ -21,7 +21,7 @@ namespace Sude.Dto.DtoModels.Order
 
     }
 
-    public class SearchOrderDtoModel
+    public class ReportOrderDtoModel
     {
 
 
@@ -30,7 +30,7 @@ namespace Sude.Dto.DtoModels.Order
         public string WorkId { get; set; }
         public bool? IsBuy { get; set; }
         public double SumPrice { get; set; }
-        public int SearchCount { get; set; }
+        public int RowCount { get; set; }
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
 

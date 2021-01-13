@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sude.Persistence.Repository
 {
-    public class GenericRepository<TEntity> where TEntity :class
+    public class GenericRepository<TEntity> where TEntity : class  
     {
         private SudeDBContext _ctx;
         private DbSet<TEntity> _dbSet;
@@ -19,7 +19,8 @@ namespace Sude.Persistence.Repository
             _dbSet = _ctx.Set<TEntity>();
         }
 
-        public virtual  IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> where = null
+      
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> where = null
             , Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderby = null, string includes = "")
         {
             IQueryable<TEntity> query = _dbSet;
@@ -34,11 +35,23 @@ namespace Sude.Persistence.Repository
                 foreach (var include in includes.Split(","))
                     query = query.Include(include);
 
-            return query.ToList();
+            return query.AsSplitQuery().ToList();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity,bool>> where=null
-            ,Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>> orderby=null,string includes="")
+
+        public virtual IEnumerable<TEntity> GetSQLRaw(Expression<Func<TEntity, bool>> where = null
+           , Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderby = null, string includes = "")
+        {
+
+            return _dbSet.FromSqlRaw<TEntity>("").ToList();
+
+        }
+
+
+       
+
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> where = null
+            , Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderby = null, string includes = "")
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -51,11 +64,10 @@ namespace Sude.Persistence.Repository
             if (includes != string.Empty)
                 foreach (var include in includes.Split(","))
                     query = query.Include(include);
-            
-            return await query.ToListAsync();
+
+            return await query.AsSplitQuery().ToListAsync();
         }
 
-    
         public virtual TEntity GetById(object id)
         {
             return _dbSet.Find(id);
@@ -72,11 +84,11 @@ namespace Sude.Persistence.Repository
                     query = query.Include(include);
 
 
-            return  query.FirstOrDefault();
+            return query.AsSplitQuery().FirstOrDefault();
         }
 
 
-        public virtual async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> where = null, string includes="")
+        public virtual async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> where = null, string includes = "")
         {
             IQueryable<TEntity> query = _dbSet;
             if (where != null)
@@ -87,7 +99,7 @@ namespace Sude.Persistence.Repository
                     query = query.Include(include);
 
 
-            return await query.FirstOrDefaultAsync();
+            return await query.AsSplitQuery().FirstOrDefaultAsync();
         }
         public virtual async Task<TEntity> GetByIdAsync(object id)
         {
@@ -99,14 +111,14 @@ namespace Sude.Persistence.Repository
             _dbSet.Add(entity);
         }
 
-    
+
         public virtual void Update(TEntity entity)
         {
             _dbSet.Attach(entity);
             _ctx.Entry(entity).State = EntityState.Modified;
         }
 
-        
+
         public virtual void Delete(TEntity entity)
         {
             if (_ctx.Entry(entity).State == EntityState.Detached)
@@ -117,7 +129,7 @@ namespace Sude.Persistence.Repository
 
         public virtual void Delete(object id)
         {
-            var  entity = GetById(id);
+            var entity = GetById(id);
             Delete(entity);
         }
         public virtual void Save()
@@ -131,6 +143,6 @@ namespace Sude.Persistence.Repository
         }
     }
 
-  
+
 
 }

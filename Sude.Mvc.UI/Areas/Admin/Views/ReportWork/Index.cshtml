@@ -1,4 +1,4 @@
-﻿@model ResultSetDto<IEnumerable<SearchOrderDtoModel>>
+﻿@model ResultSetDto<IEnumerable<ReportOrderDtoModel>>
 @using Sude.Dto.DtoModels.Result
 @using Sude.Dto.DtoModels.Order
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -52,12 +52,26 @@
 
             </div>
         </div>
+        
         <div class="row">
+            <div class="col-md-8 text-center">
+                <label class="btn btn-default">
+                    <input type="radio" id="selectAll" class="btn-check"  checked="checked" name="IsBuy" value="" autocomplete="off">
+                    همه
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" id="selectSell" class="btn-check" name="IsBuy" value="false" autocomplete="off">
+                    فروش
+                </label> 
+                <label class="btn btn-default">
+                    <input type="radio" id="selBuy" class="btn-check"  name="IsBuy" value="true" autocomplete="off">
+                    خرید
+                </label>
+            </div>
 
+            <div class="col-md-4 text-center">
 
-            <div class="col-md-12 text-center">
-
-                <a class="btn btn-default btn-primary" onclick="SearchOrders()"><span class="fa fa-search margin-r-5"></span>جستجو</a>
+                <a class="btn btn-default btn-info" onclick="SearchOrders(getControlAltValueDateStructure('#OrderDateFromVal'),getControlAltValueDateStructure('#OrderDateToVal'),$('input[name=IsBuy]:radio:checked').val(),1)"><span class="fa fa-search margin-r-5"></span>جستجو</a>
 
 
 
@@ -122,14 +136,11 @@
     </script>
     <script>
 
-        function SearchOrders() {
+        function SearchOrders(OrderDateFrom, OrderDateTo, IsBuy,PageIndex) {
 
             //var address = "Report/SearchReport?DateFrom=" + encodeURIComponent($('#OrderDateFromVal').val()) + "&DateTo=" + encodeURIComponent($('#OrderDateToVal').val()) + "&IsBuy=";
 
-            OrderDateFrom = getControlAltValueDateStructure('#OrderDateFromVal');
-            OrderDateTo = getControlAltValueDateStructure('#OrderDateToVal');
-
-            $("#searchOrderView").load("ReportWork/SearchReport?DateFrom=" + encodeURIComponent(OrderDateFrom) + "&DateTo=" + encodeURIComponent(OrderDateTo) + "&IsBuy=");
+              $("#searchOrderView").load("ReportWork/SearchReport?DateFrom=" + encodeURIComponent(OrderDateFrom) + "&DateTo=" + encodeURIComponent(OrderDateTo) + "&IsBuy=" + IsBuy + "&PageIndex=" + PageIndex);
         }
 
 

@@ -1,0 +1,189 @@
+﻿@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order
+@model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
+
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">سفارشات</h3>
+
+
+
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="row">
+            <table class="table table-hover table-responsive tablemobile">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <th>شماره سفارش</th>
+                        <th>تاریخ</th>
+                        <th>عنوان کسب و کار</th>
+                        <th>نوع سفارش</th>
+                        <th>مجموع مبلغ سفارش</th>
+                        <th>عملیات</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model != null && Model.Data != null)
+                        {
+                            int i = 1;
+                            @foreach (var item in Model.Data)
+                            {
+
+                                <tr id="tr_@item.OrderId">
+
+                                    <td lable="" style="--bgcolor: silver;">@((( ViewBag.PageID-1) * Constants.PageSize) + (i++))</td>
+                                    <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
+                                    <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                                    <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
+                                    <td lable="نوع سفارش" style="--minwidth:40%">
+                                        @if (@item.IsBuy)
+                                        {
+                                            <lable>   خرید</lable>
+                                        }
+                                        else
+                                        {
+                                            <lable>   فروش</lable>
+                                        }
+                                    </td>
+                                    <td lable="مبلغ سفارش" style="--minwidth:40%">
+                                        @String.Format("{0:n0}", @item.SumPrice)
+
+                                    </td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr id="trDetails_@item.OrderId">
+
+                                    <td>
+                                        <div class="row">
+                                            <div class="box-body table-responsive no-padding">
+                                                <table class="table">
+                                                    <tr>
+                                                        <td>#</td>
+                                                        <th>عنوان</th>
+                                                        <th>قیمت</th>
+                                                        <th>تعداد</th>
+
+                                                        <th>
+                                                            مجموع
+                                                        </th>
+
+                                                    </tr>
+
+                                                    @{
+                                                        int idetail = 1;
+                                                        double sum = 0;
+
+                                                        @foreach (var detail in item.OrderDetails)
+                                                        {
+                                                            sum += (detail.Price * detail.Count);
+                                                            <tr id="tr_@detail.OrderDetailId">
+                                                                <td class="col-md-1">@(idetail++)</td>
+                                                                <td class="col-md-5"><label> @detail.ServingName</label></td>
+                                                                <td class="col-md-2"><label> @String.Format("{0:n0}", detail.Price)</label></td>
+                                                                <td class="col-md-2"><label>@String.Format("{0:n0}", detail.Count)</label></td>
+                                                                <td class="col-md-2"><label>@String.Format("{0:n0}", (detail.Price * detail.Count))</label></td>
+
+
+                                                            </tr>
+                                                        }
+                                                        <tr class="text-bold">
+                                                            <td class="col-md-1"></td>
+                                                            <td class="col-md-5"><label> مجموع</label></td>
+                                                            <td class="col-md-2"> </td>
+
+                                                            <td class="col-md-4"><label>@String.Format("{0:n0}", sum)</label></td>
+
+                                                        </tr>
+
+                                                    }
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+
+                                    </td>
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                            </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <!-- /.box-body -->
+</div>
+
+
+
+@section Scripts
+{
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Sweetalert2/animate.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/AdminLTE/css/toastr.min.css" rel="stylesheet" />
+    <script src="~/AdminLTE/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(function () {
+            $("#orderView").load("Report/SevenDayPast");
+        });
+
+
+
+
+    </script>
+
+}
+
+<!--@section Modals
+{-->
+<!-- Modal -->
+<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="myModalLabel">Modal title</h4>
+            </div>
+            <input hidden="hidden" id="selectedItem" />
+            <div class="modal-body" id="myModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>-->
+<!--End Modal -->
+<!--}-->

@@ -11,14 +11,14 @@ namespace Sude.Application.Interfaces
     public interface IWorkService
     {
         ResultSet<IEnumerable<WorkInfo>> GetWorks();
-        ResultSet<WorkInfo> AddWork(WorkInfo  work);
-        ResultSet EditWork(WorkInfo work);
+        ResultSet<WorkInfo> AddWork(WorkInfo  work, Guid userId);
+        ResultSet EditWork(WorkInfo work, Guid userId);
         ResultSet DeleteWork(Guid workId);
         ResultSet<WorkInfo> GetWorkById(Guid workId);
         Task<ResultSet<IEnumerable<WorkInfo>>> GetWorksAsync();
-        Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work);
+        Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work, Guid userId);
         Task<ResultSet<WorkUserInfo>> AddWorkUserAsync(WorkUserInfo workUser);
-        Task<ResultSet> EditWorkAsync(WorkInfo work);
+        Task<ResultSet> EditWorkAsync(WorkInfo work, Guid userId);
         Task<ResultSet> DeleteWorkAsync(Guid workId);
         Task<ResultSet<WorkInfo>> GetWorkByIdAsync(Guid workId);
         Task<ResultSet<IEnumerable<WorkInfo>>> GetWorksByUserIdAsync(Guid UserID);

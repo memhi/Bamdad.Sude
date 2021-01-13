@@ -3,212 +3,368 @@
 @model ResultSetDto<IEnumerable<OrderDetailDtoModel>>
 
 
-<div class="input-group">
-    <input type="text" name="message" placeholder="Type words ..." class="form-control">
-    <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
-    </span>
-    
+@Html.Hidden("inputIsBuy", (object)ViewBag.IsBuy)
+@Html.Hidden("inputDateFrom", (object)ViewBag.DateFrom)
+@Html.Hidden("inputDateTo", (object)ViewBag.DateTo)
+@Html.Hidden("inputOrderNumber", (object)ViewBag.OrderNumber)
+@Html.Hidden("inputDescription", (object)ViewBag.Description)
+
+<div class="box box-primary">
+    <div class="box-header with-border clearfix">
+        <div class="box-title">
+            <i class="fa fa-search"></i>
+جستجو        </div>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool"  data-toggle="collapse" data-target="#collapseControl" aria-expanded="false" aria-controls="collapseControl" >
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
     </div>
+    <div class="box-body collapse" id="collapseControl">
+        <div class="row margin-bottom">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>تاریخ شروع جستجو</label>
+                    </div>
+                    <div class="col-md-8">
+
+                        <input id="txtOrderDateFrom" value="@(ViewBag.DateFrom==null? "":ViewBag.DateFrom.ToString())" class="form-control" />
+                        <input id="OrderDateFromVal" hidden="hidden" value="@(ViewBag.DateFrom==null? "":ViewBag.DateFrom.ToString())" />
 
 
-<div class="row">
-    <div class="col-m-6">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">سفارشات</h3>
 
-                <div class="box-tools">
-                    
-                    <table>
-                        <tr>
-
-                            <td style="padding-left:3px">
-                                <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-shopping-cart margin-r-5"></span><lable>فروش جدید</lable></a>
-                            </td>
-                            <td>
-                                <a id="btnAddBuy" class="btn btn-block btn-warning"><span class="fa fa-shopping-bag margin-r-5"></span><lable>خرید جدید</lable></a>
-                            </td>
-                        </tr>
-
-                    </table>
-
-                </div>
-
-                </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <div class="row">
-                    <table class="table table-hover table-responsive tablemobile">
-                        <thead>
-                            <tr>
-                                <td>#</td>
-                                <th>شماره سفارش</th>
-                                <th>تاریخ</th>
-                                <th>عنوان کسب و کار</th>
-                                <th>نوع سفارش</th>
-                                <th>مجموع مبلغ سفارش</th>
-
-
-                                <th>عملیات</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                if (Model != null && Model.Data != null)
-                                {
-                                    int i = 1;
-                                    @foreach (var item in Model.Data)
-                                    {
-
-                                        <tr id="tr_@item.OrderId">
-                                            <td lable="" style="--bgcolor: silver;">@(i++)</td>
-                                            <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
-                                            <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
-                                            <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
-                                            <td lable="نوع سفارش" style="--minwidth:40%">
-                                                @if (@item.IsBuy)
-                                                {
-                                                    <lable>   خرید</lable>
-                                                }
-                                                else
-                                                {
-                                                    <lable>   فروش</lable>
-                                                }
-                                            </td>
-                                            <td lable="مبلغ سفارش" style="--minwidth:40%">
-                                                @item.SumPrice.ToString("0,0")
-                                            </td>
-
-                                            <td>
-                                                <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
-                                                <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
-                                                <button class="btn btn-primary btn-sm" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
-                                                <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
-
-
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row text-center">
-                    <nav>
-                        <ul class="pagination">
-                            <li class="disabled"><a aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                            @for (int i = 1; i <= (Model.RowCount/Constants.PageSize + 1); i++)
-                            {
-                                <li class="@(((int)ViewBag.PageID==i)?"active":"")"><a href="#" onclick="PageChange(@i)">@i<span class="sr-only">(current)</span></a></li>
-                            }
-
-                            <li><a aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                        </ul>
-                    </nav>
+                    </div>
                 </div>
 
             </div>
-            <!-- /.box-body -->
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>تاریخ پایان جستجو</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input id="txtOrderDateTo" value="@(ViewBag.DateTo==null? "":ViewBag.DateTo.ToString())" class="form-control" />
+                        <input id="OrderDateToVal" hidden="hidden" value="@(ViewBag.DateTo==null? "":ViewBag.DateTo.ToString())" />
+
+                    </div>
+                </div>
+
+
+
+            </div>
         </div>
-        <!-- /.box -->
+        <div class="row margin-bottom">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>شماره سفارش</label>
+                    </div>
+                    <div class="col-md-8">
+
+                        <input id="txtOrderNumber" type="text" value="@ViewBag.OrderNumber" class="form-control" />
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label>توضیحات سفارش</label>
+                    </div>
+                    <div class="col-md-8">
+
+                        <input id="txtOrderDescription" type="text" value="@ViewBag.Description" class="form-control" />
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 text-center">
+                <label class="btn btn-default">
+                    <input type="radio" id="selectAll" class="btn-check" name="IsBuy" value="" autocomplete="off">
+                    همه
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" id="selectSell" class="btn-check" name="IsBuy" value="False" autocomplete="off">
+                    فروش
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" id="selBuy" class="btn-check" name="IsBuy" value="True" autocomplete="off">
+                    خرید
+                </label>
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                <a class="btn btn-default btn-info" onclick="Search(1)"><span class="fa fa-search margin-r-5"></span>جستجو</a>
+
+
+
+
+            </div>
+
+        </div>
+
     </div>
-
-  </div>
-
+</div>
 
 
- 
 
-<script>
-    $("#btnAdd").click(function () {
-        $("#orderView").load("Order/Add");
-    });
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">سفارشات</h3>
 
-    $("#btnAddBuy").click(function () {
-        $("#orderView").load("OrderBuy/Add");
-    });
-    function DeleteOrder(orderId) {
-        swal.fire({
-            title: 'حذف سفارش',
-            text: "کاربر گرامی از حذف سفارش مطمئن هستید؟",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#7cacbe',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، سفارش حذف شود',
-            cancelButtonText: 'خیر',
-            position: 'top',
-            showClass: {
-                popup: 'animate__animated animate__fadeIn'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOut'
-            }
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: "Order/Delete/" + orderId,
-                    type: "Get",
-                    success: function (result) {
-                        if (result.isSucceed == true) {
-                            Command: toastr["success"]("سفارش حذف شد");
-                            $("#tr_" + orderId).addClass("danger");
-                            $("#tr_" + orderId).hide('slow');
-                            $("#orderView").load("Order/List");
-                        }
-                        else {
-                            Command: toastr["warning"](result.message, "هشدار");
-                        }
+                        <div class="box-tools">
+
+                            <table>
+                                <tr>
+
+                                    <td style="padding-left:3px">
+                                        <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-shopping-cart margin-r-5"></span><lable>فروش جدید</lable></a>
+                                    </td>
+                                    <td>
+                                        <a id="btnAddBuy" class="btn btn-block btn-warning"><span class="fa fa-shopping-bag margin-r-5"></span><lable>خرید جدید</lable></a>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <table class="table table-hover table-responsive tablemobile">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>شماره سفارش</th>
+                                        <th>تاریخ</th>
+                                        <th>عنوان کسب و کار</th>
+                                        <th>نوع سفارش</th>
+                                        <th>مجموع مبلغ سفارش</th>
+                                        <th>عملیات</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model != null && Model.Data != null)
+                                        {
+                                            int i = 1;
+                                            @foreach (var item in Model.Data)
+                                            {
+
+                                                <tr id="tr_@item.OrderId">
+                                                    <td lable="" style="--bgcolor: silver;">@((( ViewBag.PageID-1) * Constants.PageSize) + (i++))</td>
+                                                    <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
+                                                    <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                                                    <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
+                                                    <td lable="نوع سفارش" style="--minwidth:40%">
+                                                        @if (@item.IsBuy)
+                                                        {
+                                                            <lable>   خرید</lable>
+                                                        }
+                                                        else
+                                                        {
+                                                            <lable>   فروش</lable>
+                                                        }
+                                                    </td>
+                                                    <td lable="مبلغ سفارش" style="--minwidth:40%">
+                                                        @String.Format("{0:n0}", @item.SumPrice)
+                                                    
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="btn btn-warning btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
+                                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+                                                        <button class="btn btn-primary btn-sm" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
+                                                        <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row text-center">
+                            <nav>
+                                <ul class="pagination">
+                                    @{
+
+                                        <li class="@(((int)ViewBag.PageID==1)?"disabled":"")"><a aria-label="Previous" href="#" onclick="@(ViewBag.PageID==1 ? "" : "PageChange("+((int)ViewBag.PageID-1)+")")"><span aria-hidden="true">«</span></a></li>
+                                        @for (int i = 1; i <= (Model.RowCount / Constants.PageSize + Convert.ToInt32(Model.RowCount % Constants.PageSize > 0)); i++)
+                                        {
+                                            <li class="@(((int)ViewBag.PageID==i)?"active":"")"><a href="#" onclick="PageChange(@i)">@i<span class="sr-only">(current)</span></a></li>
+                                        }
+
+                                        <li class="@(((Model.RowCount/Constants.PageSize +  Convert.ToInt32(Model.RowCount%Constants.PageSize>0))==ViewBag.PageID) ? "disabled" :"" )"><a aria-label="Next" href="#" onclick="@(((Model.RowCount/Constants.PageSize +  Convert.ToInt32(Model.RowCount%Constants.PageSize>0))==(int)ViewBag.PageID ) ? "" : "PageChange("+((int)ViewBag.PageID+1)+")")"><span aria-hidden="true">»</span></a></li>
+                                    }
+                                </ul>
+
+                                @*<ul class="pagination">
+
+                                        <li class="disabled"><a aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                                        @for (int i = 1; i <= (Model.RowCount / Constants.PageSize + 1); i++)
+                                        {
+                                            <li class="@(((int)ViewBag.PageID==i)?"active":"")"><a href="#" onclick="PageChange(@i,@Constants.PageSize)">@i<span class="sr-only">(current)</span></a></li>
+                                        }
+
+                                        <li><a aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                    </ul>*@
+                            </nav>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+          
+
+        <script>
+
+
+            $(document).ready(function () {
+                var isbuy = $("#inputIsBuy").val();
+                $("input[name=IsBuy][value='" + isbuy + "']").prop("checked", true);
+                initializeDateTime('#txtOrderDateFrom', '#OrderDateFromVal');
+                initializeDateTime('#txtOrderDateTo', '#OrderDateToVal');
+            });
+        </script>
+
+        <script>
+            $("#btnAdd").click(function () {
+                $("#orderView").load("Order/Add");
+            });
+
+            $("#btnAddBuy").click(function () {
+                $("#orderView").load("OrderBuy/Add");
+            });
+            function DeleteOrder(orderId) {
+                swal.fire({
+                    title: 'حذف سفارش',
+                    text: "کاربر گرامی از حذف سفارش مطمئن هستید؟",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7cacbe',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'بله ، سفارش حذف شود',
+                    cancelButtonText: 'خیر',
+                    position: 'top',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeIn'
                     },
-                    error: function (request, status, error) {
-                        alert(request.responseText);
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOut'
                     }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "Order/Delete/" + orderId,
+                            type: "Get",
+                            success: function (result) {
+                                if (result.isSucceed == true) {
+                                    Command: toastr["success"]("سفارش حذف شد");
+                                    $("#tr_" + orderId).addClass("danger");
+                                    $("#tr_" + orderId).hide('slow');
+                                    $("#orderView").load("Order/List");
+                                }
+                                else {
+                                    Command: toastr["warning"](result.message, "هشدار");
+                                }
+                            },
+                            error: function (request, status, error) {
+                                alert(request.responseText);
+                            }
+                        });
+                    }
+                })
+            }
+            function ShowEditOrderPop(orderId, isBuy) {
+
+                if (isBuy == 'True') {
+
+                    $("#orderView").load("OrderBuy/Edit/" + orderId);
+                }
+                else {
+                    $("#orderView").load("Order/Edit/" + orderId);
+
+                }
+                //$.get("/Order/Edit/" + orderId, function (result) {
+                //    $("#myModal").modal('show');
+                //    $("#myModalBody").html(result);
+                //});
+            }
+            function ShowEditOrder(orderId) {
+                $("#orderView").load("Order/Edit/" + orderId);
+            }
+
+
+            function Search(pageindex) {
+
+                ordernumber = $('#txtOrderNumber').val();
+                datefrom = getControlAltValueDateStructure('#OrderDateFromVal');
+                dateto = getControlAltValueDateStructure('#OrderDateToVal');
+                isbuy = $('input[name=IsBuy]:radio:checked').val();
+                description = $('#txtOrderDescription').val();
+                $.get("Order/List", { "PageIndex": pageindex, "OrderNumber": ordernumber, "DateFrom": datefrom, "DateTo": dateto, "IsBuy": isbuy, "Description": description }, function (result) {
+
+                    $("#orderView").html(result);
+
+                });
+
+
+                //
+                //  $("#orderView").load("Order/List", { "PageIndex": pageindex });
+            }
+
+            function PageChange(pageindex) {
+
+                ordernumber = $("#inputOrderNumber").val();
+                datefrom = $("#inputDateFrom").val();
+                dateto = $("#inputDateTo").val();
+                isbuy = $("#inputIsBuy").val();
+                description = $("#inputDescription").val();
+                $.get("Order/List", { "PageIndex": pageindex, "OrderNumber": ordernumber, "DateFrom": datefrom, "DateTo": dateto, "IsBuy": isbuy, "Description": description }, function (result) {
+
+                    $("#orderView").html(result);
+
+                });
+
+
+                //
+                //  $("#orderView").load("Order/List", { "PageIndex": pageindex });
+            }
+
+            function ShowModalPayments(orderId) {
+                $.get("Order/ViewPayments/" + orderId, function (result) {
+                    $("#myModal").modal('show');
+                    $("#myModalLabel").html("جزئیات  پرداخت");
+                    $("#myModalBody").html(result);
+
                 });
             }
-        })
-    }
-    function ShowEditOrderPop(orderId, isBuy) {
-  
-        if (isBuy == 'True') {
+            function ShowNewPageModalDetailOrder(orderId) {
+                $.get("Order/Detail/" + orderId, function (result) {
+                    $("#myModal").modal('show');
+                    $("#myModalLabel").html("جزئیات  سفارش");
+                    $("#myModalBody").html(result);
 
-            $("#orderView").load("OrderBuy/Edit/" + orderId);
-        }
-        else {
-            $("#orderView").load("Order/Edit/" + orderId);
-
-        }
-        //$.get("/Order/Edit/" + orderId, function (result) {
-        //    $("#myModal").modal('show');
-      //    $("#myModalBody").html(result);
-        //});
-    }
-    function ShowEditOrder(orderId) {
-        $("#orderView").load("Order/Edit/" + orderId);
-    }
-
-
-    function PageChange(pageindex) {
-
-        $("#orderView").load("Order/List", { "PageIndex": pageindex });
-    }
-    
-    function ShowModalPayments(orderId) {
-        $.get("Order/ViewPayments/" + orderId, function (result) {
-            $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات  پرداخت");
-            $("#myModalBody").html(result);
-
-        });
-    }
-    function ShowNewPageModalDetailOrder(orderId) {
-        $.get("Order/Detail/" + orderId, function (result) {
-            $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات  سفارش");
-            $("#myModalBody").html(result);
-            
-        });
-    }
-</script>
+                });
+            }
+        </script>

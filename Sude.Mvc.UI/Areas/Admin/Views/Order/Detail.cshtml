@@ -112,9 +112,9 @@
                                     <tr id="tr_@item.OrderDetailId">
                                         <td class="col-md-1">@(i++)</td>
                                         <td class="col-md-5"><label> @item.ServingName</label></td>
-                                        <td class="col-md-2"><label> @item.Price.ToString("0,0")</label></td>
-                                        <td class="col-md-2"><label> @item.Count.ToString("0,0")</label></td>
-                                        <td class="col-md-2"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
+                                        <td class="col-md-2"><label> @String.Format("{0:n0}", item.Price)</label></td>
+                                        <td class="col-md-2"><label>@String.Format("{0:n0}", item.Count)</label></td>
+                                        <td class="col-md-2"><label>@String.Format("{0:n0}", (item.Price * item.Count))</label></td>
 
 
                                     </tr>
@@ -124,7 +124,7 @@
                                     <td class="col-md-5"><label> مجموع</label></td>
                                     <td class="col-md-2"> </td>
 
-                                    <td class="col-md-4"><label> @sum.ToString("0,0")</label></td>
+                                    <td class="col-md-4"><label>@String.Format("{0:n0}", sum)</label></td>
 
                                 </tr>
 

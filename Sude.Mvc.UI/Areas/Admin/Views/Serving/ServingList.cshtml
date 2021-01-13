@@ -56,7 +56,7 @@
                             <td  lable="" style="--bgcolor: silver;">@(i++)</td>
                             <td lable="عنوان" style="--minwidth:40%">@item.Title</td>
                             <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
-                            <td lable="قیمت" style="--minwidth:40%">@item.Price.ToString("0,0")</td>
+                            <td lable="قیمت" style="--minwidth:40%">@String.Format("{0:n0}", item.Price)</td>
                             <td lable="وضعیت" style="--minwidth:40%">
                                 @if (item.IsActive)
                                 {

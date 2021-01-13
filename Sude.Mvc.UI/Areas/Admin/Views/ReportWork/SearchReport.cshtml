@@ -1,86 +1,115 @@
-﻿@model IEnumerable<Sude.Dto.DtoModels.Order.SearchOrderDtoModel>
+﻿
+@using Sude.Dto.DtoModels.Result
+@using Sude.Dto.DtoModels.Order
+@model ResultSetDto<IEnumerable<ReportOrderDtoModel>>
 @inject Sude.Mvc.UI.Admin.SudeSessionContext _sudeSessionContext
 
- 
 
-    @if (string.IsNullOrEmpty(_sudeSessionContext.CurrentWorkId))
+
+@if (string.IsNullOrEmpty(_sudeSessionContext.CurrentWorkId))
     {
 
-        <div class="col-md-12">
-            <label>لطفا یک کسب و کار انتخاب کنید</label>
-        </div>
+<div class="col-md-12">
+    <label>لطفا یک کسب و کار انتخاب کنید</label>
+</div>
 
 
     }
     else
 
     {
-        if (Model != null && Model.Any())
+        if (Model != null && Model.IsSucceed && Model.Data!=null)
         {
-           <div class="box box-info">
-<div class="box-header with-border text-center">
-    <h3 class="box-title">نتایج جستجو</h3>
-</div>
-<div class="box-body">
-    <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        <label>تاریخ</label>
-                    </th>
-                    <th>
-                        نوع سفارش
-                    </th>
-                    <th>
-                        مجموع مبلغ
-                    </th>
+
+<input type="hidden" id="txtDateFrom"  value="@ViewBag.DateFrom"/>
+<input type="hidden" id="txtDateTo" value="@ViewBag.DateTo" />
+<input type="hidden" id="txtIsBuy" value="@ViewBag.IsBuy" />
+<div class="box box-info">
+    <div class="box-header with-border text-center">
+        <h3 class="box-title">نتایج جستجو</h3>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <table class="table table-hover table-responsive tablemobile">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <th>
+                            <label>تاریخ</label>
+                        </th>
+                        <th>
+                            نوع سفارش
+                        </th>
+                        <th>
+                            مجموع مبلغ
+                        </th>
 
 
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                    int row=1;
+                    @foreach (var item in Model.Data)
                                         {
-                <tr>
-                    <td>
-                        @item.DateFrom.ToLocalizationDateTime("D")
-                    </td>
-                    <td>
-                        @if (item.IsBuy.Value)
+                    <tr>
+                        <td lable="" style="--bgcolor: silver;">@(row++)</td>
+                        <td lable="تاریخ" style="--minwidth:40%">
+                            @item.DateFrom.ToLocalizationDateTime("D")
+                        </td>
+                        <td lable="نوع سفارش" style="--minwidth:40%">
+                            @if (item.IsBuy.Value)
                                                             {
-                        <label>خرید</label>
+                            <label>خرید</label>
                                                             }
                                                             else
                                                             {
-                        <label>فروش</label>
+                            <label>فروش</label>
                                                             }
 
-                    </td>
-                    <td>
-                        @item.SumPrice.ToString("0,0")
-                    </td>
+                        </td>
+                        <td lable="مجموع مبالف" style="--minwidth:40%">
+                            @item.SumPrice.ToString("0,0")
+                        </td>
 
-                    <td>
-                        <a href="#" class="btn btn-default">مشاهده جزئیات</a>
-                    </td>
-                </tr>
-                                        }
-            </tbody>
-        </table>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="ShowOrdersDetail('@item.DateFrom', '@item.IsBuy')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+
+                
+                        </td>
+                    </tr>
+                           }             }
+                </tbody>
+            </table>
+        </div>
+        <div class="row text-center">
+            <nav>
+                <ul class="pagination">
+                    @{
+                   
+                    <li class="@(((int)ViewBag.PageID==1)?"disabled":"")"><a aria-label="Previous" href="#" onclick="@(ViewBag.PageID==1 ? "" : "SearchOrdersPaged("+((int)ViewBag.PageID-1)+") ")"><span aria-hidden="true">«</span></a></li>
+                    @for (int i = 1; i <= (Model.RowCount/Constants.PageSize +  Convert.ToInt32(Model.RowCount%Constants.PageSize>0)); i++)
+                            {
+                    <li class="@(((int)ViewBag.PageID==i)?"active":"")"><a href="#" onclick="SearchOrdersPaged(@i)">@i<span class="sr-only">(current)</span></a></li>
+                            }
+
+                    <li  class="@(((Model.RowCount/Constants.PageSize +  Convert.ToInt32(Model.RowCount%Constants.PageSize>0))==ViewBag.PageID) ? "disabled" :"" )"><a aria-label="Next"  href="#"  onclick="@(((Model.RowCount/Constants.PageSize +  Convert.ToInt32(Model.RowCount%Constants.PageSize>0))==(int)ViewBag.PageID ) ? "" : "SearchOrdersPaged("+((int)ViewBag.PageID+1)+")")"><span aria-hidden="true">»</span></a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
     </div>
-    </div>
-    </div>
+</div>
 
     }
     else
 
     {
 
-    <div class="col-md-12">
-        <label>سفارشی یافت نشد</label>
-    </div>
+<div class="col-md-12">
+    <label>سفارشی یافت نشد</label>
+</div>
 
 
     }
@@ -89,4 +118,26 @@
 
 
 
- 
+<script>
+
+    function SearchOrdersPaged(PageIndex) {
+
+        OrderDateFrom = $('#txtDateFrom').val();
+        OrderDateTo = $('#txtDateTo').val();
+        IsBuy = $('#txtIsBuy').val();
+        SearchOrders(OrderDateFrom, OrderDateTo, IsBuy, PageIndex);
+    }
+
+    function ShowOrdersDetail(date,isbuy) {
+   
+        $.get("ReportWork/ViewDetailsOrdersReport", { "Date": date, "IsBuy": isbuy } , function(result) {
+                $("#myModal").modal('show');
+                $("#myModalLabel").html("فهرست سفارشات");
+                $("#myModalBody").html(result);
+
+            });
+
+    }
+
+
+</script>

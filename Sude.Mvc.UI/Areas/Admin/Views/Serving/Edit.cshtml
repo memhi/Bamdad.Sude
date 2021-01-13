@@ -101,6 +101,9 @@
            $.validator.unobtrusive.parse($('#frmEdit'));
         });
 
+        $("input[type='number']").on("focus", function () {
+            $(this).select();
+        });
         function EditServing() {
             $.validator.unobtrusive.parse($('#frmEdit'));
 

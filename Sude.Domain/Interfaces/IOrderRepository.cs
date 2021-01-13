@@ -1,4 +1,5 @@
 ﻿using Sude.Domain.Models.Order;
+using Sude.Domain.Models.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,14 @@ namespace Sude.Domain.Interfaces
 {
     public interface IOrderRepository
     {
+        Task<IEnumerable<OrderInfo>> GetOrderWithDetailsAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy);
+        IEnumerable<ReportOrderGroupInfo> GetReportOrder(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount);
         Task<IEnumerable<OrderInfo>> GetOrdersAsync();
         IEnumerable<OrderInfo> GetOrders();
         Task<IEnumerable<OrderInfo>> GetOrdersByWorkIdAsync(Guid workId);
         IEnumerable<OrderInfo> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
          DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
-         bool? isBuy = null, string description = null);
+         bool? isBuy = null, string description = null, string orderNumber = null);
         Task<int> GetSearchOrdersCountAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid? workId = null);
         bool AddOrder(OrderInfo order);
         bool EditOrder(OrderInfo order);

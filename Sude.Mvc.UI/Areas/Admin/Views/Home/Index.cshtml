@@ -89,7 +89,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <div class="small-box bg-olive">
                         <div class="inner">
-                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderCount]).ToString("0,0"))</h3>
+                            <h3>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderCount]))</h3>
                             <p>سفارشات فروش</p>
                         </div>
                         <div class="icon">
@@ -105,7 +105,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <div class="small-box bg-green-gradient">
                         <div class="inner">
-                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderPrice]).ToString("0,0"))</h3>
+                            <h3>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderPrice]))</h3>
                             <p>مبلغ سفارشات فروش</p>
                         </div>
                         <div class="icon">
@@ -122,7 +122,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <div class="small-box bg-blue">
                         <div class="inner">
-                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderBuyCount]).ToString("0,0"))</h3>
+                            <h3>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderBuyCount]))</h3>
 
                             <p>سفارشات خرید</p>
 
@@ -142,7 +142,7 @@
                 <div class="col-lg-3 col-xs-6">
                     <div class="small-box bg-light-blue-gradient">
                         <div class="inner">
-                            <h3>@(Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderBuyPrice]).ToString("0,0"))</h3>
+                            <h3>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderBuyPrice]))</h3>
 
                             <p>مبلغ سفارشات خرید</p>
 

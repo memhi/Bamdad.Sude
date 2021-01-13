@@ -78,27 +78,39 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         }
 
 
-        [HttpPost]
+        [HttpGet]
         // [Authorize]
 
         public async Task<ActionResult> List(GetOrderListDtoModel getOrderListRequest)
         {
             //System.Threading.Thread.Sleep(1000);
+            if (getOrderListRequest.DateFrom == null)
+                getOrderListRequest.DateFrom = DateTime.Now.AddYears(-1);
+
+            if (getOrderListRequest.DateTo == null)
+                getOrderListRequest.DateTo = DateTime.Now;
 
 
             ResultSetDto<IEnumerable<OrderDetailDtoModel>> Orderlist = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
-            string parameters = string.Format("?workId={0}&pageIndex={1}&pageSize={2}&orderDateFrom={3}&orderDateTo={4}&customerId={5}&isBuy={6}&description={7}",
+            string parameters = string.Format("?workId={0}&pageIndex={1}&pageSize={2}&orderDateFrom={3}&orderDateTo={4}&customerId={5}&isBuy={6}&description={7}&orderNumber={8}",
                 _sudeSessionContext.CurrentWorkId, getOrderListRequest.PageIndex, Constants.PageSize,
                 (getOrderListRequest.DateFrom != null ? getOrderListRequest.DateFrom.ToString() : ""),
                 (getOrderListRequest.DateTo != null ? getOrderListRequest.DateTo.ToString() : ""),
                 (!string.IsNullOrEmpty(getOrderListRequest.CustomerId) ? getOrderListRequest.CustomerId : ""),
                 (getOrderListRequest.IsBuy != null ? getOrderListRequest.IsBuy : ""),
-                (!string.IsNullOrEmpty(getOrderListRequest.Description) ? getOrderListRequest.Description : ""));
+                (!string.IsNullOrEmpty(getOrderListRequest.Description) ? getOrderListRequest.Description : ""),
+                (!string.IsNullOrEmpty(getOrderListRequest.OrderNumber) ? getOrderListRequest.OrderNumber : ""));
 
 
             Orderlist = await Api.GetHandler
              .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrders + parameters);
             ViewBag.PageID = getOrderListRequest.PageIndex;
+            ViewBag.DateFrom = getOrderListRequest.DateFrom;
+            ViewBag.DateTo = getOrderListRequest.DateTo;
+            ViewBag.IsBuy = getOrderListRequest.IsBuy;
+            ViewBag.OrderNumber = getOrderListRequest.OrderNumber;
+            ViewBag.Description = getOrderListRequest.Description;
+
             return PartialView("OrderList", Orderlist);
         }
 
@@ -286,6 +298,17 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
+            if(!Guid.TryParse(request.CustomerId,out Guid CustomerId))
+            {
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = "اطلاعات خدمات گیرنده را وارد نمایید"
+                });
+
+            }
+
+            
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
             if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)
@@ -390,6 +413,16 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                     IsSucceed = false,
                     Message = message
                 });
+            }
+
+            if (!Guid.TryParse(request.CustomerId, out Guid CustomerId))
+            {
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = "اطلاعات خدمات گیرنده را وارد نمایید"
+                });
+
             }
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;

@@ -122,7 +122,9 @@
 </form>
     <script>
 
-
+        $("input[type='number']").on("focus", function () {
+            $(this).select();
+        });
 
     function SaveNewServing() {
         $.validator.unobtrusive.parse($('#frmAdd'));

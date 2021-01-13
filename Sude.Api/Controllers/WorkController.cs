@@ -215,7 +215,7 @@ namespace Sude.Api.Controllers
 
 
 
-                var result = await _WorkService.EditWorkAsync(WorkEdit);
+                var result = await _WorkService.EditWorkAsync(WorkEdit,Guid.Parse(request.UserId));
                 if (!result.IsSucceed)
 
                 {
@@ -281,7 +281,7 @@ namespace Sude.Api.Controllers
                     Title = request.Title,
                     Desc = request.Desc,
                     WorkType = resultTypeWork.Data,
-                   
+                    
                     
 
                 };
@@ -290,7 +290,7 @@ namespace Sude.Api.Controllers
 
 
 
-                var resultSave = await _WorkService.AddWorkAsync(Work);
+                var resultSave = await _WorkService.AddWorkAsync(Work,Guid.Parse(request.UserId));
 
 
 

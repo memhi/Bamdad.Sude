@@ -36,28 +36,59 @@ namespace Sude.Mvc.UI.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> SearchReport(DateTime DateFrom, DateTime DateTo, bool? IsBuy)
+        public async Task<ActionResult> SearchReport(DateTime DateFrom, DateTime DateTo, bool? IsBuy ,int PageIndex)
         {
-            ResultSetDto<IEnumerable<SearchOrderDtoModel>> result = new ResultSetDto<IEnumerable<SearchOrderDtoModel>>();
+            ResultSetDto<IEnumerable<ReportOrderDtoModel>> result = new ResultSetDto<IEnumerable<ReportOrderDtoModel>>();
             if (string.IsNullOrEmpty(_sudeSessionContext.CurrentWorkId))
             {
                 return PartialView( viewName:"SearchReport",result.Data);
 
             }
-            SearchOrderDtoModel searchOrderDto = new SearchOrderDtoModel();
+            ReportOrderDtoModel searchOrderDto = new ReportOrderDtoModel();
             searchOrderDto.DateFrom = DateFrom;
             searchOrderDto.DateTo = DateTo;
             searchOrderDto.WorkId = _sudeSessionContext.CurrentWorkId;
             searchOrderDto.IsBuy = IsBuy;
-            searchOrderDto.PageSize = 1000;
-            result = await Api.GetHandler
-                                 .GetApiAsync<ResultSetDto<IEnumerable<SearchOrderDtoModel>>>(ApiAddress.Order.GetSearchOrders, searchOrderDto);
+            searchOrderDto.PageSize = Constants.PageSize;
+            searchOrderDto.PageIndex = PageIndex;
+            ViewBag.PageID = PageIndex;
+            ViewBag.DateFrom = DateFrom;
+            ViewBag.DateTo = DateTo;
+            ViewBag.IsBuy = (IsBuy==null ?"" : IsBuy.ToString());
 
-            return PartialView(viewName: "SearchReport",result.Data);
+            result = await Api.GetHandler
+                                 .GetApiAsync<ResultSetDto<IEnumerable<ReportOrderDtoModel>>>(ApiAddress.Order.GetReportOrders, searchOrderDto);
+
+            return PartialView(viewName: "SearchReport",result);
 
 
 
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> ViewDetailsOrdersReport(DateTime Date , bool? IsBuy)
+        {
+
+            ResultSetDto<IEnumerable<OrderDetailDtoModel>> result = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
+            if (string.IsNullOrEmpty(_sudeSessionContext.CurrentWorkId))
+            {
+                return PartialView(viewName: "ViewDetailsOrdersReport", result.Data);
+
+            }
+            string parameters = string.Format("?workId={0}&orderDateFrom={1}&orderDateTo={2}&isBuy={3}" ,
+                _sudeSessionContext.CurrentWorkId,Date.Date.ToString(),Date.Date.AddDays(1).ToString(), (IsBuy != null ? IsBuy : ""));
+                ;
+
+            result = await Api.GetHandler
+                                 .GetApiAsync<ResultSetDto<IEnumerable<OrderDetailDtoModel>>>(ApiAddress.Order.GetOrdersWithDetails+parameters);
+
+            return PartialView(viewName: "ViewDetailsOrdersReport", result);
+
+
+
+        }
+
 
     }
 }

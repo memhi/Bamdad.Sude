@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using System.Globalization;
 using Sude.Domain.Models.Work;
 using Sude.Dto.DtoModels.Work;
+using Sude.Domain.Models.Report;
 
 namespace Sude.Api.Controllers
 {
@@ -54,11 +55,94 @@ namespace Sude.Api.Controllers
         }
 
 
+
+
+
+        [HttpGet]
+
+        public async Task<ActionResult> GetOrdersWithDetails(string workId, DateTime orderDateFrom , DateTime orderDateTo, bool? isBuy = null)
+        {
+            try
+            {
+
+            
+
+                ResultSet<IEnumerable<OrderInfo>> resultSet =await _OrderService.GetOrdersWithDetailsAsync( orderDateFrom, orderDateTo, Guid.Parse(workId),  isBuy);
+
+
+                if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
+                    return NotFound(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                    {
+                        IsSucceed = false,
+                        Message = "Not found",
+                        Data = null
+
+
+                    });
+
+
+                var result = resultSet.Data.Select(o => new OrderDetailDtoModel()
+                {
+                    OrderId = o.Id.ToString(),
+                    OrderNumber = o.Number,
+                    WorkId = o.WorkId.ToString(),
+                    WorkName = o.Work.Title,
+                    OrderDate = o.OrderDate,
+                    SumPrice = o.SumPrice,
+                    Description = o.Description,
+                    IsBuy = o.IsBuy,
+                    PaymentStatusId = o.PaymentStatusId.Value.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    Customer = (o.Customer != null ? new CustomerDetailDtoModel()
+                    {
+                        CustomerId = o.Customer.Id.ToString(),
+                        Title = o.Customer.Title,
+                        Phone = o.Customer.Phone,
+                        WorkId = o.Customer.WorkId.ToString(),
+                        NationalCode = o.Customer.NationalCode
+
+                    } : null),
+                    OrderDetails = (o.Details != null ? o.Details.Select(od => new OrderDetailDetailDtoModel()
+                    {
+                        Count = od.Count,
+                        OrderDetailId = od.Id.ToString(),
+                        ServingName = od.Serving.Title,
+                        Price = od.Price,
+                          ServingId=od.ServingId.ToString(),
+                           OrderId=od.OrderId.ToString()
+
+                    }).ToList() : null)
+
+
+                });
+                return Ok(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = result,
+                    CurrentPage = 1,
+                    PageSize = int.MaxValue
+            
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<IEnumerable<OrderDetailDtoModel>>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
+
         [HttpGet]
 
         public async Task<ActionResult> GetOrders(string workId, int pageIndex, int pageSize,
           DateTime? orderDateFrom = null, DateTime? orderDateTo = null, string customerId = null,
-          bool? isBuy = null, string description = null)
+          bool? isBuy = null, string description = null,string orderNumber=null)
         {
             try
             {
@@ -67,7 +151,7 @@ namespace Sude.Api.Controllers
 
                 ResultSet<IEnumerable<OrderInfo>> resultSet = _OrderService.GetOrders(Guid.Parse(workId), pageIndex, pageSize,
                   out rowCount, orderDateFrom, orderDateTo, (string.IsNullOrEmpty(customerId) ? null : Guid.Parse(customerId)),
- isBuy, description);
+ isBuy, description, orderNumber);
 
 
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
@@ -188,7 +272,7 @@ namespace Sude.Api.Controllers
         //[Consumes("application/xml")]
         //[Consumes("application/json")]
         // [Authorize]
-        public async Task<ActionResult<ResultSetDto<IEnumerable<SearchOrderDtoModel>>>> GetSearchOrders([FromBody] SearchOrderDtoModel searchOrder)
+        public async Task<ActionResult<ResultSetDto<IEnumerable<ReportOrderDtoModel>>>> GetReportOrders([FromBody] ReportOrderDtoModel searchOrder)
         {
             try
             {
@@ -196,10 +280,10 @@ namespace Sude.Api.Controllers
 
                 int count = 0;
 
-                ResultSet<IEnumerable<OrderInfo>> resultSet = _OrderService.GetSearchOrders(searchOrder.DateFrom, searchOrder.DateTo, Guid.Parse(searchOrder.WorkId),
+                ResultSet<IEnumerable<ReportOrderGroupInfo>> resultSet = _OrderService.GetReportOrder(searchOrder.DateFrom, searchOrder.DateTo, Guid.Parse(searchOrder.WorkId),
                      searchOrder.IsBuy, searchOrder.PageSize, searchOrder.PageIndex, out count);
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
-                    return NotFound(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                    return NotFound(new ResultSetDto<IEnumerable<ReportOrderDtoModel>>()
                     {
                         IsSucceed = false,
                         Message = "Not found",
@@ -210,14 +294,14 @@ namespace Sude.Api.Controllers
 
 
 
-                var result = resultSet.Data.Select(o => new SearchOrderDtoModel()
+                var result = resultSet.Data.Select(o => new ReportOrderDtoModel()
                 {
                     DateFrom = o.OrderDate,
                     DateTo = o.OrderDate,
                     IsBuy = o.IsBuy,
                     PageIndex = searchOrder.PageIndex,
                     PageSize = searchOrder.PageSize,
-                    SearchCount = count,
+                    RowCount = count,
                     WorkId = searchOrder.WorkId,
                     SumPrice = o.SumPrice
 
@@ -227,16 +311,18 @@ namespace Sude.Api.Controllers
 
 
                 });
-                return Ok(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                return Ok(new ResultSetDto<IEnumerable<ReportOrderDtoModel>>()
                 {
                     IsSucceed = true,
                     Message = "",
-                    Data = result
+                    Data = result,
+                     CurrentPage=searchOrder.PageIndex,
+                     RowCount=count
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResultSetDto<IEnumerable<SearchOrderDtoModel>>()
+                return BadRequest(new ResultSetDto<IEnumerable<ReportOrderDtoModel>>()
                 {
                     IsSucceed = false,
                     Message = ex.Message,

@@ -165,7 +165,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
                     Message = message
                 });
             }
-
+            request.UserId = _sudeSessionContext.CurrentUser.id;
             ResultSetDto<WorkEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<WorkEditDtoModel>>(ApiAddress.Work.EditWork, request);
             _sudeSessionContext.UserWorks = null;

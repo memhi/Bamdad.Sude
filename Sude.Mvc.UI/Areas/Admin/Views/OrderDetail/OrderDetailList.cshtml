@@ -24,9 +24,9 @@
                     <tr id="tr_@item.OrderDetailId" class="table-primary">
                         <td lable="" style="--bgcolor: silver;"><label>@(i++)</label></td>
                         <td lable="عنوان" style="--minwidth:40%"><label class="btn  btn-flat bg-olive-active col-md-8" onclick="SetValues('@item.ServingId', '@item.Price', '@item.Count');">  @item.ServingName</label></td>
-                        <td lable="مبلغ" style="--minwidth:40%"><label> @item.Price.ToString("0,0")</label></td>
-                        <td lable="تعداد" style="--minwidth:40%"><label> @item.Count.ToString("0,0")</label></td>
-                        <td lable="مجموع" style="--minwidth:40%"><label> @((item.Price * item.Count).ToString("0,0"))</label></td>
+                        <td lable="مبلغ" style="--minwidth:40%"><label>@String.Format("{0:n0}", item.Price) </label></td>
+                        <td lable="تعداد" style="--minwidth:40%"><label> @String.Format("{0:n0}", item.Count)</label></td>
+                        <td lable="مجموع" style="--minwidth:40%"><label> @String.Format("{0:n0}", (item.Price * item.Count)) </label></td>
                         <td>
 
                             <a class="btn btn-danger btn-sm" onclick="DeleteOrderDetail('@item.OrderDetailId','@item.ServingId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف از سفارش</lable></a>
@@ -46,7 +46,7 @@
             مجموع مبلغ
         </div>
         <div class="box-title col-md-6">
-            <label>@sum.ToString("0,0")</label>
+            <label>@String.Format("{0:n0}", sum)</label>
         </div>
         
     </div>
@@ -56,6 +56,8 @@
 
 
         <script>
+
+           
 
             function SetValues(servingId, price, count) {
 

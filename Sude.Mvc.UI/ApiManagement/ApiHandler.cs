@@ -173,8 +173,9 @@ namespace Sude.Mvc.UI.ApiManagement
         public class Order
         {
             
-                public static readonly string SetPayment = ServerAddress + "/api/Order/SetPayment/";
-            public static readonly string GetSearchOrders = ServerAddress + "/api/Order/GetSearchOrders/";
+                public static readonly string GetOrdersWithDetails = ServerAddress + "/api/Order/GetOrdersWithDetails/";
+            public static readonly string SetPayment = ServerAddress + "/api/Order/SetPayment/";
+            public static readonly string GetReportOrders = ServerAddress + "/api/Order/GetReportOrders/";
             public static readonly string GetOrdersStatistics = ServerAddress + "/api/Order/GetOrdersStatistics/";
             public static readonly string GetOrders = ServerAddress + "/api/Order/GetOrders";
             public static readonly string GetUserOrders = ServerAddress + "/api/Order/GetUserOrders/";

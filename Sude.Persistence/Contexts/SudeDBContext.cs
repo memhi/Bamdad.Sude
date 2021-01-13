@@ -12,6 +12,8 @@ using Sude.Domain.Models.Type;
 using Sude.Domain.Models.Order;
 using Sude.Domain.Models.PushNotification;
 using Sude.Domain.Models.Content;
+using Sude.Domain.Models.Localization;
+using Sude.Domain.Models.Report;
 
 namespace Sude.Persistence.Contexts
 {
@@ -50,6 +52,8 @@ namespace Sude.Persistence.Contexts
         public DbSet<TypeInfo> Types { get; set; }
         public DbSet<TypeGroupInfo> TypeGroups { get; set; }
         public DbSet<OrderPaymentInfo>  OrderPayments { get; set; }
+        public DbSet<LanguageInfo>  Languages { get; set; }
+        public DbSet<LocalStringResourceInfo>  LocalStringResources { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -65,8 +69,9 @@ namespace Sude.Persistence.Contexts
             modelBuilder.Entity<BlogInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<BlogCommentInfo>().HasQueryFilter(p => !p.IsRemoved);
             modelBuilder.Entity<OrderPaymentInfo>().HasQueryFilter(p => !p.IsRemoved);
+ 
 
-            //modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Title = "admin" }, new Role() { Id = 2, Title = "Operator" });
+
         }
 
     }

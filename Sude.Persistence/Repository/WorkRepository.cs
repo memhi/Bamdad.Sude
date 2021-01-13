@@ -32,17 +32,17 @@ namespace Sude.Persistence.Repository
             return await _WorkRepository.GetAsync(null,null, "WorkType");
         }
 
-        public async Task<WorkInfo> GetWorkAsync(string title,WorkTypeInfo workType)
+        public async Task<WorkInfo> GetWorkAsync(string title, Guid userId, WorkTypeInfo workType)
         {
-            IEnumerable<WorkInfo> workInfos= await _WorkRepository.GetAsync(w => w.WorkType == workType && w.Title==title, null, "");
+            IEnumerable<WorkInfo> workInfos= await _WorkRepository.GetAsync(w => w.WorkType == workType && w.Title==title && w.WorkUsers.Where(u => u.UserId == userId).Count() > 0, null, "");
             if(workInfos!=null)
                     return workInfos.FirstOrDefault();
             return null;
         }
 
-        public   WorkInfo GetWork(string title, WorkTypeInfo workType)
+        public   WorkInfo GetWork(string title,Guid userId, WorkTypeInfo workType)
         {
-            IEnumerable<WorkInfo> workInfos =  _WorkRepository.Get(w => w.WorkType == workType && w.Title == title, null, "");
+            IEnumerable<WorkInfo> workInfos =  _WorkRepository.Get(w => w.WorkType == workType && w.Title == title && w.WorkUsers.Where(u=>u.UserId==userId).Count()>0, null, "");
             if (workInfos != null)
                 return workInfos.FirstOrDefault();
             return null;

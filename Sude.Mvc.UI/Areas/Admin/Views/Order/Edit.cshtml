@@ -235,7 +235,12 @@
             if (result.isSucceed) {
                 Command: toastr["success"]("سفارش اصلاح شد");
                 $("#myModal").modal("hide");
-                $("#orderView").load("Order/List");
+                $.get("Order/List", { "PageIndex": "1" }, function (result) {
+
+                    $("#orderView").html(result);
+
+                });
+
             }
             else {
                 Command: toastr["warning"](result.message, "هشدار");
@@ -243,6 +248,11 @@
         });
     }
     function ToList() {
-        $("#orderView").load("Order/List");
+        $.get("Order/List", { "PageIndex": "1" }, function (result) {
+
+            $("#orderView").html(result);
+
+        });
+
     }
 </script>

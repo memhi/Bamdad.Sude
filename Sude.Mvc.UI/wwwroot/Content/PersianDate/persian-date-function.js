@@ -13,7 +13,7 @@ function initializeDateTime(controlName,ControlAltValueName)
             "onlyTimePicker": false,
             "onlySelectOnDate": false,
             "calendarType": "persian",
-            "maxDate":"today",
+            "maxDate": new persianDate().add('day', 1).valueOf(),
             "inputDelay": 800,
             "observer": false,
             "calendar": {

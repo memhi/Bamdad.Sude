@@ -63,9 +63,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet<WorkInfo> AddWork(WorkInfo  work)
+        public ResultSet<WorkInfo> AddWork(WorkInfo  work,Guid userId)
         {
-            WorkInfo workInfo = _WorkRepository.GetWork(work.Title, work.WorkType);
+            WorkInfo workInfo = _WorkRepository.GetWork(work.Title,userId, work.WorkType);
             if (workInfo != null && workInfo.Title == work.Title)
             {
 
@@ -73,6 +73,7 @@ namespace Sude.Application.Services
 
 
             }
+
 
             _WorkRepository.AddWork(work);
             _WorkRepository.Save();
@@ -107,9 +108,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public ResultSet EditWork(WorkInfo work)
+        public ResultSet EditWork(WorkInfo work,Guid userId)
         {
-            WorkInfo workInfo = _WorkRepository.GetWork(work.Title, work.WorkType);
+            WorkInfo workInfo = _WorkRepository.GetWork(work.Title, userId, work.WorkType);
             if (workInfo != null && workInfo.Id != work.Id)
             {
 
@@ -160,9 +161,9 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work)
+        public async Task<ResultSet<WorkInfo>> AddWorkAsync(WorkInfo work, Guid userId)
         {
-            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title, work.WorkType);
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title,userId, work.WorkType);
             if(workInfo!=null && workInfo.Title== work.Title)
             {
                
@@ -185,11 +186,11 @@ namespace Sude.Application.Services
             };
         }
 
-        public async Task<ResultSet> EditWorkAsync(WorkInfo work)
+        public async Task<ResultSet> EditWorkAsync(WorkInfo work,Guid userId)
         {
+            
 
-
-            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title, work.WorkType);
+            WorkInfo workInfo = await _WorkRepository.GetWorkAsync(work.Title, userId, work.WorkType);
             if (workInfo != null && workInfo.Id != work.Id)
             {
 
