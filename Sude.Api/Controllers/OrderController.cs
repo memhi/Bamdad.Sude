@@ -142,7 +142,7 @@ namespace Sude.Api.Controllers
 
         public async Task<ActionResult> GetOrders(string workId, int pageIndex, int pageSize,
           DateTime? orderDateFrom = null, DateTime? orderDateTo = null, string customerId = null,
-          bool? isBuy = null, string description = null,string orderNumber=null)
+          bool? isBuy = null, string description = null,string orderNumber=null, string? paymentStatusId = null)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace Sude.Api.Controllers
 
                 ResultSet<IEnumerable<OrderInfo>> resultSet = _OrderService.GetOrders(Guid.Parse(workId), pageIndex, pageSize,
                   out rowCount, orderDateFrom, orderDateTo, (string.IsNullOrEmpty(customerId) ? null : Guid.Parse(customerId)),
- isBuy, description, orderNumber);
+ isBuy, description, orderNumber, (string.IsNullOrEmpty(paymentStatusId) ? null : Guid.Parse(paymentStatusId)));
 
 
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())

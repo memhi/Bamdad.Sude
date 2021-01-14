@@ -17,7 +17,7 @@ namespace Sude.Application.Interfaces
         Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersWithDetailsAsync(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy);
         ResultSet<IEnumerable<OrderInfo>> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
         DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
-        bool? isBuy = null, string description = null, string orderNumber = null);
+        bool? isBuy = null, string description = null, string orderNumber = null, Guid? paymentStatusId = null);
         Task<ResultSet<IEnumerable<OrderInfo>>> GetOrdersByWorkIdAsync(Guid workId);
         ResultSet<OrderInfo> AddOrder(OrderInfo order);
         ResultSet EditOrder(OrderInfo order);

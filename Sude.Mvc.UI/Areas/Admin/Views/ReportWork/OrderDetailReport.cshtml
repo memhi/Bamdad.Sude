@@ -10,11 +10,19 @@
 <head>
 
     <title>Detail</title>
+    <style>
+
+        .toast {
+            opacity: 1 !important;
+         
+        }
+        
+    </style>
 </head>
-<body>
+<body class="text-center">
 
-
-        <div class="box  no-border">
+    <div class="margin-bottom"></div>
+        <div class="box  text-center no-border  bg-light-blue-gradient">
             <div class="box-header text-center">
                 @if (Model.IsBuy)
                 {
@@ -67,7 +75,7 @@
                             <div class="col-md-6">
                                 <label asp-for="OrderDate">تاریخ سفارش</label>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" dir="rtl">
                                 @Model.OrderDate.ToLocalizationDateTime("g")
 
                             </div>
@@ -88,8 +96,8 @@
 
                 </div>
                 <div class="row">
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table">
+                    <div class="box-body no-padding">
+                        <table class="table no-border">
                             <tr>
                                 <td>#</td>
                                 <th>عنوان</th>
@@ -133,7 +141,7 @@
                     </div>
 
                 </div>
-                <div class="row bg-gray">
+                <div class="row">
                     <div class="col-md-6">
                         <label asp-for="Description">وضعیت پرداخت</label>
                     </div>
@@ -142,7 +150,7 @@
 
                     </div>
                 </div>
-
+                
                 </div>
             </div>
 

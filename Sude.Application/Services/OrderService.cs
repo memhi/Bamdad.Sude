@@ -62,12 +62,12 @@ namespace Sude.Application.Services
         }
       public  ResultSet<IEnumerable<OrderInfo>> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
         DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
-        bool? isBuy = null, string description = null,string orderNumber=null)
+        bool? isBuy = null, string description = null,string orderNumber=null, Guid? paymentStatusId = null)
         {
 
            
             IEnumerable<OrderInfo> orders = _OrderRepository. GetOrders(workId, pageIndex, pageSize, out rowCount,
-         orderDateFrom, orderDateTo, customerId, isBuy, description,orderNumber);
+         orderDateFrom, orderDateTo, customerId, isBuy, description,orderNumber,paymentStatusId);
             return new ResultSet<IEnumerable<OrderInfo>>()
             {
                 IsSucceed = true,

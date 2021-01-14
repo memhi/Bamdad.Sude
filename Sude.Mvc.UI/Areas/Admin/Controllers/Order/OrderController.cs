@@ -90,16 +90,16 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             if (getOrderListRequest.DateTo == null)
                 getOrderListRequest.DateTo = DateTime.Now;
 
-
             ResultSetDto<IEnumerable<OrderDetailDtoModel>> Orderlist = new ResultSetDto<IEnumerable<OrderDetailDtoModel>>();
-            string parameters = string.Format("?workId={0}&pageIndex={1}&pageSize={2}&orderDateFrom={3}&orderDateTo={4}&customerId={5}&isBuy={6}&description={7}&orderNumber={8}",
+            string parameters = string.Format("?workId={0}&pageIndex={1}&pageSize={2}&orderDateFrom={3}&orderDateTo={4}&customerId={5}&isBuy={6}&description={7}&orderNumber={8}&paymentStatusId={9}",
                 _sudeSessionContext.CurrentWorkId, getOrderListRequest.PageIndex, Constants.PageSize,
                 (getOrderListRequest.DateFrom != null ? getOrderListRequest.DateFrom.ToString() : ""),
                 (getOrderListRequest.DateTo != null ? getOrderListRequest.DateTo.ToString() : ""),
                 (!string.IsNullOrEmpty(getOrderListRequest.CustomerId) ? getOrderListRequest.CustomerId : ""),
                 (getOrderListRequest.IsBuy != null ? getOrderListRequest.IsBuy : ""),
                 (!string.IsNullOrEmpty(getOrderListRequest.Description) ? getOrderListRequest.Description : ""),
-                (!string.IsNullOrEmpty(getOrderListRequest.OrderNumber) ? getOrderListRequest.OrderNumber : ""));
+                (!string.IsNullOrEmpty(getOrderListRequest.OrderNumber) ? getOrderListRequest.OrderNumber : ""),
+                (!string.IsNullOrEmpty(getOrderListRequest.PaymentStatusId) ? getOrderListRequest.PaymentStatusId : ""));
 
 
             Orderlist = await Api.GetHandler
@@ -108,8 +108,17 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             ViewBag.DateFrom = getOrderListRequest.DateFrom;
             ViewBag.DateTo = getOrderListRequest.DateTo;
             ViewBag.IsBuy = getOrderListRequest.IsBuy;
+            ViewBag.PaymentStatusId = getOrderListRequest.PaymentStatusId;
             ViewBag.OrderNumber = getOrderListRequest.OrderNumber;
             ViewBag.Description = getOrderListRequest.Description;
+
+
+            ResultSetDto<IEnumerable<TypeDetailDtoModel>> PaymentStatus = await Api.GetHandler
+   .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey + Constants.GroupType.PaymentStatus);
+
+             ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
+
+
 
             return PartialView("OrderList", Orderlist);
         }

@@ -19,6 +19,7 @@ namespace Sude.Dto.DtoModels.Order
         public bool? IsBuy { get; set; }
         public string CustomerId { get; set; }
         public string OrderNumber { get; set; }
+        public string PaymentStatusId { get; set; }
         public string Description { get; set; }
  
         public int PageIndex { get; set; }

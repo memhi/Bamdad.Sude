@@ -39,7 +39,7 @@ namespace Sude.Persistence.Repository
         {
 
             return await _orderRepository.GetAsync(o => o.WorkId == workId && o.OrderDate >= orderDateFrom && o.OrderDate < orderDateTo && (o.IsBuy == isBuy || isBuy == null), o => o.OrderByDescending(or => or.RegDate),
-                "Details,Customer,Work,PaymentStatus,Payments,Payments.PaymentMode,Details.Serving");
+                "Customer,Work,PaymentStatus");
 
 
            
@@ -75,13 +75,13 @@ namespace Sude.Persistence.Repository
 
         public  IEnumerable<OrderInfo> GetOrders(Guid workId, int pageIndex, int pageSize, out int rowCount,
           DateTime? orderDateFrom = null, DateTime? orderDateTo = null, Guid? customerId = null,
-          bool? isBuy = null, string description = null, string orderNumber = null)
+          bool? isBuy = null, string description = null, string orderNumber = null,Guid? paymentStatusId=null)
         {
 
 
             return _orderRepository.Get( o => o.WorkId == workId && (o.Number.Contains(orderNumber) ||  orderNumber == null) && (o.OrderDate >= orderDateFrom || orderDateFrom == null)
            && (o.OrderDate < orderDateTo || orderDateTo == null) && (o.CustomerId == customerId || customerId == null)
-           && (o.IsBuy == isBuy || isBuy == null) && (o.Description.Contains(description) || string.IsNullOrEmpty(description)),
+           && (o.IsBuy == isBuy || isBuy == null) && (o.Description.Contains(description) || string.IsNullOrEmpty(description)) && (o.PaymentStatusId == paymentStatusId || paymentStatusId == null),
              o => o.OrderByDescending(or => or.RegDate), "Work,Customer,PaymentStatus").ToPaged(pageIndex,pageSize, out rowCount);
         }
 

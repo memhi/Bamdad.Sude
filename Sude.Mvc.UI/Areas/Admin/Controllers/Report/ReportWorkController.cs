@@ -65,6 +65,15 @@ namespace Sude.Mvc.UI.Admin.Controllers
 
         }
 
+        public async Task<ActionResult> OrderDetailReport(string id)
+        {
+            ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
+
+            var orderDetail = result.Data;
+
+            return View(viewName: "OrderDetailReport", model: orderDetail);
+        }
 
         [HttpGet]
         public async Task<ActionResult> ViewDetailsOrdersReport(DateTime Date , bool? IsBuy)
