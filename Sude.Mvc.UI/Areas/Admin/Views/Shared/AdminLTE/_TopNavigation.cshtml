@@ -182,7 +182,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">پروفایل</a>
+                                <button id="btnShowChangePassword"  type="button" class="btn btn-default btn-flat">تغییر کلمه عبور</button>
                             </div>
                             <div class="pull-left">
                                 <a  id="btnLogout" class="btn btn-default btn-flat">خروج</a>
@@ -215,5 +215,15 @@
                 Command: toastr["warning"](result.message, "هشدار");
             }
         });
+    });
+
+    $("#btnShowChangePassword").click(function () {
+        $.get("User/ChangePassword" , function (result) {
+            $("#myModal").modal('show');
+            $("#myModalLabel").html("تغییر کلمه عبور");
+            $("#myModalBody").html(result);
+        });
+
+
     });
 </script>
