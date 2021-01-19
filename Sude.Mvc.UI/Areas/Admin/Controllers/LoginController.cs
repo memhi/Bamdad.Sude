@@ -162,7 +162,7 @@ namespace Sude.Mvc.UI.Admin.Controllers
                 phoneNumber = request.Phone,
                 password=request.Password,
                 confirmPassword=request.ConfirmPassword,
-                email=Guid.NewGuid().ToString().Replace("-","")+"test@Test.com"
+                email= request.Phone+"_"+new Random().Next(10000,99999).ToString()+"@mail.com"
 
             };
 
@@ -180,7 +180,7 @@ namespace Sude.Mvc.UI.Admin.Controllers
                     return Json(new ResultSetDto()
                     {
                         IsSucceed = true,
-                        Message = "کاربر ایجاد شد، لطفا با نام کاربری و کلمه عبور وارد شوید"
+                        Message = responseCreateUser.Message
                     });
 
 

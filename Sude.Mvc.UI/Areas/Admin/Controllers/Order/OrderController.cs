@@ -20,17 +20,20 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using System.Reflection.Metadata;
+using System.IO;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
     public class OrderController : BaseAdminController
     {
         public readonly SudeSessionContext _sudeSessionContext;
-        public OrderController(SudeSessionContext sudeSessionContext)
+        public readonly PDFManager _pdfManager;
+        public OrderController(SudeSessionContext sudeSessionContext, PDFManager pdfManager)
 
         {
 
             _sudeSessionContext = sudeSessionContext;
+            _pdfManager = pdfManager;
         }
         // GET: WorkTypeController
         [HttpGet]
@@ -43,7 +46,29 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> PdfInvoice(string id)
+        {
 
+            //a vendor should have access only to his products
+            ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
+
+            var orderDetail = result.Data;
+
+
+         
+            byte[] bytes;
+            using (var stream = new MemoryStream())
+            {
+               _pdfManager.PrintOrdersToPdf(stream, orderDetail);
+                bytes = stream.ToArray();
+            }
+
+            return File(bytes, "application/pdf", "order_"+orderDetail.OrderId+".pdf");
+        }
+
+      
 
         [HttpGet]
 

@@ -5737,6 +5737,7 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="4.5.0" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0-rc.2.20475.17" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
@@ -5745,6 +5746,7 @@
     <PackageReference Include="Neodynamic.SDK.WebClientPrint" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
  
   </ItemGroup>

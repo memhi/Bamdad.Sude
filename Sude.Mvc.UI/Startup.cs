@@ -52,8 +52,9 @@ namespace Sude.Mvc.UI
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<SudeSessionContext>();
-            
- 
+            services.AddScoped<PDFManager>();
+
+
             IMvcBuilder builder = services.AddRazorPages();
 
  
