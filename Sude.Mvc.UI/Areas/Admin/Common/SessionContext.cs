@@ -131,6 +131,21 @@ namespace Sude.Mvc.UI.Admin
             }
         }
 
+        public string SessionId
+        {
+            get
+            {
+                string SId= _contextAccessor.HttpContext.Session.GetString(Constants.SessionNames.SessionId);
+                if (string.IsNullOrEmpty(SId))
+                {
+                    SId = Guid.NewGuid().ToString();
+                    _contextAccessor.HttpContext.Session.SetString(Constants.SessionNames.SessionId,SId);
+                }
+                return SId;
+            }
+           
+        }
+
         public UserInfo GetUserInfo(string userName, string password)
         {
             XmlUsers users = new XmlUsers();

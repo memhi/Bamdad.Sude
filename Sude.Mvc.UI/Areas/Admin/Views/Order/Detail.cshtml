@@ -8,7 +8,7 @@
 
 <html>
 <head>
-
+    <link rel="stylesheet" href="~/AdminLte/css/AdminLTE.css" />
     <title>Detail</title>
 </head>
 <body>
@@ -133,7 +133,7 @@
                     </div>
 
                 </div>
-                <div class="row bg-gray">
+                <div class="row bg-gray margin-bottom">
                     <div class="col-md-6">
                         <label asp-for="Description">وضعیت پرداخت</label>
                     </div>
@@ -141,6 +141,20 @@
                         @Model.PaymentStatusTitle
 
                     </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-6 text-center">
+                        <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=print" class="btn btn-info  fa fa-print"></a>
+                    </div>
+                    <div class="col-md-6 text-center">
+             
+                            <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=download" class="btn   btn-info fa fa-download">  </a>
+             
+
+ 
+
+                    </div>
+
                 </div>
 
                 </div>

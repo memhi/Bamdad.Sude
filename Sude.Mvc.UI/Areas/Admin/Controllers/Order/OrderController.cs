@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using System.Reflection.Metadata;
 using System.IO;
+using Microsoft.Extensions.Primitives;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
@@ -47,7 +48,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         }
 
         [HttpGet]
-        public async Task<IActionResult> PdfInvoice(string id)
+        public async Task<IActionResult> PdfInvoice(string id, string showType)
         {
 
             //a vendor should have access only to his products
@@ -56,19 +57,31 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             var orderDetail = result.Data;
 
+            string pageSize = "A7";
 
-         
             byte[] bytes;
             using (var stream = new MemoryStream())
             {
-               _pdfManager.PrintOrdersToPdf(stream, orderDetail);
+                _pdfManager.PrintOrdersToPdf(stream, orderDetail, pageSize);
+
+
+
                 bytes = stream.ToArray();
+
+                if (showType == "download")
+                    return File(bytes, "application/pdf", "order_" + orderDetail.OrderId + ".pdf");
+                else
+                {
+                    string base64PDF = System.Convert.ToBase64String(bytes, 0, bytes.Length);
+                    string str = "<embed src='data:application/pdf;base64," + base64PDF + "' type='application/pdf' width='100%' height='100%' />";
+                    return View("PdfInvoice", str);
+                }
             }
 
-            return File(bytes, "application/pdf", "order_"+orderDetail.OrderId+".pdf");
+
         }
 
-      
+
 
         [HttpGet]
 
@@ -141,7 +154,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             ResultSetDto<IEnumerable<TypeDetailDtoModel>> PaymentStatus = await Api.GetHandler
    .GetApiAsync<ResultSetDto<IEnumerable<TypeDetailDtoModel>>>(ApiAddress.Type.GetTypesByGroupKey + Constants.GroupType.PaymentStatus);
 
-             ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
+            ViewData[Constants.ViewBagNames.PaymentStatus] = PaymentStatus.Data;
 
 
 
@@ -332,7 +345,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 });
             }
 
-            if(!Guid.TryParse(request.CustomerId,out Guid CustomerId))
+            if (!Guid.TryParse(request.CustomerId, out Guid CustomerId))
             {
                 return Json(new ResultSetDto()
                 {
@@ -342,7 +355,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            
+
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
             if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)

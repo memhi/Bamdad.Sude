@@ -61,6 +61,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App_Data\pdf\Sude.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App_Data\pdf\Sude.ttf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\AdminLTE\bower_components\bootstrap-colorpicker\.bower.json" />
     <Content Include="wwwroot\AdminLTE\bower_components\bootstrap-colorpicker\bower.json" />
     <Content Include="wwwroot\AdminLTE\bower_components\bootstrap-colorpicker\composer.json" />

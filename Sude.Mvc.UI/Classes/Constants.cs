@@ -35,6 +35,7 @@ namespace Sude.Mvc.UI
 
         public static class SessionNames
         {
+            public const string SessionId = "SessionId";
             public const string CurrentWorkId = "CurrentWorkId";
             public const string CurrentWorkName = "CurrentWorkName";
             public const string OrderDetails = "OrderDetails";
