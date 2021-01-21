@@ -178,10 +178,10 @@
     <!-- /.box-header -->
     <div class="box-body">
         <div class="row">
-            <table class="table table-hover table-responsive tablemobile">
+            <table class="table table-hover table-responsive tablemobile" >
                 <thead>
                     <tr>
-                        <td>#</td>
+                        <th>#</th>
                         <th>شماره سفارش</th>
                         <th>تاریخ</th>
                         <th>عنوان کسب و کار</th>
@@ -200,8 +200,8 @@
                             {
 
                                 <tr id="tr_@item.OrderId">
-                                    <td lable="" style="--bgcolor: silver;">@((( ViewBag.PageID-1) * Constants.PageSize) + (i++))</td>
-                                    <td lable="شماره سفارش" style="--minwidth:40%">@item.OrderNumber</td>
+                                    <td lable="" style="--bgcolor: silver; ">@((( ViewBag.PageID-1) * Constants.PageSize) + (i++))</td>
+                                    <td lable="شماره سفارش" style="--minwidth:40%; ">@item.OrderNumber</td>
                                     <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
                                     <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
                                     <td lable="نوع سفارش" style="--minwidth:40%">
