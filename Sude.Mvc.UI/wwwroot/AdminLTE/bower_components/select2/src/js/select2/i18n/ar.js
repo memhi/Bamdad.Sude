@@ -7,7 +7,7 @@ define(function () {
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      var message = 'الرجاء حذف ' + overChars + ' عناصر';
+      var message = 'الرجاء @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") ' + overChars + ' عناصر';
 
       return message;
     },

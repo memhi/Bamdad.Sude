@@ -17,7 +17,7 @@
                         @Html.Raw(item.ShortBody)
                     </div>
                     <div class="buttons">
-                        <a href="@Url.RouteUrl("NewsItem", new { SeName = item.MetaTitle })" class="read-more"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></a>
+                        <a href="@Url.RouteUrl("NewsItem", new { SeName = item.MetaTitle })" class="read-more"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></a>
                     </div>
                 </div>
             }

@@ -14,7 +14,7 @@
     <div class="box-header with-border clearfix">
         <div class="box-title">
             <i class="fa fa-search"></i>
-            جستجو
+            @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")
         </div>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-toggle="collapse" data-target="#collapseControl" aria-expanded="false" aria-controls="collapseControl">
@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>تاریخ شروع جستجو</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.StartDate") @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</label>
                     </div>
                     <div class="col-md-8">
 
@@ -44,7 +44,7 @@
 
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>تاریخ پایان جستجو</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.EndDate") @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</label>
                     </div>
                     <div class="col-md-8">
                         <input id="txtOrderDateTo" value="@(ViewBag.DateTo==null? "":ViewBag.DateTo.ToString())" class="form-control" />
@@ -76,7 +76,7 @@
 
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>توضیحات سفارش</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description") سفارش</label>
                     </div>
                     <div class="col-md-8">
 
@@ -139,7 +139,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
 
-                <a class="btn btn-default btn-info" onclick="Search(1)"><span class="fa fa-search margin-r-5"></span>جستجو</a>
+                <a class="btn btn-default btn-info" onclick="Search(1)"><span class="fa fa-search margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</a>
 
 
 
@@ -184,7 +184,7 @@
                         <th>#</th>
                         <th>شماره سفارش</th>
                         <th>تاریخ</th>
-                        <th>عنوان کسب و کار</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title") کسب و کار</th>
                         <th>نوع سفارش</th>
                         <th>مجموع مبلغ سفارش</th>
                         <th>عملیات</th>
@@ -220,10 +220,10 @@
                                     </td>
 
                                     <td>
-                                        <button class="btn btn-primary btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
-                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
+                                        <button class="btn btn-primary btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</lable></button>
+                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></button>
                                         <button class="btn btn-sm @(item.PaymentStatusTitle=="پرداخت نشده"? "btn-warning": "btn-success")" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
-                                        <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></button>
 
 
                                     </td>
@@ -292,13 +292,13 @@
     });
     function DeleteOrder(orderId) {
         swal.fire({
-            title: 'حذف سفارش',
-            text: "کاربر گرامی از حذف سفارش مطمئن هستید؟",
+            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") سفارش',
+            text: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") سفارش مطمئن هستید؟",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، سفارش حذف شود',
+            confirmButtonText: 'بله ، سفارش @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
             cancelButtonText: 'خیر',
             position: 'top',
             showClass: {
@@ -314,7 +314,7 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            Command: toastr["success"]("سفارش حذف شد");
+                            Command: toastr["success"]("سفارش @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
                             $("#tr_" + orderId).addClass("danger");
                             $("#tr_" + orderId).hide('slow');
                             $("#orderView").load("Order/List");
@@ -392,7 +392,7 @@
     function ShowModalPayments(orderId) {
         $.get("Order/ViewPayments/" + orderId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات  پرداخت");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  پرداخت");
             $("#myModalBody").html(result);
 
         });
@@ -400,7 +400,7 @@
     function ShowNewPageModalDetailOrder(orderId) {
         $.get("Order/Detail/" + orderId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات  سفارش");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  سفارش");
             $("#myModalBody").html(result);
 
         });

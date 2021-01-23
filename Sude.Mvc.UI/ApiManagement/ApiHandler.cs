@@ -13,7 +13,7 @@ namespace Sude.Mvc.UI.ApiManagement
     public class Api
     {
         private static Api apiHandler = null;
-        private static Sude.Mvc.UI.Admin.SudeSessionContext SudeSessionContext;
+        private static Sude.Mvc.UI.SudeSessionContext SudeSessionContext;
 
         private Api() { 
         
@@ -134,6 +134,15 @@ namespace Sude.Mvc.UI.ApiManagement
         }
 
 
+
+        public class Localization
+        {
+            public static readonly string GetAllLanguages = ServerAddress + "/api/Localization/GetLanguages";
+            public static readonly string GetLanguage = ServerAddress + "/api/Localization/GetLanguageById/";
+            public static readonly string GetAllLocalResources = ServerAddress + "/api/Localization/GetLocalStringResources";
+            public static readonly string GetLocalResourcesByLanguageId = ServerAddress + "/api/Localization/ GetLocalStringResourcesByLanguageId/";
+
+        }
 
         public class Type
         {

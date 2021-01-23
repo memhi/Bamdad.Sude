@@ -62,7 +62,7 @@
                                     <a href="" class="menu-item"> مدیریت دسترسی</a>
                                 </li>
                                 <li>
-                                    <a href="~/user/Create" class="menu-item">  ثبت کاربر جدید  *</a>
+                                    <a href="~/user/Create" class="menu-item">  @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") کاربر جدید  *</a>
                                 </li>
                                 <li>
                                     <a href="~/user/index" class="menu-item">  لیست کاربران  *</a>
@@ -141,7 +141,7 @@
                                 </a>
                                 <div class="notification-dropdown dropdown-menu dropdown-menu-left">
                                     <div class="arrow_box_right">
-                                        <div class="noti-list"><a class="dropdown-item noti-container py-2"><i class="ft-share info float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 info">سفارش جدید دریافت شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-save warning float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 warning">کاربر جدید ثبت شده است</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-repeat danger float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 danger">سفارش جدید دریافت شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-shopping-cart success float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 success">مورد جدید در سبد خرید شما</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-heart info float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 info">فروش جدید</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-box warning float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 warning">سفارش تحویل داده شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a></div><a class="noti-footer primary text-center d-block border-top border-top-blue-grey border-top-lighten-4 text-bold-400 py-1">خواندن همه اعلان ها</a>
+                                        <div class="noti-list"><a class="dropdown-item noti-container py-2"><i class="ft-share info float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 info">سفارش جدید دریافت شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-save warning float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 warning">کاربر جدید @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") شده است</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-repeat danger float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 danger">سفارش جدید دریافت شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-shopping-cart success float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 success">مورد جدید در سبد خرید شما</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-heart info float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 info">فروش جدید</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a><a class="dropdown-item noti-container py-2"><i class="ft-box warning float-right d-block font-medium-4 mt-2 ml-2"></i><span class="noti-wrapper"><span class="noti-title line-height-1 d-block text-bold-400 warning">سفارش تحویل داده شده</span><span class="noti-text">لورم ایپسوم متن ساختگی با تولید سادگی</span></span></a></div><a class="noti-footer primary text-center d-block border-top border-top-blue-grey border-top-lighten-4 text-bold-400 py-1">خواندن همه اعلان ها</a>
                                     </div>
                                 </div>
                             </li>
@@ -195,13 +195,13 @@
             <div class="row">
                 <div class="col-12 mt-1">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a id="base-tab1" data-toggle="tab" aria-controls="base-tab1" href="#activity-tab" aria-expanded="true" class="nav-link active"><strong>فعالیت</strong></a></li>
+                        <li class="nav-item"><a id="base-tab1" data-toggle="tab" aria-controls="base-tab1" href="#activity-tab" aria-expanded="true" class="nav-link active"><strong>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت</strong></a></li>
                         <li class="nav-item"><a id="base-tab2" data-toggle="tab" aria-controls="base-tab2" href="#settings-tab" aria-expanded="false" class="nav-link"><strong>تنظیمات</strong></a></li>
                     </ul>
                     <div class="tab-content">
                         <div id="activity-tab" role="tabpanel" aria-expanded="true" aria-labelledby="base-tab1" class="tab-pane active">
                             <div id="activity-timeline" class="col-12 timeline-left">
-                                <h6 class="mt-1 mb-3 text-bold-400">فعالیت اخیر</h6>
+                                <h6 class="mt-1 mb-3 text-bold-400">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت اخیر</h6>
                                 <div class="timeline">
                                     <ul class="list-unstyled base-timeline activity-timeline ml-0">
                                         <li>
@@ -263,7 +263,7 @@
                                     <li>
                                         <div class="togglebutton">
                                             <div class="switch">
-                                                <span class="text-bold-500">نمایش فعالیت اخیر</span>
+                                                <span class="text-bold-500">نمایش @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت اخیر</span>
                                                 <div class="float-right">
                                                     <div class="form-group">
                                                         <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
@@ -295,7 +295,7 @@
                                     <li>
                                         <div class="togglebutton">
                                             <div class="switch">
-                                                <span class="text-bold-500">نمایش فعالیت اخیر</span>
+                                                <span class="text-bold-500">نمایش @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت اخیر</span>
                                                 <div class="float-right">
                                                     <div class="form-group">
                                                         <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">

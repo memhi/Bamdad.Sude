@@ -34,11 +34,7 @@ namespace Sude.Api.Controllers
         }
 
         //GET : api/GetWorks
-        [HttpGet("{blogd}")]
-        //[Consumes("application/xml")]
-        //[Consumes("application/json")]
-        // [Authorize]
-
+      
 
         [HttpGet]
         //[Consumes("application/xml")]

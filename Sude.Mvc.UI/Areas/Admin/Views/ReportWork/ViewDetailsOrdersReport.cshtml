@@ -46,7 +46,7 @@
                         <td>#</td>
                         <th>شماره سفارش</th>
                         <th>تاریخ</th>
-                        <th>عنوان کسب و کار</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title") کسب و کار</th>
                         <th>نوع سفارش</th>
                         <th>مجموع مبلغ سفارش</th>
                         <th>عملیات</th>
@@ -132,7 +132,7 @@
 
         //$.get("ReportWork/OrderDetailReport/" + orderId, function (result) {
         //    $("#myModal1").modal('show');
-        //    $("#myModalLabel1").html("جزئیات  سفارش");
+        //    $("#myModalLabel1").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  سفارش");
         //    $("#myModalBody1").html(result);
 
         //});

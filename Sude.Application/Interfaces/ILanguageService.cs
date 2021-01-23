@@ -17,7 +17,7 @@ namespace Sude.Application.Interfaces
 
         Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync(Guid LanguageId);
 
-
+        Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync();
 
 
 

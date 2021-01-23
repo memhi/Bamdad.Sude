@@ -18,7 +18,7 @@
     </div>
     <div class="form-group row">
         <div class="col-md-3">
-            <label class="control-label">عنوان</label>
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</label>
         </div>
         <div class="col-md-9">
             <input id="txtTitle" asp-for="Title" class="form-control" />
@@ -37,7 +37,7 @@
     </div>
     <div class="form-group row">
         <div class="col-md-3">
-            <label class="control-label">توضیحات</label>
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
         </div>
         <div class="col-md-9">
             <input id="txtDesc" asp-for="Desc" class="form-control" />
@@ -80,10 +80,10 @@
 
     <div class="form-group row" style="text-align:center">
         <div class="col-md-6">
-            <a id="btnEditServing" onclick="EditServing()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ثبت</a>
+            <a id="btnEditServing" onclick="EditServing()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</a>
         </div>
         <div class="col-md-6">
-            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
         </div>
     </div>
 
@@ -126,7 +126,7 @@
                 data: serving
             }).done(function (result) {
                 if (result.isSucceed) {
-                    Command: toastr["success"]("جزئیات خدمات یا اقلام اصلاح شد");
+                    Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") خدمات یا اقلام اصلاح شد");
                     $("#myModal").modal("hide");
                     $("#servingView").load("Serving/List");
                     //$("#tr_" + serving.ServingId).addClass("danger");

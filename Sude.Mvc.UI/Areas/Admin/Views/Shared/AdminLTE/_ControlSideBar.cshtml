@@ -9,7 +9,7 @@
     <div class="tab-content">
         <!-- Home tab content -->
         <div class="tab-pane" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">فعالیت ها</h3>
+            <h3 class="control-sidebar-heading">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت ها</h3>
             <ul class="control-sidebar-menu">
                 <li>
                     <a href="javascript:void(0)">
@@ -128,7 +128,7 @@
                     </label>
 
                     <p>
-                        ثبت تمامی فعالیت های مدیران
+                        @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تمامی @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یت های مدیران
                     </p>
                 </div>
                 <!-- /.form-group -->
@@ -177,7 +177,7 @@
 
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
-                        حذف تاریخته گفتگوهای من
+                        @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") تاریخته گفتگوهای من
                         <a href="javascript:void(0)" class="text-red pull-left"><i class="fa fa-trash-o"></i></a>
                     </label>
                 </div>

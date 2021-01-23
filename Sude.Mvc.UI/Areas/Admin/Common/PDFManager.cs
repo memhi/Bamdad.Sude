@@ -222,7 +222,7 @@ namespace Sude.Mvc.UI.Admin
             //    RunDirection = GetDirection(),
             //    WidthPercentage = 100f
             //};
-            //var cellProducts = GetPdfCell("جزئیات سفارش", titleFont);
+            //var cellProducts = GetPdfCell("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش", titleFont);
             //cellProducts.Border = Rectangle.NO_BORDER;
             //oDetails.AddCell(cellProducts);
             //doc.Add(oDetails);

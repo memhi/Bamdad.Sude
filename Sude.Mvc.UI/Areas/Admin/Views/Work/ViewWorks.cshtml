@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Sude.Dto.DtoModels.Work.WorkDetailDtoModel>
-@inject Sude.Mvc.UI.Admin.SudeSessionContext  SudeSessionContext
+
 @{
     Layout = null;
 }
@@ -22,7 +22,7 @@
                     @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
                     {
 
-                        if (SudeSessionContext.CurrentWorkId==w.WorkId)
+                        if (_SudeSessionContext.CurrentWorkId==w.WorkId)
                         {
                             <div class="col-md-4 margin-bottom">
                                 <a  onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@w.Title </a>
@@ -49,7 +49,7 @@
 
                     <div class="col-md-12 margin-bottom">
 
-                        <label>لطفا از بخش  <a href="Work" title="اینجا">مدیریت کسب و کار</a> یک کسب و کار ثبت کنید </label>
+                        <label>لطفا از بخش  <a href="Work" title="اینجا">مدیریت کسب و کار</a> یک کسب و کار @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") کنید </label>
                     </div>
                 }
 

@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label asp-for="Description">توضیحات</label>
+                                <label asp-for="Description">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                             </div>
                             <div class="col-md-6">
                                 @Model.Description
@@ -92,7 +92,7 @@
                         <table class="table">
                             <tr>
                                 <td>#</td>
-                                <th>عنوان</th>
+                                <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
                                 <th>قیمت</th>
                                 <th>تعداد</th>
 

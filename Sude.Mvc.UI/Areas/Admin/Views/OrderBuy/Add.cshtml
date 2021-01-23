@@ -15,7 +15,7 @@
     <section class="content">
         <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
-                <h2 class="box-title">ثبت خرید کالا</h2>
+                <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") خرید کالا</h2>
             </div>
             <div class="box-body">
                 @if (!string.IsNullOrEmpty(Model.WorkId))
@@ -55,7 +55,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="col-md-2">
-                                                    <label>توضیحات</label>
+                                                    <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                                                 </div>
                                                 <div class="col-md-10">
                                                     <input id="txtDesc" asp-for="Description" class="form-control" />
@@ -74,7 +74,7 @@
                     <div class="row">
                         <div id="divOrderDetails" class="box box-info  ">
                             <div class="box-header with-border text-center">
-                                <h3 class="box-title">اطلاعات جزئیات خرید</h3>
+                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") خرید</h3>
                             </div>
                             <div class="box-body">
                                 <div id="adddetail" class="row">
@@ -90,7 +90,7 @@
                     <div class="row">
                         <div class="box box-info  ">
                             <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات ثبت نهایی سفارش</h3>
+                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</h3>
 
 
                             </div>
@@ -100,13 +100,13 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>ثبت نهایی سفارش</a>
+                                            <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</a>
 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
 
-                                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+                                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
 
                                     </div>
 

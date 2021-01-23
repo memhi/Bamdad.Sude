@@ -9,7 +9,7 @@ define(function () {
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      var message = 'لطفاً ' + overChars + ' کاراکتر را حذف نمایید';
+      var message = 'لطفاً ' + overChars + ' کاراکتر را @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") نمایید';
 
       return message;
     },
@@ -32,7 +32,7 @@ define(function () {
       return 'هیچ نتیجه‌ای یافت نشد';
     },
     searching: function () {
-      return 'در حال جستجو...';
+      return 'در حال @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")...';
     }
   };
 });

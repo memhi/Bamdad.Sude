@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>جزئیات  خبر</title>
+    <title>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  خبر</title>
 </head>
 <body>
 
@@ -19,50 +19,50 @@
         <dl class="dl-horizontal">
 
             <dt>
-                عنوان
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Title)
             </dd>
             <dt>
-                متن کوتاه
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.ShortBody")
             </dt>
             <dd>
                 @Html.Raw(Model.ShortBody)
             </dd>
             <dt>
-                متن کامل مقاله
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.FullBody") مقاله
             </dt>
             <dd>
                 @Html.Raw(Model.FullBody)
 
             </dd>
             <dt>
-                توضیحات
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt>
-                فعال
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsActive)
             </dd>
             <dt>
-                منتشر شده
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Published")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsPublish)
             </dd>
             <dt>
-                مجوز ثبت نظرات
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.AllowComment")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.AllowComment)
             </dd>
             <dt>
-                عنوان متا
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.MetaTitle")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaTitle)
@@ -74,7 +74,7 @@
                 @Html.DisplayFor(model => model.MetaKeywords)
             </dd>
             <dt>
-                توضیحات متا
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Description") متا
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaDescription)
@@ -86,13 +86,13 @@
                 @Html.DisplayFor(model => model.Tags)
             </dd>
             <dt>
-                تاریخ شروع
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.StartDate")
             </dt>
             <dd>
                 @Model.StartDate.ToLocalizationDateTime("g");
             </dd>
             <dt>
-                تاریخ پایان
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.EndDate")
             </dt>
             <dd>
                 @Model.EndDate.ToLocalizationDateTime("g");

@@ -15,18 +15,40 @@ using Sude.Mvc.UI.Menu;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using Sude.Dto.DtoModels.Result;
+using Sude.Dto.DtoModels.Localization;
 
-namespace Sude.Mvc.UI.Admin
+namespace Sude.Mvc.UI
 {
 
     public class SudeSessionContext
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IWebHostEnvironment _HostingEnvitonment;
+        public ICollection<LanguageDetailDtoModel> Languages;
+        public ICollection<LocalStringResourceDetailDtoModel> LocalStringResources;
         public SudeSessionContext(IHttpContextAccessor contextAccessor, IWebHostEnvironment hostingEnvitonment)
         {
             _contextAccessor = contextAccessor;
             _HostingEnvitonment = hostingEnvitonment;
+            if (Languages == null)
+            {
+                var result = Api.GetHandler
+             .GetApiAsync<ResultSetDto<IEnumerable<LanguageDetailDtoModel>>>(ApiAddress.Localization.GetAllLanguages);
+                if (result.Result.IsSucceed && result.Result.Data != null)
+                {
+                    Languages = result.Result.Data.ToList();
+                }
+            }
+
+            if (LocalStringResources == null)
+            {
+                var result = Api.GetHandler
+            .GetApiAsync<ResultSetDto<IEnumerable<LocalStringResourceDetailDtoModel>>>(ApiAddress.Localization.GetAllLocalResources);
+                if (result.Result.IsSucceed && result.Result.Data != null)
+                {
+                    LocalStringResources = result.Result.Data.ToList();
+                }
+            }
         }
 
         public virtual void LogoutUser()
@@ -144,6 +166,48 @@ namespace Sude.Mvc.UI.Admin
                 return SId;
             }
            
+        }
+
+        public string GetLocalResourceValue(string Name, params object[]  parameters)
+        {
+
+
+            LocalStringResourceDetailDtoModel localStringResource = LocalStringResources.Where(lr => lr.LanguageId == CurrentLanguage.LanguageId && lr.ResourceName == Name).FirstOrDefault();
+            if (localStringResource == null)
+                return Name;
+            if (parameters != null && parameters.Any())
+                return string.Format(localStringResource.ResourceValue, parameters);
+            return localStringResource.ResourceValue;
+
+        }
+
+        public LanguageDetailDtoModel CurrentLanguage
+        {
+            get
+            {
+
+                LanguageDetailDtoModel lan = _contextAccessor.HttpContext.Session.GetObject<LanguageDetailDtoModel>(Constants.SessionNames.CurrentLanguage);
+
+
+                if (lan == null)
+                {
+
+                 
+                        lan = Languages.OrderBy(l=>l.DisplayOrder).FirstOrDefault();           
+
+                    _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentLanguage, lan);
+                   
+                      
+                }
+                return lan;
+
+            }
+            set
+            {
+                _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentLanguage, value);
+
+
+            }
         }
 
         public UserInfo GetUserInfo(string userName, string password)

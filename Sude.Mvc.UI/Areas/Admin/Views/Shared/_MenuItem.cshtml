@@ -2,7 +2,7 @@
 @using Sude.Mvc.UI.Menu
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Sude.Mvc.UI.Admin.SudeSessionContext SudeSessionContext
+ 
 @{
     var supportRtl = true;
     string url = null;
@@ -17,7 +17,7 @@
     var isActive = Model.ContainsSystemName(HttpContextAccessor.HttpContext.Session.GetActiveMenuItemSystemName());
 }
 
-@if (SudeSessionContext.IsAdmin == true || (Model.SystemName != "SystemManagement" && SudeSessionContext.IsAdmin == false))
+@if (_SudeSessionContext.IsAdmin == true || (Model.SystemName != "SystemManagement" && _SudeSessionContext.IsAdmin == false))
 {
     @if (!string.IsNullOrEmpty(url))
     {

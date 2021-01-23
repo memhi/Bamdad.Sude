@@ -12,7 +12,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label class="control-label">عنوان</label>
+                        <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtTitle" asp-for="Title" class="form-control" />
@@ -22,7 +22,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label class="control-label">توضیحات</label>
+                        <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtDesc" asp-for="Description" class="form-control" />
@@ -35,10 +35,10 @@
 
                 <div class="form-group row" style="text-align:center">
                     <div class="col-md-6">
-                        <a id="btnEditInventoryType" onclick="EditInventoryType()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ثبت</a>
+                        <a id="btnEditInventoryType" onclick="EditInventoryType()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</a>
                     </div>
                     <div class="col-md-6">
-                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
                     </div>
                 </div>
 

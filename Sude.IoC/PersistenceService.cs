@@ -30,7 +30,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             ServiceDescriptor.Scoped<INewsCommentRepository, NewsCommentRepository>(),
                                     ServiceDescriptor.Scoped<ITypeRepository, TypeRepository>(),
                                             ServiceDescriptor.Scoped<ITypeGroupRepository, TypeGroupRepository>(),
-                                                    ServiceDescriptor.Scoped<IOrderPaymentRepository, OrderPaymentRepository>()
+                                                    ServiceDescriptor.Scoped<IOrderPaymentRepository, OrderPaymentRepository>(),
+                                                    ServiceDescriptor.Scoped<ILanguageRepository, LanguageRepository>(),
+                                                    ServiceDescriptor.Scoped<ILocalStringResourceRepository, LocalStringResourceRepository>()
 
 
 

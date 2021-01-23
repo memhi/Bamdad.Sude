@@ -96,7 +96,7 @@
                 data: orderDetail
             }).done(function (result) {
                 if (result.isSucceed) {
-                    Command: toastr["success"]("جزئیات سفارش اضافه شد")
+                    Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش اضافه شد")
                     $("#odetails").load("OrderDetail/List");
                 }
                 else {

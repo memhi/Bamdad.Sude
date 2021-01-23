@@ -87,11 +87,33 @@ namespace Sude.Application.Services
 
         }
 
-    
 
-     
+        public async Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync()
+        {
+            IEnumerable<LocalStringResourceInfo> localStringResources = await _LocalStringResourceRepository.GetLocalStringResourcesAsync();
+
+            if (localStringResources == null)
+                return new ResultSet<IEnumerable<LocalStringResourceInfo>>()
+                {
+                    IsSucceed = false,
+                    Message = "اطلاعات پیدا نشد",
+                    Data = null
+                };
+
+            return new ResultSet<IEnumerable<LocalStringResourceInfo>>
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = localStringResources
+            };
+
+        }
 
 
-      
+
+
+
+
+
     }
 }

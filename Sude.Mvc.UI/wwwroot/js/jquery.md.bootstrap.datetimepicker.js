@@ -459,7 +459,7 @@
   }
 
   function getPopoverDescriber($element) {
-    // المانی را بر میگرداند که کاربر پلاگین را روی آن فعال کرده است
+    // المانی را بر میگرداند که کاربر پلاگین را روی آن @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active") کرده است
     var $popoverDescriber = $element.parents(mdDatePickerFlagSelector + ':first'); // inline
     // not inline
     if ($popoverDescriber.length <= 0) {
@@ -497,7 +497,7 @@
   }
 
   function setPopoverHeaderHtml($element, isInLine, htmlString) {
-    // $element = المانی که روی آن فعالیتی انجام شده و باید عنوان تقویم آن عوض شود
+    // $element = المانی که روی آن @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")یتی انجام شده و باید @_SudeSessionContext.GetLocalResourceValue("Page.Content.Title") تقویم آن عوض شود
     if (!isInLine) {
       if (isPopoverDescriber($element)) {
         getPopover($element).find('[data-name="mds-datetimepicker-title"]').html(htmlString);
@@ -1558,7 +1558,7 @@
         $td.addClass('text-danger');
       }
 
-      // روزهای غیر فعال شده
+      // روزهای غیر @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active") شده
       if (setting.disableBeforeToday) {
         if (currentDateNumber < todayDateNumber) $td.attr('disabled', '');
         if (nextMonthDateNumber < todayDateNumber)
@@ -1756,7 +1756,7 @@
       selectedDateToShowJson = selectedDateToShow == undefined ? undefined : getDateTimeJson1(selectedDateToShow);
     if (disabled) return;
     selectedDateToShow = getDateTime4(dateNumber, selectedDateToShow, setting);
-    if (setting.rangeSelector) { // اگر رنج سلکتور فعال بود
+    if (setting.rangeSelector) { // اگر رنج سلکتور @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active") بود
       if (setting.rangeSelectorStartDate != undefined && setting.rangeSelectorEndDate != undefined) {
         setting.selectedRangeDate = [];
         setting.rangeSelectorStartDate = undefined;
@@ -1801,7 +1801,7 @@
     } else if (setting.inLine && (setting.toDate || setting.fromDate)) {
       // وقتی در حالت این لاین هستیم و ' ار تاریخ ' تا تاریخ ' داریم
       // وقتی روی روز یکی از تقویم ها کلیک می شود
-      // باید تقویم دیگر نیز تغییر کند و روزهایی از آن غیر فعال شود
+      // باید تقویم دیگر نیز تغییر کند و روزهایی از آن غیر @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active") شود
       var $toDateDayElement = $('[' + mdDatePickerGroupIdAttribute + '="' + setting.groupId + '"][data-toDate]').find('[data-day]:first'),
         $fromDateDayElement = $('[' + mdDatePickerGroupIdAttribute + '="' + setting.groupId + '"][data-fromDate]').find('[data-day]:first');
       if (setting.fromDate && $toDateDayElement.length > 0) {
@@ -2178,7 +2178,7 @@
     },
     setDateRange: function (startDateTimeObject, endDateTimeObject) {
       if (startDateTimeObject == undefined || endDateTimeObject == undefined) throw new Error('MdPersianDateTimePicker => setDateRange => مقدار ورودی نا معتبر است');
-      if (convertToNumber4(startDateTimeObject) > convertToNumber4(endDateTimeObject)) throw new Error('MdPersianDateTimePicker => setDateRange => مقدار ورودی نا معتبر است, تاریخ شروع باید بزرگتر از تاریخ پایان باشد');
+      if (convertToNumber4(startDateTimeObject) > convertToNumber4(endDateTimeObject)) throw new Error('MdPersianDateTimePicker => setDateRange => مقدار ورودی نا معتبر است, @_SudeSessionContext.GetLocalResourceValue("Page.Content.StartDate") باید بزرگتر از @_SudeSessionContext.GetLocalResourceValue("Page.Content.EndDate") باشد');
       return this.each(function () {
         var $this = $(this),
           setting = getSetting2($this);

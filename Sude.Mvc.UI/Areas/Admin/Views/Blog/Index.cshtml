@@ -7,7 +7,7 @@
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Blog");
-    ViewBag.PageTitle = "مدیریت مقالات";
+    ViewBag.PageTitle = _SudeSessionContext.GetLocalResourceValue("Page.Title.BlogManagement");
 }
 
 <div id="blogView">
@@ -15,7 +15,7 @@
     <div class="col-md-6 text-center">
         <div class="box box-info">
             <div class="box-header">
-                <h3> دریافت اطلاعات مقالات</h3>
+                <h3>@_SudeSessionContext.GetLocalResourceValue("Page.Content.GetBlogInformation")</h3>
             </div>
 
             <div class="overlay">

@@ -12,14 +12,14 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">ویرایش مقاله</h3>
+                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.BlogEdit")</h3>
 
             </div>
             <div class="box-body">
 
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="Title" class="control-label">عنوان</label>
+                        <label asp-for="Title" class="control-label">>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtTitle" asp-for="Title" class="form-control" />
@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="ShortBody" class="control-label">متن کوتاه</label>
+                        <label asp-for="ShortBody" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.ShortBody")</label>
                     </div>
                     <div class="col-md-10">
                         <textarea id="txtShortBody" asp-for="ShortBody" class="form-control"></textarea>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="FullBody" class="control-label">متن کامل</label>
+                        <label asp-for="FullBody" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.FullBody")</label>
                     </div>
                     <div class="col-md-10">
                         <textarea id="txtFullBody" asp-for="FullBody" type="text" class="form-control"></textarea>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="Description" class="control-label">توضیحات</label>
+                        <label asp-for="Description" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtDescription" asp-for="Description" class="form-control" />
@@ -57,28 +57,28 @@
 
                     <div class="col-md-2">
                         <label>
-                            <input id="chkIsActive" type="checkbox" asp-for="IsActive" /> فعال
+                            <input id="chkIsActive" type="checkbox" asp-for="IsActive" /> @_SudeSessionContext.GetLocalResourceValue("Page.Content.Active")
                         </label>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
                         <label>
-                            <input id="chkIsPublish" type="checkbox" asp-for="IsPublish" />منتشر شده
+                            <input id="chkIsPublish" type="checkbox" asp-for="IsPublish" />@_SudeSessionContext.GetLocalResourceValue("Page.Content.Published")
                         </label>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
                         <label>
-                            <input id="chkAllowComment" type="checkbox" asp-for="AllowComment" /> مجوز ثبت نظرات
+                            <input id="chkAllowComment" type="checkbox" asp-for="AllowComment" /> @_SudeSessionContext.GetLocalResourceValue("Page.Content.AllowComment")
                         </label>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
 
-                        <label asp-for="MetaTitle" class="control-label">عنوان متا</label>
+                        <label asp-for="MetaTitle" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.MetaTitle")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtMetaTitle" asp-for="MetaTitle" class="form-control" />
@@ -87,7 +87,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="MetaKeywords" class="control-label">کلمات کلیدی متا</label>
+                        <label asp-for="MetaKeywords" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.MetaKeywords")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtMetaKeywords" asp-for="MetaKeywords" class="form-control" />
@@ -96,7 +96,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="MetaDescription" class="control-label">توضیحات متا</label>
+                        <label asp-for="MetaDescription" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description") متا</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtMetaDescription" asp-for="MetaDescription" class="form-control" />
@@ -105,7 +105,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="Tags" class="control-label">تگ ها</label>
+                        <label asp-for="Tags" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Tags")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtTags" asp-for="Tags" class="form-control" />
@@ -114,7 +114,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="StartDate" class="control-label">تاریخ شروع</label>
+                        <label asp-for="StartDate" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.StartDate")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtStartDate" asp-for="StartDate" class="form-control" />
@@ -123,7 +123,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-2">
-                        <label asp-for="EndDate" class="control-label">تاریخ پایان</label>
+                        <label asp-for="EndDate" class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.EndDate")</label>
                     </div>
                     <div class="col-md-10">
                         <input id="txtEndDate" asp-for="EndDate" class="form-control" />
@@ -133,10 +133,10 @@
 
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <a id="btnEditBlog" onclick="EditBlog()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>ویرایش مقاله</a>
+                        <a id="btnEditBlog" onclick="EditBlog()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</a>
                     </div>
                     <div class="col-md-6">
-                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>بازگشت</a>
+                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
                     </div>
                 </div>
             </div>

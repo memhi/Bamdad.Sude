@@ -4,7 +4,7 @@
 <div class="input-group">
     <input type="text" name="message" placeholder="Type words ..." class="form-control">
     <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>جستجو</lable></button>
+        <button type="submit" class="btn btn-primary btn-flat"><span class="fa fa-search margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</lable></button>
     </span>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="col-m-6">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">فهرست  مقالات</h3>
+                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.BlogList")</h3>
 
                 <div class="box-tools">
 
@@ -29,10 +29,10 @@
             <table class="table table-hover">
                 <tr>
                     <td>#</td>
-                    <th>عنوان</th>
-                    <th>توضیحات</th>
-                    <th>منتشر شده</th>
-                    <th>تاریخ ثبت</th>
+                    <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
+                    <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</th>
+                    <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Published")</th>
+                    <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.RegisterDate")</th>
 
 
 
@@ -50,9 +50,9 @@
                 <td>@item.RegDate.ToLocalizationDateTime("D1")</td>
 
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="ShowEditBlog('@item.BlogId')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
-                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailBlog('@item.BlogId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
-                    <button class="btn btn-danger btn-sm" onclick="DeleteBlog('@item.BlogId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                    <button class="btn btn-warning btn-sm" onclick="ShowEditBlog('@item.BlogId')"><span class="fa fa-edit margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</lable></button>
+                    <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailBlog('@item.BlogId')"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></button>
+                    <button class="btn btn-danger btn-sm" onclick="DeleteBlog('@item.BlogId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></button>
                 </td>
             </tr>
                 }}
@@ -77,13 +77,13 @@
     function DeleteBlog(blogId) {
 
         swal.fire({
-            title: 'حذف مقاله',
-            text: "کاربر گرامی از حذف مقاله مطمئن هستید؟",
+            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") مقاله',
+            html: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") مقاله مطمئن هستید؟",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، مقاله حذف شود',
+            confirmButtonText: 'بله ، مقاله @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
             cancelButtonText: 'خیر',
             position: 'top',
             showClass: {
@@ -100,7 +100,7 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            Command: toastr["success"]("مقاله حذف شد");
+                            Command: toastr["success"]("مقاله @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
 
      $("#tr_" + blogId).addClass("danger");
                                 $("#tr_" + blogId).hide('slow');
@@ -130,7 +130,7 @@
         $.get("Blog/Edit/" + blogId, function (result) {
 
             $("#myModal").modal('show');
-            $("#myModalLabel").html("ویرایش مقاله");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit") مقاله");
             $("#myModalBody").html(result);
         });
     }
@@ -148,7 +148,7 @@
 
         $.get("Blog/Detail/" +blogId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("جزئیات مقاله");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") مقاله");
             $("#myModalBody").html(result);
         });
     }

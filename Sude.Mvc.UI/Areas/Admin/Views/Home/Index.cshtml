@@ -5,7 +5,7 @@
 }
 @using Microsoft.AspNetCore.Http;
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Sude.Mvc.UI.Admin.SudeSessionContext  SudeSessionContext
+
 
 @{
 
@@ -14,8 +14,8 @@
 }
 
 <script src="~/AdminLTE/bower_components/chart.js/Chart.min.js"></script>
-<input id="txtCurrentName" type="hidden" value="@SudeSessionContext.CurrentWorkName" />
-<input id="txtWorksCount" type="hidden" value="@(SudeSessionContext.UserWorks!=null ?  SudeSessionContext.UserWorks.Count():0)" />
+<input id="txtCurrentName" type="hidden" value="@_SudeSessionContext.CurrentWorkName" />
+<input id="txtWorksCount" type="hidden" value="@(_SudeSessionContext.UserWorks!=null ?  _SudeSessionContext.UserWorks.Count():0)" />
    
 <div class="row">
     <div class="col-md-12">

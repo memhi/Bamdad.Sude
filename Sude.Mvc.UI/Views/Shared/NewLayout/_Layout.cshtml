@@ -251,7 +251,7 @@
                                 <li>
                                     <a href="#">
                                         <span class="label label-success"><i class="icon-plus"></i></span>
-                                        ثبت نام کاربر جدید
+                                        @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نام کاربر جدید
 
                                         <span class="small italic">همین حالا</span>
                                     </a>
@@ -369,7 +369,7 @@
                                 <a href="" class="menu-item"> مدیریت دسترسی</a>
                             </li>
                             <li>
-                                <a href="~/user/Create" class="menu-item">  ثبت کاربر جدید  *</a>
+                                <a href="~/user/Create" class="menu-item">  @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") کاربر جدید  *</a>
                             </li>
                             <li>
                                 <a href="~/user/index" class="menu-item">  لیست کاربران  *</a>

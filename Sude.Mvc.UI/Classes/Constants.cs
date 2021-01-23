@@ -48,7 +48,7 @@ namespace Sude.Mvc.UI
             public const string CurrentTokenClient = "CurrentTokenClient";
             public const string RegisterTokenAccess = "RegisterTokenAccess";
             public const string AccessToken = "AccessToken";
-
+            public const string CurrentLanguage= "CurrentLanguage";
 
 
         }

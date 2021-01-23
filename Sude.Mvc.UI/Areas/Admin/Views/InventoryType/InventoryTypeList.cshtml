@@ -8,7 +8,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">فهرست  انواع واحدهای اندازه گیری</h3>
+                    <h3 class="box-title"> @_SudeSessionContext.GetLocalResourceValue("فهرست  انواع واحدهای اندازه گیری")</h3>
 
                     <div class="box-tools">
 
@@ -21,8 +21,8 @@
                     <table class="table table-hover">
                         <tr>
                             <th>#</th>
-                            <th>عنوان</th>
-                            <th>توضیحات</th>
+                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
+                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</th>
                             <th>عملیات</th>
 
                         </tr>
@@ -38,9 +38,9 @@
 
                                     <td>@item.Description</td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')"><span class="fa fa-edit margin-r-5"></span><lable>ویرایش</lable></button>
-                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')"><span class="fa fa-info margin-r-5"> </span><lable>جزئیات</lable></button>
-                                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')"><span class="fa fa-remove margin-r-5"></span><lable>حذف</lable></button>
+                                        <button class="btn btn-warning btn-sm" onclick="ShowEditInventoryTypePop('@item.InventoryTypeId')"><span class="fa fa-edit margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</lable></button>
+                                        <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailInventoryType('@item.InventoryTypeId')"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteInventoryType('@item.InventoryTypeId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></button>
 
                                     </td>
                                 </tr>
@@ -64,13 +64,13 @@
         function DeleteInventoryType(InventoryTypeId) {
       
             swal.fire({                
-                title: 'حذف نوع',
-                text: "کاربر گرامی از حذف واحد اندازه گیری مطمئن هستید؟",
+                title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") نوع',
+                text: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") واحد اندازه گیری مطمئن هستید؟",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#7cacbe',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'بله ، واحد اندازه گیری حذف شود',
+                confirmButtonText: 'بله ، واحد اندازه گیری @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
                 cancelButtonText: 'خیر',
                 position: 'top',
                 showClass: {
@@ -87,7 +87,7 @@
                         type: "Get",
                         success: function (result) {
                             if (result.isSucceed == true) {
-                                Command: toastr["success"]("نوع حذف شد");
+                                Command: toastr["success"]("نوع @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
 
 
                                 $("#tr_" + InventoryTypeId).addClass("danger");
@@ -122,7 +122,7 @@
             $.get("InventoryType/Edit/" + InventoryTypeId, function (result) {
 
                 $("#myModal").modal('show');
-                $("#myModalLabel").html("ویرایش واحد اندازه گیری");
+                $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit") واحد اندازه گیری");
                 $("#myModalBody").html(result);
             });
         }
@@ -142,7 +142,7 @@
             $.get("InventoryType/Detail/" + InventoryTypeId, function (result) {
 
                 $("#myModal").modal('show');
-                $("#myModalLabel").html("جزئیات واحد اندازه گیری");
+                $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") واحد اندازه گیری");
                 $("#myModalBody").html(result);
             });
         }

@@ -200,7 +200,7 @@ $(function () {
     + '<input type="checkbox"data-layout="layout-boxed" class="pull-right"/> '
     + 'قالب باکس'
     + '</label>'
-    + '<p>فعال کردن قالب باکسی</p>'
+    + '<p>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Active") کردن قالب باکسی</p>'
     + '</div>'
     // Sidebar Toggle
     + '<div class="form-group">'
