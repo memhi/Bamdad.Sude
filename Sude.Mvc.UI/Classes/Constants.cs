@@ -39,6 +39,7 @@ namespace Sude.Mvc.UI
             public const string CurrentWorkId = "CurrentWorkId";
             public const string CurrentWorkName = "CurrentWorkName";
             public const string OrderDetails = "OrderDetails";
+            public const string AttachmentPictures = "AttachmentPictures";
             public const string UserWorks = "UserWorks";
             public const string CurrentWork = "CurrentWork";
             public const string IsAdmin = "IsAdmin";

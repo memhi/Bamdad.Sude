@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Reflection.Metadata;
 using System.IO;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
@@ -29,13 +30,17 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
     {
         public readonly SudeSessionContext _sudeSessionContext;
         public readonly PDFManager _pdfManager;
-        public OrderController(SudeSessionContext sudeSessionContext, PDFManager pdfManager)
+        private readonly IWebHostEnvironment _environment;
+        public OrderController(SudeSessionContext sudeSessionContext, PDFManager pdfManager, IWebHostEnvironment hostingEnvironment)
 
         {
-
+            _environment = hostingEnvironment;
             _sudeSessionContext = sudeSessionContext;
             _pdfManager = pdfManager;
         }
+
+
+
         // GET: WorkTypeController
         [HttpGet]
         //   [Authorize]

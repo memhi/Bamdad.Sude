@@ -650,7 +650,7 @@
   function addMonthToDateTimeJson(dateTimeJson, addedMonth, isGregorian) {
     // وقتی نیاز هست تا ماه یا روز به تاریخی اضافه کنم
     // پس از اضافه کردن ماه یا روز این متد را استفاده میکنم تا سال و ماه
-    // با مقادیر جدید تصحیح و برگشت داده شوند
+    // با مقادیر @_SudeSessionContext.GetLocalResourceValue("Page.Button.New") تصحیح و برگشت داده شوند
     var dateTimeJson1 = $.extend({}, dateTimeJson);
     dateTimeJson1.day = 1;
     dateTimeJson1.month += addedMonth;

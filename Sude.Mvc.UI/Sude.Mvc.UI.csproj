@@ -5789,6 +5789,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Users\" />
+    <Folder Include="wwwroot\WorkFiles\" />
+    <Folder Include="wwwroot\TempUserAttachmentFiles\" />
   </ItemGroup>
 
   

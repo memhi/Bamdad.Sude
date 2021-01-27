@@ -14,6 +14,7 @@ using Sude.Domain.Models.PushNotification;
 using Sude.Domain.Models.Content;
 using Sude.Domain.Models.Localization;
 using Sude.Domain.Models.Report;
+using Sude.Domain.Models.Common;
 
 namespace Sude.Persistence.Contexts
 {
@@ -54,6 +55,8 @@ namespace Sude.Persistence.Contexts
         public DbSet<OrderPaymentInfo>  OrderPayments { get; set; }
         public DbSet<LanguageInfo>  Languages { get; set; }
         public DbSet<LocalStringResourceInfo>  LocalStringResources { get; set; }
+        public DbSet<AttachmentInfo>  Attachments { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

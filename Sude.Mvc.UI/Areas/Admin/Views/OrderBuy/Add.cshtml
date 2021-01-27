@@ -10,6 +10,7 @@
 }
 <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
 <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+<script src="~/js/webcam.min.js"></script>
 <link href="~/css/select2.css" rel="stylesheet" />
 
     <section class="content">
@@ -87,6 +88,10 @@
 
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div id="divattachments"></div>
+                    </div>
                     <div class="row">
                         <div class="box box-info  ">
                             <div class="box-header with-border  text-center">
@@ -116,6 +121,7 @@
 
                     </div>
                 </div>
+            
                 }
                 else
 
@@ -145,6 +151,7 @@
 
 <script>
 
+
     $(document).ready(function () {
 
 
@@ -152,10 +159,40 @@
 
         $("#odetails").load("OrderDetail/List");
         $("#adddetail").load("OrderDetail/Add");
+        $("#divattachments").load("Attachment/AddAttachment");
         $('#drpCustomers').select2();
+
+       
 
     });
     initializeDateTime('#txtOrderDate', '#OrderDateVal');
+
+    function take_snapshot() {
+        // take snapshot and get image data  
+        Webcam.snap(function (data_uri) {
+            // display results in page  
+            document.getElementById('attachmentResults').innerHTML =
+                '<img id="img_snapshot" src="' +
+                data_uri +
+                '"/>';
+
+          
+        });
+    }  
+
+    function upload_snapshot() {
+
+        var data_uri = $('#imgoutput').attr('src');
+        alert(data_uri);
+        Webcam.upload(data_uri,
+            'Attachment/Capture',
+            function (code, text) {
+                
+                Command: toastr["success"]( "تصویر ثبت شد");
+                $("#divattachments").load("Attachment/AddAttachment");
+            });
+
+    }
 
     function SaveNewOrder() {
         $.validator.unobtrusive.parse($('#frmAdd'));
@@ -202,7 +239,7 @@
     function btnShowSaveNewOrderCustomerForm() {
         $.get("Customer/AddOrderCustomer", function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("سفارش گیرنده جدید");
+            $("#myModalLabel").html("سفارش گیرنده @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")");
             $("#myModalBody").html(result);
             $("#btnClose").click(function () {
                 $("#myModal").modal("hide");

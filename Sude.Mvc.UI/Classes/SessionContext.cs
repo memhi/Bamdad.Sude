@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Localization;
+using Sude.Dto.DtoModels.Content;
 
 namespace Sude.Mvc.UI
 {
@@ -172,7 +173,7 @@ namespace Sude.Mvc.UI
         {
 
 
-            LocalStringResourceDetailDtoModel localStringResource = LocalStringResources.Where(lr => lr.LanguageId == CurrentLanguage.LanguageId && lr.ResourceName == Name).FirstOrDefault();
+            LocalStringResourceDetailDtoModel localStringResource = LocalStringResources.FirstOrDefault(lr => lr.LanguageId.ToLower() == CurrentLanguage.LanguageId.ToLower() && lr.ResourceName.ToLower() == Name.ToLower());
             if (localStringResource == null)
                 return Name;
             if (parameters != null && parameters.Any())
@@ -279,6 +280,22 @@ namespace Sude.Mvc.UI
             }
         }
 
+
+
+        public List<AttachmentNewDtoModel> CurrentAttachmentPictures
+        {
+            get
+            {
+                return _contextAccessor.HttpContext.Session.GetObject<List<AttachmentNewDtoModel>>(Constants.SessionNames.AttachmentPictures);
+
+            }
+            set
+            {
+
+
+                _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.AttachmentPictures, value);
+            }
+        }
 
 
         public IEnumerable<OrderDetailDetailDtoModel> CurrentOrderDetails

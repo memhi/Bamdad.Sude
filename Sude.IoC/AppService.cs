@@ -23,18 +23,19 @@ namespace Microsoft.Extensions.DependencyInjection
                 ServiceDescriptor.Scoped<IWorkService,WorkService>(),
                 ServiceDescriptor.Scoped<IInventoryTypeService,InventoryTypeService>(),
                 ServiceDescriptor.Scoped<IServingInventoryService,ServingInventoryService>(),
-                 ServiceDescriptor.Scoped<IServingInventoryTrackingService,ServingInventoryTrackingService>(),
+                ServiceDescriptor.Scoped<IServingInventoryTrackingService,ServingInventoryTrackingService>(),
                 ServiceDescriptor.Scoped<IOrderService,OrderService>(),
-                               ServiceDescriptor.Scoped<IOrderNumberService,OrderNumberService>(),
+                ServiceDescriptor.Scoped<IOrderNumberService,OrderNumberService>(),
                 ServiceDescriptor.Scoped<IOrderDetailService,OrderDetailService>(),
-                  ServiceDescriptor.Scoped<ICustomerService,CustomerService>(),
-                             ServiceDescriptor.Scoped<IAddressService,AddressService>(),
-                                    ServiceDescriptor.Scoped<IBlogService,BlogService>(),
-                             ServiceDescriptor.Scoped<INewsService,NewsService>(),
-                                  ServiceDescriptor.Scoped<IBlogCommentService,BlogCommentService>(),
-                             ServiceDescriptor.Scoped<INewsCommentService,NewsCommentService>(),
-                                            ServiceDescriptor.Scoped<ITypeService,TypeService>(),
-                                                       ServiceDescriptor.Scoped<ILanguageService,LanguageService>()
+                ServiceDescriptor.Scoped<ICustomerService,CustomerService>(),
+                ServiceDescriptor.Scoped<IAddressService,AddressService>(),
+                ServiceDescriptor.Scoped<IBlogService,BlogService>(),
+                ServiceDescriptor.Scoped<INewsService,NewsService>(),
+                ServiceDescriptor.Scoped<IBlogCommentService,BlogCommentService>(),
+                ServiceDescriptor.Scoped<INewsCommentService,NewsCommentService>(),
+                ServiceDescriptor.Scoped<ITypeService,TypeService>(),
+                ServiceDescriptor.Scoped<ILanguageService,LanguageService>(),
+                ServiceDescriptor.Scoped<IAttachmentService,AttachmentService>()
 
             });
 
