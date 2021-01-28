@@ -3,143 +3,90 @@
 @model List<AttachmentNewDtoModel>
 
 
-<div class="row">
-    <div class="col-m-6">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Attachments")</h3>
+                <div class="col-md-4" >
 
-                <div class="box-tools">
-
-
-
-                    <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-plus margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.New")</lable></a>
-
-                </div>
-            </div>
-            
-
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <div class="row">
-                    @*<div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">تصویر دوربین</div>
-                            <div class="panel-body" >
-                                <div id="my_camera">
-                                    <picture id="player" controls autoplay  width=320 height=240></picture>
-                                     
-                                    <button id="capture">Capture</button>
-                                    <canvas id="canvas" width=320 height=240></canvas>
-
-                                </div>
-                      
-
-                                <input type="button" class="btn btn-success" value="ثبت تصویر" onClick="take_snapshot()">
-
-                                
-                            </div>
-                        </div>
-                    </div>*@
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                           
-                        
-                                <label for="input_pic" class="btn btn-default fa fa-camera " >تصویر انتخاب کنید</label>
-                                <input type="file" style="visibility:hidden;"  class="btn btn-success" accept="image/*" id="input_pic" capture />
-                           
-                         
+                    <div class="col-md-12 panel panel-info">
+                        <div class="row margin-bottom">
+                            <label for="input_pic" class="btn btn-default fa fa-camera ">  </label>
+                            <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_pic" capture />
                         </div>
 
+                        <div class="row margin-bottom">
+                            <img id="imgoutput" style="max-width:100%;max-height:150px" />
+                        </div>
+                        <div class="row margin-bottom">
+                            <input id="btn_ConfirmPic" type="button" class="btn btn-success" value="تایید تصویر" onClick="upload_snapshot()">
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <img id="imgoutput" width="100%" height="100%" />
-                        <br />
-                        <input type="button" class="btn btn-success" value="تایید تصویر" onClick="upload_snapshot()">
+
+                </div>
+                <div class="col-md-8">
+
+                    @{
+
+                        if (Model != null)
+                            @foreach (var item in Model)
+                            {
+                    <div class="col-md-4 margin-bottom">
+                        <div class="image-area">
+                            <a href="@item.AttachmentFileAddress" target="_blank">   <img src="@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" /></a>
+                            <a class="remove-image"   onclick="deleteUserTempImage('@item.Title')" style="display: inline;">&#215;</a>
+                        </div>
+                     
                     </div>
+                            }
+
+                    }
                 </div>
-                <div class="row">
-                    <table class="table table-hover">
-                        <tr>
-                            <td>#</td>
-                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
-                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.AttachmentFileType")</th>
-                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.AttachmentImage")</th>
-                            <th></th>
+          
+
+    <script>
+
+
+        $(document).ready(function () {
 
 
 
-                        </tr>
-                        @{
-                            int i = 1;
-                            if (Model != null)
-                                @foreach (var item in Model)
-                                {
-                                    <tr id="tr_@item.AttachmentId" role="row" class="odd">
-                                        <td>@(i++)</td>
-                                        <td>@item.Title</td>
-                                        <td>@item.AttachmentFileType</td>
-                                        <td>تصویر</td>
-                                        <td>
-                                            <button class="btn btn-danger btn-sm" onclick="DeleteAttachment('@item.AttachmentId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></button>
-                                        </td>
-                                    </tr>
-                                }}
+            const input_pic = document.getElementById('input_pic');
 
-                    </table>
-                </div>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-    </div>
+            input_pic.addEventListener('change', (e) => uploadfiles(e.target.files));
+            $('#btn_ConfirmPic').hide();
+        });
+   
+        function uploadfiles(fileList) {
 
-</div>
+            for (let i = 0; i < fileList.length; i++) {
+                if (fileList[i].type.match(/^image\//)) {
+                    file = fileList[i];
+                    break;
+                }
+            }
+            const output = document.getElementById('imgoutput');
+            if (file !== null) {
 
+                var reader = new FileReader();
 
-<script>
+                reader.onload = function (e) {
+                    $('#imgoutput').attr('src', e.target.result);
+                }
 
+                reader.readAsDataURL(file);
+                $('#btn_ConfirmPic').show();
 
-    
-  
-    const input_pic = document.getElementById('input_pic');
-
-    input_pic.addEventListener('change', (e) => uploadfiles(e.target.files));
-
-    function uploadfiles(fileList) {
-  
-        for (let i = 0; i < fileList.length; i++) {
-            if (fileList[i].type.match(/^image\//)) {
-                file = fileList[i];
-                break;
+                //   output.src = URL.createObjectURL(file);
             }
         }
-        const output = document.getElementById('imgoutput');
-        if (file !== null) {
 
-            var reader = new FileReader();
+        //Webcam.set({
+        //    width: 320,
+        //    height: 240,
+        //    dest_width: 960,
+        //    dest_height: 720,
+        //    image_format: 'jpeg',
+        //    jpeg_quality: 90
 
-            reader.onload = function (e) {
-                $('#imgoutput').attr('src', e.target.result);
-            }
+        //});
 
-            reader.readAsDataURL(file);
+        //Webcam.attach('#my_camera');
 
-       
-         //   output.src = URL.createObjectURL(file);
-        }
-    }
-
-    //Webcam.set({
-    //    width: 320,
-    //    height: 240,       
-    //    dest_width: 960,
-    //    dest_height: 720,
-    //    image_format: 'jpeg',
-    //    jpeg_quality: 90
-         
-    //});
-  
-    //Webcam.attach('#my_camera');  
-
-</script>
+    </script>

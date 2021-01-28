@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sude.Dto.DtoModels.Content;
+using Sude.Dto.DtoModels.Result;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Content
 {
@@ -34,10 +35,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             {
                 foreach(string fileaddress in Directory.GetFiles(userDirectoryPath))
                 {
+                    
                     FileInfo file = new FileInfo(fileaddress);
+                    string filewebaddress = "../TempUserAttachmentFiles/" + _sudeSessionContext.CurrentUser.id + "/" + file.Name;
                     AttachmentNewDtoModel attachment = new AttachmentNewDtoModel()
                     {
-                        AttachmentFileAddress = file.FullName,
+                        AttachmentFileAddress = filewebaddress,
                         AttachmentFileType = file.Extension,
                         Title = file.Name
 
@@ -54,8 +57,36 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             return PartialView("AddAttachment", attachments);
         }
 
+        [HttpPost]
+        public IActionResult DeleteTempFile(string filename)
+        {
+            try
+            {
+                string userTempFilePath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, filename);
+                FileInfo file = new FileInfo(userTempFilePath);
+                if (file != null && file.Exists)
+                {
+                    file.Delete();
+
+                }
 
 
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = true,
+                    Message = ""
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message
+                });
+            }
+
+        }
         [HttpPost]
         public IActionResult Capture(IFormFileCollection fs)
         {

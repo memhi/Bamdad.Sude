@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Sude.Dto.DtoModels.Type;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
@@ -26,11 +28,23 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
     {
 
         public readonly SudeSessionContext _sudeSessionContext;
-        public OrderBuyController(SudeSessionContext sudeSessionContext)
+        private readonly IWebHostEnvironment _environment;
+        public OrderBuyController(SudeSessionContext sudeSessionContext, IWebHostEnvironment environment)
 
         {
-
+                      _environment = environment;
             _sudeSessionContext = sudeSessionContext;
+        }
+
+        private void DeleteOrderTempFiles()
+        {
+            string userDirectoryPath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
+            if (Directory.Exists(userDirectoryPath))
+            {
+                Directory.Delete(userDirectoryPath, true);
+
+            }
+
         }
         // GET: WorkTypeController
         [HttpGet]
@@ -38,7 +52,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public  ActionResult Index()
         {
             //ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> WorkTypelist = await Api.GetHandler
-            //             .GetApiAsync<ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>>(ApiAddress.GetWorkTypes);
+            //
+              
 
             return View();
         }
@@ -82,6 +97,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
             order.IsBuy = true;
+            DeleteOrderTempFiles();
             if (!string.IsNullOrEmpty(CurrentWorkId))
             {
                 order.OrderDate = DateTime.Now;

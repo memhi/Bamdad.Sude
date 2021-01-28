@@ -22,7 +22,7 @@
             "ASPNETCORE_ENVIRONMENT": "Development"
         },
         "dotnetRunMessages": "true",
-        "applicationUrl": "http://younas:5001;https://younas:5002"
+        "applicationUrl": "http://localhost:5001;https://localhost:5002"
     }
   }
 }
