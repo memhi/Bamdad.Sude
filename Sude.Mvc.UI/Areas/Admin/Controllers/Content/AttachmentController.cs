@@ -108,10 +108,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             }
             var ratioX = (double)maxWidth / image.Width;
             var ratioY = (double)maxHeight / image.Height;
+
             double ratio = ratio = Math.Min(ratioX, ratioY); ;
             if (image.Height>image.Width)
-             ratio = Math.Max(ratioX, ratioY);
-
+             ratio = (Math.Max(ratioX, ratioY)+ Math.Min(ratioX, ratioY))/2;
+            if (ratio > 1)
+                ratio = 1;
             var newWidth = (int)(image.Width * ratio);
             var newHeight = (int)(image.Height * ratio);
             
@@ -316,55 +318,57 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
                 return Json(false);
             }
         }
-        private void StoreInFolder(IFormFile file )
+        private void StoreInFolder(IFormFile file)
         {
-           
-                AttachmentNewDtoModel attachmentNew = new AttachmentNewDtoModel();
- 
+
+            AttachmentNewDtoModel attachmentNew = new AttachmentNewDtoModel();
+
             var fileName = file.FileName;
-      
+
             // Unique filename "Guid"  
             var myUniqueFileName = Convert.ToString(Guid.NewGuid());
             attachmentNew.AttachmentId = myUniqueFileName;
-          
+
             // Getting Extension  
             var fileExtension = Path.GetExtension(fileName);
             attachmentNew.AttachmentFileType = fileExtension;
 
-          // Concating filename + fileExtension (unique filename)  
+            // Concating filename + fileExtension (unique filename)  
             var newFileName = string.Concat(myUniqueFileName, fileExtension);
             //  Generating Path to store photo   
             var directorypath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
-            attachmentNew.AttachmentFileAddress= Path.Combine( "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, newFileName);
+            attachmentNew.AttachmentFileAddress = Path.Combine("TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, newFileName);
 
 
             if (!Directory.Exists(directorypath))
                 Directory.CreateDirectory(directorypath);
             var filepath = directorypath + $@"\{newFileName}";
             Image img;
-            Image newImage= new Bitmap(960, 600); ;
-            using (FileStream fs = System.IO.File.Create(filepath))
+            Image newImage = new Bitmap(1280, 720); ;
+            using (Image image = Image.FromStream(file.OpenReadStream(), true, true))
             {
-                file.CopyTo(fs);
-                img = Image.FromStream(fs);
 
-                if (img != null)
+                //  file.CopyTo(fs);
+                //  img = Image.FromStream(fs);
+
+                if (image != null)
                 {
-                     newImage = ScaleImage(img, 960, 600);
-                
+                    newImage = ScaleImage(image, 1280, 720);
+
                 }
 
 
-                fs.Flush();
+
                 List<AttachmentNewDtoModel> attachments = _sudeSessionContext.CurrentAttachmentPictures;
                 if (attachments == null)
                     attachments = new List<AttachmentNewDtoModel>();
                 attachments.Add(attachmentNew);
                 _sudeSessionContext.CurrentAttachmentPictures = attachments;
 
-             
+
 
             }
+       
             if(newImage!=null)
                 newImage.Save(filepath, ImageFormat.Jpeg); 
 
