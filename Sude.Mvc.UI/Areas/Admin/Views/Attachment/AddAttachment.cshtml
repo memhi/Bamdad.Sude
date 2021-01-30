@@ -7,15 +7,19 @@
 
                     <div class="col-md-12 panel panel-info">
                         <div class="row margin-bottom">
-                            <label for="input_pic" class="btn btn-default fa fa-camera ">  </label>
+                            <label for="input_pic" class="btn btn-default fa fa-camera ">  </label>  <label for="input_picgallery" class="btn btn-default fa fa-image ">  </label>
                             <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_pic" capture />
+
+                            <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_picgallery" />
+
                         </div>
 
+                      
                         <div class="row margin-bottom">
                             <img id="imgoutput" style="max-width:100%;max-height:150px" />
                         </div>
                         <div class="row margin-bottom">
-                            <input id="btn_ConfirmPic" type="button" class="btn btn-success" value="تایید تصویر" onClick="upload_snapshot()">
+                            <a id="btn_ConfirmPic"  class="btn btn-success"   onClick="upload_snapshot()">تایید تصویر</a>
                         </div>
                     </div>
 
@@ -48,8 +52,11 @@
 
 
             const input_pic = document.getElementById('input_pic');
-
             input_pic.addEventListener('change', (e) => uploadfiles(e.target.files));
+       
+
+            const input_picgallery = document.getElementById('input_picgallery');
+            input_picgallery.addEventListener('change', (e) => uploadfiles(e.target.files));
             $('#btn_ConfirmPic').hide();
         });
    

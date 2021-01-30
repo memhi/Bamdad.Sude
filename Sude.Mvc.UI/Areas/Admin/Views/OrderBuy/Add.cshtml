@@ -217,13 +217,23 @@
     }
 
     function upload_snapshot() {
+ 
+
+          $('#btn_ConfirmPic').html(
+                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i> در حال ارسال فایل...'
+                );
+
+        
 
         var data_uri = $('#imgoutput').attr('src');
     
         Webcam.upload(data_uri,
             'Attachment/Capture',
             function (code, text) {
-                
+
+        $('#btn_ConfirmPic').html(
+                            'تایید تصویر'
+                        );
                 Command: toastr["success"]( "تصویر ثبت شد");
                 $("#divattachments").load("Attachment/AddAttachment");
             });
