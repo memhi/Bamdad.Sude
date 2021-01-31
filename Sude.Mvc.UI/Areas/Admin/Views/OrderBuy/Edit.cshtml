@@ -4,6 +4,8 @@
 
 <link href="~/css/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
 <script src="~/js/jquery.md.bootstrap.datetimepicker.js"></script>
+<script src="~/js/webcam.min.js">
+</script>
 <link href="~/css/select2.css" rel="stylesheet" />
 
     <div class="form-group">
@@ -18,146 +20,239 @@
                 <h2 class="box-title">تغییر اطلاعات سفارش خرید شماره @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
-           
-                    <div class="col-md-12">
 
-                        <form id="frmEdit">
+                <div class="col-md-12">
 
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="row">
-                                <div class="box box-info  ">
-                                    <div class="box-header with-border  text-center">
-                                        <h3 class="box-title">اطلاعات سفارش</h3>
-                                    </div>
-                                    <div class="box-body">
+                    <form id="frmEdit">
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="form-group">
-                                                    <div class="col-md-2">
-                                                        <label>تاریخ سفارش</label>
-                                                    </div>
-                                                    <div class="col-md-10">
-                                                        <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
-                                                        <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
-                                                        <span asp-validation-for="OrderDate" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-
-
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="col-md-2">
-                                                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
-                                                    </div>
-                                                    <div class="col-md-10">
-                                                        <input id="txtDesc" asp-for="Description" class="form-control" />
-                                                        <span asp-validation-for="Description" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
-                            <div id="divOrderDetails" class="box box-info">
-                                <div class="box-header text-center">
-                                    <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش خرید</h3>
-
-
-                                </div>
-                                <div class="box-body text-center">
-                                    <div id="adddetail" class="row">
-                                        @*@await Component.InvokeAsync("AddDetail");*@
-
-                                    </div>
-                                    <div class="row" id="odetails"></div>
-                                </div>
-
-
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="box box-info   ">
+                            <div class="box box-info  ">
                                 <div class="box-header with-border  text-center">
-                                    <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش خرید</h3>
-
-
+                                    <h3 class="box-title">اطلاعات سفارش</h3>
                                 </div>
                                 <div class="box-body">
-                                    <div class="row text-center">
-                                        <div class="btn-group margin-bottom text-center" data-toggle="buttons">
-                                            @{
-                                                int i = 0;
-                                                foreach (Sude.Dto.DtoModels.Type.TypeDetailDtoModel typepayment in ((IEnumerable<Sude.Dto.DtoModels.Type.TypeDetailDtoModel>)ViewData[Constants.ViewBagNames.PaymentStatus]))
-                                                {
-                                                    i++;
-                                                    string name = "btnRadio" + i.ToString();
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group">
+                                                <div class="col-md-2">
+                                                    <label>تاریخ سفارش</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
+                                                    <input id="OrderDateVal" hidden="hidden" value="@Model.OrderDate" />
+                                                    <span asp-validation-for="OrderDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
 
 
-                                                    @if (typepayment.TypeId == Model.PaymentStatusId)
-                                                    {
-                                                        <label class="btn btn-primary active" for="@name">
-                                                            <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
-                                                            @typepayment.Title
-                                                        </label>
-                                                    }
-                                                    else
-                                                    {
-                                                        <label class="btn btn-primary" for="@name">
-                                                            <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
-                                                            @typepayment.Title
-                                                        </label>
-
-
-
-                                                    }
-                                                }
-                                            }
 
                                         </div>
                                     </div>
                                     <div class="row">
 
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش</a>
-
+                                                <div class="col-md-2">
+                                                    <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <input id="txtDesc" asp-for="Description" class="form-control" />
+                                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-
-                                            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
 
                                         </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div id="divOrderDetails" class="box box-info">
+                            <div class="box-header text-center">
+                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش خرید</h3>
+
+
+                            </div>
+                            <div class="box-body text-center">
+                                <div id="adddetail" class="row">
+                                    @*@await Component.InvokeAsync("AddDetail");*@
+
+                                </div>
+                                <div class="row" id="odetails"></div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divOrderDetails" class="box box-info  ">
+                            <div class="box-header with-border text-center">
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Attachments")</h3>
+                            </div>
+                            <div class="box-body">
+                                <div id="divattachments" class="row">
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="box box-info   ">
+                            <div class="box-header with-border  text-center">
+                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش خرید</h3>
+
+
+                            </div>
+                            <div class="box-body">
+                                <div class="row text-center">
+                                    <div class="btn-group margin-bottom text-center" data-toggle="buttons">
+                                        @{
+                                            int i = 0;
+                                            foreach (Sude.Dto.DtoModels.Type.TypeDetailDtoModel typepayment in ((IEnumerable<Sude.Dto.DtoModels.Type.TypeDetailDtoModel>)ViewData[Constants.ViewBagNames.PaymentStatus]))
+                                            {
+                                                i++;
+                                                string name = "btnRadio" + i.ToString();
+
+
+                                                @if (typepayment.TypeId == Model.PaymentStatusId)
+                                                {
+                                                    <label class="btn btn-primary active" for="@name">
+                                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
+                                                        @typepayment.Title
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="btn btn-primary" for="@name">
+                                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
+                                                        @typepayment.Title
+                                                    </label>
+
+
+
+                                                }
+                                            }
+                                        }
 
                                     </div>
                                 </div>
-                            </div>
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-           
+                </div>
+                    </div>
+
         </div>
     </section>
 
     <div class="col-sm-6">
         <script>
+
+            $(document).ready(function () {
+
+
+
+
+                $("#divattachments").load("Attachment/AddAttachment");
+
+
+
+
+            });
+
             initializeDateTime('#txtOrderDate', '#OrderDateVal');
-        </script>
+
+
+            function take_snapshot() {
+                // take snapshot and get image data
+                Webcam.snap(function (data_uri) {
+                    // display results in page
+                    document.getElementById('attachmentResults').innerHTML =
+                        '<img id="img_snapshot" src="' +
+                        data_uri +
+                        '"/>';
+
+
+                });
+            }
+
+            function deleteUserTempImage(name) {
+
+                $.ajax({
+                    url: "Attachment/DeleteTempFile",
+                    type: "Post",
+                    data: { filename: name }
+                }).done(function (result) {
+                    if (result.isSucceed) {
+
+                        Command: toastr["success"]("فایل حذف شد");
+                        $("#divattachments").load("Attachment/AddAttachment");
+
+                    }
+                    else {
+                        Command: toastr["warning"](result.message, "هشدار");
+
+
+                    }
+                });
+            }
+
+            function upload_snapshot() {
+
+
+                $('#btn_ConfirmPic').html(
+                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i> در حال ارسال فایل...'
+                );
+
+
+
+                var data_uri = $('#imgoutput').attr('src');
+
+                Webcam.upload(data_uri,
+                    'Attachment/Capture',
+                    function (code, text) {
+
+                        $('#btn_ConfirmPic').html(
+                            'تایید تصویر'
+                        );
+                        Command: toastr["success"]("تصویر ثبت شد");
+                        $("#divattachments").load("Attachment/AddAttachment");
+                    });
+
+            }
+
+
+</script>
 
     </div>
 

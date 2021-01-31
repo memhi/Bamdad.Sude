@@ -237,31 +237,31 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
         [HttpGet]
         public ActionResult AddAttachment()
         {
-            List<AttachmentNewDtoModel> attachments = new List<AttachmentNewDtoModel>();
+            List<AttachmentNewDtoModel> attachments = _sudeSessionContext.CurrentAttachmentPictures;
             if (attachments == null)
                 attachments = new List<AttachmentNewDtoModel>();
-            string userDirectoryPath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
-            if (Directory.Exists(userDirectoryPath))
-            {
-                foreach(string fileaddress in Directory.GetFiles(userDirectoryPath))
-                {
+            //string userDirectoryPath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
+            //if (Directory.Exists(userDirectoryPath))
+            //{
+            //    foreach(string fileaddress in Directory.GetFiles(userDirectoryPath))
+            //    {
                     
-                    FileInfo file = new FileInfo(fileaddress);
-                    string filewebaddress = "../TempUserAttachmentFiles/" + _sudeSessionContext.CurrentUser.id + "/" + file.Name;
-                    AttachmentNewDtoModel attachment = new AttachmentNewDtoModel()
-                    {
-                        AttachmentFileAddress = filewebaddress,
-                        AttachmentFileType = file.Extension,
-                        Title = file.Name
+            //        FileInfo file = new FileInfo(fileaddress);
+            //        string filewebaddress = "../TempUserAttachmentFiles/" + _sudeSessionContext.CurrentUser.id + "/" + file.Name;
+            //        AttachmentNewDtoModel attachment = new AttachmentNewDtoModel()
+            //        {
+            //            AttachmentFileAddress = filewebaddress,
+            //            AttachmentFileType = file.Extension,
+            //            Title = file.Name
 
 
-                    };
-                    attachments.Add(attachment);
+            //        };
+            //        attachments.Add(attachment);
 
-                }
-                _sudeSessionContext.CurrentAttachmentPictures = attachments;
+            //    }
+            //    _sudeSessionContext.CurrentAttachmentPictures = attachments;
 
-            }
+            //}
 
 
             return PartialView("AddAttachment", attachments);
@@ -278,9 +278,19 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
                 {
                     file.Delete();
 
+
                 }
+                List<AttachmentNewDtoModel> attachments = _sudeSessionContext.CurrentAttachmentPictures;
+                if (attachments != null)
+                {
+                    AttachmentNewDtoModel attachment = attachments.FirstOrDefault(a => a.Title.ToLower() == filename.ToLower());
+                    if (attachment != null)
+                       
+                        attachments.Remove(attachment);
 
 
+                        }
+                _sudeSessionContext.CurrentAttachmentPictures = attachments;
                 return Json(new ResultSetDto()
                 {
                     IsSucceed = true,
@@ -338,7 +348,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             //  Generating Path to store photo   
             var directorypath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
             attachmentNew.AttachmentFileAddress = Path.Combine("TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, newFileName);
-
+            attachmentNew.Title = newFileName;
 
             if (!Directory.Exists(directorypath))
                 Directory.CreateDirectory(directorypath);

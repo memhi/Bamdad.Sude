@@ -20,6 +20,9 @@ using System.Globalization;
 using Sude.Domain.Models.Work;
 using Sude.Dto.DtoModels.Work;
 using Sude.Domain.Models.Report;
+using Sude.Domain.Models.Common;
+using Sude.Dto.DtoModels.Content;
+using System.IO;
 
 namespace Sude.Api.Controllers
 {
@@ -32,6 +35,7 @@ namespace Sude.Api.Controllers
         private readonly IOrderDetailService _OrderDetailService;
         private readonly ICustomerService _CustomerService;
         private readonly IWorkService _WorkService;
+        private readonly IAttachmentService _AttachmentService;
 
         private readonly IServingService _ServingService;
         private readonly IServingInventoryService _ServingInventoryService;
@@ -40,7 +44,7 @@ namespace Sude.Api.Controllers
         public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
             ICustomerService customerService, IServingService servingService, IServingInventoryService servingInventoryService,
         IServingInventoryTrackingService servingInventoryTrackingService, IOrderNumberService orderNumberService,
-        IWorkService workService)
+        IWorkService workService, IAttachmentService attachmentService)
         {
 
             _OrderService = orderService;
@@ -51,6 +55,7 @@ namespace Sude.Api.Controllers
             _ServingInventoryTrackingService = servingInventoryTrackingService;
             _ServingInventoryService = servingInventoryService;
             _WorkService = workService;
+            _AttachmentService = attachmentService;
 
         }
 
@@ -60,14 +65,14 @@ namespace Sude.Api.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult> GetOrdersWithDetails(string workId, DateTime orderDateFrom , DateTime orderDateTo, bool? isBuy = null)
+        public async Task<ActionResult> GetOrdersWithDetails(string workId, DateTime orderDateFrom, DateTime orderDateTo, bool? isBuy = null)
         {
             try
             {
 
-            
 
-                ResultSet<IEnumerable<OrderInfo>> resultSet =await _OrderService.GetOrdersWithDetailsAsync( orderDateFrom, orderDateTo, Guid.Parse(workId),  isBuy);
+
+                ResultSet<IEnumerable<OrderInfo>> resultSet = await _OrderService.GetOrdersWithDetailsAsync(orderDateFrom, orderDateTo, Guid.Parse(workId), isBuy);
 
 
                 if (resultSet == null || resultSet.Data == null || !resultSet.Data.Any())
@@ -108,8 +113,8 @@ namespace Sude.Api.Controllers
                         OrderDetailId = od.Id.ToString(),
                         ServingName = od.Serving.Title,
                         Price = od.Price,
-                          ServingId=od.ServingId.ToString(),
-                           OrderId=od.OrderId.ToString()
+                        ServingId = od.ServingId.ToString(),
+                        OrderId = od.OrderId.ToString()
 
                     }).ToList() : null)
 
@@ -122,7 +127,7 @@ namespace Sude.Api.Controllers
                     Data = result,
                     CurrentPage = 1,
                     PageSize = int.MaxValue
-            
+
                 });
             }
             catch (Exception ex)
@@ -142,7 +147,7 @@ namespace Sude.Api.Controllers
 
         public async Task<ActionResult> GetOrders(string workId, int pageIndex, int pageSize,
           DateTime? orderDateFrom = null, DateTime? orderDateTo = null, string customerId = null,
-          bool? isBuy = null, string description = null,string orderNumber=null, string? paymentStatusId = null)
+          bool? isBuy = null, string description = null, string orderNumber = null, string? paymentStatusId = null)
         {
             try
             {
@@ -316,8 +321,8 @@ namespace Sude.Api.Controllers
                     IsSucceed = true,
                     Message = "",
                     Data = result,
-                     CurrentPage=searchOrder.PageIndex,
-                     RowCount=count
+                    CurrentPage = searchOrder.PageIndex,
+                    RowCount = count
                 });
             }
             catch (Exception ex)
@@ -619,6 +624,32 @@ namespace Sude.Api.Controllers
 
                 }
                 result.OrderDetails = orderDetailDetailDtoModels;
+
+
+                var resultAttachments = await _AttachmentService.GetAttachmentsAsync(Guid.Parse(result.OrderId), null, null);
+                if (resultAttachments.IsSucceed && resultAttachments.Data != null && resultAttachments.Data.Any())
+                {
+                    //                    list
+
+                    List<AttachmentNewDtoModel> attachments = new List<AttachmentNewDtoModel>();
+                    foreach (AttachmentInfo attachment in resultAttachments.Data)
+                    {
+                        AttachmentNewDtoModel attachmentNewDto = new AttachmentNewDtoModel()
+                        {
+                            AttachmentFileAddress = attachment.AttachmentFileAddress,
+                            AttachmentFileType = attachment.AttachmentFileType,
+                            AttachmentId = attachment.Id.ToString(),
+                            EntityId = attachment.EntityId.ToString(),
+                            Title = attachment.Title
+
+
+                        };
+
+                        attachments.Add(attachmentNewDto);
+                    }
+                    result.Attachments = attachments;
+                }
+
 
                 return Ok(new ResultSetDto<OrderDetailDtoModel>()
                 {
@@ -977,10 +1008,44 @@ namespace Sude.Api.Controllers
 
 
                     }
+                    if (orderdto.Attachments != null && orderdto.Attachments.Any())
+                    {
 
 
+
+
+                        foreach (AttachmentNewDtoModel attachmentNew in orderdto.Attachments)
+                        {
+
+
+
+                            AttachmentInfo attachment = new AttachmentInfo()
+                            {
+                                AttachmentContent = null,
+                                AttachmentFileAddress = Path.Combine("WorkFiles",orderdto.WorkId, "Orders", order.Id.ToString(), attachmentNew.Title),
+                                EntityId = order.Id,
+                                AttachmentFileType = attachmentNew.AttachmentFileType,
+                                Title = attachmentNew.Title
+                            };
+                            attachmentNew.AttachmentFileAddress = attachment.AttachmentFileAddress;
+                            var resultattachmentadd = await _AttachmentService.AddAttachmentAsync(attachment);
+                            if (!resultattachmentadd.IsSucceed)
+                                return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                                {
+                                    IsSucceed = false,
+                                    Message = resultattachmentadd.Message,
+                                    Data = null
+                                });
+
+
+                        }
+
+
+
+
+
+                    }
                 }
-
                 else
                 {
                     return BadRequest(new ResultSetDto<OrderNewDtoModel>()
@@ -993,14 +1058,14 @@ namespace Sude.Api.Controllers
                 }
 
 
-                return Ok(new ResultSetDto<OrderNewDtoModel>()
-                {
-                    IsSucceed = true,
-                    Message = "",
-                    Data = orderdto
-                });
+                    return Ok(new ResultSetDto<OrderNewDtoModel>()
+                    {
+                        IsSucceed = true,
+                        Message = "",
+                        Data = orderdto
+                    });
 
-            }
+                }
             catch (Exception ex)
             {
                 return BadRequest(new ResultSetDto<OrderNewDtoModel>()
@@ -1064,6 +1129,9 @@ namespace Sude.Api.Controllers
                         Message = resultSaveOrder.Message,
                         Data = null
                     });
+
+
+            
 
                 return Ok(new ResultSetDto<OrderEditDtoModel>()
                 {
@@ -1274,6 +1342,64 @@ namespace Sude.Api.Controllers
                         Message = resultSaveOrder.Message,
                         Data = null
                     });
+
+                var resultGetAttachments = await _AttachmentService.GetAttachmentsAsync(orderInfo.Id, null, null);
+                if (resultGetAttachments.IsSucceed && resultGetAttachments.Data != null)
+                {
+                    foreach (AttachmentInfo attachment in resultGetAttachments.Data)
+                    {
+
+                        await _AttachmentService.DeleteAttachmentAsync(attachment.Id);
+                        
+                        //if (orderDTO.Attachments != null && orderDTO.Attachments.Any())
+                        //{
+                        //    if(orderDTO.Attachments.Where(a=>a.Title.ToLower() == attachment.Title.ToLower()).Count()<=0)
+                        //        await _AttachmentService.GetAttachmentsAsync(orderInfo.Id, null, null);
+
+                        //}
+
+                    }
+
+
+                }
+
+                if (orderDTO.Attachments != null && orderDTO.Attachments.Any())
+                {
+
+
+
+
+                    foreach (AttachmentNewDtoModel attachmentNew in orderDTO.Attachments)
+                    {
+
+
+
+                        AttachmentInfo attachment = new AttachmentInfo()
+                        {
+                            AttachmentContent = null,
+                            AttachmentFileAddress = Path.Combine("WorkFiles", orderInfo.WorkId.ToString(), "Orders", orderInfo.Id.ToString(), attachmentNew.Title),
+                            EntityId = orderInfo.Id,
+                            AttachmentFileType = attachmentNew.AttachmentFileType,
+                            Title = attachmentNew.Title
+                        };
+                        attachmentNew.AttachmentFileAddress = attachment.AttachmentFileAddress;
+                        var resultattachmentadd = await _AttachmentService.AddAttachmentAsync(attachment);
+                        if (!resultattachmentadd.IsSucceed)
+                            return BadRequest(new ResultSetDto<OrderNewDtoModel>()
+                            {
+                                IsSucceed = false,
+                                Message = resultattachmentadd.Message,
+                                Data = null
+                            });
+
+
+                    }
+
+
+
+
+
+                }
 
                 return Ok(new ResultSetDto<OrderEditDtoModel>()
                 {

@@ -33,7 +33,7 @@
                             {
                     <div class="col-md-4 margin-bottom">
                         <div class="image-area">
-                            <a href="@item.AttachmentFileAddress" target="_blank">   <img src="@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" /></a>
+                            <a href="../@item.AttachmentFileAddress" target="_blank">   <img src="../@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" /></a>
                             <a class="remove-image"   onclick="deleteUserTempImage('@item.Title')" style="display: inline;">&#215;</a>
                         </div>
                      
@@ -74,26 +74,58 @@
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#imgoutput').attr('src', e.target.result);
+
+
+                    var picFile = e.target;
+                    var imageData = picFile.result;
+                    var img = new Image();
+                    img.src = imageData;
+                    img.onload = function () {
+                    
+                        var newWidth = 1280;
+                        var newHeight = 720;
+                        if (img.width > newWidth || img.height > newHeight) {
+
+                            var ratioX = newWidth / img.width;
+                            var ratioY = newHeight / img.height;
+
+                            var ratio   = Math.min(ratioX, ratioY);;
+                            if (img.height > img.width)
+                                ratio = (Math.max(ratioX, ratioY) + Math.min(ratioX, ratioY)) / 2;
+                            if (ratio > 1)
+                                ratio = 1;
+                             newWidth = (img.width * ratio);
+                             newHeight = (img.height * ratio);
+                        }
+
+                   
+                            var canvas = $("<canvas/>").get(0);
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
+                       
+                       var context = canvas.getContext('2d');
+                        context.drawImage(img, 0, 0, newWidth, newHeight);
+                      
+
+                        $('#imgoutput').attr('src', canvas.toDataURL());
+                        
+
+                    }
+                    img.onerror = function () {
+                        Command: toastr["error"]("خطا در دریافت فایل");
+                    } 
+
+
+
                 }
 
                 reader.readAsDataURL(file);
                 $('#btn_ConfirmPic').show();
 
-                //   output.src = URL.createObjectURL(file);
+         
             }
         }
 
-        //Webcam.set({
-        //    width: 320,
-        //    height: 240,
-        //    dest_width: 960,
-        //    dest_height: 720,
-        //    image_format: 'jpeg',
-        //    jpeg_quality: 90
-
-        //});
-
-        //Webcam.attach('#my_camera');
+     
 
     </script>

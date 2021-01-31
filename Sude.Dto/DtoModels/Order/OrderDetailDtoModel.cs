@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sude.Dto.DtoModels.Account;
+using Sude.Dto.DtoModels.Content;
 
 namespace Sude.Dto.DtoModels.Order
 {
@@ -23,6 +24,7 @@ namespace Sude.Dto.DtoModels.Order
         public CustomerDetailDtoModel Customer { get; set; }
         public ICollection<OrderDetailDetailDtoModel> OrderDetails { get; set; }
         public ICollection<OrderPaymentDetailDtoModel> OrderPayments { get; set; }
+        public ICollection<AttachmentNewDtoModel> Attachments { get; set; }
 
     }
 }

@@ -30,6 +30,7 @@ namespace Sude.Domain.Models.Order
         public virtual TypeInfo PaymentStatus { get; set; }
         public virtual ICollection<OrderDetailInfo> Details { get; set; }
         public virtual ICollection<OrderPaymentInfo> Payments { get; set; }
+ 
 
     }
 

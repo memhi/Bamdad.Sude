@@ -23,6 +23,7 @@ using System.Reflection.Metadata;
 using System.IO;
 using Microsoft.Extensions.Primitives;
 using Microsoft.AspNetCore.Hosting;
+using Sude.Dto.DtoModels.Content;
 
 namespace Sude.Mvc.UI.Admin.Controllers.Order
 {
@@ -333,6 +334,8 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return PartialView(order);
         }
 
+
+
         [HttpPost]
         public async Task<ActionResult> Add(OrderNewDtoModel request)
         {
@@ -378,6 +381,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             {
                 request.OrderDetails = orderDetails;
             }
+
+
+
+
+         
+            
 
 
             var type = await Api.GetHandler

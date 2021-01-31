@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sude.Persistence.Contexts;
 
 namespace Sude.Persistence.Migrations
 {
     [DbContext(typeof(SudeDBContext))]
-    partial class SudeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210131095053_AddAttachments")]
+    partial class AddAttachments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,11 +210,14 @@ namespace Sude.Persistence.Migrations
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("EntityTypeId")
+                    b.Property<Guid>("EntityTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("OrderInfoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
@@ -231,6 +236,8 @@ namespace Sude.Persistence.Migrations
                     b.HasIndex("AttachmentTypeId");
 
                     b.HasIndex("EntityTypeId");
+
+                    b.HasIndex("OrderInfoId");
 
                     b.ToTable("Attachments");
                 });
@@ -1092,7 +1099,13 @@ namespace Sude.Persistence.Migrations
 
                     b.HasOne("Sude.Domain.Models.Type.TypeInfo", "EntityType")
                         .WithMany()
-                        .HasForeignKey("EntityTypeId");
+                        .HasForeignKey("EntityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sude.Domain.Models.Order.OrderInfo", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("OrderInfoId");
 
                     b.Navigation("AttachmentType");
 
@@ -1301,6 +1314,8 @@ namespace Sude.Persistence.Migrations
 
             modelBuilder.Entity("Sude.Domain.Models.Order.OrderInfo", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("Details");
 
                     b.Navigation("Payments");

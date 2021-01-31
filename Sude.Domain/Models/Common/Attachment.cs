@@ -13,7 +13,7 @@ namespace Sude.Domain.Models.Common
         public string Title { get; set; }    
         public string Desc { get; set; }
         public Guid EntityId { get; set; }
-        public Guid EntityTypeId { get; set; }
+        public Guid? EntityTypeId { get; set; }
         public virtual TypeInfo EntityType { get; set; }
         public Guid? AttachmentTypeId { get; set; }
         public virtual TypeInfo AttachmentType { get; set; }

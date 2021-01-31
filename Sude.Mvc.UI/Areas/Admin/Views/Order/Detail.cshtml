@@ -9,156 +9,183 @@
 <html>
 <head>
     <link rel="stylesheet" href="~/AdminLte/css/AdminLTE.css" />
+    <link rel="stylesheet" href="~/AdminLTE/css/medium-zoom.css" />
     <title>Detail</title>
 </head>
 <body>
 
 
-        <div class="box  no-border">
-            <div class="box-header text-center">
-                @if (Model.IsBuy)
-                {
-                    <h2 class="box-title">سفارش خرید</h2>
+    <div class="box  no-border">
+        <div class="box-header text-center">
+            @if (Model.IsBuy)
+            {
+                <h2 class="box-title">سفارش خرید</h2>
 
-                }
-                else
-                { 
+            }
+            else
+            {
 
-                    <h2 class="box-title">سفارش فروش</h2>}
+                <h2 class="box-title">سفارش فروش</h2>}
 
 
+        </div>
+
+        <div class="box-body with-border">
+
+            <div class="row">
+
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label>خدمت گیرنده</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Model.Customer.Title
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label>شماره سفارش</label>
+                        </div>
+                        <div class="col-md-6">
+                            @Model.OrderNumber
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-            <div class="box-body with-border">
+            <div class="row">
+                <div class="col-md-6">
 
-                <div class="row">
-
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label>خدمت گیرنده</label>
-                            </div>
-                            <div class="col-md-6">
-                                @Model.Customer.Title
-
-                            </div>
-
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label asp-for="OrderDate">تاریخ سفارش</label>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label>شماره سفارش</label>
-                            </div>
-                            <div class="col-md-6">
-                                @Model.OrderNumber
-                            </div>
+                        <div class="col-md-6">
+                            @Model.OrderDate.ToLocalizationDateTime("g")
 
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label asp-for="OrderDate">تاریخ سفارش</label>
-                            </div>
-                            <div class="col-md-6">
-                                @Model.OrderDate.ToLocalizationDateTime("g")
-
-                            </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label asp-for="Description">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label asp-for="Description">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
-                            </div>
-                            <div class="col-md-6">
-                                @Model.Description
-
-                            </div>
+                        <div class="col-md-6">
+                            @Model.Description
 
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table">
-                            <tr>
-                                <td>#</td>
-                                <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
-                                <th>قیمت</th>
-                                <th>تعداد</th>
 
-                                <th>
-                                    مجموع
-                                </th>
+            </div>
+            <div class="row">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tr>
+                            <td>#</td>
+                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
+                            <th>قیمت</th>
+                            <th>تعداد</th>
+
+                            <th>
+                                مجموع
+                            </th>
+
+                        </tr>
+
+                        @{
+                            int i = 1;
+                            double sum = 0;
+
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                sum += (item.Price * item.Count);
+                                <tr id="tr_@item.OrderDetailId">
+                                    <td class="col-md-1">@(i++)</td>
+                                    <td class="col-md-5"><label> @item.ServingName</label></td>
+                                    <td class="col-md-2"><label> @String.Format("{0:n0}", item.Price)</label></td>
+                                    <td class="col-md-2"><label>@String.Format("{0:n0}", item.Count)</label></td>
+                                    <td class="col-md-2"><label>@String.Format("{0:n0}", (item.Price * item.Count))</label></td>
+
+
+                                </tr>
+                            }
+                            <tr class="text-bold">
+                                <td class="col-md-1"></td>
+                                <td class="col-md-5"><label> مجموع</label></td>
+                                <td class="col-md-2"> </td>
+
+                                <td class="col-md-4"><label>@String.Format("{0:n0}", sum)</label></td>
 
                             </tr>
 
-                            @{
-                                int i = 1;
-                                double sum = 0;
-
-                                @foreach (var item in Model.OrderDetails)
-                                {
-                                    sum += (item.Price * item.Count);
-                                    <tr id="tr_@item.OrderDetailId">
-                                        <td class="col-md-1">@(i++)</td>
-                                        <td class="col-md-5"><label> @item.ServingName</label></td>
-                                        <td class="col-md-2"><label> @String.Format("{0:n0}", item.Price)</label></td>
-                                        <td class="col-md-2"><label>@String.Format("{0:n0}", item.Count)</label></td>
-                                        <td class="col-md-2"><label>@String.Format("{0:n0}", (item.Price * item.Count))</label></td>
-
-
-                                    </tr>
-                                }
-                                <tr class="text-bold">
-                                    <td class="col-md-1"></td>
-                                    <td class="col-md-5"><label> مجموع</label></td>
-                                    <td class="col-md-2"> </td>
-
-                                    <td class="col-md-4"><label>@String.Format("{0:n0}", sum)</label></td>
-
-                                </tr>
-
-                            }
-                        </table>
-                    </div>
-
+                        }
+                    </table>
                 </div>
-                <div class="row bg-gray margin-bottom">
-                    <div class="col-md-6">
-                        <label asp-for="Description">وضعیت پرداخت</label>
-                    </div>
-                    <div class="col-md-6">
-                        @Model.PaymentStatusTitle
 
-                    </div>
+            </div>
+            <div class="row bg-gray margin-bottom">
+                <div class="col-md-6">
+                    <label asp-for="Description">وضعیت پرداخت</label>
                 </div>
-                <div class="row text-center">
-                    <div class="col-md-6 text-center">
-                        <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=print" class="btn btn-info  fa fa-print"></a>
-                    </div>
-                    <div class="col-md-6 text-center">
-             
-                            <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=download" class="btn   btn-info fa fa-download">  </a>
-             
-
- 
-
-                    </div>
-
-                </div>
+                <div class="col-md-6">
+                    @Model.PaymentStatusTitle
 
                 </div>
             </div>
+            <div class="row text-center">
+                <div class="col-md-6 text-center">
+                    <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=print" class="btn btn-info  fa fa-print"></a>
+                </div>
+                <div class="col-md-6 text-center">
 
-</body>
-</html>
+                    <a target="_blank" href="Order/PdfInvoice?id=@Model.OrderId&showType=download" class="btn   btn-info fa fa-download">  </a>
+
+
+
+
+                </div>
+
+            </div>
+            @if (Model.Attachments != null && Model.Attachments.Any())
+            {
+                <div class="row">
+                    <label>پیوستها</label><br />
+                    @foreach (var item in Model.Attachments)
+                    {
+                        <div class="col-md-4 margin-bottom">
+                            <div class="image-area">
+                                <a href="../@item.AttachmentFileAddress" target="_blank">   <img src="../@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" /></a>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+    @*<script src="~/AdminLTE/js/medium-zoom.js"></script>*@
+    @*<script>
+        mediumZoom('.container img', {
+            margin: 24,
+            background: '#000',
+            scrollOffset: 0,
+            metaClick: false
+        })
+    </script>*@
+ 
+
+</body >
+</html >

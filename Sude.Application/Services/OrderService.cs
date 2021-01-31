@@ -15,15 +15,17 @@ namespace Sude.Application.Services
     {
         private IOrderRepository _OrderRepository;
         private IOrderPaymentRepository _OrderPaymentRepository;
+     
 
         public OrderService(IOrderRepository orderRepository, IOrderPaymentRepository orderPaymentRepository)
         {
             this._OrderRepository = orderRepository;
             this._OrderPaymentRepository = orderPaymentRepository;
-        }
 
+    }
+    
 
-        #region Order
+    #region Order
 
         public ResultSet<IEnumerable<ReportOrderGroupInfo>> GetReportOrder(DateTime orderDateFrom, DateTime orderDateTo, Guid workId, bool? isBuy, int pageSize, int pageIndex, out int rowCount)
         {

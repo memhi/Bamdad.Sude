@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sude.Persistence.Contexts;
 
 namespace Sude.Persistence.Migrations
 {
     [DbContext(typeof(SudeDBContext))]
-    partial class SudeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210131100237_ChangeRealtionAttachments")]
+    partial class ChangeRealtionAttachments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,7 +210,7 @@ namespace Sude.Persistence.Migrations
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("EntityTypeId")
+                    b.Property<Guid>("EntityTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsRemoved")
@@ -1092,7 +1094,9 @@ namespace Sude.Persistence.Migrations
 
                     b.HasOne("Sude.Domain.Models.Type.TypeInfo", "EntityType")
                         .WithMany()
-                        .HasForeignKey("EntityTypeId");
+                        .HasForeignKey("EntityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AttachmentType");
 
