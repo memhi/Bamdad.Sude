@@ -9,7 +9,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="~/AdminLte/css/AdminLTE.css" />
-    <link rel="stylesheet" href="~/AdminLTE/css/medium-zoom.css" />
+ <script src="~/AdminLTE/js/view-image.min.js"></script>
     <title>Detail</title>
 </head>
 <body>
@@ -165,7 +165,7 @@
                     {
                         <div class="col-md-4 margin-bottom">
                             <div class="image-area">
-                                <a href="../@item.AttachmentFileAddress" target="_blank">   <img src="../@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" /></a>
+                                   <img src="../@item.AttachmentFileAddress" style="max-width:100%;max-height:150px" />
 
                             </div>
 
@@ -176,6 +176,14 @@
             }
         </div>
     </div>
+    <script>
+        jQuery.viewImage({
+       
+            'target': '.image-area img'
+
+        });
+
+    </script>
     @*<script src="~/AdminLTE/js/medium-zoom.js"></script>*@
     @*<script>
         mediumZoom('.container img', {
