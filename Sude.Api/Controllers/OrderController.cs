@@ -40,11 +40,12 @@ namespace Sude.Api.Controllers
         private readonly IServingService _ServingService;
         private readonly IServingInventoryService _ServingInventoryService;
         private readonly IServingInventoryTrackingService _ServingInventoryTrackingService;
+        private readonly ITypeService _TypeService;
 
         public OrderController(IOrderService orderService, IOrderDetailService orderdetailService,
             ICustomerService customerService, IServingService servingService, IServingInventoryService servingInventoryService,
         IServingInventoryTrackingService servingInventoryTrackingService, IOrderNumberService orderNumberService,
-        IWorkService workService, IAttachmentService attachmentService)
+        IWorkService workService, IAttachmentService attachmentService,ITypeService typeService)
         {
 
             _OrderService = orderService;
@@ -56,6 +57,7 @@ namespace Sude.Api.Controllers
             _ServingInventoryService = servingInventoryService;
             _WorkService = workService;
             _AttachmentService = attachmentService;
+            _TypeService = typeService;
 
         }
 
@@ -1011,9 +1013,10 @@ namespace Sude.Api.Controllers
                     if (orderdto.Attachments != null && orderdto.Attachments.Any())
                     {
 
-
-
-
+                        var type = _TypeService.GetTypeByKey("AttachmentOrderBuyPicture")
+                            
+;
+                        
                         foreach (AttachmentNewDtoModel attachmentNew in orderdto.Attachments)
                         {
 
@@ -1022,7 +1025,7 @@ namespace Sude.Api.Controllers
                             AttachmentInfo attachment = new AttachmentInfo()
                             {
                                 AttachmentContent = null,
-                                AttachmentFileAddress = Path.Combine("WorkFiles",orderdto.WorkId, "Orders", order.Id.ToString(), attachmentNew.Title),
+                                AttachmentFileAddress = Path.Combine("WorkFiles",orderdto.WorkId, type.Data.Id.ToString(), order.Id.ToString(), attachmentNew.Title),
                                 EntityId = order.Id,
                                 AttachmentFileType = attachmentNew.AttachmentFileType,
                                 Title = attachmentNew.Title
@@ -1368,7 +1371,7 @@ namespace Sude.Api.Controllers
 
 
 
-
+                    var type = _TypeService.GetTypeByKey("AttachmentOrderBuyPicture");
                     foreach (AttachmentNewDtoModel attachmentNew in orderDTO.Attachments)
                     {
 
@@ -1377,7 +1380,7 @@ namespace Sude.Api.Controllers
                         AttachmentInfo attachment = new AttachmentInfo()
                         {
                             AttachmentContent = null,
-                            AttachmentFileAddress = Path.Combine("WorkFiles", orderInfo.WorkId.ToString(), "Orders", orderInfo.Id.ToString(), attachmentNew.Title),
+                            AttachmentFileAddress = Path.Combine("WorkFiles", orderInfo.WorkId.ToString(), type.Data.Id.ToString(), orderInfo.Id.ToString(), attachmentNew.Title),
                             EntityId = orderInfo.Id,
                             AttachmentFileType = attachmentNew.AttachmentFileType,
                             Title = attachmentNew.Title

@@ -17,6 +17,7 @@ using System.Linq;
 using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Localization;
 using Sude.Dto.DtoModels.Content;
+using System.IO;
 
 namespace Sude.Mvc.UI
 {
@@ -211,6 +212,66 @@ namespace Sude.Mvc.UI
             }
         }
 
+        public string GetAttachmentAddressFile(string PictureTypeId, string EntityId, bool isEdit)
+        {
+            string workDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId);
+            if (!Directory.Exists(workDirPath))
+                Directory.CreateDirectory(workDirPath);
+            string attachmentsDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId, PictureTypeId);
+            if (!Directory.Exists(attachmentsDirPath))
+                Directory.CreateDirectory(attachmentsDirPath);
+            string fileDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId, PictureTypeId, EntityId);
+            if (!Directory.Exists(fileDirPath))
+                Directory.CreateDirectory(fileDirPath);
+            else if (isEdit)
+            {
+                Directory.Delete(fileDirPath, true);
+                Directory.CreateDirectory(fileDirPath);
+            }
+
+            return fileDirPath;
+
+
+        }
+     
+        public bool MoveTempAttachmentFiles(string PictureTypeId, string EntityId, bool isEdit)
+        {
+            List<AttachmentNewDtoModel> attachments = CurrentAttachmentPictures;
+            if (attachments != null)
+            {
+
+
+                string fileDirPath = GetAttachmentAddressFile(PictureTypeId, EntityId, isEdit);
+             
+
+                foreach (AttachmentNewDtoModel attachment in attachments)
+                {
+                    string fileAddress = Path.Combine(_HostingEnvitonment.WebRootPath, attachment.AttachmentFileAddress);
+                    FileInfo file = new FileInfo(fileAddress);
+                    if (file.Exists)
+                    {
+
+                        file.MoveTo(Path.Combine(fileDirPath, attachment.Title));
+
+                    }
+
+                }
+            }
+
+            return true;
+        }
+
+        public void DeletePictureTempFiles()
+        {
+            CurrentAttachmentPictures = null;
+            string userDirectoryPath = Path.Combine(_HostingEnvitonment.WebRootPath, "TempUserAttachmentFiles", CurrentUser.id);
+            if (Directory.Exists(userDirectoryPath))
+            {
+                Directory.Delete(userDirectoryPath, true);
+
+            }
+
+        }
         public UserInfo GetUserInfo(string userName, string password)
         {
             XmlUsers users = new XmlUsers();

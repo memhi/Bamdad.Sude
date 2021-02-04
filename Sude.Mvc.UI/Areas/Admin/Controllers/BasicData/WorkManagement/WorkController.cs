@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
@@ -8,6 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
+using NPOI.HSSF.Util;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
 using Sude.Dto.DtoModels.Result;
 using Sude.Dto.DtoModels.Work;
 using Sude.Mvc.UI.ApiManagement;
@@ -36,6 +41,67 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             return View();
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult> GetExcelWork()
+        {
+
+
+
+            ResultSetDto<IEnumerable<WorkDetailDtoModel>> result = await Api.GetHandler
+           .GetApiAsync<ResultSetDto<IEnumerable<WorkDetailDtoModel>>>(ApiAddress.Work.GetWorksByUserId+_sudeSessionContext.CurrentUser.id);
+
+
+            var WorkDetails = result.Data;
+
+            var newFile = @"newbook.core.xlsx";
+
+            using (var fs = new FileStream(newFile, FileMode.Create, FileAccess.ReadWrite))
+            {
+
+                IWorkbook workbook = new XSSFWorkbook();
+
+                ISheet workSheet = workbook.CreateSheet("کسب و کارها");
+                var workSheetHeaderStyle = workbook.CreateCellStyle();
+                workSheetHeaderStyle.FillForegroundColor = HSSFColor.Blue.Index2;
+                workSheetHeaderStyle.FillPattern = FillPattern.SolidForeground;
+                
+                var cellRow = workSheet.CreateRow(0).CreateCell(0);
+                cellRow.CellStyle = workSheetHeaderStyle;
+                cellRow.SetCellValue("ردیف");
+
+                 cellRow = workSheet.CreateRow(0).CreateCell(1);
+                cellRow.CellStyle = workSheetHeaderStyle;
+                cellRow.SetCellValue("عنوان کسب و کار");
+
+                cellRow = workSheet.CreateRow(0).CreateCell(1);
+                cellRow.CellStyle = workSheetHeaderStyle;
+                cellRow.SetCellValue("نوع کسب و کار");
+
+                int i = 1;
+                foreach(WorkDetailDtoModel workDetail in WorkDetails)
+                {
+                    cellRow = workSheet.CreateRow(i).CreateCell(0);
+                    cellRow.SetCellValue(i);
+                    cellRow = workSheet.CreateRow(i).CreateCell(1);
+                    cellRow.SetCellValue(workDetail.Title);
+                    cellRow = workSheet.CreateRow(i).CreateCell(2);
+                    cellRow.SetCellValue(workDetail.WorkTypeName);
+
+                    i++;
+                }
+
+              
+
+           
+                workbook.Write(fs);
+                return File(fs, "application/xlsx");
+            }
+
+
+
+       
+        }
 
         [HttpGet]
  
@@ -178,7 +244,9 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             ResultSetDto<WorkDetailDtoModel> result = await Api.GetHandler
              .GetApiAsync<ResultSetDto<WorkDetailDtoModel>>(ApiAddress.Work.GetWorkById + id);
 
+           
             var WorkDetail = result.Data;
+            
 
             return View(viewName: "Detail", model: WorkDetail);
         }

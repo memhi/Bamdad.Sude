@@ -5744,6 +5744,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.3" />
     <PackageReference Include="IdentityModel" Version="4.5.0" />
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0-rc.2.20475.17" />

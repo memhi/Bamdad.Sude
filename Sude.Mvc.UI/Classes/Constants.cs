@@ -8,10 +8,24 @@ namespace Sude.Mvc.UI
     public static class Constants
     {
         public const int PageSize = 20;
+
+
+
+        public static class AttachmentType
+        {
+            public const string AttachmentWorkLogo = "AttachmentWorkLogo";
+            public const string AttachmentOrderPicture = "AttachmentOrderPicture";
+            public const string AttachmentServingPicture = "AttachmentServingPicture";
+            public const string AttachmentOrderBuyPicture = "AttachmentOrderBuyPicture";
+            public const string AttachmentWorkPicture = "AttachmentWorkPicture";
+        
+        }
+
         public static class GroupType
         {
             public const string PaymentMode = "PaymentMode";
             public const string PaymentStatus = "PaymentStatus";
+            public const string AttachmentType = "AttachmentType";
         }
 
         public static class PaymentMode

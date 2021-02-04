@@ -33,34 +33,24 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         public OrderBuyController(SudeSessionContext sudeSessionContext, IWebHostEnvironment environment)
 
         {
-                      _environment = environment;
+            _environment = environment;
             _sudeSessionContext = sudeSessionContext;
         }
 
-        private void DeleteOrderTempFiles()
-        {
-            _sudeSessionContext.CurrentAttachmentPictures = null;
-            string userDirectoryPath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
-            if (Directory.Exists(userDirectoryPath))
-            {
-                Directory.Delete(userDirectoryPath, true);
 
-            }
-
-        }
         // GET: WorkTypeController
         [HttpGet]
-     //   [Authorize]
-        public  ActionResult Index()
+        //   [Authorize]
+        public ActionResult Index()
         {
             //ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> WorkTypelist = await Api.GetHandler
             //
-              
+
 
             return View();
         }
 
-       
+
         [HttpGet]
         public async Task<ActionResult> AddDetail()
         {
@@ -69,10 +59,10 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             return PartialView(orderDetailNewDto);
         }
 
-    
+
 
         [HttpPost]
-        public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request )
+        public async Task<ActionResult> AddDetail(OrderDetailDetailDtoModel request)
         {
 
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
@@ -93,13 +83,13 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         [HttpGet]
         public async Task<ActionResult> Add()
         {
-         
+
             string CurrentWorkId = _sudeSessionContext.CurrentWorkId;
-            _sudeSessionContext.CurrentOrderDetails= null;
+            _sudeSessionContext.CurrentOrderDetails = null;
             OrderNewDtoModel order = new OrderNewDtoModel();
             order.WorkId = CurrentWorkId;
             order.IsBuy = true;
-            DeleteOrderTempFiles();
+           _sudeSessionContext.DeletePictureTempFiles();
             if (!string.IsNullOrEmpty(CurrentWorkId))
             {
                 order.OrderDate = DateTime.Now;
@@ -107,15 +97,15 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
           .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + CurrentWorkId);
 
                 SelectList selectLists = null;
-                if(Customerslist!=null && Customerslist.Data!=null)
-                    selectLists=new  SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
+                if (Customerslist != null && Customerslist.Data != null)
+                    selectLists = new SelectList(Customerslist.Data as ICollection<CustomerDetailDtoModel>, "CustomerId", "Title");
                 ViewData[Constants.ViewBagNames.Customers] = selectLists;
             }
             return PartialView(order);
         }
 
 
-        private bool CopyMainAttachmentFiles( List<AttachmentNewDtoModel> attachments)
+        private bool CopyMainAttachmentFiles(List<AttachmentNewDtoModel> attachments)
         {
             try
             {
@@ -129,7 +119,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                     FileInfo file = new FileInfo(fileAddress);
                     if (file.Exists)
                     {
-                       
+
                         file.CopyTo(Path.Combine(directorypath, attachment.Title));
                         attachment.AttachmentFileAddress = Path.Combine("TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, attachment.Title);
 
@@ -140,57 +130,21 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 _sudeSessionContext.CurrentAttachmentPictures = attachments;
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false; ;
 
             }
 
-       
+
         }
-        private bool MoveTempAttachmentFiles(string workId,string orderId,bool isEdit)
-        {
-            List<AttachmentNewDtoModel> attachments = _sudeSessionContext.CurrentAttachmentPictures;
-            if(attachments!=null)
-            {
 
-                string workDirPath = Path.Combine(_environment.WebRootPath, "WorkFiles", workId);
-                if (!Directory.Exists(workDirPath))
-                    Directory.CreateDirectory(workDirPath);
-                string ordersDirPath = Path.Combine(_environment.WebRootPath, "WorkFiles", workId, "Orders");
-                if (!Directory.Exists(ordersDirPath))
-                    Directory.CreateDirectory(ordersDirPath);
-                string orderPath = Path.Combine(_environment.WebRootPath, "WorkFiles", workId, "Orders", orderId);
-                if (!Directory.Exists(orderPath))
-                    Directory.CreateDirectory(orderPath);
-                else if (isEdit)
-                {
-                    Directory.Delete(orderPath, true);
-                    Directory.CreateDirectory(orderPath);
-                }
-
-                foreach (AttachmentNewDtoModel attachment in attachments)
-                {
-                    string fileAddress = Path.Combine(_environment.WebRootPath, attachment.AttachmentFileAddress);
-                    FileInfo file = new FileInfo(fileAddress);
-                    if(file.Exists)
-                    {
-                      
-                        file.MoveTo(Path.Combine(orderPath,attachment.Title));
-                        //file.Delete();
-                    }
-
-                }
-            }
-
-            return true;
-        }
         [HttpPost]
         public async Task<ActionResult> Add(OrderNewDtoModel request)
         {
             if (!ModelState.IsValid)
             {
-               
+
                 string message = "";
                 foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
                     message += er.ErrorMessage + " \n";
@@ -204,7 +158,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
-            if(orderDetailNewDtoSession==null || orderDetailNewDtoSession.Count() <= 0)
+            if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)
             {
                 return Json(new ResultSetDto()
                 {
@@ -220,15 +174,16 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 request.OrderDetails = orderDetails;
             }
             List<AttachmentNewDtoModel> attachmentNewDtoModels = _sudeSessionContext.CurrentAttachmentPictures;
-            if (attachmentNewDtoModels != null && attachmentNewDtoModels.Any()) 
+            if (attachmentNewDtoModels != null && attachmentNewDtoModels.Any())
             {
-                               request.Attachments = attachmentNewDtoModels;
+
+                request.Attachments = attachmentNewDtoModels;
             }
 
 
 
             var type = await Api.GetHandler
-            .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey+ Constants.PaymenStatus.NotPaid);
+            .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.PaymenStatus.NotPaid);
             if (type != null && type.Data != null)
                 request.PaymentStatusId = type.Data.TypeId;
 
@@ -237,7 +192,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             request.IsBuy = true;
             ResultSetDto<OrderNewDtoModel> result = await Api.GetHandler
              .GetApiAsync<ResultSetDto<OrderNewDtoModel>>(ApiAddress.Order.AddOrder, request);
-            if(!result.IsSucceed)
+            if (!result.IsSucceed)
             {
                 return Json(new ResultSetDto()
                 {
@@ -248,7 +203,10 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             }
 
-            MoveTempAttachmentFiles(CurrentWorkId, result.Data.OrderId,false);
+            var typeresult = await Api.GetHandler
+                .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.AttachmentType.AttachmentOrderBuyPicture);
+
+            _sudeSessionContext.MoveTempAttachmentFiles(typeresult.Data.TypeId,result.Data.OrderId, false);
 
             _sudeSessionContext.CurrentOrderDetails = null;
             _sudeSessionContext.CurrentAttachmentPictures = null;
@@ -263,12 +221,12 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
 
             _sudeSessionContext.CurrentOrderDetails = null;
 
-            DeleteOrderTempFiles();
+           _sudeSessionContext.DeletePictureTempFiles();
 
             ResultSetDto<OrderDetailDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<OrderDetailDtoModel>>(ApiAddress.Order.GetOrderById + id);
             if (result.Data.OrderDetails != null)
-                _sudeSessionContext.CurrentOrderDetails= result.Data.OrderDetails.AsEnumerable();
+                _sudeSessionContext.CurrentOrderDetails = result.Data.OrderDetails.AsEnumerable();
 
             ResultSetDto<IEnumerable<CustomerDetailDtoModel>> Customerslist = await Api.GetHandler
     .GetApiAsync<ResultSetDto<IEnumerable<CustomerDetailDtoModel>>>(ApiAddress.Customer.GetCustomersByWorkId + result.Data.WorkId);
@@ -289,11 +247,11 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
             {
-                OrderId = result.Data.OrderId,              
+                OrderId = result.Data.OrderId,
                 Description = result.Data.Description,
-                 OrderDate=result.Data.OrderDate,
-                  OrderNumber=result.Data.OrderNumber,
-                   WorkId=result.Data.WorkId,
+                OrderDate = result.Data.OrderDate,
+                OrderNumber = result.Data.OrderNumber,
+                WorkId = result.Data.WorkId,
                 PaymentStatusId = result.Data.PaymentStatusId,
                 IsBuy = result.Data.IsBuy
 
@@ -304,7 +262,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         [HttpPost]
         public async Task<ActionResult> Edit(OrderEditDtoModel request)
         {
-           if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
 
                 string message = "";
@@ -319,7 +277,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             }
 
             IEnumerable<OrderDetailDetailDtoModel> orderDetailNewDtoSession = _sudeSessionContext.CurrentOrderDetails;
-            if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count()<=0)
+            if (orderDetailNewDtoSession == null || orderDetailNewDtoSession.Count() <= 0)
             {
                 return Json(new ResultSetDto()
                 {
@@ -346,13 +304,16 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 .GetApiAsync<ResultSetDto<OrderEditDtoModel>>(ApiAddress.Order.EditOrder, request);
             if (result.IsSucceed)
             {
-                MoveTempAttachmentFiles(_sudeSessionContext.CurrentWorkId, result.Data.OrderId, true);
+                var typeresult= await Api.GetHandler
+                .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey+Constants.AttachmentType.AttachmentOrderBuyPicture);
+
+                _sudeSessionContext. MoveTempAttachmentFiles( typeresult.Data.TypeId, result.Data.OrderId, true);
                 _sudeSessionContext.CurrentOrderDetails = null;
                 _sudeSessionContext.CurrentAttachmentPictures = null;
             }
             return Json(result);
 
         }
- 
+
     }
 }
