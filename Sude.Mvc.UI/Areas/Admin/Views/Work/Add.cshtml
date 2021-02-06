@@ -1,7 +1,9 @@
 ﻿
 
 @model Sude.Dto.DtoModels.Work.WorkNewDtoModel
- 
+<script src="~/AdminLTE/js/view-image.min.js"></script>
+<script src="~/js/webcam.min.js">
+</script>
     <form id="frmAdd">
 
 
@@ -36,20 +38,54 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <label class="control-label">نوع</label>
-                            </div>
-                            <div class="col-md-10">
-
-                                <select id="drpTypes" asp-for="WorkTypeId"
-                                        class="form-control"
-                                        asp-items="(SelectList)@ViewData["WorkTypes"]">
-                                </select>
-
-                            </div>
+                            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.WorkType")</label>
                         </div>
+                        <div class="col-md-10">
 
+                            <select id="drpTypes" asp-for="WorkTypeId"
+                                    class="form-control"
+                                    asp-items="(SelectList)@ViewData["WorkTypes"]">
+                            </select>
 
+                        </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Address")</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="txtAddress" asp-for="Address.Address" class="form-control" />
+                            <span asp-validation-for="Address.Address" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Phone")</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input id="txtPhone1" asp-for="Address.Phone1" class="form-control" />
+                            <span asp-validation-for="Address.Phone1" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Logo")</label>
+                        </div>
+                        <div class="col-md-10">
+                            <div id="divattachments" class="row col-md-12">
+
+                            </div>
+
+                        </div>
+                      
+                    </div>
+
+
+                </div>
                 <div class="box-footer with-border">
 
                     <div class="form-group" style="text-align:center">
@@ -76,6 +112,76 @@
     </form>
     <script>
 
+        $(document).ready(function () {
+
+
+            $("#divattachments").load("Attachment/AddAttachment");
+          
+
+ 
+
+        });
+
+    
+        function take_snapshot() {
+            // take snapshot and get image data
+            Webcam.snap(function (data_uri) {
+                // display results in page
+                document.getElementById('attachmentResults').innerHTML =
+                    '<img id="img_snapshot" src="' +
+                    data_uri +
+                    '"/>';
+
+
+            });
+        }
+
+        function deleteUserTempImage(name) {
+
+            $.ajax({
+                url: "Attachment/DeleteTempFile",
+                type: "Post",
+                data: { filename: name }
+            }).done(function (result) {
+                if (result.isSucceed) {
+
+                    Command: toastr["success"]("فایل حذف شد");
+                    $("#divattachments").load("Attachment/AddAttachment");
+
+                }
+                else {
+                    Command: toastr["warning"](result.message, "هشدار");
+
+
+                }
+            });
+        }
+
+        function upload_snapshot() {
+
+
+            $('#btn_ConfirmPic').html(
+                '<i class="fa fa-refresh fa-spin  margin-r-5"></i> در حال ارسال فایل...'
+            );
+
+
+
+            var data_uri = $('#imgoutput').attr('src');
+
+            Webcam.upload(data_uri,
+                'Attachment/Capture',
+                function (code, text) {
+
+                    $('#btn_ConfirmPic').html(
+                        'تایید تصویر'
+                    );
+                    Command: toastr["success"]("تصویر ثبت شد");
+                    $("#divattachments").load("Attachment/AddAttachment");
+                });
+
+        }
+
+
 
 
         function SaveNewWork() {
@@ -88,7 +194,9 @@
             var work = {
                 Title: $("#txtTitle").val(),
                 Desc: $("#txtDesc").val(),
-                WorkTypeId: $("#drpTypes").val()
+                WorkTypeId: $("#drpTypes").val(),
+                Address: { Address: $("#txtAddress").val(), Phone1: $("#txtPhone1").val() }
+                 
             }
             $.ajax({
                 url: "Work/Add",

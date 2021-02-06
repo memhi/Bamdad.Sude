@@ -24,7 +24,7 @@ namespace Sude.Persistence.Repository
 
         public async Task<IEnumerable<WorkInfo>> GetWorksByUserIdAsync(Guid UserID)
         {
-            return await _WorkRepository.GetAsync(w=>w.WorkUsers.Where(wu=>wu.UserId==UserID).Any(), null, "WorkType");
+            return await _WorkRepository.GetAsync(w=>w.WorkUsers.Where(wu=>wu.UserId==UserID).Any(), null, "WorkType,Address");
         }
 
         public async Task<IEnumerable<WorkInfo>> GetWorksAsync()

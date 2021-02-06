@@ -212,15 +212,15 @@ namespace Sude.Mvc.UI
             }
         }
 
-        public string GetAttachmentAddressFile(string PictureTypeId, string EntityId, bool isEdit)
+        public string GetAttachmentAddressFile(string workId,string pictureTypeId, string entityId, bool isEdit)
         {
-            string workDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId);
+            string workDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", workId);
             if (!Directory.Exists(workDirPath))
                 Directory.CreateDirectory(workDirPath);
-            string attachmentsDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId, PictureTypeId);
+            string attachmentsDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", workId, pictureTypeId);
             if (!Directory.Exists(attachmentsDirPath))
                 Directory.CreateDirectory(attachmentsDirPath);
-            string fileDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", CurrentWorkId, PictureTypeId, EntityId);
+            string fileDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", workId, pictureTypeId, entityId);
             if (!Directory.Exists(fileDirPath))
                 Directory.CreateDirectory(fileDirPath);
             else if (isEdit)
@@ -234,14 +234,14 @@ namespace Sude.Mvc.UI
 
         }
      
-        public bool MoveTempAttachmentFiles(string PictureTypeId, string EntityId, bool isEdit)
+        public bool MoveTempAttachmentFiles(string workId,string pictureTypeId, string entityId, bool isEdit)
         {
             List<AttachmentNewDtoModel> attachments = CurrentAttachmentPictures;
             if (attachments != null)
             {
 
 
-                string fileDirPath = GetAttachmentAddressFile(PictureTypeId, EntityId, isEdit);
+                string fileDirPath = GetAttachmentAddressFile(workId, pictureTypeId, entityId, isEdit);
              
 
                 foreach (AttachmentNewDtoModel attachment in attachments)
@@ -259,6 +259,40 @@ namespace Sude.Mvc.UI
             }
 
             return true;
+        }
+
+        public bool CopyMainAttachmentFiles(List<AttachmentNewDtoModel> attachments)
+        {
+            try
+            {
+
+                var directorypath = Path.Combine( _HostingEnvitonment.WebRootPath, "TempUserAttachmentFiles", CurrentUser.id);
+                if (!Directory.Exists(directorypath))
+                    Directory.CreateDirectory(directorypath);
+                foreach (AttachmentNewDtoModel attachment in attachments)
+                {
+                    string fileAddress = Path.Combine(_HostingEnvitonment.WebRootPath, attachment.AttachmentFileAddress);
+                    FileInfo file = new FileInfo(fileAddress);
+                    if (file.Exists)
+                    {
+
+                        file.CopyTo(Path.Combine(directorypath, attachment.Title));
+                        attachment.AttachmentFileAddress = Path.Combine("TempUserAttachmentFiles", CurrentUser.id, attachment.Title);
+
+                    }
+
+                }
+
+                CurrentAttachmentPictures = attachments;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false; ;
+
+            }
+
+
         }
 
         public void DeletePictureTempFiles()

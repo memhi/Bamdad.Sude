@@ -10,7 +10,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") کسب و کار @Model.Title</title>
+
+    <script src="~/AdminLTE/js/view-image.min.js"></script>
 </head>
 <body>
 
@@ -26,7 +27,7 @@
         </dd>
 
         <dt class="col-sm-2">
-            نوع
+            @_SudeSessionContext.GetLocalResourceValue("Page.Content.WorkType")
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.WorkTypeName)
@@ -39,9 +40,57 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Desc)
         </dd>
+
+        <dt class="col-sm-2">
+            @_SudeSessionContext.GetLocalResourceValue("Page.Content.Address")
+        </dt>
+        @if (Model.Address != null)
+        {
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.Address)
+        </dd>
+
+        <dt class="col-sm-2">
+            @_SudeSessionContext.GetLocalResourceValue("Page.Content.Phone")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.Phone1)
+        </dd>
+        }
+        @if (Model.Attachments != null && Model.Attachments.Any())
+        {
+        <dt class="col-sm-2">
+            @_SudeSessionContext.GetLocalResourceValue("Page.Content.Logo")
+        </dt>
+        <dd class="col-sm-10">
+            <div class="col-md-12">
+                @foreach (Sude.Dto.DtoModels.Content.AttachmentNewDtoModel attachment in Model.Attachments)
+                {
+                    <div class="col-md-4 margin-bottom">
+                        <div class="image-area">
+                            <img src="../@attachment.AttachmentFileAddress" style="max-width:100%;max-height:150px" />
+
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+            
+        </dd>
+        }
     </dl>
 </div>
 <div>
 </div>
+    <script>
+          jQuery.viewImage({
+       
+            'target': '.image-area img'
+
+        });
+
+    </script>
 </body>
 </html>

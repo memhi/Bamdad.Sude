@@ -13,7 +13,9 @@ using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
+using Sude.Dto.DtoModels.Content;
 using Sude.Dto.DtoModels.Result;
+using Sude.Dto.DtoModels.Type;
 using Sude.Dto.DtoModels.Work;
 using Sude.Mvc.UI.ApiManagement;
 
@@ -153,7 +155,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>> Worktypelist = await Api.GetHandler
              .GetApiAsync<ResultSetDto<IEnumerable<WorkTypeDetailDtoModel>>>(ApiAddress.WorkType.GetWorkTypes);
             WorkNewDtoModel workNewDtoModel = new WorkNewDtoModel();
-            
+            _sudeSessionContext.DeletePictureTempFiles();
             workNewDtoModel.Desc = "";
             workNewDtoModel.Title = "";
             workNewDtoModel.WorkId = "";
@@ -185,10 +187,27 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             }
             request.UserId = _sudeSessionContext.CurrentUser.id;
 
+            List<AttachmentNewDtoModel> attachmentNewDtoModels = _sudeSessionContext.CurrentAttachmentPictures;
+            if (attachmentNewDtoModels != null && attachmentNewDtoModels.Any())
+            {
+
+                request.Attachments = attachmentNewDtoModels;
+            }
+
             ResultSetDto<WorkNewDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<WorkNewDtoModel>>(ApiAddress.Work.AddWork, request);
+            if(result.IsSucceed)
+            {
+                var typeresult = await Api.GetHandler
+             .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.AttachmentType.AttachmentWorkLogo);
 
-            _sudeSessionContext.UserWorks = null;
+                _sudeSessionContext.MoveTempAttachmentFiles(result.Data.WorkId, typeresult.Data.TypeId, result.Data.WorkId, false);
+
+                _sudeSessionContext.CurrentAttachmentPictures = null;
+                _sudeSessionContext.UserWorks = null;
+
+            }
+           
 
             return Json(result);
 
@@ -205,20 +224,30 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
             SelectList selectLists = new SelectList(Worktypelist.Data as ICollection<Sude.Dto.DtoModels.Work.WorkTypeDetailDtoModel>, "WorkTypeId", "Title",result.Data.WorkTypeId);
 
             ViewData["WorkTypes"] = selectLists;
+            _sudeSessionContext.DeletePictureTempFiles(); ;
+
+            if (result.Data.Attachments != null && result.Data.Attachments.Any())
+            {
+
+              _sudeSessionContext.CopyMainAttachmentFiles(result.Data.Attachments.ToList());
+
+            }
 
             return PartialView(viewName: "Edit", model: new WorkEditDtoModel()
             {
                 WorkId = result.Data.WorkId,
-                Title = result.Data.Title,         
+                Title = result.Data.Title,
                 Desc = result.Data.Desc,
-                WorkTypeId=result.Data.WorkTypeId
-            });
+                WorkTypeId = result.Data.WorkTypeId,
+                Address = result.Data.Address,
+                Attachments = result.Data.Attachments
+            }); ;
         }
         //[Route("Edit/{request}")]
         [HttpPost]
         public async Task<ActionResult> Edit(WorkEditDtoModel request)
         {
-           if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
 
                 string message = "";
@@ -231,10 +260,27 @@ namespace Sude.Mvc.UI.Admin.Controllers.BasicData.WorkManagement
                     Message = message
                 });
             }
+            List<AttachmentNewDtoModel> attachmentNewDtoModels = _sudeSessionContext.CurrentAttachmentPictures;
+            if (attachmentNewDtoModels != null && attachmentNewDtoModels.Any())
+            {
+
+                request.Attachments = attachmentNewDtoModels;
+            }
+
             request.UserId = _sudeSessionContext.CurrentUser.id;
             ResultSetDto<WorkEditDtoModel> result = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<WorkEditDtoModel>>(ApiAddress.Work.EditWork, request);
-            _sudeSessionContext.UserWorks = null;
+            if (result.IsSucceed)
+            {
+                var typeresult = await Api.GetHandler
+              .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.AttachmentType.AttachmentWorkLogo);
+
+                _sudeSessionContext.MoveTempAttachmentFiles(result.Data.WorkId, typeresult.Data.TypeId, result.Data.WorkId, true);
+       
+            _sudeSessionContext.CurrentAttachmentPictures = null;
+                _sudeSessionContext.UserWorks = null;
+            }
+          
             return Json(result);
 
         }

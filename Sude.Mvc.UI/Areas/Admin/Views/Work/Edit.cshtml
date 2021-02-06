@@ -1,106 +1,213 @@
 ﻿
 @model Sude.Dto.DtoModels.Work.WorkEditDtoModel
 
- 
+<script src="~/AdminLTE/js/view-image.min.js"></script>
+<script src="~/js/webcam.min.js">
+</script>
 <form id="frmEdit">
-  
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input id="txtWorkId" type="hidden" asp-for="WorkId" class="form-control" />
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</label>
+        </div>
+        <div class="col-md-10">
+            <input id="txtTitle" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
+        </div>
+        <div class="col-md-10">
+            <input id="txtDesc" asp-for="Desc" class="form-control" />
+            <span asp-validation-for="Desc" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">نوع</label>
+        </div>
+        <div class="col-md-10">
+
+            <select id="drpTypes" asp-for="WorkTypeId"
+                    class="form-control"
+                    asp-items="(SelectList)@ViewData["WorkTypes"]">
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Address")</label>
+        </div>
+        <div class="col-md-10">
+            <input type="hidden" id="txtAddressId" asp-for="Address.AddressId" />
+            <input id="txtAddress" asp-for="Address.Address" class="form-control" />
+            <span asp-validation-for="Address.Address" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Phone")</label>
+        </div>
+        <div class="col-md-10">
+            <input id="txtPhone1" asp-for="Address.Phone1" class="form-control" />
+            <span asp-validation-for="Address.Phone1" class="text-danger"></span>
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Logo")</label>
+        </div>
+        <div class="col-md-10">
+            <div id="divattachments" class="row col-md-12">
+
             </div>
-    
- 
-                        <div class="form-group row">
-                            <div class="col-md-2">
-                                <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</label>
-                            </div>
-                            <div class="col-md-10">
-                                <input id="txtTitle" asp-for="Title" class="form-control" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-2">
-                                <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
-                            </div>
-                            <div class="col-md-10">
-                                <input id="txtDesc" asp-for="Desc" class="form-control" />
-                                <span asp-validation-for="Desc" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-2">
-                                <label class="control-label">نوع</label>
-                            </div>
-                            <div class="col-md-10">
+        </div>
 
-                                <select id="drpTypes" asp-for="WorkTypeId"
-                                        class="form-control"
-                                        asp-items="(SelectList)@ViewData["WorkTypes"]">
-                                </select>
-
-                            </div>
-                        </div>
+    </div>
 
 
-               
 
-                        <div class="form-group row" style="text-align:center">
-                            <div class="col-md-6">
-                                <a id="btnEditWork" onclick="EditWork()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</a>
-                            </div>
-                            <div class="col-md-6">
-                                <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
-                            </div>
-                        </div>
 
-              
+    <div class="form-group row" style="text-align:center">
+        <div class="col-md-6">
+            <a id="btnEditWork" onclick="EditWork()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
+        </div>
+    </div>
+
+
 
 
 </form>
 
 
 
-    <script>
+<script>
+    $(document).ready(function () {
 
-        $(function () {
-           $.validator.unobtrusive.parse($('#frmEdit'));
+
+        $("#divattachments").load("Attachment/AddAttachment");
+
+
+
+
+    });
+
+    function take_snapshot() {
+        // take snapshot and get image data
+        Webcam.snap(function (data_uri) {
+            // display results in page
+            document.getElementById('attachmentResults').innerHTML =
+                '<img id="img_snapshot" src="' +
+                data_uri +
+                '"/>';
+
+
         });
+    }
 
-        function EditWork() {
-            $.validator.unobtrusive.parse($('#frmEdit'));
+    function deleteUserTempImage(name) {
 
-            var isValid = $('#frmEdit').valid();
-            if (!isValid)
-                return;
-            var Work = {
-                WorkId: $("#txtWorkId").val(),
-                Title: $("#txtTitle").val(),
-                Desc: $("#txtDesc").val(),              
-                WorkTypeId: $("#drpTypes").val()
+        $.ajax({
+            url: "Attachment/DeleteTempFile",
+            type: "Post",
+            data: { filename: name }
+        }).done(function (result) {
+            if (result.isSucceed) {
+
+                Command: toastr["success"]("فایل حذف شد");
+                $("#divattachments").load("Attachment/AddAttachment");
+
             }
+            else {
+                Command: toastr["warning"](result.message, "هشدار");
 
-            $.ajax({
-                url: "Work/Edit",
-                type: "Post",
-                data: Work
-            }).done(function (result) {
-                if (result.isSucceed) {
-                    Command: toastr["success"]("اطلاعات کسب و کار اصلاح شد");
-                    $("#myModal").modal("hide");
-                    $("#WorkView").load("Work/List");
 
-                }
-                else {
-                    Command: toastr["warning"](result.message, "هشدار");
-                }
+            }
+        });
+    }
+
+    function upload_snapshot() {
+
+
+        $('#btn_ConfirmPic').html(
+            '<i class="fa fa-refresh fa-spin  margin-r-5"></i> در حال ارسال فایل...'
+        );
+
+
+
+        var data_uri = $('#imgoutput').attr('src');
+
+        Webcam.upload(data_uri,
+            'Attachment/Capture',
+            function (code, text) {
+
+                $('#btn_ConfirmPic').html(
+                    'تایید تصویر'
+                );
+                Command: toastr["success"]("تصویر ثبت شد");
+                $("#divattachments").load("Attachment/AddAttachment");
             });
+
+    }
+
+
+
+    $(function () {
+        $.validator.unobtrusive.parse($('#frmEdit'));
+    });
+
+    function EditWork() {
+        $.validator.unobtrusive.parse($('#frmEdit'));
+
+        var isValid = $('#frmEdit').valid();
+        if (!isValid)
+            return;
+        var Work = {
+            WorkId: $("#txtWorkId").val(),
+            Title: $("#txtTitle").val(),
+            Desc: $("#txtDesc").val(),
+            WorkTypeId: $("#drpTypes").val(),
+            Address: { AddressId: $("#txtAddressId").val(), Address: $("#txtAddress").val(), Phone1: $("#txtPhone1").val() }
         }
 
-        function ToList() {
-            $("#myModal").modal("hide");
-        }
+        $.ajax({
+            url: "Work/Edit",
+            type: "Post",
+            data: Work
+        }).done(function (result) {
+            if (result.isSucceed) {
+                Command: toastr["success"]("اطلاعات کسب و کار اصلاح شد");
+                $("#myModal").modal("hide");
+                $("#WorkView").load("Work/List");
+
+            }
+            else {
+                Command: toastr["warning"](result.message, "هشدار");
+            }
+        });
+    }
+
+    function ToList() {
+        $("#myModal").modal("hide");
+    }
 
 
-    </script>
+</script>

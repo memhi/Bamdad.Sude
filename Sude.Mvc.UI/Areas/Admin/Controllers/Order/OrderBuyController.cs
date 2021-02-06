@@ -105,39 +105,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
         }
 
 
-        private bool CopyMainAttachmentFiles(List<AttachmentNewDtoModel> attachments)
-        {
-            try
-            {
-
-                var directorypath = Path.Combine(_environment.WebRootPath, "TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id);
-                if (!Directory.Exists(directorypath))
-                    Directory.CreateDirectory(directorypath);
-                foreach (AttachmentNewDtoModel attachment in attachments)
-                {
-                    string fileAddress = Path.Combine(_environment.WebRootPath, attachment.AttachmentFileAddress);
-                    FileInfo file = new FileInfo(fileAddress);
-                    if (file.Exists)
-                    {
-
-                        file.CopyTo(Path.Combine(directorypath, attachment.Title));
-                        attachment.AttachmentFileAddress = Path.Combine("TempUserAttachmentFiles", _sudeSessionContext.CurrentUser.id, attachment.Title);
-
-                    }
-
-                }
-
-                _sudeSessionContext.CurrentAttachmentPictures = attachments;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false; ;
-
-            }
-
-
-        }
+      
 
         [HttpPost]
         public async Task<ActionResult> Add(OrderNewDtoModel request)
@@ -206,7 +174,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             var typeresult = await Api.GetHandler
                 .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey + Constants.AttachmentType.AttachmentOrderBuyPicture);
 
-            _sudeSessionContext.MoveTempAttachmentFiles(typeresult.Data.TypeId,result.Data.OrderId, false);
+            _sudeSessionContext.MoveTempAttachmentFiles(_sudeSessionContext.CurrentWorkId, typeresult.Data.TypeId,result.Data.OrderId, false);
 
             _sudeSessionContext.CurrentOrderDetails = null;
             _sudeSessionContext.CurrentAttachmentPictures = null;
@@ -242,7 +210,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
             if (result.Data.Attachments != null && result.Data.Attachments.Any())
             {
 
-                CopyMainAttachmentFiles(result.Data.Attachments.ToList());
+               _sudeSessionContext.CopyMainAttachmentFiles(result.Data.Attachments.ToList());
 
             }
             return PartialView(viewName: "Edit", model: new OrderEditDtoModel()
@@ -307,7 +275,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Order
                 var typeresult= await Api.GetHandler
                 .GetApiAsync<ResultSetDto<TypeDetailDtoModel>>(ApiAddress.Type.GetTypeByKey+Constants.AttachmentType.AttachmentOrderBuyPicture);
 
-                _sudeSessionContext. MoveTempAttachmentFiles( typeresult.Data.TypeId, result.Data.OrderId, true);
+                _sudeSessionContext. MoveTempAttachmentFiles(_sudeSessionContext.CurrentWorkId, typeresult.Data.TypeId, result.Data.OrderId, true);
                 _sudeSessionContext.CurrentOrderDetails = null;
                 _sudeSessionContext.CurrentAttachmentPictures = null;
             }

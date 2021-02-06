@@ -20,21 +20,28 @@
                 @if (Model != null && Model.Count() > 0)
                 {
                     @foreach (Sude.Dto.DtoModels.Work.WorkDetailDtoModel w in Model)
-                    {
+                    {<div class="col-md-4 margin-bottom">
 
-                        if (_SudeSessionContext.CurrentWorkId==w.WorkId)
-                        {
-                            <div class="col-md-4 margin-bottom">
-                                <a  onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@w.Title </a>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-4 margin-bottom">
-                                <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-gray">@w.Title </a>
-                            </div>
+   @if(_SudeSessionContext.CurrentWorkId==w.WorkId)
+    {
 
-                        }
+    <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@w.Title </a>
+
+    }
+    else
+    {
+
+    <a onclick="SelectDefaultWork('@w.WorkId')" class="btn btn-default col-md-12 bg-gray">@w.Title </a>
+
+
+    }
+    @if(w.Attachments != null && w.Attachments.Any())
+    {
+        <br />
+        <img src="../@w.Attachments.FirstOrDefault().AttachmentFileAddress" style="max-width:100%;max-height:150px" />
+
+    }
+</div>
 
 
 

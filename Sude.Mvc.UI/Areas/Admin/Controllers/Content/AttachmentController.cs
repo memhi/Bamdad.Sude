@@ -309,6 +309,11 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             }
 
         }
+
+       
+      
+
+
         [HttpPost]
         public IActionResult Capture(IFormFileCollection fs)
         {
