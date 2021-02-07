@@ -115,7 +115,7 @@
         $(document).ready(function () {
 
 
-            $("#divattachments").load("Attachment/AddAttachment");
+            $("#divattachments").load("Attachment/AddAttachment?maxCount=1");
           
 
  
@@ -146,7 +146,7 @@
                 if (result.isSucceed) {
 
                     Command: toastr["success"]("فایل حذف شد");
-                    $("#divattachments").load("Attachment/AddAttachment");
+                    $("#divattachments").load("Attachment/AddAttachment?maxCount=1");
 
                 }
                 else {
@@ -161,7 +161,7 @@
 
 
             $('#btn_ConfirmPic').html(
-                '<i class="fa fa-refresh fa-spin  margin-r-5"></i> در حال ارسال فایل...'
+                '<i class="fa fa-refresh fa-spin  margin-r-5"></i>ارسال فایل...'
             );
 
 
@@ -176,7 +176,7 @@
                         'تایید تصویر'
                     );
                     Command: toastr["success"]("تصویر ثبت شد");
-                    $("#divattachments").load("Attachment/AddAttachment");
+                    $("#divattachments").load("Attachment/AddAttachment?maxCount=1");
                 });
 
         }

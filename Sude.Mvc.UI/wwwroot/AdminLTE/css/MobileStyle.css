@@ -1,50 +1,55 @@
 ﻿
- 
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 600px) {
+    .disablecamera{
 
-
-    
-/* Force table to not be like tables anymore */
-    .tablemobile, .tablemobile thead, .tablemobile tbody, .tablemobile th, .tablemobile td, .tablemobile tr {
-        display: block;
-        width: 100%;
+        display:none;
     }
+}
 
-        /* Hide table headers (but not display: none;, for accessibility) */
-    .tablemobile thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
- 
-    }
+    @media only screen and (max-width: 600px) {
 
-        .tablemobile tr {
-            border: 1px solid #ccc;
+
+
+        /* Force table to not be like tables anymore */
+        .tablemobile, .tablemobile thead, .tablemobile tbody, .tablemobile th, .tablemobile td, .tablemobile tr {
+            display: block;
             width: 100%;
         }
 
-        .tablemobile td {
-            /* Behave  like a "row" */
-            border: none;
-            border-bottom: 1px solid #eee;
-            display: flex;      
-            width: 100%;           
-            background-color: var(--bgcolor);
-        }
-
-            .tablemobile td:before {
-                /* Now like a table header */
-                content: attr(lable);
-                font-weight: bold;
-                min-width: var(--minwidth);
+            /* Hide table headers (but not display: none;, for accessibility) */
+            .tablemobile thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
             }
 
+            .tablemobile tr {
+                border: 1px solid #ccc;
+                width: 100%;
+            }
 
-            
+            .tablemobile td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                width: 100%;
+                background-color: var(--bgcolor);
+            }
+
+                .tablemobile td:before {
+                    /* Now like a table header */
+                    content: attr(lable);
+                    font-weight: bold;
+                    min-width: var(--minwidth);
+                }
+
+
+
         /*
 	Label the data
 	*/
-    /* 
+        /* 
          .tablemobile td:nth-of-type(1) {
                 content: "";
                 text-align: center !important;
@@ -85,5 +90,5 @@
                 text-align: center;
             }*/
 
-        
-}
+
+    }

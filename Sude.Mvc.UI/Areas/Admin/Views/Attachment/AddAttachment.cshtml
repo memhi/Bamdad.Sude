@@ -4,25 +4,33 @@
 
 <script src="~/AdminLTE/js/view-image.min.js"></script>
 <div class="col-md-4">
+    @if ((Model != null && Model.Count() < ViewBag.MaxImageCount) || Model == null)
+    {
+    <div class="col-md-12 panel panel-info center-block text-center talign-center"   >
+        <div class="row">
 
-    <div class="col-md-12 panel panel-info">
-        <div class="row margin-bottom">
-            <label for="input_pic" class="btn btn-default fa fa-camera ">  </label>  <label for="input_picgallery" class="btn btn-default fa fa-image ">  </label>
-            <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_pic" capture />
+            <label class="btn btn-app disablecamera" for="input_pic">
+                <i class="fa fa-camera"></i> دوربین
+            </label>
+
+            <label class="btn btn-app" for="input_picgallery">
+                <i class="fa fa-picture-o"></i>  گالری
+            </label>
+      <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_pic" capture />
 
             <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_picgallery" />
 
         </div>
 
 
-        <div class="row margin-bottom image-area">
-            <img id="imgoutput" style="max-width:100%;max-height:150px" />
+        <div class="row margin-bottom image-area top center-block text-center talign-center">            
+            <img id="imgoutput" style="max-width:100%;max-height:200px" />
         </div>
         <div class="row margin-bottom">
             <a id="btn_ConfirmPic" class="btn btn-success" onClick="upload_snapshot()">تایید تصویر</a>
         </div>
     </div>
-
+    }
 </div>
 <div class="col-md-8">
 
@@ -52,12 +60,15 @@
 
 
         const input_pic = document.getElementById('input_pic');
+        if(input_pic!=null)
         input_pic.addEventListener('change', (e) => uploadfiles(e.target.files));
 
 
         const input_picgallery = document.getElementById('input_picgallery');
+        if (input_picgallery != null)
         input_picgallery.addEventListener('change', (e) => uploadfiles(e.target.files));
         $('#btn_ConfirmPic').hide();
+
         jQuery.viewImage({
 
             'target': '.image-area img'
@@ -67,6 +78,11 @@
     });
 
     function uploadfiles(fileList) {
+
+        $('#btn_ConfirmPic').show();
+        $('#btn_ConfirmPic').html(
+            '<i class="fa fa-refresh fa-spin  margin-r-5"></i> پردازش تصویر...'
+        );
 
         for (let i = 0; i < fileList.length; i++) {
             if (fileList[i].type.match(/^image\//)) {
@@ -114,11 +130,17 @@
 
 
                     $('#imgoutput').attr('src', canvas.toDataURL());
-
+                    $('#btn_ConfirmPic').html(
+                        'تایید تصویر'
+                    );
 
                 }
                 img.onerror = function () {
                     Command: toastr["error"]("خطا در دریافت فایل");
+                    $('#btn_ConfirmPic').hide();
+                    $('#btn_ConfirmPic').html(
+                        'تایید تصویر'
+                    );
                 }
 
 

@@ -236,7 +236,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
 
         // GET: AttachmentController
         [HttpGet]
-        public ActionResult AddAttachment()
+        public ActionResult AddAttachment(int? maxCount)
         {
             List<AttachmentNewDtoModel> attachments = _sudeSessionContext.CurrentAttachmentPictures;
             if (attachments == null)
@@ -246,7 +246,7 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             //{
             //    foreach(string fileaddress in Directory.GetFiles(userDirectoryPath))
             //    {
-                    
+
             //        FileInfo file = new FileInfo(fileaddress);
             //        string filewebaddress = "../TempUserAttachmentFiles/" + _sudeSessionContext.CurrentUser.id + "/" + file.Name;
             //        AttachmentNewDtoModel attachment = new AttachmentNewDtoModel()
@@ -263,8 +263,10 @@ namespace Sude.Mvc.UI.Admin.Controllers.Content
             //    _sudeSessionContext.CurrentAttachmentPictures = attachments;
 
             //}
-
-
+            if (maxCount != null && maxCount>0)
+                ViewBag.MaxImageCount = maxCount;
+            else
+                ViewBag.MaxImageCount = int.MaxValue;
             return PartialView("AddAttachment", attachments);
         }
 
