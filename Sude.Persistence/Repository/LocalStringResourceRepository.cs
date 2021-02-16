@@ -31,10 +31,10 @@ namespace Sude.Persistence.Repository
             return _LocalStringResourceRepository.Get();
         }
 
-        public async Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesByLanguageIdAsync(Guid languageId)
+        public async Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesByLanguageIdAsync(Guid languageId,string localStringName=null)
         {
             //return _ctx.LocalStringResources;
-            return await _LocalStringResourceRepository.GetAsync(lsr=>lsr.LanguageId==languageId);
+            return await _LocalStringResourceRepository.GetAsync(lsr=>lsr.LanguageId==languageId && (lsr.ResourceName==localStringName || string.IsNullOrEmpty(localStringName)));
         }
 
         public async Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesAsync()

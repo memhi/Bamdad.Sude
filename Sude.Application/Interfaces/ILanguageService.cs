@@ -10,12 +10,13 @@ namespace Sude.Application.Interfaces
 {
     public interface ILanguageService
     {
+        Task<ResultSet<LocalStringResourceInfo>> AddLocalStringResourceAsync(LocalStringResourceInfo localStringResource);
 
         Task<ResultSet<IEnumerable<LanguageInfo>>> GetLanguagesAsync();   
      
         Task<ResultSet<LanguageInfo>> GetLanguageByIdAsync(Guid LanguageId);
 
-        Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync(Guid LanguageId);
+        Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync(Guid LanguageId ,string localStringName=null);
 
         Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync();
 

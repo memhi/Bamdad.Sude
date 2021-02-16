@@ -11,7 +11,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit") خبر</h3>
+                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</h3>
 
             </div>
             <div class="box-body">
@@ -245,13 +245,13 @@
             data: News
         }).done(function (result) {
             if (result.isSucceed) {
-                Command: toastr["success"]("خبر اصلاح شد")
-        
+                Command: toastr["success"]("      @_SudeSessionContext.GetLocalResourceValue("Page.Message.NewsEdited") ")
+
                 $("#newsView").load("News/List");
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار")
+                Command: toastr["warning"](result.message, "      @_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning") ")
             }
         });
     }

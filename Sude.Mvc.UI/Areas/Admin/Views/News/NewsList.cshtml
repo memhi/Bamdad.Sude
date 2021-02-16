@@ -13,7 +13,7 @@
         <div class="col-m-6">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">فهرست  اخبار</h3>
+                    <h3 class="box-title">      @_SudeSessionContext.GetLocalResourceValue("Page.Content.NewsList") </h3>
 
                     <div class="box-tools">
 
@@ -33,7 +33,7 @@
                         <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</th>
                         <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Published")</th>
 
-                        <th>تاریخ @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.CreatedDate")</th>
 
                     </tr>
                     @{
@@ -75,14 +75,14 @@
     function DeleteNews(NewsId) {
 
         swal.fire({
-            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") خبر',
-            text: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") خبر مطمئن هستید؟",
+            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Content.DeleteNews")',
+            text: "@_SudeSessionContext.GetLocalResourceValue("Page.Content.DeleteNewsQuestion")",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، خبر @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
-            cancelButtonText: 'خیر',
+            confirmButtonText: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.DeleteYes")',
+            cancelButtonText: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.No")',
             position: 'top',
             showClass: {
                 popup: 'animate__animated animate__fadeIn'
@@ -98,15 +98,15 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            Command: toastr["success"]("خبر @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
-                    
+                            Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.NewsDeleted")");
+
                             $("#tr_" + NewsId).addClass("danger");
                             $("#tr_" + NewsId).hide('slow');
                             $("#newsView").load("News/List");
                         }
                         else {
 
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
 
                         }
                     },
@@ -126,7 +126,7 @@
         $.get("News/Edit/" + NewsId, function (result) {
 
             $("#myModal").modal('show');
-            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit") خبر");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.EditNews")");
             $("#myModalBody").html(result);
         });
     }
@@ -139,7 +139,7 @@
 
     }
 
- 
+
         function ShowNewPageModalDetailNews(NewsId){
 
         $.get("News/Detail/" +NewsId, function (result) {

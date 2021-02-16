@@ -7,7 +7,7 @@
             <section class="content">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="box-title">ایجاد واحد اندازه گیری</h3>
+                        <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.CreateInventoryType")</h3>
 
 
                     </div>
@@ -73,14 +73,14 @@
             data: InventoryType
         }).done(function (result) {
             if (result.isSucceed) {
-                Command: toastr["success"]("نوع ایجاد شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.InventoryTypeCreated")");
 
                 $("#searchInventoryType").show();
                 $("#InventoryTypeView").load("InventoryType/List");
             }
             else {
-     
-                Command: toastr["warning"](result.message, "هشدار");
+
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
             }
         });
     }

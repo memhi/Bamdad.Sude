@@ -77,14 +77,14 @@
     function DeleteBlog(blogId) {
 
         swal.fire({
-            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") مقاله',
-            html: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") مقاله مطمئن هستید؟",
+            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Message.Delete")',
+            html: " @_SudeSessionContext.GetLocalResourceValue("Page.Message.DeleteWarning")",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، مقاله @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
-            cancelButtonText: 'خیر',
+            confirmButtonText: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Yes")',
+            cancelButtonText: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.No")',
             position: 'top',
             showClass: {
                 popup: 'animate__animated animate__fadeIn'
@@ -100,17 +100,17 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            Command: toastr["success"]("مقاله @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
+                            Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.DeleteOk")");
 
      $("#tr_" + blogId).addClass("danger");
                                 $("#tr_" + blogId).hide('slow');
-                         
+
 
                             $("#blogView").load("Blog/List");
                         }
                         else {
 
-                            Command: toastr["warning"](result.message, "هشدار");
+                            Command: toastr["warning"](result.message,'@_SudeSessionContext.GetLocalResourceValue("Page.Message.Error")');
 
                         }
                     },
@@ -130,7 +130,7 @@
         $.get("Blog/Edit/" + blogId, function (result) {
 
             $("#myModal").modal('show');
-            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit") مقاله");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")");
             $("#myModalBody").html(result);
         });
     }

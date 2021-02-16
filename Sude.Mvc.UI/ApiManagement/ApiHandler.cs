@@ -137,6 +137,7 @@ namespace Sude.Mvc.UI.ApiManagement
 
         public class Localization
         {
+            public static readonly string AddLocalStringResource = ServerAddress + "/api/Localization/AddLocalStringResource/";
             public static readonly string GetAllLanguages = ServerAddress + "/api/Localization/GetLanguages";
             public static readonly string GetLanguage = ServerAddress + "/api/Localization/GetLanguageById/";
             public static readonly string GetAllLocalResources = ServerAddress + "/api/Localization/GetLocalStringResources";

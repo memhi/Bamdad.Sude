@@ -7,7 +7,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">ایجاد خبر</h3>
+                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.CreateNews")</h3>
 
             </div>
             <div class="box-body">
@@ -128,7 +128,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <a id="btnSaveNewNews" onclick="SaveNewNews()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") خبر @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")</a>
+                        <a id="btnSaveNewNews" onclick="SaveNewNews()" class="btn btn-success"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create")</a>
                     </div>
                     <div class="col-md-6">
                         <a class="btn btn-default" onclick="ToList()"><span class="fa fa-arrow-left margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Back")</a>
@@ -141,7 +141,7 @@
 </form>
 <script>
 
-      
+
 
     $(document).ready(function () {
              var defaultShortBodyEditorSettings =
@@ -167,7 +167,7 @@
 
 
 
-           
+
 
                  var defaultFullBodyEditorSettings =
              {
@@ -190,13 +190,13 @@
 
     };
 
- 
+
 
     tinyMCE.init(defaultShortBodyEditorSettings);
 
     tinyMCE.init(defaultFullBodyEditorSettings);
     });
- 
+
 
 
     function SaveNewNews() {
@@ -227,11 +227,11 @@
             data: News
         }).done(function (result) {
             if (result.isSucceed) {
-                Command: toastr["success"]("خبر ایجاد شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.NewsCreated")");
                 $("#newsView").load("News/List");
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
             }
         });
     }

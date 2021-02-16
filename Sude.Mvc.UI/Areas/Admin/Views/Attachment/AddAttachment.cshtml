@@ -10,11 +10,11 @@
         <div class="row">
 
             <label class="btn btn-app disablecamera" for="input_pic">
-                <i class="fa fa-camera"></i> دوربین
+                <i class="fa fa-camera"></i> >@_SudeSessionContext.GetLocalResourceValue("Page.Content.Camera")
             </label>
 
             <label class="btn btn-app" for="input_picgallery">
-                <i class="fa fa-picture-o"></i>  گالری
+                <i class="fa fa-picture-o"></i>  @_SudeSessionContext.GetLocalResourceValue("Page.Content.Gallery")
             </label>
       <input type="file" style="visibility:hidden;" class="btn btn-success" accept="image/*" id="input_pic" capture />
 
@@ -27,7 +27,7 @@
             <img id="imgoutput" style="max-width:100%;max-height:200px" />
         </div>
         <div class="row margin-bottom">
-            <a id="btn_ConfirmPic" class="btn btn-success" onClick="upload_snapshot()">تایید تصویر</a>
+            <a id="btn_ConfirmPic" class="btn btn-success" onClick="upload_snapshot()">@_SudeSessionContext.GetLocalResourceValue("Page.Button.ConfirmPicture")</a>
         </div>
     </div>
     }
@@ -79,9 +79,10 @@
 
     function uploadfiles(fileList) {
 
+
         $('#btn_ConfirmPic').show();
         $('#btn_ConfirmPic').html(
-            '<i class="fa fa-refresh fa-spin  margin-r-5"></i> پردازش تصویر...'
+            '<i class="fa fa-refresh fa-spin  margin-r-5"></i>@_SudeSessionContext.GetLocalResourceValue("Page.Button.ProcessPicture")'
         );
 
         for (let i = 0; i < fileList.length; i++) {
@@ -131,16 +132,14 @@
 
                     $('#imgoutput').attr('src', canvas.toDataURL());
                     $('#btn_ConfirmPic').html(
-                        'تایید تصویر'
+                        '@_SudeSessionContext.GetLocalResourceValue("Page.Button.ConfirmPicture")'
                     );
 
                 }
                 img.onerror = function () {
-                    Command: toastr["error"]("خطا در دریافت فایل");
+                    Command: toastr["error"](img.error,'@_SudeSessionContext.GetLocalResourceValue("Page.Message.Error")');
                     $('#btn_ConfirmPic').hide();
-                    $('#btn_ConfirmPic').html(
-                        'تایید تصویر'
-                    );
+                    $('#btn_ConfirmPic').html('@_SudeSessionContext.GetLocalResourceValue("Page.Button.ConfirmPicture")');
                 }
 
 

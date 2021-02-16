@@ -24,6 +24,99 @@ namespace Sude.Api.Controllers
             _LanguageService = languageService;
 
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ResultSetDto<LocalStringResourceDetailDtoModel>>> AddLocalStringResourceAsync([FromBody] LocalStringResourceDetailDtoModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                string message = "";
+                foreach (var er in ModelState.Values.SelectMany(modelstate => modelstate.Errors))
+                    message += er.ErrorMessage + " \n";
+
+                return BadRequest(new ResultSetDto()
+                {
+                    IsSucceed = false,
+                    Message = message
+                });
+            }
+
+
+            try
+            {
+
+             //   var result = new LocalStringResourceDetailDtoModel();
+
+                var resourceGetList = await _LanguageService.GetLocalStringResourcesAsync(Guid.Parse(request.LanguageId), request.ResourceName);
+                if (resourceGetList.IsSucceed && resourceGetList.Data != null && resourceGetList.Data.Any())
+                {
+
+                    LocalStringResourceInfo resourceInfo = resourceGetList.Data.FirstOrDefault();
+                     request = new LocalStringResourceDetailDtoModel()
+                    {
+                        LanguageId = resourceInfo.LanguageId.ToString(),
+                        LocalStringResourceId = resourceInfo.Id.ToString(),
+                        ResourceName = resourceInfo.ResourceName,
+                        ResourceValue = resourceInfo.ResourceValue
+                    };
+
+                }
+
+                else
+                {
+                    LocalStringResourceInfo resource = new LocalStringResourceInfo()
+                    {
+                        LanguageId = Guid.Parse(request.LanguageId),
+                        ResourceName = request.ResourceName,
+                        ResourceValue = request.ResourceValue
+
+
+
+                    };
+                    var resultSave = await _LanguageService.AddLocalStringResourceAsync(resource);
+                    if (!resultSave.IsSucceed)
+                    {
+                        return BadRequest(new ResultSetDto<LocalStringResourceDetailDtoModel>()
+                        {
+                            IsSucceed = false,
+                            Message = resultSave.Message,
+                            Data = null
+                        });
+
+                    }
+                    request.LocalStringResourceId = resultSave.Data.Id.ToString();
+                }
+
+               
+
+              
+              
+
+
+              
+
+                return Ok(new ResultSetDto<LocalStringResourceDetailDtoModel>()
+                {
+                    IsSucceed = true,
+                    Message = "",
+                    Data = request
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResultSetDto<LocalStringResourceDetailDtoModel>()
+                {
+                    IsSucceed = false,
+                    Message = ex.Message,
+                    Data = null
+                });
+            }
+        }
+
+
+
+
         [HttpGet]
         public async Task<ActionResult> GetLanguagesAsync()
         {

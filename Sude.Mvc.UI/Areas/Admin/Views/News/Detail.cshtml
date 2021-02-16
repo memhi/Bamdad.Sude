@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  خبر</title>
+    <title>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</title>
 </head>
 <body>
 
@@ -31,7 +31,7 @@
                 @Html.Raw(Model.ShortBody)
             </dd>
             <dt>
-                @_SudeSessionContext.GetLocalResourceValue("Page.Content.FullBody") مقاله
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.FullBody")
             </dt>
             <dd>
                 @Html.Raw(Model.FullBody)
@@ -68,19 +68,20 @@
                 @Html.DisplayFor(model => model.MetaTitle)
             </dd>
             <dt>
-                کلمات کلیدی
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.MetaKeyWords")
+    
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaKeywords)
             </dd>
             <dt>
-                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Description") متا
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.MetaDescription") 
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.MetaDescription)
             </dd>
             <dt>
-                برچسب ها
+                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Tags")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Tags)

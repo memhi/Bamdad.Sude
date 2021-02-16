@@ -27,7 +27,30 @@ namespace Sude.Mvc.UI
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IWebHostEnvironment _HostingEnvitonment;
         public ICollection<LanguageDetailDtoModel> Languages;
-        public ICollection<LocalStringResourceDetailDtoModel> LocalStringResources;
+        private  ICollection<LocalStringResourceDetailDtoModel> localStringResources;
+
+        public ICollection<LocalStringResourceDetailDtoModel> LocalStringResources
+        {
+            get
+            {
+                if (localStringResources == null)
+                {
+                    var result = Api.GetHandler
+                  .GetApiAsync<ResultSetDto<IEnumerable<LocalStringResourceDetailDtoModel>>>(ApiAddress.Localization.GetAllLocalResources);
+                    if (result.Result.IsSucceed && result.Result.Data != null)
+                    {
+                        localStringResources = result.Result.Data.ToList();
+                    }
+                }
+                return localStringResources;
+            }
+            set
+            {
+                localStringResources = value;
+
+            }
+        }
+
         public SudeSessionContext(IHttpContextAccessor contextAccessor, IWebHostEnvironment hostingEnvitonment)
         {
             _contextAccessor = contextAccessor;
@@ -42,15 +65,7 @@ namespace Sude.Mvc.UI
                 }
             }
 
-            if (LocalStringResources == null)
-            {
-                var result = Api.GetHandler
-            .GetApiAsync<ResultSetDto<IEnumerable<LocalStringResourceDetailDtoModel>>>(ApiAddress.Localization.GetAllLocalResources);
-                if (result.Result.IsSucceed && result.Result.Data != null)
-                {
-                    LocalStringResources = result.Result.Data.ToList();
-                }
-            }
+           
         }
 
         public virtual void LogoutUser()
@@ -159,24 +174,37 @@ namespace Sude.Mvc.UI
         {
             get
             {
-                string SId= _contextAccessor.HttpContext.Session.GetString(Constants.SessionNames.SessionId);
+                string SId = _contextAccessor.HttpContext.Session.GetString(Constants.SessionNames.SessionId);
                 if (string.IsNullOrEmpty(SId))
                 {
                     SId = Guid.NewGuid().ToString();
-                    _contextAccessor.HttpContext.Session.SetString(Constants.SessionNames.SessionId,SId);
+                    _contextAccessor.HttpContext.Session.SetString(Constants.SessionNames.SessionId, SId);
                 }
                 return SId;
             }
-           
+
         }
 
-        public string GetLocalResourceValue(string Name, params object[]  parameters)
+        public string GetLocalResourceValue(string Name, params object[] parameters)
         {
 
 
             LocalStringResourceDetailDtoModel localStringResource = LocalStringResources.FirstOrDefault(lr => lr.LanguageId.ToLower() == CurrentLanguage.LanguageId.ToLower() && lr.ResourceName.ToLower() == Name.ToLower());
             if (localStringResource == null)
+            {
+                LocalStringResourceDetailDtoModel newlocalresource = new LocalStringResourceDetailDtoModel()
+                {
+                    LanguageId = CurrentLanguage.LanguageId,
+                    ResourceName = Name,
+                    ResourceValue = Name
+
+
+                };
+                var result = Api.GetHandler.GetApiAsync<LocalStringResourceDetailDtoModel>(ApiAddress.Localization.AddLocalStringResource, newlocalresource);
+                LocalStringResources = null;
+
                 return Name;
+            }
             if (parameters != null && parameters.Any())
                 return string.Format(localStringResource.ResourceValue, parameters);
             return localStringResource.ResourceValue;
@@ -194,12 +222,12 @@ namespace Sude.Mvc.UI
                 if (lan == null)
                 {
 
-                 
-                        lan = Languages.OrderBy(l=>l.DisplayOrder).FirstOrDefault();           
+
+                    lan = Languages.OrderBy(l => l.DisplayOrder).FirstOrDefault();
 
                     _contextAccessor.HttpContext.Session.SetObject(Constants.SessionNames.CurrentLanguage, lan);
-                   
-                      
+
+
                 }
                 return lan;
 
@@ -212,7 +240,7 @@ namespace Sude.Mvc.UI
             }
         }
 
-        public string GetAttachmentAddressFile(string workId,string pictureTypeId, string entityId, bool isEdit)
+        public string GetAttachmentAddressFile(string workId, string pictureTypeId, string entityId, bool isEdit)
         {
             string workDirPath = Path.Combine(_HostingEnvitonment.WebRootPath, "WorkFiles", workId);
             if (!Directory.Exists(workDirPath))
@@ -233,8 +261,8 @@ namespace Sude.Mvc.UI
 
 
         }
-     
-        public bool MoveTempAttachmentFiles(string workId,string pictureTypeId, string entityId, bool isEdit)
+
+        public bool MoveTempAttachmentFiles(string workId, string pictureTypeId, string entityId, bool isEdit)
         {
             List<AttachmentNewDtoModel> attachments = CurrentAttachmentPictures;
             if (attachments != null)
@@ -242,7 +270,7 @@ namespace Sude.Mvc.UI
 
 
                 string fileDirPath = GetAttachmentAddressFile(workId, pictureTypeId, entityId, isEdit);
-             
+
 
                 foreach (AttachmentNewDtoModel attachment in attachments)
                 {
@@ -266,7 +294,7 @@ namespace Sude.Mvc.UI
             try
             {
 
-                var directorypath = Path.Combine( _HostingEnvitonment.WebRootPath, "TempUserAttachmentFiles", CurrentUser.id);
+                var directorypath = Path.Combine(_HostingEnvitonment.WebRootPath, "TempUserAttachmentFiles", CurrentUser.id);
                 if (!Directory.Exists(directorypath))
                     Directory.CreateDirectory(directorypath);
                 foreach (AttachmentNewDtoModel attachment in attachments)

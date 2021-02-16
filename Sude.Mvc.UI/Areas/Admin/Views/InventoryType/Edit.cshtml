@@ -50,7 +50,7 @@
 
 
 
-    <script>
+<script>
 
         $(function () {
            $.validator.unobtrusive.parse($('#frmEdit'));
@@ -74,13 +74,13 @@
                 data: InventoryType
             }).done(function (result) {
                 if (result.isSucceed) {
-                    Command: toastr["success"]("نوع اصلاح شد");
+                    Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.InventoryTypeEdited")");
                     $("#myModal").modal("hide");
                     $("#InventoryTypeView").load("InventoryType/List");
-               
+
                 }
                 else {
-                    Command: toastr["warning"](result.message, "هشدار");
+                    Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
                 }
             });
         }
@@ -90,4 +90,4 @@
         }
 
 
-    </script>
+</script>

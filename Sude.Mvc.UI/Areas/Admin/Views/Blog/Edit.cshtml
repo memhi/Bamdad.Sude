@@ -244,15 +244,16 @@
             url: "Blog/Edit",
             type: "Post",
             data: blog
+
         }).done(function (result) {
             if (result.isSucceed) {
-                Command: toastr["success"]("اطلاعات مقاله اصلاح شد");
-          
+                Command: toastr["success"](" @_SudeSessionContext.GetLocalResourceValue("Page.Message.BlogEdit")");
+
                 $("#blogView").load("Blog/List");
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
             }
         });
     }

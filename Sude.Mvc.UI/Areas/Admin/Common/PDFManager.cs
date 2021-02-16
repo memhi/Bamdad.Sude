@@ -26,11 +26,11 @@ namespace Sude.Mvc.UI.Admin
 
         protected virtual Font GetFont(Rectangle pageSize)
         {
-            float fontSize = 10;
+            float fontSize = 9;
             if (pageSize == PageSize.A7)
-                fontSize = 7;
+                fontSize = 6;
             else if (pageSize == PageSize.A5)
-                fontSize = 8;
+                fontSize = 7;
 
             return GetFont("Sude.ttf", fontSize);
         }
@@ -241,9 +241,9 @@ namespace Sude.Mvc.UI.Admin
 
             var widths = new Dictionary<int, int[]>
             {
-                { 7, new[] {10, 40, 15, 15 ,20} },
-                { 8, new[] {8, 45, 13, 13, 21} },
-                { 10, new[] { 5, 50, 15, 15, 15 } }
+                { 6, new[] {10, 40, 15, 15 ,20} },
+                { 7, new[] {8, 45, 13, 13, 21} },
+                { 9, new[] { 5, 50, 15, 15, 15 } }
             };
 
             detailsTable.SetWidths(widths[fontSize].Reverse().ToArray());
@@ -332,9 +332,9 @@ namespace Sude.Mvc.UI.Admin
 
             var widthsStatus = new Dictionary<int, int[]>
             {
-                { 7, new[] {35, 15, 50 } },
-                  { 8, new[] {34, 13, 53 } },
-                    { 10, new[] {30, 15, 55 } },
+                { 6, new[] {35, 15, 50 } },
+                  { 7, new[] {34, 13, 53 } },
+                    { 9, new[] {30, 15, 55 } },
 
             };
 

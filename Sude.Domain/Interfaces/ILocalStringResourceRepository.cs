@@ -11,7 +11,7 @@ namespace Sude.Domain.Interfaces
     {
         Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesAsync();
         IEnumerable<LocalStringResourceInfo> GetLocalStringResources();
-        Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesByLanguageIdAsync(Guid languageId);
+        Task<IEnumerable<LocalStringResourceInfo>> GetLocalStringResourcesByLanguageIdAsync(Guid languageId, string localStringName = null);
 
         bool AddLocalStringResource(LocalStringResourceInfo LocalStringResource);
         bool EditLocalStringResource(LocalStringResourceInfo LocalStringResource);

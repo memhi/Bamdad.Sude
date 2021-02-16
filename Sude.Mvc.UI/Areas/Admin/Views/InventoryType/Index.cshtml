@@ -6,7 +6,7 @@
 @{
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("InventoryType");
-    ViewBag.PageTitle = "مدیریت نوع موجودی";
+    ViewBag.PageTitle = @_SudeSessionContext.GetLocalResourceValue("Page.Title.InventoryTypeManagement");
 }
 <div id="searchInventoryType">
 
@@ -25,7 +25,7 @@
     <div class="col-md-6 text-center">
         <div class="box box-info">
             <div class="box-header">
-                <h3> دریافت اطلاعات انواع موجودی</h3>
+                <h3>@_SudeSessionContext.GetLocalResourceValue("Page.Content.GetInventoryTypes")</h3>
             </div>
 
             <div class="overlay">

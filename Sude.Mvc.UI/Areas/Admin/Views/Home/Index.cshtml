@@ -8,9 +8,10 @@
 
 
 @{
+  
 
     HttpContextAccessor.HttpContext.Session.SetActiveMenuItemSystemName("Dashboard");
-    ViewBag.PageTitle = "پیشخوان";
+    ViewBag.PageTitle = @_SudeSessionContext.GetLocalResourceValue("Page.Title.Dashboard");
 }
 
 <script src="~/AdminLTE/bower_components/chart.js/Chart.min.js"></script>
@@ -23,7 +24,8 @@
             <div class="box-header with-border clearfix">
                 <div class="box-title">
                     <i class="fa fa-newspaper-o"></i>
-                    اخبار سامانه
+                    
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.SystemNews")
                 </div>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -36,30 +38,33 @@
                     <div class="col-md-4">
                         <div class="panel panel-info">
                             <div class="panel-heading clearfix">
-                                <a class="pull-right" href='Home'>@_SudeSessionContext.GetLocalResourceValue("Page.Button.New") ترین امکانات سایت</a>
+                                <a class="pull-right" href='Home'>@_SudeSessionContext.GetLocalResourceValue("Page.Content.NewOptions")</a>
                             </div>
                             <div class="panel-body">
-                                گزارش آمار سالانه در سامانه ایجاد شد.
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.YearlyStatisticsReport")                                
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="panel panel-info">
                             <div class="panel-heading clearfix">
-                                <a class="pull-right" href='Home'>پشتیبانی سامانه</a>
+                                <a class="pull-right" href='Home'>  </a>
                             </div>
                             <div class="panel-body">
-                                جهت تماس با واحد پشتیبانی با شماره 0000 تماس بگیرید.
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.SupportContact")
+                                
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="panel panel-info">
                             <div class="panel-heading clearfix">
-                                <a class="pull-right" href='Home'>راهنمای سامانه</a>
+                                
+                                <a class="pull-right" href='Home'> @_SudeSessionContext.GetLocalResourceValue("Page.Content.SystemHelp")</a>
                             </div>
                             <div class="panel-body">
-                                جهت مطالعه راهنمای سامانه از لینک زیر استفاده کنید.
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.SystemHelpLink")
+                                
                             </div>
                         </div>
                     </div>
@@ -77,7 +82,8 @@
             <div class="box-header with-border clearfix">
                 <div class="box-title">
                     <i class="fa ion-stats-bars"></i>
-                    آمار
+                    
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.Statistics")
                 </div>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -90,14 +96,18 @@
                     <div class="small-box bg-olive">
                         <div class="inner">
                             <h4>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderCount]))</h4>
-                            <p>سفارشات فروش</p>
+                            <p>
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderSell")
+                            </p>
+
                         </div>
                         <div class="icon">
                             <i class="fa fa-shopping-cart"></i>
 
                         </div>
                         <a class="small-box-footer" href="Order">
-                            اطلاعات بیشتر
+
+                            @_SudeSessionContext.GetLocalResourceValue("Page.Content.MoreInformation")
                             <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -106,13 +116,18 @@
                     <div class="small-box bg-green-gradient">
                         <div class="inner">
                             <h4>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderPrice]))</h4>
-                            <p>مبلغ فروش</p>
+                            <p>
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.SellPrice")
+
+                               
+                            </p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-money"></i>
                         </div>
                         <a class="small-box-footer" href="Order">
-                            اطلاعات بیشتر
+                      
+                            @_SudeSessionContext.GetLocalResourceValue("Page.Content.MoreInformation")
                             <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -124,7 +139,7 @@
                         <div class="inner">
                             <h4>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.OrderBuyCount]))</h4>
 
-                            <p>سفارشات خرید</p>
+                            <p> @_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderBuy")</p>
 
                         </div>
 
@@ -133,7 +148,7 @@
 
                         </div>
                         <a class="small-box-footer" href="Order">
-                            اطلاعات بیشتر
+                            @_SudeSessionContext.GetLocalResourceValue("Page.Content.MoreInformation")
                             <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -144,7 +159,7 @@
                         <div class="inner">
                             <h4>@String.Format("{0:n0}", Convert.ToDouble(ViewData[Constants.ViewBagNames.SumOrderBuyPrice]))</h4>
 
-                            <p>مبلغ خرید</p>
+                            <p> @_SudeSessionContext.GetLocalResourceValue("Page.Content.BuyPrice")</p>
 
                         </div>
 
@@ -153,7 +168,7 @@
 
                         </div>
                         <a class="small-box-footer" href="Order">
-                            اطلاعات بیشتر
+                            @_SudeSessionContext.GetLocalResourceValue("Page.Content.MoreInformation")
                             <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -179,8 +194,9 @@
             <div class="box-header with-border">
                 <h3 class="box-title">
                     <i class="fa fa-cart-plus"></i>
-                    آخرین سفارشات
-                    <a class="btn btn-xs btn-info btn-flat margin-l-10" href="Order">نمایش همه سفارشات</a>
+                    
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.LastOrders")
+                <a class="btn btn-xs btn-info btn-flat margin-l-10" href="Order"> @_SudeSessionContext.GetLocalResourceValue("Page.Content.ShowAllOrders")</a>
                 </h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse">
@@ -205,12 +221,12 @@
             <div class="box-header with-border">
                 <h3 class="box-title">
                     <i class="fa fa-shopping-cart"></i>
-                    سفارشات
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.Orders")
                 </h3>
                 <div class="box-tools pull-right">
-                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" onclick="changeType('year')" data-chart-period="year">سال</button>
-                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="month" onclick="changeType('month')">ماه</button>
-                    <button class="btn btn-xs btn-info btn-flat" data-chart-role="toggle-chart" data-chart-period="week" onclick="changeType('week')">هفته</button>
+                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" onclick="changeType('year')" data-chart-period="year"> @_SudeSessionContext.GetLocalResourceValue("Page.Button.Year")</button>
+                    <button class="btn btn-xs btn-info btn-flat margin-r-5" data-chart-role="toggle-chart" data-chart-period="month" onclick="changeType('month')"> @_SudeSessionContext.GetLocalResourceValue("Page.Button.Month")</button>
+                    <button class="btn btn-xs btn-info btn-flat" data-chart-role="toggle-chart" data-chart-period="week" onclick="changeType('week')"> @_SudeSessionContext.GetLocalResourceValue("Page.Button.Week")</button>
                     <button class="btn btn-box-tool margin-l-10" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
@@ -234,7 +250,7 @@
 
         var currentworkname = $("#txtCurrentName").val();
         var userworkscount = $("#txtWorksCount").val();
-       
+
         if (currentworkname == "" && parseInt(userworkscount) > 1) {
 
             ShowSetDefaultWork();
@@ -247,7 +263,7 @@
             labels: [],
             datasets: [
                 {
-                    label: "آمار سفارشات",
+                    label: " @_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderStatistics")",
                     fillColor: "rgba(60,141,188,0.9)",
                     strokeColor: "rgba(60,141,188,0.8)",
                     pointColor: "#3b8bba",
@@ -347,7 +363,7 @@
 
         $.get("Work/ViewWorks/", function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("انتخاب کسب و کار");
+            $("#myModalLabel").html(" @_SudeSessionContext.GetLocalResourceValue("Page.Content.SelectWork")");
             $("#myModalBody").html(result);
 
         });

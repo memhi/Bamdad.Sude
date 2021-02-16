@@ -35,7 +35,9 @@ namespace Sude.Application.Services
            
         }
 
-         
+       
+
+
         public async Task<ResultSet<LanguageInfo>> GetLanguageByIdAsync(Guid languageId)
         {
             LanguageInfo  language   = await _LanguageRepository.GetLanguageByIdAsync(languageId);
@@ -66,9 +68,29 @@ namespace Sude.Application.Services
 
         }
 
-        public async Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync(Guid languageId)
+        public async Task<ResultSet<LocalStringResourceInfo>> AddLocalStringResourceAsync(LocalStringResourceInfo localStringResource)
         {
-            IEnumerable<LocalStringResourceInfo>  localStringResources  = await _LocalStringResourceRepository.GetLocalStringResourcesByLanguageIdAsync(languageId);
+            _LocalStringResourceRepository.AddLocalStringResource(localStringResource);
+            try { await _LocalStringResourceRepository.SaveAsync(); }
+
+            catch (Exception e) { return new ResultSet<LocalStringResourceInfo>() { IsSucceed = false, Message = e.Message }; }
+
+
+            return new ResultSet<LocalStringResourceInfo>()
+            {
+                IsSucceed = true,
+                Message = string.Empty,
+                Data = localStringResource
+            };
+
+             
+        }
+
+
+
+        public async Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync(Guid languageId, string localStringName = null)
+        {
+            IEnumerable<LocalStringResourceInfo> localStringResources = await _LocalStringResourceRepository.GetLocalStringResourcesByLanguageIdAsync(languageId, localStringName);
 
             if (localStringResources == null)
                 return new ResultSet<IEnumerable<LocalStringResourceInfo>>()
@@ -86,6 +108,7 @@ namespace Sude.Application.Services
             };
 
         }
+
 
 
         public async Task<ResultSet<IEnumerable<LocalStringResourceInfo>>> GetLocalStringResourcesAsync()

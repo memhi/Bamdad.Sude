@@ -28,7 +28,7 @@
 
                 <div class="row margin-bottom">
                     <div class="col-md-3">
-                        <label class="control-label">شناسه ملی</label>
+                        <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.NationalCode")</label>
                     </div>
                     <div class="col-md-9">
                         <input id="txtNationalCode" asp-for="NationalCode" class="form-control" />
@@ -37,7 +37,7 @@
                 </div>
                 <div class="row margin-bottom">
                     <div class="col-md-3">
-                        <label class="control-label">تلفن</label>
+                        <label class="control-label">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Phone")</label>
                     </div>
                     <div class="col-md-9">
                         <input id="txtPhone" asp-for="Phone" class="form-control" />
@@ -60,39 +60,39 @@
      
     </section>
 </form>
-    <script>
+<script>
 
 
 
         function SaveNewOrderCustomer() {
-     
+
             $.validator.unobtrusive.parse($('#frmAddNewCustomer'));
-      
+
             var isValid = $('#frmAddNewCustomer').valid();
             if (!isValid)
                 return;
-       
+
             var customer = {
                 Title: $("#txtTitle").val(),
                 NationalCode: $("#txtNationalCode").val(),
                 Phone: $("#txtPhone").val(),
                 WorkId:''
             }
-          
+
             $.ajax({
                 url: "Customer/AddOrderCustomer",
                 type: "Post",
                 data: customer
             }).done(function (result) {
                 if (result.isSucceed) {
-                    Command: toastr["success"]("اطلاعات خدمات گیرنده اضافه شد");
+                    Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.AddCustomer")");
                     //  $("#WorkView").load("Customer/List");
-               
-                    $('#selectedItem').val(result.data.customerId); 
+
+                    $('#selectedItem').val(result.data.customerId);
                     $("#myModal").modal("hide");
                 }
                 else {
-                    Command: toastr["warning"](result.message, "هشدار");
+                    Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
                 }
             });
         }
@@ -101,6 +101,6 @@
         }
 
 
-      
 
-    </script>
+
+</script>

@@ -10,39 +10,39 @@
 
     <div class="register-box bg-red-gradient">
         <div class="register-logo">
-            <h4>   <a href="/">مدیریت کسب و کار</a></h4>
+            <h4>   <a href="/">@_SudeSessionContext.GetLocalResourceValue("Page.Content.SystemManagement")</a></h4>
         </div>
 
         <div class="register-box-body">
-            <p class="login-box-msg">ثبت نام کاربر @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")</p>
+            <p class="login-box-msg">@_SudeSessionContext.GetLocalResourceValue("Page.Button.NewUser")</p>
 
             <form id="frmRegister">
                 <div class="form-group has-feedback">
-                    <input type="tel" class="form-control" id="txtPhone" asp-for="Phone" placeholder="شماره موبایل">
+                    <input type="tel" class="form-control" id="txtPhone" asp-for="Phone" placeholder="@_SudeSessionContext.GetLocalResourceValue("Page.Content.MobileNumber")">
                     <span class="glyphicon glyphicon-phone form-control-feedback"></span>
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" asp-for="Name" id="txtName" class="form-control" placeholder="نام">
+                    <input type="text" asp-for="Name" id="txtName" class="form-control" placeholder="@_SudeSessionContext.GetLocalResourceValue("Page.Content.Name")">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-group has-feedback">
                    
-                    <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="کلمه عبور">
+                    <input type="password" asp-for="Password" id="txtPassword" class="form-control" placeholder="@_SudeSessionContext.GetLocalResourceValue("Page.Content.Password")">
                     <span class="fa fa-key form-control-feedback"></span>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" asp-for="ConfirmPassword" id="txtConfirmPassword" placeholder="تکرار کلمه عبور">
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" id="txtConfirmPassword" placeholder="@_SudeSessionContext.GetLocalResourceValue("Page.Content.PasswordRepeat")">
                     <span class="fa fa-key form-control-feedback"></span>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
 
-                        <a onclick="Register()" id="btnRegister" class="btn btn-primary btn-block btn-flat">ثبت نام</a>
+                        <a onclick="Register()" id="btnRegister" class="btn btn-primary btn-block btn-flat">@_SudeSessionContext.GetLocalResourceValue("Page.Button.Register")</a>
 
                     </div>
                     <!-- /.col -->
@@ -50,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center margin">
-                        <a id="btnLogin" class="btn btn-default text-center">کاربر سامانه هستم</a>
+                        <a id="btnLogin" class="btn btn-default text-center">@_SudeSessionContext.GetLocalResourceValue("Page.Button.SystemUser")</a>
                     </div>
                 </div>
             </form>
@@ -72,7 +72,7 @@
             if (!isValid)
                 return;
             $("#btnRegister").html(
-                '<i class="fa fa-refresh fa-spin  margin-r-5"></i> @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نام...'
+                '<i class="fa fa-refresh fa-spin  margin-r-5"></i> @_SudeSessionContext.GetLocalResourceValue("Page.Button.Register") ...'
             );
 
             var register = {
@@ -92,18 +92,18 @@
             }).done(function (result) {
                 if (result.isSucceed) {
 
-                  
+
                     $("#loginorregister").load("Login/Login");
-                    Command: toastr["success"]("کاربر ایجاد شد", "@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نام");
+                    Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.UserRegister")", "@_SudeSessionContext.GetLocalResourceValue("Page.Button.Register")");
 
                 }
                 else {
 
                     $("#btnRegister").html(
-                        '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نام'
+                        '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Register")'
                     );
 
-                    Command: toastr["warning"](result.message, "هشدار");
+                    Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
                 }
             });
         }
