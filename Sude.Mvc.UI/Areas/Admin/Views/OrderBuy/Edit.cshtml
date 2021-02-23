@@ -17,7 +17,7 @@
     <section class="content">
         <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
-                <h2 class="box-title">تغییر اطلاعات سفارش خرید شماره @Model.OrderNumber </h2>
+                <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.EditOrderBuyInformationNumber")  @Model.OrderNumber </h2>
             </div>
             <div class="box-body">
 
@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="box box-info  ">
                                 <div class="box-header with-border  text-center">
-                                    <h3 class="box-title">اطلاعات سفارش</h3>
+                                    <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")</h3>
                                 </div>
                                 <div class="box-body">
 
@@ -38,7 +38,7 @@
 
                                             <div class="form-group">
                                                 <div class="col-md-2">
-                                                    <label>تاریخ سفارش</label>
+                                                    <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")</label>
                                                 </div>
                                                 <div class="col-md-10">
                                                     <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
@@ -75,7 +75,7 @@
                     <div class="row">
                         <div id="divOrderDetails" class="box box-info">
                             <div class="box-header text-center">
-                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش خرید</h3>
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderBuyDetail")</h3>
 
 
                             </div>
@@ -113,7 +113,7 @@
                     <div class="row">
                         <div class="box box-info   ">
                             <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش خرید</h3>
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.EditOrderBuyInformation")</h3>
 
 
                             </div>
@@ -130,17 +130,17 @@
 
                                                 @if (typepayment.TypeId == Model.PaymentStatusId)
                                                 {
-                                                    <label class="btn btn-primary active" for="@name">
-                                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
-                                                        @typepayment.Title
-                                                    </label>
+                                        <label class="btn btn-primary active" for="@name">
+                                            <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
+                                            @_SudeSessionContext.GetLocalResourceValue(@typepayment.Desc)
+                                        </label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="btn btn-primary" for="@name">
-                                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
-                                                        @typepayment.Title
-                                                    </label>
+                                    <label class="btn btn-primary" for="@name">
+                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
+                                        @_SudeSessionContext.GetLocalResourceValue(@typepayment.Desc)
+                                    </label>
 
 
 
@@ -155,7 +155,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش</a>
+                                            <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.EditOrderBuyFinal") </a>
 
                                         </div>
                                     </div>
@@ -215,12 +215,12 @@
                 }).done(function (result) {
                     if (result.isSucceed) {
 
-                        Command: toastr["success"]("فایل حذف شد");
+                        Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.FileDeleted")");
                         $("#divattachments").load("Attachment/AddAttachment");
 
                     }
                     else {
-                        Command: toastr["warning"](result.message, "هشدار");
+                        Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
 
 
                     }
@@ -231,7 +231,7 @@
 
 
                 $('#btn_ConfirmPic').html(
-                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i>ارسال فایل...'
+                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i>@_SudeSessionContext.GetLocalResourceValue("Page.Content.SendPicture")...'
                 );
 
 
@@ -243,16 +243,16 @@
                     function (code, text) {
 
                         $('#btn_ConfirmPic').html(
-                            'تایید تصویر'
+                            '@_SudeSessionContext.GetLocalResourceValue("Page.Content.ConfirmPicture")'
                         );
-                        Command: toastr["success"]("تصویر ثبت شد");
+                        Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Content.PictureUploaded")");
                         $("#divattachments").load("Attachment/AddAttachment");
                     });
 
             }
 
 
-</script>
+        </script>
 
     </div>
 

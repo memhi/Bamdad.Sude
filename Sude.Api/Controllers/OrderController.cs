@@ -99,7 +99,7 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.Description.ToString(),
                     Customer = (o.Customer != null ? new CustomerDetailDtoModel()
                     {
                         CustomerId = o.Customer.Id.ToString(),
@@ -183,7 +183,7 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.Description.ToString(),
                     Customer = (o.Customer != null ? new CustomerDetailDtoModel()
                     {
                         CustomerId = o.Customer.Id.ToString(),
@@ -402,7 +402,7 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
+                    PaymentStatusTitle = o.PaymentStatus.Description.ToString()
 
 
 
@@ -568,7 +568,7 @@ namespace Sude.Api.Controllers
                     Description = o.Description,
                     IsBuy = o.IsBuy,
                     PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                    PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString(),
+                    PaymentStatusTitle = o.PaymentStatus.Description.ToString(),
                     Customer = (o.Customer != null ? new CustomerDetailDtoModel()
                     {
                         CustomerId = o.Customer.Id.ToString(),
@@ -702,7 +702,7 @@ namespace Sude.Api.Controllers
                         Description = o.Description,
                         IsBuy = o.IsBuy,
                         PaymentStatusId = o.PaymentStatusId.Value.ToString(),
-                        PaymentStatusTitle = o.PaymentStatus.TypeTitle.ToString()
+                        PaymentStatusTitle = o.PaymentStatus.Description.ToString()
 
 
                     });

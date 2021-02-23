@@ -14,7 +14,7 @@
 <section class="content">
     <div class="box box-primary bg-gray-light">
         <div class="box-header with-border text-center ">
-            <h2 class="box-title">تغییر اطلاعات سفارش شماره @Model.OrderNumber </h2>
+            <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.EditOrderInformationNumber") @Model.OrderNumber </h2>
         </div>
         <div class="box-body">
             <div class="col-md-12">
@@ -26,7 +26,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="box box-primary">
                             <div class="box-header with-border text-center ">
-                                <h3 class="box-title">اطلاعات سفارش</h3>
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderInformation")</h3>
                             </div>
                             <div class="box-body">
 
@@ -37,7 +37,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-4">
-                                                <label>خدمات گیرنده</label>
+                                                <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.ServiceCustomer")</label>
                                             </div>
                                             <div class="input-group  col-md-8">
 
@@ -60,7 +60,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-4">
-                                                <label>تاریخ سفارش</label>
+                                                <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")</label>
                                             </div>
                                             <div class="col-md-8">
                                                 <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
@@ -97,7 +97,7 @@
                 <div class="row">
                     <div id="divOrderDetails" class="box box-info">
                         <div class="box-header with-border  text-center ">
-                            <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش</h3>
+                            <h3 class="box-title"> @_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDetail") </h3>
 
 
                         </div>
@@ -116,7 +116,7 @@
                 <div class="row">
                     <div class="box box-info">
                         <div class="box-header with-border  text-center">
-                            <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش</h3>
+                            <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.EditOrderInformation")</h3>
 
 
                         </div>
@@ -133,17 +133,17 @@
 
                                             @if (typepayment.TypeId == Model.PaymentStatusId)
                                             {
-                                                <label class="btn btn-primary active" for="@name">
-                                                    <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
-                                                    @typepayment.Title
-                                                </label>
+                                    <label class="btn btn-primary active" for="@name">
+                                        <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off" checked="checked">
+                                        @_SudeSessionContext.GetLocalResourceValue(@typepayment.Desc) 
+                                    </label>
                                             }
                                             else
                                             {
-                                                <label class="btn btn-primary" for="@name">
-                                                    <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
-                                                    @typepayment.Title
-                                                </label>
+                                <label class="btn btn-primary" for="@name">
+                                    <input type="radio" id="@name" class="btn-check" asp-for="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
+                                    @_SudeSessionContext.GetLocalResourceValue(@typepayment.Key)
+                                </label>
 
 
 
@@ -159,7 +159,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") تغییرات نهایی سفارش</a>
+                                        <a id="btnEditOrder" onclick="EditOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.EditOrderFinal")</a>
 
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@
             data: order
         }).done(function (result) {
             if (result.isSucceed) {
-                Command: toastr["success"]("سفارش اصلاح شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.OrderEdited")");
                 $("#myModal").modal("hide");
                 $.get("Order/List", { "PageIndex": "1" }, function (result) {
 
@@ -243,7 +243,7 @@
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
             }
         });
     }

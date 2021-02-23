@@ -53,7 +53,9 @@ namespace Sude.Api.Controllers
                     TypeId = resultSet.Data.Id.ToString(),
                     Title = resultSet.Data.TypeTitle,
                      Key = resultSet.Data.TypeKey,
-                      TypeGroupId = resultSet.Data.TypeGroupId.ToString()
+                      TypeGroupId = resultSet.Data.TypeGroupId.ToString(),
+                       Desc=resultSet.Data.Description
+                      
                   
                 };
                 return Ok(new ResultSetDto<TypeDetailDtoModel>()
@@ -98,7 +100,8 @@ namespace Sude.Api.Controllers
                     TypeId = resultSet.Data.Id.ToString(),
                     Title = resultSet.Data.TypeTitle,
                     Key = resultSet.Data.TypeKey,
-                    TypeGroupId = resultSet.Data.TypeGroupId.ToString()
+                    TypeGroupId = resultSet.Data.TypeGroupId.ToString(),
+                    Desc=resultSet.Data.Description
 
                 };
                 return Ok(new ResultSetDto<TypeDetailDtoModel>()
@@ -145,7 +148,8 @@ namespace Sude.Api.Controllers
                     TypeId = t.Id.ToString(),
                     Title = t.TypeTitle,
                     Key = t.TypeKey,
-                    TypeGroupId = t.TypeGroupId.ToString()
+                    TypeGroupId = t.TypeGroupId.ToString(),
+                        Desc = t.Description
                 });
                 return Ok(new ResultSet<IEnumerable<TypeDetailDtoModel>>()
                 {

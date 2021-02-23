@@ -10,7 +10,7 @@
 <head>
     <link rel="stylesheet" href="~/AdminLte/css/AdminLTE.css" />
  <script src="~/AdminLTE/js/view-image.min.js"></script>
-    <title>Detail</title>
+ <title>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Detail")</title>
 </head>
 <body>
 
@@ -19,13 +19,13 @@
         <div class="box-header text-center">
             @if (Model.IsBuy)
             {
-                <h2 class="box-title">سفارش خرید</h2>
+            <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderBuy")</h2>
 
             }
             else
             {
 
-                <h2 class="box-title">سفارش فروش</h2>}
+        <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.Order")</h2>}
 
 
         </div>
@@ -39,7 +39,7 @@
 
                     <div class="form-group">
                         <div class="col-md-6">
-                            <label>خدمت گیرنده</label>
+                            <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.ServiceCustomer")</label>
                         </div>
                         <div class="col-md-6">
                             @Model.Customer.Title
@@ -51,7 +51,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="col-md-6">
-                            <label>شماره سفارش</label>
+                            <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")</label>
                         </div>
                         <div class="col-md-6">
                             @Model.OrderNumber
@@ -66,7 +66,7 @@
 
                     <div class="form-group">
                         <div class="col-md-6">
-                            <label asp-for="OrderDate">تاریخ سفارش</label>
+                            <label asp-for="OrderDate">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")</label>
                         </div>
                         <div class="col-md-6">
                             @Model.OrderDate.ToLocalizationDateTime("g")
@@ -94,11 +94,11 @@
                         <tr>
                             <td>#</td>
                             <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title")</th>
-                            <th>قیمت</th>
-                            <th>تعداد</th>
+                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Price")</th>
+                            <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Count")</th>
 
                             <th>
-                                مجموع
+                                @_SudeSessionContext.GetLocalResourceValue("Page.Content.Sum")
                             </th>
 
                         </tr>
@@ -122,7 +122,7 @@
                             }
                             <tr class="text-bold">
                                 <td class="col-md-1"></td>
-                                <td class="col-md-5"><label> مجموع</label></td>
+                                <td class="col-md-5"><label> @_SudeSessionContext.GetLocalResourceValue("Page.Content.SumTotal")</label></td>
                                 <td class="col-md-2"> </td>
 
                                 <td class="col-md-4"><label>@String.Format("{0:n0}", sum)</label></td>
@@ -136,7 +136,7 @@
             </div>
             <div class="row bg-gray margin-bottom">
                 <div class="col-md-6">
-                    <label asp-for="Description">وضعیت پرداخت</label>
+                    <label asp-for="Description">@_SudeSessionContext.GetLocalResourceValue("Page.Content.PaymentStatus")</label>
                 </div>
                 <div class="col-md-6">
                     @Model.PaymentStatusTitle
@@ -160,7 +160,7 @@
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
                 <div class="row">
-                    <label>پیوستها</label><br />
+                    <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Attachments")</label><br />
                     @foreach (var item in Model.Attachments)
                     {
                         <div class="col-md-4 margin-bottom">

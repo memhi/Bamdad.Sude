@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.StartDate") @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.SearchStartDate") </label>
                     </div>
                     <div class="col-md-8">
 
@@ -44,7 +44,7 @@
 
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.EndDate") @_SudeSessionContext.GetLocalResourceValue("Page.Button.Search")</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.SearchEndDate")  </label>
                     </div>
                     <div class="col-md-8">
                         <input id="txtOrderDateTo" value="@(ViewBag.DateTo==null? "":ViewBag.DateTo.ToString())" class="form-control" />
@@ -61,7 +61,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>شماره سفارش</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber") </label>
                     </div>
                     <div class="col-md-8">
 
@@ -76,7 +76,7 @@
 
                 <div class="form-group">
                     <div class="col-md-4">
-                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description") سفارش</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Description")</label>
                     </div>
                     <div class="col-md-8">
 
@@ -95,7 +95,7 @@
             <div class="col-md-6 text-center">
                 <label class="btn btn-default">
                     <input type="radio" id="selectAll" class="btn-check" name="PaymentStatusId" value="" autocomplete="off">
-                    همه
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.All")
                 </label>
 
                 @{
@@ -106,10 +106,10 @@
                         string name = "btnRadio" + i1.ToString();
 
 
-                        <label class="btn btn-default">
-                            <input type="radio" id=@name class="btn-check" name="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
-                            @typepayment.Title
-                        </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" id=@name class="btn-check" name="PaymentStatusId" value="@typepayment.TypeId" autocomplete="off">
+                                    @_SudeSessionContext.GetLocalResourceValue(typepayment.Desc)   
+                                </label>
 
 
 
@@ -123,15 +123,15 @@
             <div class="col-md-6 text-center">
                 <label class="btn btn-default">
                     <input type="radio" id="selectAll" class="btn-check" name="IsBuy" value="" autocomplete="off">
-                    همه
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.All")
                 </label>
                 <label class="btn btn-default">
                     <input type="radio" id="selectSell" class="btn-check" name="IsBuy" value="False" autocomplete="off">
-                    فروش
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.Sale")
                 </label>
                 <label class="btn btn-default">
                     <input type="radio" id="selBuy" class="btn-check" name="IsBuy" value="True" autocomplete="off">
-                    خرید
+                    @_SudeSessionContext.GetLocalResourceValue("Page.Content.Buy")
                 </label>
             </div>
 
@@ -155,7 +155,7 @@
 
 <div class="box">
     <div class="box-header">
-        <h3 class="box-title">سفارشات</h3>
+        <h3 class="box-title">        @_SudeSessionContext.GetLocalResourceValue("Page.Content.Orders")</h3>
 
         <div class="box-tools">
 
@@ -163,10 +163,10 @@
                 <tr>
 
                     <td style="padding-left:3px">
-                        <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-shopping-cart margin-r-5"></span><lable>فروش @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")</lable></a>
+                        <a id="btnAdd" class="btn btn-block btn-success"><span class="fa fa-shopping-cart margin-r-5"></span><lable> @_SudeSessionContext.GetLocalResourceValue("Page.Button.NewSell")</lable></a>
                     </td>
                     <td>
-                        <a id="btnAddBuy" class="btn btn-block btn-warning"><span class="fa fa-shopping-bag margin-r-5"></span><lable>خرید @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")</lable></a>
+                        <a id="btnAddBuy" class="btn btn-block btn-warning"><span class="fa fa-shopping-bag margin-r-5"></span><lable> @_SudeSessionContext.GetLocalResourceValue("Page.Button.NewBuy")</lable></a>
                     </td>
                 </tr>
 
@@ -182,12 +182,12 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>شماره سفارش</th>
-                        <th>تاریخ</th>
-                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Title") کسب و کار</th>
-                        <th>نوع سفارش</th>
-                        <th>مجموع مبلغ سفارش</th>
-                        <th>عملیات</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.TitleWork") </th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderType")</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.SumPrice")</th>
+                        <th>@_SudeSessionContext.GetLocalResourceValue("Page.Content.Operation")</th>
 
                     </tr>
                 </thead>
@@ -201,20 +201,20 @@
 
                                 <tr id="tr_@item.OrderId">
                                     <td lable="" style="--bgcolor: silver; ">@((( ViewBag.PageID-1) * Constants.PageSize) + (i++))</td>
-                                    <td lable="شماره سفارش" style="--minwidth:40%; ">@item.OrderNumber</td>
-                                    <td lable="تاریخ سفارش" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
-                                    <td lable="کسب و کار" style="--minwidth:40%">@item.WorkName</td>
-                                    <td lable="نوع سفارش" style="--minwidth:40%">
+                                    <td lable="@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")" style="--minwidth:40%; ">@item.OrderNumber</td>
+                                    <td lable="@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")" style="--minwidth:40%">@item.OrderDate.ToLocalizationDateTime("D1")</td>
+                                    <td lable="@_SudeSessionContext.GetLocalResourceValue("Page.Content.TitleWork")" style="--minwidth:40%">@item.WorkName</td>
+                                    <td lable="@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderType")" style="--minwidth:40%">
                                         @if (@item.IsBuy)
                                         {
-                                            <lable>   خرید</lable>
+                                        <lable>   @_SudeSessionContext.GetLocalResourceValue("Page.Content.Buy")</lable>
                                         }
                                         else
                                         {
-                                            <lable>   فروش</lable>
+                                    <lable>   @_SudeSessionContext.GetLocalResourceValue("Page.Content.Sale")</lable>
                                         }
                                     </td>
-                                    <td lable="مبلغ سفارش" style="--minwidth:40%">
+                                    <td lable=" @_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderPrice")" style="--minwidth:40%">
                                         @String.Format("{0:n0}", @item.SumPrice)
 
                                     </td>
@@ -222,7 +222,7 @@
                                     <td>
                                         <button class="btn btn-primary btn-sm" onclick="ShowEditOrderPop('@item.OrderId','@item.IsBuy')"><span class="fa fa-edit margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Edit")</lable></button>
                                         <button class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailOrder('@item.OrderId')"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></button>
-                                        <button class="btn btn-sm @(item.PaymentStatusTitle=="پرداخت نشده"? "btn-warning": "btn-success")" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@item.PaymentStatusTitle</lable></button>
+                                        <button class="btn btn-sm @(item.PaymentStatusTitle=="Data.Type.NotPaid"? "btn-warning": "btn-success")" onclick="ShowModalPayments('@item.OrderId')"><span class="fa fa-credit-card margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue(item.PaymentStatusTitle)</lable></button>
                                         <button class="btn btn-danger btn-sm" onclick="DeleteOrder('@item.OrderId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></button>
 
 
@@ -292,14 +292,14 @@
     });
     function DeleteOrder(orderId) {
         swal.fire({
-            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") سفارش',
-            text: "کاربر گرامی از @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") سفارش مطمئن هستید؟",
+            title: '@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDelete")',
+            text: "@_SudeSessionContext.GetLocalResourceValue("Page.Content.DeleteOrderQuestion")",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#7cacbe',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله ، سفارش @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شود',
-            cancelButtonText: 'خیر',
+            confirmButtonText: ' @_SudeSessionContext.GetLocalResourceValue("Page.Button.DeleteYes") ',
+            cancelButtonText: ' @_SudeSessionContext.GetLocalResourceValue("Page.Button.No")',
             position: 'top',
             showClass: {
                 popup: 'animate__animated animate__fadeIn'
@@ -314,13 +314,13 @@
                     type: "Get",
                     success: function (result) {
                         if (result.isSucceed == true) {
-                            Command: toastr["success"]("سفارش @_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete") شد");
+                            Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.OrderDeleted")");
                             $("#tr_" + orderId).addClass("danger");
                             $("#tr_" + orderId).hide('slow');
                             $("#orderView").load("Order/List");
                         }
                         else {
-                            Command: toastr["warning"](result.message, "هشدار");
+                            Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
                         }
                     },
                     error: function (request, status, error) {
@@ -392,7 +392,7 @@
     function ShowModalPayments(orderId) {
         $.get("Order/ViewPayments/" + orderId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  پرداخت");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Content.PaymentDetail") ");
             $("#myModalBody").html(result);
 
         });
@@ -400,7 +400,7 @@
     function ShowNewPageModalDetailOrder(orderId) {
         $.get("Order/Detail/" + orderId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")  سفارش");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDetail")");
             $("#myModalBody").html(result);
 
         });

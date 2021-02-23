@@ -18,10 +18,12 @@ namespace Sude.Mvc.UI.Admin
     public class PDFManager
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly SudeSessionContext  _sudeSessionContext;
 
-        public PDFManager(IHostingEnvironment hostingEnvironment)
+        public PDFManager(IHostingEnvironment hostingEnvironment, SudeSessionContext sudeSessionContext)
         {
             _hostingEnvironment = hostingEnvironment;
+            _sudeSessionContext = sudeSessionContext;
         }
 
         protected virtual Font GetFont(Rectangle pageSize)
@@ -131,16 +133,16 @@ namespace Sude.Mvc.UI.Admin
             cellHeaderWork.HorizontalAlignment = Element.ALIGN_CENTER;
             cellHeaderWork.Border = Rectangle.BOTTOM_BORDER;
             headerTable.AddCell(cellHeaderWork);
-            var cellHeader = GetPdfCell("شماره سفارش: " + order.OrderNumber, titleFont);
+            var cellHeader = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.OrderNumber")+": " + order.OrderNumber, titleFont);
             cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
             //cellHeader.Phrase.Add(new Phrase(anchor));
             cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
-            cellHeader.Phrase.Add(GetParagraph("تاریخ سفارش: " + order.OrderDate.ToLocalizationDateTime("g"), font));
+            cellHeader.Phrase.Add(GetParagraph(_sudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate") + ": " + order.OrderDate.ToLocalizationDateTime("g"), font));
             cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
             cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
             if (!order.IsBuy)
             {
-                cellHeader.Phrase.Add(GetParagraph("سفارش گیرنده: " + order.Customer.Title, font));
+                cellHeader.Phrase.Add(GetParagraph(_sudeSessionContext.GetLocalResourceValue("Page.Content.Customer") + ": " + order.Customer.Title, font));
                 cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
                 cellHeader.Phrase.Add(new Phrase(Environment.NewLine));
             }
@@ -249,12 +251,12 @@ namespace Sude.Mvc.UI.Admin
             detailsTable.SetWidths(widths[fontSize].Reverse().ToArray());
 
 
-            var cellProductItem = GetPdfCell("ردیف", font);
+            var cellProductItem = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.Row") , font);
             cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             detailsTable.AddCell(cellProductItem);
             //product name
-            cellProductItem = GetPdfCell("عنوان خدمت یا کالا", font);
+            cellProductItem = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.ServiceTitle") , font);
             cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             detailsTable.AddCell(cellProductItem);
@@ -266,19 +268,19 @@ namespace Sude.Mvc.UI.Admin
 
 
             //price
-            cellProductItem = GetPdfCell("قیمت", font);
+            cellProductItem = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.Price")  , font);
             cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             detailsTable.AddCell(cellProductItem);
 
             //qty
-            cellProductItem = GetPdfCell("تعداد", font);
+            cellProductItem = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.Count"), font);
             cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             detailsTable.AddCell(cellProductItem);
 
             //total
-            cellProductItem = GetPdfCell("مجموع", font);
+            cellProductItem = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.Sum"), font);
             cellProductItem.BackgroundColor = BaseColor.LightGray;
             cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
             detailsTable.AddCell(cellProductItem);
@@ -339,10 +341,10 @@ namespace Sude.Mvc.UI.Admin
             };
 
             statusTable.SetWidths(widthsStatus[fontSize].ToArray());
-            var cellstatus = GetPdfCell(order.PaymentStatusTitle, titleFont);
+            var cellstatus = GetPdfCell( order.PaymentStatusTitle, titleFont);
             cellstatus.Border = Rectangle.NO_BORDER;
             statusTable.AddCell(cellstatus);
-            cellstatus = GetPdfCell("مجموع", titleFont);
+            cellstatus = GetPdfCell(_sudeSessionContext.GetLocalResourceValue("Page.Content.Sum"), titleFont);
             cellstatus.Border = Rectangle.BOX;
             statusTable.AddCell(cellstatus);
 
@@ -402,7 +404,7 @@ namespace Sude.Mvc.UI.Admin
 
 
 
-            PrintFooter(new List<string> { "زمان چاپ: "+DateTime.Now.ToLocalizationDateTime("G") }, pdfWriter, pageSize, font);
+            PrintFooter(new List<string> { _sudeSessionContext.GetLocalResourceValue("Page.Content.PrintTime") +": "+DateTime.Now.ToLocalizationDateTime("G") }, pdfWriter, pageSize, font);
 
 
 

@@ -25,13 +25,13 @@
                         if (ViewBag.PaymentStatusId == type.TypeId)
                         {
                             <div class="col-md-4 margin-bottom">
-                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@type.Title </a>
+                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-green "><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue(type.Desc) </a>
                             </div>
                         }
                         else
                         {
                             <div class="col-md-4 margin-bottom">
-                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-gray">@type.Title </a>
+                                <a onclick="SelectPayment('@ViewBag.OrderId','@type.TypeId')" class="btn btn-default col-md-12 bg-gray">@_SudeSessionContext.GetLocalResourceValue(type.Desc) </a>
                             </div>
 
                         }
@@ -65,7 +65,7 @@
                             location.reload();
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
-                            alert('Failed to retrieve states.');
+                            alert('Failed to set payments.');
 
                         }
                     });

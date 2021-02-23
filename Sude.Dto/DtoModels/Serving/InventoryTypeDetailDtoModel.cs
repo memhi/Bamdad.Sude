@@ -8,6 +8,7 @@ namespace Sude.Dto.DtoModels.Serving
 {
     public class InventoryTypeDetailDtoModel
     {
+        
         public string InventoryTypeId { get; set; }
         public string Title { get; set; }
       

@@ -18,7 +18,7 @@
 <section class="content">
     <div class="box box-primary bg-gray-light">
         <div class="box-header with-border  text-center">
-            <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") خرید کالا</h2>
+            <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.CreateOrderBuy")</h2>
         </div>
         <div class="box-body">
             @if (!string.IsNullOrEmpty(Model.WorkId))
@@ -32,7 +32,7 @@
 
                             <div class="box box-info ">
                                 <div class="box-header with-border  text-center">
-                                    <h3 class="box-title">اطلاعات خرید</h3>
+                                    <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderBuyInformation")</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
@@ -40,7 +40,7 @@
 
                                             <div class="form-group">
                                                 <div class="col-md-2">
-                                                    <label>تاریخ</label>
+                                                    <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")</label>
                                                 </div>
                                                 <div class="col-md-10">
                                                     <input id="txtOrderDate" value="@Model.OrderDate" class="form-control" />
@@ -77,7 +77,7 @@
                     <div class="row">
                         <div id="divOrderDetails" class="box box-info  ">
                             <div class="box-header with-border text-center">
-                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") خرید</h3>
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderBuyDetail")</h3>
                             </div>
                             <div class="box-body">
                                 <div id="adddetail" class="row">
@@ -112,7 +112,7 @@
                     <div class="row">
                         <div class="box box-info  ">
                             <div class="box-header with-border  text-center">
-                                <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</h3>
+                                <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderInformationFinal")</h3>
 
 
                             </div>
@@ -122,7 +122,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</a>
+                                            <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.SaveOrderBuyFinal")</a>
 
                                         </div>
                                     </div>
@@ -146,7 +146,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <label>لطفا یک کسب و کار انتخاب کنید</label>
+                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.PleaseSelectAWork")</label>
                     </div>
                 </div>
             }
@@ -206,12 +206,12 @@
         }).done(function (result) {
             if (result.isSucceed) {
 
-                Command: toastr["success"]("فایل حذف شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.FileDeleted")");
                 $("#divattachments").load("Attachment/AddAttachment");
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
 
 
             }
@@ -222,7 +222,7 @@
 
 
           $('#btn_ConfirmPic').html(
-                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i>ارسال فایل...'
+                    '<i class="fa fa-refresh fa-spin  margin-r-5"></i>@_SudeSessionContext.GetLocalResourceValue("Page.Content.SendPicture")...'
                 );
 
 
@@ -234,9 +234,9 @@
             function (code, text) {
 
         $('#btn_ConfirmPic').html(
-                            'تایید تصویر'
+                            '@_SudeSessionContext.GetLocalResourceValue("Page.Content.ConfirmPicture")'
                         );
-                Command: toastr["success"]( "تصویر ثبت شد");
+                Command: toastr["success"]( "@_SudeSessionContext.GetLocalResourceValue("Page.Message.PictureUploaded")");
                 $("#divattachments").load("Attachment/AddAttachment");
             });
 
@@ -259,7 +259,7 @@
         }).done(function (result) {
             if (result.isSucceed) {
 
-                Command: toastr["success"]("سفارش ایجاد شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.OrderBuyCreated")");
 
                 $.get("Order/List", { "PageIndex": "1" }, function (result) {
 
@@ -269,7 +269,7 @@
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
 
 
             }
@@ -287,7 +287,7 @@
     function btnShowSaveNewOrderCustomerForm() {
         $.get("Customer/AddOrderCustomer", function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("سفارش گیرنده @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")");
+            $("#myModalLabel").html("  @_SudeSessionContext.GetLocalResourceValue("Page.Content.NewCustomer")");
             $("#myModalBody").html(result);
             $("#btnClose").click(function () {
                 $("#myModal").modal("hide");

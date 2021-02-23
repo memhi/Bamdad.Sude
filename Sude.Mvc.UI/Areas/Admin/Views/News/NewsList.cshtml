@@ -144,7 +144,7 @@
 
         $.get("News/Detail/" +NewsId, function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") خبر");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")");
             $("#myModalBody").html(result);
         });
     }

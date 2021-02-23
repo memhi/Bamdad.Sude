@@ -10,7 +10,7 @@
     <section class="content">
         <div class="box box-primary bg-gray-light">
             <div class="box-header with-border  text-center">
-                <h2 class="box-title">ثبت سفارش </h2>
+                <h2 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.CreatOrder")</h2>
             </div>
             <div class="box-body">
                 @if (!string.IsNullOrEmpty(Model.WorkId))
@@ -26,7 +26,7 @@
 
                                 <div class="box box-info">
                                     <div class="box-header with-border text-center">
-                                        <h3 class="box-title">اطلاعات سفارش</h3>
+                                        <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderInformation")</h3>
                                     </div>
                                     <div class="box-body">
                                         <div class="row">
@@ -36,14 +36,14 @@
 
                                                 <div class="form-group">
                                                     <div class="col-md-3">
-                                                        <label>خدمات گیرنده</label>
+                                                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.ServiceCustomer")</label>
                                                     </div>
                                                     <div class="input-group  col-md-9">
 
                                                         <select id="drpCustomers" asp-for="CustomerId"
                                                                 class="form-control"
                                                                 asp-items="(SelectList)@ViewData[Constants.ViewBagNames.Customers]">
-                                                            <option>لطفا یک  خدمات گیرنده انتخاب کنید</option>
+                                                            <option>@_SudeSessionContext.GetLocalResourceValue("Page.Content.PleaseSelectACustomer")</option>
 
                                                         </select>
                                                         <div class="input-group-btn">
@@ -59,7 +59,7 @@
 
                                                 <div class="form-group">
                                                     <div class="col-md-3">
-                                                        <label>تاریخ سفارش</label>
+                                                        <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDate")</label>
                                                     </div>
                                                     <div class="col-md-9">
                                                         <input id="txtOrderDate"  class="form-control" value="@Model.OrderDate" />
@@ -97,7 +97,7 @@
                         <div class="row">
                             <div id="divOrderDetails" class="box box-info  text-center">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail") سفارش</h3>
+                                    <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderDetail")</h3>
                                 </div>
                                 <div class="box-body">
                                     <div id="adddetail" class="row">
@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="box box-info  text-center">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">اطلاعات @_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</h3>
+                                    <h3 class="box-title">@_SudeSessionContext.GetLocalResourceValue("Page.Content.OrderInformationFinal")</h3>
 
 
                                 </div>
@@ -124,7 +124,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Create") نهایی سفارش</a>
+                                                <a id="btnSaveNewOrder" onclick="SaveNewOrder()" class="btn btn-success col-md-6"><span class="fa fa-check margin-r-5"></span>@_SudeSessionContext.GetLocalResourceValue("Page.Button.SaveOrderFinal")</a>
 
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <label>لطفا یک کسب و کار انتخاب کنید</label>
+                                <label>@_SudeSessionContext.GetLocalResourceValue("Page.Content.PleaseSelectAWork")</label>
                             </div>
                         </div>
                         }
@@ -184,7 +184,7 @@
         $("#odetails").load("OrderDetail/List");
         $("#adddetail").load("OrderDetail/Add?servingHasTracking=0&IsActive=1");
         $('#drpCustomers').select2();
-    
+
 
     });
 
@@ -192,7 +192,7 @@
 
 
 
- 
+
 
     initializeDateTime('#txtOrderDate', '#OrderDateVal');
 
@@ -201,7 +201,7 @@
         var isValid = $('#frmAdd').valid();
         if (!isValid)
             return;
- 
+
                 var order = {
             OrderNumber: '',
                     OrderDate: getControlAltValueDateStructure('#OrderDateVal'),
@@ -217,7 +217,7 @@
         }).done(function (result) {
             if (result.isSucceed) {
 
-                Command: toastr["success"]("سفارش ایجاد شد");
+                Command: toastr["success"]("@_SudeSessionContext.GetLocalResourceValue("Page.Message.OrderCreated")");
 
 
                 $.get("Order/List", { "PageIndex": "1" }, function (result) {
@@ -228,9 +228,9 @@
 
             }
             else {
-                Command: toastr["warning"](result.message, "هشدار");
+                Command: toastr["warning"](result.message, "@_SudeSessionContext.GetLocalResourceValue("Page.Message.Warning")");
 
-             
+
             }
         });
     }
@@ -246,7 +246,7 @@
     function btnShowSaveNewOrderCustomerForm() {
         $.get("Customer/AddOrderCustomer", function (result) {
             $("#myModal").modal('show');
-            $("#myModalLabel").html("سفارش گیرنده @_SudeSessionContext.GetLocalResourceValue("Page.Button.New")");
+            $("#myModalLabel").html("@_SudeSessionContext.GetLocalResourceValue("Page.Content.NewCustomer")");
             $("#myModalBody").html(result);
             $("#btnClose").click(function () {
                 $("#myModal").modal("hide");
@@ -268,8 +268,8 @@
 
                     $("#drpCustomers").empty();
 
-                   
-                
+
+
                     $.each(result, function () {
                         var opt = '<option>';
                       //  if (this.value == customerId)
@@ -281,14 +281,14 @@
                         );
                     });
                     $('#drpCustomers option[value=' + customerId + ']').attr('selected', 'selected');
-                   
-                  
-          
+
+
+
 
                 });
-                    
+
 
             }
         }
-    
+
 </script>
