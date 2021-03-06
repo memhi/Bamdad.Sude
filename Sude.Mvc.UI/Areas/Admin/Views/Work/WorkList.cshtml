@@ -56,6 +56,8 @@
                                             <a class="btn btn-info btn-sm" onclick="ShowNewPageModalDetailWork('@item.WorkId')"><span class="fa fa-info margin-r-5"> </span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Detail")</lable></a>
                                             <a class="btn btn-primary btn-sm" onclick="GoToServing('@item.WorkId')"><span class="fa fa-bars margin-r-5"> </span><lable>اقلام و خدمات</lable></a>
                                             <a class="btn btn-danger btn-sm" onclick="DeleteWork('@item.WorkId')"><span class="fa fa-remove margin-r-5"></span><lable>@_SudeSessionContext.GetLocalResourceValue("Page.Button.Delete")</lable></a>
+                                            <a class="btn btn-info btn-sm" href="work/WorkExcelList?workid=@item.WorkId"><span class="fa fa-info margin-r-5"></span><lable>دریافت اطلاعات کسب و کار</lable></a>
+
                                         </td>
                                     </tr>
                                 }
@@ -81,7 +83,7 @@
 
 
 
-    <script>
+<script>
         $("#btnAdd").click(function () {
             $("#WorkView").load("Work/Add");
         });
@@ -97,7 +99,7 @@
                 success: function (data) {
 
                     location.replace("Serving");
-                    
+
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve states.');
@@ -187,4 +189,5 @@
             });
         }
 
-    </script>
+
+</script>
